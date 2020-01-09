@@ -1,0 +1,2140 @@
+---
+title: "R Stats Resource Links"
+author: "Collected by Wendy Anthony"
+date: "2019-11-17 (updated 2020-01-09)"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+---
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(echo = TRUE)
+devtools::source_gist("c83e078bf8c81b035e32c3fc0cf04ee8", 
+                      filename = 'render_toc.R')
+```
+
+```{r toc, echo=FALSE} 
+## Table of Contents
+#render_toc("R_Stats_Links.Rmd")
+```
+
+---
+
+# Cheatsheets
+[R Cheatsheets](https://github.com/rstudio/cheatsheets)
+
+[Color Palette Cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf)
+
+*** [Spatial Cheatsheet](https://www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html) ***
+
+---
+
+# R Resources
+http://www.r-fiddle.org/
+
+*** [R Resource Links](https://paulvanderlaken.com/2017/08/10/r-resources-cheatsheets-tutorials-books/) ***
+
+*** [R Tips & Tricks](https://paulvanderlaken.com/2018/05/21/r-tips-and-tricks/) ***
+
+[Five Tips to Improve Your R Code - Datacamp](https://www.datacamp.com/community/tutorials/five-tips-r-code-improve)
+
+---
+
+# Presentation
+
+---
+
+## R Markdown
+R Markdown Cheatsheet  
+https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
+
+[R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+
+[Convert R Markdown (Rmd) Files to R Scripts](https://www.garrickadenbuie.com/blog/convert-r-markdown-rmd-files-to-r-scripts/)
+
+[How to Write Lists Inside Markdown Table](https://stackoverflow.com/questions/19950648/how-to-write-lists-inside-a-markdown-table)
+
+How to use objects from global environment in Rstudio Markdown  
+https://stackoverflow.com/questions/34029611/how-to-use-objects-from-global-environment-in-rstudio-markdown
+
+[Advanced R Markdown Workshop](https://arm.rbind.io/)
+
+[R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+
+*** [Iterated fact sheets with R Markdown](https://medium.com/@urban_institute/iterated-fact-sheets-with-r-markdown-d685eb4eafce) ***
+
+https://www.r-bloggers.com/r-markdown-reports-on-demand-with-mobiletrigger/
+
+[How to Write Reproducible Papers - Workshop](https://ulyngs.github.io/rmarkdown-workshop-2019/slides/OxfordRUsers.html#1)
+
+*** [Intro to R Markdown](https://m-clark.github.io/Introduction-to-Rmarkdown/getting-started.html) ***
+
+[R Markdown - Getting Started in R &amp; RStudio](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-r-markdown)
+
+*** [RMarkdown Driven Development](https://emilyriederer.netlify.com/post/rmarkdown-driven-development/) ***
+
+[Markdown in Jupyter Notebook](https://www.datacamp.com/community/tutorials/markdown-in-jupyter-notebook)
+
+[Markdown Guide](https://www.markdownguide.org/getting-started/)
+
+[rmarkdown, bookdown for authoring books](https://bookdown.org)
+[blogdown for creating websites](https://github.com/rstudio/blogdown)
+[articles for writing journal papers](https://github.com/rstudio/rticles)
+[flexdashboard for generating dashboards](https://github.com/rstudio/flexdashboard)
+[learnr for tutorials](https://github.com/rstudio/learnr)
+
+xaringan for making slides  
+https://github.com/yihui/xaringan 
+https://slides.yihui.org/xaringan/#1
+
+http://rmarkdown.rstudio.com
+
+https://www.r-bloggers.com/vitae-dynamic-cvs-with-r-markdown/amp/
+
+[blogdown: Creating Websites with R Markdown](https://bookdown.org/yihui/blogdown/)
+
+[rmd fold code chunks](https://stackoverflow.com/questions/37755037/how-to-add-code-folding-to-output-chunks-in-rmarkdown-html-documents#37839683)
+
+RefManageR::Cite() - Use with rmarkdown  
+https://github.com/ropensci/RefManageR
+
+https://libscie.github.io/rmarkdown-workshop/handout.html
+
+https://github.com/hafen/lazyrmd
+
+https://bookdown.org/yihui/rmarkdown/
+
+https://www.r-bloggers.com/r-markdown-reports-on-demand-with-mobiletrigger/
+
+https://github.com/riinuots/markdown/blob/master/instructions/instructions.md
+
+https://rmarkdown.rstudio.com/flexdashboard/index.html
+
+http://svmiller.com/blog/2016/03/svm-r-markdown-cv/
+
+http://www.sthda.com/english/wiki/create-and-format-word-documents-using-r-software-and-reporters-package
+
+https://m-clark.github.io/Introduction-to-Rmarkdown/getting-started.html
+
+https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html
+
+https://rmarkdown.rstudio.com/articles.html
+
+https://rmarkdown.rstudio.com/lesson-11.html
+
+https://cmerow.github.io/RDataScience/07_03_RMarkdown_Tools.html
+
+https://bookdown.org/yihui/rmarkdown/
+
+https://rladiessydney.org/courses/ryouwithme/04-markymark-0/
+
+https://github.com/jenrichmond/RMarkdownThrowdown
+
+https://github.com/jenrichmond/RMarkdownThrowdown/blob/master/Group1_tables_contents/tableofcontents.md
+
+https://github.com/jenrichmond/RMarkdownThrowdown/blob/master/Group1_tables_contents/make_tables.rmd
+
+https://holtzy.github.io/Pimp-my-rmd/
+
+https://rmarkdown.rstudio.com/gallery.html
+
+https://statr.me/2016/08/creating-pretty-documents-with-the-prettydoc-package/  
+https://prettydoc.statr.me/cayman.html  
+https://prettydoc.statr.me/  
+https://github.com/yixuan/prettydoc/  
+
+
+*** [Intro to R Markdown](https://m-clark.github.io/Introduction-to-Rmarkdown/) ***
+
+[HTML Document](https://bookdown.org/yihui/rmarkdown/html-document.html)
+
+[Storyboards](https://rmarkdown.rstudio.com/flexdashboard/using.html#storyboards)
+
+[flexdashboard: Easy interactive dashboards for R](https://rmarkdown.rstudio.com/flexdashboard/)
+
+[R Markdown from R Studio](https://rmarkdown.rstudio.com/)
+
+https://cran.r-project.org/web/packages/jtools/vignettes/summ.html#table_output_for_word_and_rmarkdown_documents
+
+[package for creating slideshows with remark.js through R Markdown](https://github.com/yihui/xaringan)
+
+*** [R Notebook](https://bookdown.org/yihui/rmarkdown/notebook.html) ***
+
+[Bookdown](*** https://bookdown.org/home/about/)
+
+*** https://bookdown.org/ndphillips/YaRrr/
+
+Blogdown  
+https://github.com/rstudio/blogdown
+
+Blogdown  
+https://bookdown.org/yihui/blogdown/
+
+https://bookdown.org/yihui/rmarkdown/notebook.html
+
+https://rmarkdown.rstudio.com/formats.html
+
+[R Markdown Python Engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
+
+Getting Started With R in RStudio Notebooks  
+http://www.storybench.org/getting-started-r-rstudio-notebooks/
+
+Materials for the rstudio::conf 2019 Advanced R Markdown workshop  
+https://arm.rbind.io  
+https://github.com/rstudio-education/arm-workshop-rsc2019
+
+How do I add a URL to R markdown?  
+https://stackoverflow.com/questions/29787850/how-do-i-add-a-url-to-r-markdown
+
+The Best Way to Create the Website You Want from Markdown (or Jupyter/RStudio)  
+https://sourcethemes.com/academic/
+
+### Markdown in wordpress  
+[Jetpack Markdown](https://jetpack.com/support/markdown/)
+
+[Wordpress Markdown Quick Reference](https://en.support.wordpress.com/markdown-quick-reference/)
+
+---
+
+## Shiny
+https://shiny.rstudio.com/
+
+https://shiny.rstudio.com/articles/layout-guide.html
+
+*** https://shiny.rstudio.com/gallery/
+
+https://shiny.rstudio.com/gallery/superzip-example.html
+
+https://shiny.rstudio.com/gallery/widget-gallery.html
+
+https://matthew-j-oldach.shinyapps.io/hinuhinu/
+
+http://www.r-gators.com/2018/04/04/creating-a-simple-shiny-app-together/
+
+** https://github.com/ufrmeetup/gruShiny
+
+http://www.r-gators.com/2018/03/28/introduction-to-shiny/
+
+https://github.com/ufrmeetup/shiny-example
+
+https://rstudio.github.io/shiny/tutorial/
+
+https://www.showmeshiny.com/
+
+https://www.shinyapps.io/
+
+https://github.com/rstudio/shiny
+
+https://ikashnitsky.shinyapps.io/us-names/
+
+*** https://www.r-bloggers.com/r-shiny-for-beginners-annotated-starter-code/
+
+https://jakelearnsdatascience.shinyapps.io/twitter_shiny/
+
+*** https://michaelwreed.shinyapps.io/phila_police_map/  
+https://github.com/michaelwreed/tidy_tuesday/tree/master/shiny_apps/phila_police_map
+
+https://www.edureka.co/blog/r-shiny-tutorial/
+
+*** https://gqueiroz.shinyapps.io/rshinylady/
+
+https://www.r-bloggers.com/building-a-shiny-app-for-cycling-in-ottawa/
+
+https://rviews.rstudio.com/2019/10/09/building-interactive-world-maps-in-shiny/#disqus_thread
+
+http://enhancedatascience.com/2019/09/05/css-enhances-r-shiny-sass-enhances-css/
+
+*** https://shinyapps.science.psu.edu/
+
+Shiny html templates  
+https://rinterface.com/  
+
+https://github.com/nik01010/dashboardthemes  
+
+http://shinyapps.dreamrs.fr/shinyWidgets/  
+
+https://github.com/jienagu/DT-Editor
+https://appforiarteam.shinyapps.io/DT_Editor_Example2/
+
+https://github.com/andrewsali/shinycssloaders
+https://github.com/andrewsali/shinycssloaders
+
+https://github.com/daattali/shinyalert
+
+https://shiny.rstudio.com/articles/validation.html
+
+https://fontawesome.com/
+
+https://getbootstrap.com/docs/3.3/components/
+
+https://deanattali.com/shinyjs/
+
+https://shiny.rstudio.com/articles/css.html
+
+https://github.com/nanxstats/awesome-shiny-extensions
+
+https://medium.com/@urban_institute/building-a-point-and-click-mapping-tool-in-r-shiny-7aa4e99ac913
+
+https://rstudio.github.io/shinydashboard/index.html  
+https://rstudio.github.io/shinydashboard/structure.html
+
+https://bookdown.org/yihui/rmarkdown/shiny-documents.html
+
+https://shiny.rstudio.com/articles/rmarkdown.html
+
+*** https://shiny.rstudio.com/articles/interactive-docs.html
+
+Plotly & Shiny  
+https://webinars.cpsievert.me/20180220/#18
+
+*** https://github.com/rstudio/webinars
+
+https://github.com/yihui/shiny-apps/tree/master/face-pi
+https://yihui.shinyapps.io/face-pi/
+
+*** Shiny mobile
+http://dirk.eddelbuettel.com/cranberries/cran/new/index.html
+https://cran.r-project.org/web/packages/shinyMobile/index.html
+https://cran.r-project.org/web/packages/shinyMobile/shinyMobile.pdf
+
+*** https://rviews.rstudio.com/2019/10/09/building-interactive-world-maps-in-shiny/
+
+*** HTML templates for Shiny  
+http://www.rinterface.com/
+
+*** https://www.r-bloggers.com/the-shiny-developer-series/
+
+---
+
+### Tmap & Leaflet shiny  
+*** https://community.rstudio.com/t/integrating-tmap-into-shiny/6036
+
+https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html#leaflet-and-shiny-integration
+
+https://stackoverflow.com/questions/51610161/interactive-map-with-tmap-does-not-appear-in-shiny-app-but-does-show-in-rstudio
+
+*** https://rstudio.github.io/leaflet/shiny.html
+
+--- 
+
+### Interactive data tables
+https://glin.github.io/reactable/index.html  
+https://glin.github.io/reactable/articles/cookbook/cookbook.html  
+https://glin.github.io/reactable/articles/100k-rows.html  
+*** https://glin.github.io/reactable/articles/shiny-demo.html  
+*** https://glin.github.io/reactable/articles/cookbook/cookbook.html
+
+---
+
+## Jupyter Notebooks
+https://www.anaconda.com/distribution/
+
+https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook
+
+https://jupyter.readthedocs.io/en/latest/install.html
+
+https://jupyter.org/
+
+---
+
+# R Output
+Get text from pdfs or images using OCR: a tutorial with {tesseract} and {magick}  
+https://www.brodrigues.co/blog/2019-03-31-tesseract/
+
+https://www.brodrigues.co/blog/2018-06-10-scraping_pdfs/
+
+https://www.brodrigues.co/blog/2018-12-15-lubridate_africa/
+
+*** https://www.brodrigues.co/blog/2015-02-22-export-r-output-to-file/
+
+Tables Easily generate information-rich, publication-quality tables from R  
+https://gt.rstudio.com  
+https://github.com/rstudio/gt
+
+*sVG*
+https://www.stat.auckland.ac.nz/~paul/Reports/grImport/grimport-gridsvg-export/grimport-gridsvg-export.html
+
+https://www.r-bloggers.com/2019-02-svg-in-svg-out/
+
+## Slidify - Make slides
+http://slidify.org/samples/intro/#10  
+http://slidify.org/samples/intro/#1  
+https://yintingchou.com/posts/ioslides-vs-slidify-in-r-markdown-presentation/  
+http://ramnathv.github.io/carouselDemo/#1  
+http://slidify.org/start.html  
+https://www.w3.org/Talks/Tools/Slidy2/  
+
+*** http://slidify.github.io/iquiz/#1  
+https://codeload.github.com/slidify/iquiz/legacy.zip/gh-pages  
+https://github.com/jchamill/jquery-quiz  
+https://github.com/search?utf8=✓&q=Jquery+quiz  
+https://www.jvcasillas.com/slidify_tutorial/#2  
+
+
+*** https://stackoverflow.com/questions/14547069/how-to-write-from-r-to-the-clipboard-on-a-mac
+
+*** lets you plot any points on a scatter plot and then download the corresponding data.
+http://robertgrantstats.co.uk/drawmydata.html
+
+## Sink - R console output to file
+https://www.rdocumentation.org/packages/base/versions/3.6.1/topics/sink  
+http://www.endmemo.com/program/R/sink.php  
+https://stat.ethz.ch/R-manual/R-devel/library/base/html/sink.html  
+https://statisticsglobe.com/r-sink-function-example  
+
+https://stackoverflow.com/questions/14547069/how-to-write-from-r-to-the-clipboard-on-a-mac#14547110
+
+---
+
+# Spatial Analysis
+
+*** How to build a GIF of satellite imagery in R
+http://www.storybench.org/how-to-build-a-gif-of-satellite-imagery-in-r/
+
+Dominic Roye - Visualizar el crecimiento urbano  
+https://dominicroye.github.io/es/2019/visualizar-el-crecimiento-urbano/  
+https://translate.google.com/translate?hl=en&sl=auto&tl=en&u=https%3A%2F%2Fdominicroye.github.io%2Fes%2F2019%2Fvisualizar-el-crecimiento-urbano%2F
+
+*** Geospatial visualization using R
+*** http://rpubs.com/bhaskarvk/userR2017-tutorial_proposal
+http://rpubs.com/bhaskarvk/userR2017-tutorial_proposal
+
+*** An introduction to R for spatial analysis and mapping (Second Edition)
+https://www-tandfonline-com.ezproxy.library.uvic.ca/doi/pdf/10.1080/13658816.2019.1647541?needAccess=true
+
+https://uk.sagepub.com/en-gb/eur/an-introduction-to-r-for-spatial-analysis-and-mapping/book241031#preview
+
+landscapemetrics: an open‐source R tool to calculate landscape metrics
+https://cran.r-project.org/web/packages/landscapemetrics/index.html
+https://github.com/r-spatialecology/landscapemetrics
+https://onlinelibrary.wiley.com/doi/10.1111/ecog.04617
+
+https://github.com/r-spatial/sf/wiki/Migrating
+
+https://github.com/r-spatial/leafem
+
+*** https://www.spatialreference.org/
+
+*** https://github.com/r-spatial/mapview
+https://github.com/r-spatial/leafem
+
+https://github.com/r-spatial
+
+
+## R Packages - Spatial Analysis
+https://github.com/spatialanalysis/geodaData
+
+https://cran.r-project.org/web/packages/maps/index.html
+
+https://cran.r-project.org/web/packages/maptools/index.html
+
+https://cran.r-project.org/web/packages/rjson/index.html
+
+https://cran.r-project.org/web/packages/DeducerSpatial/index.html
+
+https://cran.r-project.org/web/packages/RgoogleMaps/index.html
+
+*** Packages to explore the earth ***
+CRAN Task View: Analysis of Spatial Data - Spatial Analysis related resources.  
+Leaflet - One of the most popular JavaScript libraries interactive maps.  
+ggmap - Plotting maps in R with ggplot2.  
+REmap - R interface to the JavaScript library ECharts for interactive map data visualization.  
+sf - Improved Classes and Methods for Spatial Data.  
+sp - Classes and Methods for Spatial Data.  
+rgeos - Interface to Geometry Engine - Open Source  
+rgdal - Bindings for the Geospatial Data Abstraction Library  
+maptools - Tools for Reading and Handling Spatial Objects  
+gstat - Spatial and spatio-temporal geostatistical modelling, prediction and simulation.  
+spacetime - R classes and methods for spatio-temporal data.  
+RColorBrewer - Provides color schemes for maps  
+spatstat - Spatial Point Pattern Analysis, Model-Fitting, Simulation, Tests  
+spdep - Spatial Dependence: Weighting Schemes, Statistics and Models  
+tigris - Download and use Census TIGER/Line shapefiles in R  
+GWmodel - Geographically-Weighted Models  
+
+---
+
+### ggplot2
+
+*** https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html
+
+https://www.springer.com/us/book/9780387981413
+
+*** https://wilkelab.org/practicalgg/
+
+http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+
+*** https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html
+
+https://ggplot2.tidyverse.org/reference/
+
+https://ggplot2.tidyverse.org/
+
+https://github.com/tidyverse/ggplot2/wiki/Legend-Attributes
+
+https://ggplot2-book.org/
+
+R Bootcamp ggplot  
+https://r-bootcamp.netlify.com/chapter1
+
+*** https://www.garrickadenbuie.com/blog/custom-discrete-color-scales-for-ggplot2/
+
+plothelper: New Plots Based on 'ggplot2' and Functions to Create Regular Shapes  
+https://cran.r-project.org/web/packages/plothelper/index.html
+
+*** http://zevross.com/blog/2014/08/04/beautiful-plotting-in-r-a-ggplot2-cheatsheet-3/
+
+http://zevross.com/blog/2014/07/16/mapping-in-r-using-the-ggplot2-package/
+
+Twitter #ggplot2 challenge
+https://mohdbilal87.github.io/dataviz-r/
+
+https://stackoverflow.com/questions/58899810/r-ggplot-force-facet-grid-margin-to-be-on-the-next-row
+
+https://community.rstudio.com/t/how-to-get-ggplot-in-shiny-to-recognize-input-as-a-vector/46755
+
+*** https://geocompr.github.io/post/2019/ggplot2-inset-maps/
+
+https://medium.com/@urban_institute/why-the-urban-institute-visualizes-data-with-ggplot2-46d8cfc7ee67
+
+https://stackoverflow.com/questions/58977671/how-to-increase-the-ggplot2-figures-resolution
+
+https://cedricscherer.netlify.com/2019/08/05/a-ggplot2-tutorial-for-beautiful-plotting-in-r/#toc
+
+https://simplystatistics.org/2019/08/28/you-can-replicate-almost-any-plot-with-ggplot2/
+
+https://www.r-bloggers.com/choropleth-map-in-ggplot2/
+
+https://ggplot2tutor.com/streetmaps/streetmaps/
+
+https://www.datasciencecentral.com/profiles/blogs/creating-maps-in-r-using-ggplot2-and-maps-libraries
+
+https://github.com/dkahle/ggmap
+
+[choropleth ggplot - Google Search Results](https://www.google.com/search?q=choropleth+ggplot&oq=choropleth+ggplot&aqs=chrome..69i57j69i61j69i60.314j0j1&sourceid=chrome&ie=UTF-8)
+
+Interactively explore your data by visualizing it with the ggplot2 package  
+https://cran.r-project.org/web/packages/esquisse/readme/README.html
+
+/////////////  
+R choropleth ggplot
+ggplot(data = UK) +  
+aes(x = long, y = lay, group = group) +  
+geom_polygon(fill = #004529, alpha = 0.75) +  
+geom_ point(data = postcodes,  
+aes(y = latitude, x = longitude, group = group),  
+color = #f7fcb9, size = 0.5) +  
+coord_map()  
+/////////////
+
+Accelerate your plots with ggforce  
+https://rviews.rstudio.com/2019/09/19/intro-to-ggforce/
+
+Chapter 10: GGplot for Scatterplots & Density Plots  
+https://ademos.people.uic.edu/Chapter10.html
+
+Boxplots and Bar Graphs  
+https://ademos.people.uic.edu/Chapter11.html
+
+---
+
+### sf
+
+http://www.geospatialtrainingsolutions.co.uk/spatial-r-moving-from-sp-to-sf/
+
+https://stackoverflow.com/questions/43456524/how-to-find-which-polygon-a-point-belong-to-via-sf
+
+https://gis.stackexchange.com/questions/282750/identify-polygon-containing-point-with-r-sf-package/318629#318629
+
+https://gis.stackexchange.com/questions/272447/equivalent-of-sp-packages-point-in-polygon-overing-using-sf
+
+https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html
+
+https://stackoverflow.com/questions/58795903/row-wise-operation-with-sf#answer-58801348
+
+https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html
+
+---
+
+## Intro to Spatial Analysis
+
+[Spatial Cheatsheet](https://www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html)
+
+[Intro to R Spatial Analysis - Nick Bearman](https://github.com/nickbearman/intro-r-spatial-analysis)
+
+[Intro to R Spatial Analysis- workbook - Nick Bearman](https://github.com/nickbearman/intro-r-spatial-analysis/blob/master/workbook.pdf)
+
+*** [R Spatial on github](https://github.com/r-spatial) ***
+
+https://cran.r-project.org/doc/contrib/intro-spatial-rl.pdf
+
+---
+
+## R as GIS
+
+[R QGIS](https://github.com/r-spatial/RQGIS)
+
+http://www.nickeubank.com/gis-in-r/
+
+https://github.com/Pakillo/R-GIS-tutorial/blob/master/R-GIS_tutorial.md
+
+https://www.jessesadler.com/post/gis-with-r-intro/
+
+*** https://north-road.github.io/qgis-processing-r/ ***
+
+---
+
+https://www.google.ca/search?q=r+spatial+tutorial&ie=UTF-8&oe=UTF-8&hl=en-ca&client=safari
+
+https://www.google.ca/search?q=r+gtable&ie=UTF-8&oe=UTF-8&hl=en-ca&client=safari
+
+https://rspatial.org/raster/analysis/8-pointpat.html
+
+https://rspatial.org/_sources/analysis/8-pointpat.R.txt _
+
+https://channel9.msdn.com/Events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/mapedit-interactive-manipulation-of-spatial-objects
+
+*** https://cran.r-project.org/web/views/Spatial.html ***
+
+https://awesome-r.com/#awesome-r-spatial
+
+https://www.r-bloggers.com/elevation-profiles-in-r/
+
+https://geography.uoregon.edu/GeogR/topics
+
+*** http://www.nickeubank.com/gis-in-r/ ***
+
+*** Geocomputation with R - Robin Lovelace ***  
+https://geocompr.robinlovelace.net/
+
+https://geocompr.github.io/geocompkg/articles/us-map.html
+
+https://geocompr.github.io/
+
+https://geocompr.github.io/vignettes/
+
+https://spatialanalysis.github.io/geodaData/
+
+https://cran.r-project.org/doc/Rnews/
+
+https://journal.r-project.org/
+
+*** http://www.spatialanalysisonline.com/index.html ***
+
+*** http://www.spatialanalysisonline.com/HTML/index.html ***
+
+*** https://atlan.com/courses/introduction-to-gis-r/overview/?__hstc=78729675.f49e41239e1d36fecd0c14c710516d14.1567644668294.1567646982413.1572864193809.3&__hssc=78729675.1.1572864193809&submissionGuid=719aeeb1-0877-492e-b00e-e1900eec9a1c ***
+
+*** https://fishandwhistle.net/post/2019/bathymetry-lake-volume-estimation-using-r/ ***
+
+*** https://github.com/PennMUSA/MasterClass2019_3DMappingAndViz/blob/master/MusaMasterclass.md ***
+
+*** https://geodacenter.github.io/workbook/6a_local_auto/lab6a.html#local-moran ***
+
+A method for computing hourly, historical, terrain‐corrected microclimate anywhere on Earth  
+https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.13330
+
+---
+
+## Remote Sensing in R
+
+### Whitebox
+https://github.com/giswqs/whiteboxR  
+https://jblindsay.github.io/wbt_book/available_tools/index.html
+
+---
+
+## Mapping in R
+
+### Cartography and Mapping in R
+Making maps with R  
+https://geocompr.robinlovelace.net/adv-map.html
+
+How to Create State and County Maps Easily in R — Part 2  
+https://medium.com/@urban_institute/how-to-create-state-and-county-maps-easily-in-r-part-2-d21d57310c50
+
+https://github.com/Robinlovelace/Creating-maps-in-R
+
+http://www.molecularecologist.com/2012/09/making-maps-with-r/
+
+https://rgeomatic.hypotheses.org/1205
+
+https://cran.r-project.org/web/packages/cartography/index.html
+
+https://cran.r-project.org/web/packages/cartography/vignettes/cartography.html
+
+https://stackoverflow.com/questions/55924348/how-do-i-plot-the-map-of-east-africa-kenya-uganda-and-tanzania-in-r-with-libr
+
+https://stackoverflow.com/questions/42281443/draw-multiple-object-of-class-tmap-with-just-one-common-legend
+
+*** https://github.com/tts/mapchallenge
+
+*** http://www.molecularecologist.com/2012/09/making-maps-with-r/
+
+*** https://github.com/lina2497/Giftmap
+
+*** https://git.rud.is/hrbrmstr/y2019-30daymapchallenge
+
+https://github.com/tts/mapchallenge/blob/master/globe.R
+
+https://gis.stackexchange.com/questions/48828/making-beautiful-maps-in-r
+
+https://gis.stackexchange.com/questions/3083/seeking-examples-of-beautiful-maps/45518#45518
+
+Telling the story of Indiana lake water quality with interactive web-based mapping and data visualization  
+https://github.com/corysauve/NALMS-2019
+
+Plot US roads, coloring each by its designation (e.g. Street, Road, Avenue)  
+*** https://github.com/erdavis1/RoadColors
+
+https://www.google.ca/search?q=r+add+inset+map&ie=UTF-8&oe=UTF-8&hl=en-ca&client=safari
+
+https://dominicroye.github.io/en/
+
+*** https://geocompr.robinlovelace.net/adv-map.html  
+*** https://geocompr.robinlovelace.net/
+
+---
+
+### tMap
+*** https://community.rstudio.com/t/integrating-tmap-into-shiny/6036
+
+https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html#leaflet-and-shiny-integration
+
+https://stackoverflow.com/questions/51610161/interactive-map-with-tmap-does-not-appear-in-shiny-app-but-does-show-in-rstudio
+
+*** https://rdrr.io/cran/tmap/man/renderTmap.html
+
+https://statnmap.com/2019-11-15-30daymapchallenge-building-maps-2-tmap/
+
+*** https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html
+
+https://channel9.msdn.com/Events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Exploring-and-presenting-maps-with-tmap
+
+https://stackoverflow.com/questions/21269098/create-an-inset-map-within-a-larger-map-in-r
+
+---
+
+### Leaflet for R
+
+https://github.com/bhaskarvk
+
+http://rpubs.com/bhaskarvk/userR2017-tutorial_proposal
+
+https://justinmillar.github.io/leaflet-intro/#15
+
+https://github.com/bhaskarvk/leaflet.extras
+
+*** https://github.com/r-spatial/leafsync
+
+** https://github.com/r-spatial/leafpop
+
+*** http://rstudio.github.io/leaflet/
+
+https://learn.r-journalism.com/en/mapping/leaflet_maps/leaflet/
+
+https://www.google.ca/search?q=leaflet+r&ie=UTF-8&oe=UTF-8&hl=en-ca&client=safari
+
+*** https://rstudio.github.io/leaflet/shiny.html
+
+Bhaskar V. Karambelkar  - leaflet
+https://www.karambelkar.info/  
+https://github.com/bhaskarvk  
+https://github.com/bhaskarvk?tab=repositories
+
+*** https://www.jla-data.net/eng/leaflet-in-r-tips-and-tricks/index.html  
+
+https://digitalfellows.commons.gc.cuny.edu/2019/11/21/interactively-explore-geographic-data-in-r-using-leaflet/
+
+---
+
+### Choropleth Maps in R
+https://rstudio-pubs-static.s3.amazonaws.com/324400_69a673183ba449e9af4011b1eeb456b9.html
+
+https://unconj.ca/blog/choropleth-maps-with-r-and-ggplot2.html
+
+https://rpubs.com/thaufas/375375
+
+https://cengel.github.io/R-spatial/mapping.html
+
+https://www.rdocumentation.org/packages/GISTools/versions/0.7-4/topics/choro.legend
+
+https://www.r-bloggers.com/custom-legend-in-r/
+
+https://stackoverflow.com/questions/32749889/make-a-2d-legend-for-a-plot-bi-variate-choropleth-maps
+
+https://www.r-graph-gallery.com/183-choropleth-map-with-leaflet.html
+
+http://www.alex-singleton.com/GDS_UA_2017/Mapping_Areas_and_Context/
+
+https://www.rdocumentation.org/packages/graphics/versions/3.3/topics/par
+
+---
+
+### Shapefiles in R
+*** [Creating GeoJSON out of Shapefile in R](https://blog.exploratory.io/creating-geojson-out-of-shapefile-in-r-40bc0005857d) ***
+
+Shapefiles in R   
+https://www.r-bloggers.com/shapefiles-in-r/
+
+How to map point data and polygon shapefiles in R  
+http://www.storybench.org/how-to-map-point-data-and-polygon-shapefiles-in-r/
+
+[An Introduction to R for Spatial Analysis and Mapping - Google Books](https://books.google.ca/books?id=zbRkDwAAQBAJ&printsec=frontcover#v=onepage&q&f=false)
+
+---
+
+## Data Frames
+R Data Frame: Create, Append, Select, Subset  
+https://www.guru99.com/r-data-frames.html
+
+https://stackoverflow.com/questions/58243042/how-to-subset-one-dataframe-and-make-it-equal-to-corresponding-dataframes-in-r
+
+R: Add new column based on condition with multiple columns  
+https://stackoverflow.com/questions/58696140/r-add-new-column-based-on-condition-with-multiple-columns
+
+*** https://stackoverflow.com/questions/58833840/making-a-plot-with-geom-lines-of-my-data-frame ***
+
+Introduction to the Subset function  
+https://ihaddadenfodil.com/post/introduction_to_the_subset_function/introduction-to-the-subset-function/
+
+---
+
+## Density - KDE
+https://vita.had.co.nz/papers/density-estimation.pdf
+
+https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html
+
+https://github.com/mountainMath/dotdensity
+
+---
+
+## Cluster Analysis
+Cluster Analysis (DataCamp)  
+https://www.statmethods.net/advstats/cluster.html
+
+https://data.cdrc.ac.uk/tutorial/creating-a-geodemographic-classification-using-k-means-clustering-in-r
+
+---
+
+## Spatial autocorrelation
+https://rspatial.org/raster/rosu/Chapter7.html
+
+https://rspatial.org/raster/rosu/index.html
+
+https://github.com/spatialanalysis/geodaDatav
+
+https://spatialanalysis.github.io/geodaData/
+
+https://github.com/lixun910/rgeoda
+
+*** https://cengel.github.io/R-spatial/ ***
+
+https://www.gislounge.com/free-introduction-to-gis-in-r-online-course/
+
+*** https://geocompr.robinlovelace.net/eco.html#exercises-10 ***
+
+*** https://github.com/r-spatial ***
+
+https://github.com/r-spatial/RSAGA
+
+*** https://github.com/tylerjtran/populationLines/blob/master/populationLinesScript.R ***
+
+https://spatial.ly/2017/04/population-lines-how-and-why-i-created-it/
+
+https://www.datacamp.com/community/tutorials/r-formula-tutorial
+
+https://www.datacamp.com/community/tutorials/r-web-scraping-rvest
+
+https://www.r-spatial.org/
+
+*** https://geocompr.robinlovelace.net/index.html ***
+
+https://github.com/MicheleTobias/R-Projections-Workshop
+
+*** https://cran.r-project.org/doc/contrib/intro-spatial-rl.pdf ***
+
+https://cengel.github.io/rspatial/
+
+https://github.com/nickbearman/intro-r-spatial-analysis
+
+https://github.com/nickbearman/r-geodemographic-analysis-20140710
+
+---
+
+## Regression Analysis & Modeling
+https://bookdown.org/ndphillips/YaRrr/regression-analysis.html
+
+*** https://www.r-bloggers.com/r-tutorial-series-simple-linear-regression/
+
+*** http://www.cookbook-r.com/Statistical_analysis/Regression_and_correlation/ ***
+
+https://github.com/matackett/talks/blob/master/presentations/wsds2019-r-git-regression.pdf
+
+http://www.cookbook-r.com/Statistical_analysis/Regression_and_correlation/
+
+*** http://www.r-tutor.com/elementary-statistics/simple-linear-regression
+
+Simple linear regression  
+http://rtutorialseries.blogspot.com/2009/11/r-tutorial-series-simple-linear.html
+
+multiple linear regression  
+http://rtutorialseries.blogspot.com/2009/12/r-tutorial-series-multiple-linear.html
+
+Graphic Analysis of Regression Assumptions  
+http://rtutorialseries.blogspot.com/2009/12/r-tutorial-series-graphic-analysis-of.html
+
+Regression With Interaction Variables  
+http://rtutorialseries.blogspot.com/2010/01/r-tutorial-series-regression-with.html
+
+Regression With Categorical Variables  
+http://rtutorialseries.blogspot.com/2010/02/r-tutorial-series-regression-with.html
+
+Basic Polynomial Regression  
+http://rtutorialseries.blogspot.com/2010/02/r-tutorial-series-basic-polynomial.html
+
+Hierarchical Linear Regression  
+http://rtutorialseries.blogspot.com/2010/01/r-tutorial-series-basic-hierarchical.html
+
+Model basics  
+*** https://r4ds.had.co.nz/model-basics.html
+
+*** https://www.r-bloggers.com/r-tutorial-series-simple-linear-regression/
+
+*** https://www.r-bloggers.com/how-to-perform-a-logistic-regression-in-r/
+
+*** https://data-flair.training/blogs/r-linear-regression-tutorial/
+
+https://socialsciences.mcmaster.ca/jfox/Books/Companion-1E/index.html
+
+https://socialsciences.mcmaster.ca/jfox/Books/Companion/downloads.html
+
+Fitting Linear Models  
+https://socialsciences.mcmaster.ca/jfox/Books/Companion/scripts/chap-4.R
+
+*** Statistical modelling 1: Simple linear models  
+https://jacintak.github.io/biostats/biostats-GLM1.html  
+https://jacintak.github.io/biostats/biostats-GLM2.html  
+https://jacintak.github.io/biostats/biostats-GLM2.html
+
+https://jacintak.github.io/colRoz/
+
+---
+
+## Spatial Data
+[BC Data - An R package for searching & retrieving data from the B.C. Data Catalogue](https://github.com/bcgov/bcdata)
+
+---
+
+## Time Series Analysis
+
+https://ademos.people.uic.edu/Chapter23.html
+
+** 14.1 Representing Time Series Data R cookbook pg 356  
+https://rc2e.com/timeseriesanalysis
+
+Time Series and Forecasting  
+https://www.statmethods.net/advstats/timeseries.html
+
+https://cran.r-project.org/web/views/TimeSeries.html
+
+https://www.analyticsvidhya.com/blog/2015/12/complete-tutorial-time-series-modeling/
+
+https://livebook.manning.com/book/r-in-action-third-edition/chapter-3/v-1/1
+
+https://www.statmethods.net/advstats/timeseries.html
+
+https://a-little-book-of-r-for-time-series.readthedocs.io/en/latest/src/timeseries.html
+
+https://buildmedia.readthedocs.org/media/pdf/a-little-book-of-r-for-time-series/latest/a-little-book-of-r-for-time-series.pdf
+
+http://r-statistics.co/Time-Series-Analysis-With-R.html
+
+https://www.manning.com/books/r-in-action-second-edition?a_bid=5c2b1e1d&a_aid=RiA2ed
+
+*** http://www.cookbook-r.com/Scripts_and_functions/Measuring_elapsed_time/
+
+https://stackoverflow.com/questions/13073686/interpolating-timeseries
+
+http://www.r-gators.com/2018/01/31/wildlife-tracking-data-in-r/
+
+https://www.r-bloggers.com/dangerous-streets-of-bratislava-animated-maps-using-open-data-in-r/
+
+https://fishandwhistle.net/post/2019/depth-time-heatmaps/
+
+https://www.datacamp.com/courses/introduction-to-time-series-analysis
+
+https://www.datacamp.com/community/tutorials/time-series-r
+
+https://github.com/oscarperpinan/spacetime-vis
+
+https://www.crcpress.com/Displaying-Time-Series-Spatial-and-Space-Time-Data-with-R-Second-Edition/Lamigueiro/p/book/9781138089983#googlePreviewContainer
+
+** Cluster multiple time series using K-means  
+https://www.brodrigues.co/blog/2019-10-12-cluster_ts/
+
+*** Apps for creating Landsat time series animations  
+https://jdbcode.github.io/Snazzy-EE-TS-GIF/
+
+*** https://www.r-bloggers.com/time-series-forecasting-with-random-forest/amp/#click=https://t.co/3yM9AoHLCl
+
+---
+
+## Census
+https://github.com/hrecht/censusapi
+
+https://github.com/walkerke/tidycensus
+
+https://www.census.gov/programs-surveys/geography.html
+
+*** https://github.com/mountainMath?tab=repositories
+
+*** https://github.com/mountainMath/cancensus
+
+https://mountainmath.github.io/cancensus/index.html
+
+https://mountainmath.github.io/cancensus/
+
+https://mountainmath.github.io/cancensus/articles/cancensus.html
+
+https://cran.r-project.org/web/packages/cancensus/vignettes/cancensus.html
+
+https://censusmapper.ca/
+
+*** https://onlineacademiccommunity.uvic.ca/mreumcensusdatatutorial/
+
+https://github.com/walkerke/tidycensus
+
+https://github.com/hrecht/censusapi
+
+*** https://news.communitech.ca/how-to-access-statscan-data-through-their-new-api/
+
+https://github.com/mountainMath/every_city_canada/blob/master/R/every_city_canada.R
+
+https://wizard.unbc.ca/record=e1000099%7ES3
+
+*** https://github.com/mountainMath/cansim
+
+https://cran.r-project.org/web/packages/CANSIM2R/CANSIM2R.pdf
+
+[Count trees per census block NY](https://mattherman.info/blog/point-in-poly/)
+
+---
+
+# Color palettes
+Comprehensive list of color palettes available in r  
+https://github.com/EmilHvitfeldt/r-color-palettes
+
+Paletteer: Collection of most color palettes in a single R package  
+https://github.com/EmilHvitfeldt/paletteer
+
+Palettes {grDevices} Create a vector of n contiguous colors  
+https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html
+
+The viridis color palettes  
+https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html
+
+Using colors in R - Jenny Bryan
+https://www.stat.ubc.ca/~jenny/STAT545A/block14_colors.html
+
+a California-inspired package of color palettes  
+https://github.com/an-bui/calecopal
+
+https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html
+
+https://cran.r-project.org/web/packages/unikn/vignettes/colors.html
+
+https://github.com/EmilHvitfeldt/r-color-palettes
+
+http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
+
+*** Top R Color Palettes To Know For Great Data Visualization  
+https://www.datanovia.com/en/blog/top-r-color-palettes-to-know-for-great-data-visualization/
+
+https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf
+
+https://www.highcharts.com/docs/export-module/client-side-export
+
+https://jsfiddle.net/gh/get/jquery/1.11.0/highslide-software/highcharts.com/tree/master/samples/highcharts/exporting/offline-download-demo/
+
+*** Custom palette from picture  
+https://github.com/AndreaCirilloAC/paletter
+
+https://github.com/aljrico/harrypotter
+
+https://github.com/dill/beyonce
+
+https://nschiett.github.io/fishualize/index.html…
+
+https://github.com/karthik/wesanderson
+
+https://github.com/leonawicz/legocolors
+
+https://vankesteren.github.io/rijkspalette/
+
+https://github.com/bhaskarvk/colormap
+
+https://stackoverflow.com/questions/15282580/how-to-generate-a-number-of-most-distinctive-colors-in-r
+
+https://github.com/nschiett/fishualize
+
+https://nschiett.github.io/fishualize/articles/overview_colors.html
+
+R package to generate colors from a list of 44 pre-defined palettes  
+https://github.com/bhaskarvk/colormap  
+https://bhaskarvk.github.io/colormap/
+
+EVALUATION OF THE NEW PALETTE() FOR R  
+https://nowosad.github.io/post/cbc-bp1/  
+https://developer.r-project.org/Blog/public/2019/11/21/a-new-palette-for-r/index.html  
+https://github.com/EmilHvitfeldt/quickpalette
+
+Scales  
+https://canvas.instructure.com/courses/946353/pages/scales?module_item_id=7585934
+
+https://serialmentor.com/dataviz/color-pitfalls.html
+
+Automatic Generation of Qualitative Color Palettes  
+https://jolars.github.io/qualpalr/
+
+http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
+
+---
+
+# R Books On-line
+
+[Advanced R - Hadley Wickham](https://adv-r.hadley.nz/)
+
+[R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+
+[R in Action](https://livebook.manning.com/book/r-in-action-third-edition/chapter-3/v-1/1)
+
+[Intro to R - course booklet](https://www.bioinformatics.babraham.ac.uk/training/Introduction_to_R/Introduction%20to%20R%20course%20booklet.pdf)
+
+[An Introduction to R for Spatial Analysis and Mapping - Google Books](https://books.google.ca/books?id=zbRkDwAAQBAJ&printsec=frontcover#v=onepage&q&f=false)
+
+*** [Beyond Spreadsheets with R](https://www.manning.com/books/beyond-spreadsheets-with-r) ***
+
+[9 Visualizing data: Plotting](https://livebook.manning.com/book/beyond-spreadsheets-with-r/chapter-9/256)
+
+[R for Dummies](http://sgpwe.izt.uam.mx/files/users/uami/gma/R_for_dummies.pdf)
+
+[R for Data Science by Hadley Wickham and Garrett Grolemund](https://r4ds.had.co.nz/)
+
+[Getting started in R and RStudio](http://milton-the-cat.rocks/learnr/r/r_getting_started/)
+
+*** Geocomputation with R - Robin Lovelace ***  
+https://geocompr.robinlovelace.net/
+
+The Art of R Programming  
+http://diytranscriptomics.com/Reading/files/The%20Art%20of%20R%20Programming.pdf
+
+A Language, not a Letter: Learning Statistics in R  - 27 chapters  
+https://ademos.people.uic.edu/index.html
+
+What They Forgot to Teach You About R - Jennifer Bryan  
+https://rstats.wtf/
+
+An Introduction to Statistical Learning with Applications in R  
+http://faculty.marshall.usc.edu/gareth-james/ISL/  
+http://faculty.marshall.usc.edu/gareth-james/ISL/ISLR%20Seventh%20Printing.pdf
+
+YaRrr! The Pirate’s Guide to R  
+https://bookdown.org/ndphillips/YaRrr/
+
+A Handbook of Statistical Analyses Using R  
+http://www.ecostat.unical.it/tarsitano/Didattica/LabStat2/Everitt.pdf
+
+---
+
+## R Cookbook
+[R Graphics Cookbook](http://www.cookbook-r.com/)
+
+R Graphics Cookbook, 2nd edition  
+https://r-graphics.org/
+
+[Manipulating Data - R Cookbook](http://www.cookbook-r.com/Manipulating_data/)
+
+*** [Debugging a script or function - R Cookbook](http://www.cookbook-r.com/Scripts_and_functions/Debugging_a_script_or_function/)
+
+*** [Getting a list of functions and objects in a package - R Cookbook](http://www.cookbook-r.com/Scripts_and_functions/Getting_a_list_of_functions_and_objects_in_a_package/)
+
+[Output to a file - R Cookbook](http://www.cookbook-r.com/Graphs/Output_to_a_file/)
+
+[Fonts - R Cookbook](http://www.cookbook-r.com/Graphs/Fonts/)
+
+[Graphs - R Cookbook](http://www.cookbook-r.com/Graphs/)
+
+[Manipulating Data - R Cookbook](http://www.cookbook-r.com/Manipulating_data/)
+
+[Variables - R Cookbook](http://www.cookbook-r.com/Basics/Information_about_variables/)
+
+[Working with NULL and NA - R Cookbook](http://www.cookbook-r.com/Basics/Working_with_NULL_NA_and_NaN/)
+
+---
+
+# R Stats Mentors
+
+---
+
+## Hadley Wickham Resources
+[Advanced R - Hadley Wickham](https://adv-r.hadley.nz/)
+
+[R for Data Science, Garrett Grolemund, Hadley Wickham](https://r4ds.had.co.nz/)
+
+*** https://adv-r.hadley.nz/translation.html
+
+*** https://github.com/hadley
+
+https://adv-r.hadley.nz/
+
+*** https://github.com/hadley/stats337
+
+[Video of Hadley Wickham’s Keynote address at rstudio::conf 2017](https://www.rstudio.com/resources/videos/data-science-in-the-tidyverse/)
+
+[Video /slides of Hadley Wickham’s Keynote address at rstudio::conf 2017](https://github.com/rstudio/rstudio-conf/blob/master/2017/The_Tidyverse-Hadley_Wickham/tidyverse.pdf)
+
+[Style Guide - Hadley Wickham](http://adv-r.had.co.nz/Style.html)
+
+The tidyverse style guide - Hadley Wickham  
+*** https://style.tidyverse.org/
+
+---
+
+## Jenny Bryan Resources
+https://github.com/jennybc  
+https://jennybryan.org/code/  
+https://stat545.com/
+
+What They Forgot to Teach You About R - Jennifer Bryan  
+https://rstats.wtf/
+
+---
+
+# Climate & Weather
+GWEX: Multi-Site Stochastic Models for Daily Precipitation and Temperature  
+- https://cran.r-project.org/web/packages/GWEX/index.html  
+- https://www.rdocumentation.org/packages/GWEX/versions/1.0.2/source  
+- https://www.rdocumentation.org/packages/GWEX/versions/1.0.2  
+- https://rdrr.io/cran/GWEX/src/R/myParPrecGWEX-data.r
+
+
+---
+
+# R & Biodiversity
+
+Tree ring data  
+https://github.com/AndyBunn/dplR
+
+http://remote-sensing.eu/new-r-package-to-visualize-remote-sensing-data-and-movement-tracks-movevis/  
+https://www.google.ca/search?client=safari&hl=en-ca&sxsrf=ACYBGNSYGBtwRssLcvZP7cbbqaYP7PPYbw%3A1573987721748&ei=iSXRXfyVLYGd-gTqo6bgBA&q=R+moveVis&oq=R+moveVis&gs_l=mobile-gws-wiz-serp.3..35i39j0j0i8i30.7461.8036..8509...0.1..0.84.238.3......0....1.........0i71j35i304i39j0i7i30j0i8i7i30.irXMirHqdoY
+
+http://animove.org/  
+http://animove.org/software-and-data/
+
+---
+
+## iNaturalist
+
+https://github.com/WendyAnthony/rinat
+
+*** https://cran.r-project.org/web/packages/rinat/vignettes/rinatVignette.html
+
+https://github.com/ropensci/rinat
+
+https://docs.ropensci.org/rinat/
+
+https://www.inaturalist.org/pages/api+reference
+
+https://api.inaturalist.org/v1/docs/
+
+https://ropensci.org/blog/2014/03/26/rinat/
+
+https://rdrr.io/cran/rinat/man/get_inat_taxon_stats.html
+
+https://www.rdocumentation.org/packages/rinat/versions/0.1.4
+
+https://inaturalist.nz/pages/download-data-nz
+
+https://rdrr.io/cran/rinat/man/get_inat_user_stats.html
+
+---
+
+## Plantnet biodiversity app  
+*** https://github.com/plantnet  
+https://plantnet.org/en/
+
+---
+
+## Phenocam
+https://www.neonscience.org/phenocam-intro-series
+
+---
+
+## R Openscience
+http://tuijasonkkila.fi/blog/2014/01/mapping-red-listed-rainforest-tree-species/
+
+https://ropensci.org/packages/
+
+https://github.com/ropensci/rebird
+
+https://github.com/ropensci/geojsonio
+
+https://github.com/ropensci/rgbif
+
+https://github.com/ropensci/pdftools
+
+https://github.com/ropenscilabs/syn
+
+*** https://github.com/OpenScienceMOOC/Module-3-Reproducible-Research-and-Data-Analysis/blob/master/key_elements.md
+
+https://github.com/OpenScienceMOOC/Module-5-Open-Research-Software-and-Open-Source/tree/master/content_development
+
+MtreeRing: An R package with graphical user interface for automatic measurement of tree ring widths using image processing techniques  
+https://www.sciencedirect.com/science/article/pii/S1125786519301006?dgcid=raven_sd_aip_email  
+https://cran.r-project.org/web/packages/MtreeRing/index.html  
+https://github.com/ropensci/MtreeRing  
+https://ropensci.github.io/MtreeRing/  
+
+---
+
+# Open Air - Pollution
+*** Tools for the Analysis of Air Pollution Data
+air pollution, hourly time series data  
+https://rdrr.io/cran/openair/man/openair.html  
+https://cran.r-project.org/web/packages/openair/index.html  
+https://cran.r-project.org/web/packages/openair/openair.pdf  
+http://dirk.eddelbuettel.com/cranberries/cran/updated/index.html  
+https://r-forge.r-project.org/projects/openair/  
+http://www.openair-project.org/  
+http://davidcarslaw.github.io/openair/  
+https://github.com/davidcarslaw/openair  
+
+---
+
+# R Stats
+https://stat545.com/  
+https://stat545.stat.ubc.ca/  
+https://stat545guidebook.netlify.com/  
+
+http://www.r-tutor.com/elementary-statistics
+
+https://rfortherestofus.com/2019/10/how-to-make-functions-in-r/
+
+https://medium.com/analytics-vidhya/advanced-data-wrangling-in-r-4-f98693b92851
+
+https://medium.com/analytics-vidhya/group-manipulation-in-r-3-5554a0c1b544?
+
+https://medium.com/analytics-vidhya/statistical-visualization-in-r-2-9e9070bcdecf?
+
+https://medium.com/analytics-vidhya/many-ways-of-reading-data-into-r-1-52b02825cb27?
+
+---
+
+# Data Prep
+
+*** Introduction to Spatial Data Types in R  
+http://www.rpubs.com/cengel248/172289
+
+https://www.computerworld.com/article/2921176/great-r-packages-for-data-import-wrangling-visualization.html
+
+** https://geanders.github.io/RProgrammingForResearch/
+
+*** https://geanders.github.io/RProgrammingForResearch/entering-and-cleaning-data-1.html
+
+4 data wrangling tasks in R for advanced beginners  
+https://www.computerworld.com/article/2486425/business-intelligence-4-data-wrangling-tasks-in-r-for-advanced-beginners.html
+
+*** http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-getting-data-into-rstudio
+
+https://ihaddadenfodil.com/post/three_warys_to_get_a_summary_of_your_data/three-ways-to-get-a-summary-of-your-data/
+
+*** https://www.computerworld.com/article/2921176/great-r-packages-for-data-import-wrangling-visualization.html
+
+*** https://geanders.github.io/RProgrammingForResearch/entering-and-cleaning-data-1.html
+
+*** https://www.r-bloggers.com/explore-your-dataset-in-r/
+
+https://github.com/lgellis/MiscTutorial/blob/master/simple_eda/exploreData.Rmd
+
+*** https://www.r-bloggers.com/renaming-all-files-in-a-folder-in-r/
+
+https://www.brodrigues.co/blog/2018-02-16-importing_30gb_of_data/
+
+Best Practices for Using Google Sheets in Your Data Project  
+https://matthewlincoln.net/2018/03/26/best-practices-for-using-google-sheets-in-your-data-project.html
+
+## Set seed for random  
+https://stats.stackexchange.com/questions/86285/random-number-set-seedn-in-r
+
+## Dates
+https://stackoverflow.com/questions/58605726/convert-character-column-to-date-column-in-lubridate
+
+https://community.rstudio.com/t/how-to-write-code-for-getting-start-date-and-end-date/44302/2
+
+https://www.r-bloggers.com/date-formats-in-r/
+
+---
+
+## Na  
+https://stackoverflow.com/questions/58547689/eliminate-nas-within-each-group
+
+---
+
+# Python and R
+https://m.youtube.com/watch?v=pjDGB9i7kyI
+
+https://r4ds.had.co.nz/
+
+[R Markdown Python Engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
+
+[R Interface to Python ](https://github.com/rstudio/reticulate)
+
+*** How to track and collaborate on R experiments with Neptune  
+https://medium.com/neptune-ml/how-to-track-and-collaborate-on-r-experiments-with-neptune-85d4b8c19596
+
+---
+
+---
+
+# HTML Widgets
+*** http://www.htmlwidgets.org/
+
+http://www.htmlwidgets.org/showcase_dygraphs.html
+
+http://www.htmlwidgets.org/showcase_highcharts.html
+
+http://jkunst.com/highcharter/
+
+http://rich-iannone.github.io/DiagrammeR/
+
+---
+
+---
+
+# R Tutorials
+
+Customizing R Startup  
+https://www.statmethods.net/interface/customizing.html  
+
+Tutorials for learning R  
+*** https://www.r-bloggers.com/how-to-learn-r-2/
+
+*** https://cran.r-project.org/manuals.html
+
+https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf
+
+https://stat545.com/r-basics.html
+
+https://data-flair.training/blogs/learn-r-programming/
+
+https://data-flair.training/blogs/debugging-in-r-programming/
+
+https://data-flair.training/blogs/descriptive-statistics-in-r/
+
+https://data-flair.training/blogs/data-structures-in-r/
+
+Learning R in Seven Simple Steps (DataCamp)  
+https://www.datasciencecentral.com/profiles/blogs/learning-r-in-seven-simple-steps
+
+R Tutorial Series: R Beginner’s Guide and R Bloggers Updates  
+https://www.r-bloggers.com/r-tutorial-series-r-beginners-guide-and-r-bloggers-updates/
+
+R Tutorial  
+https://www.tutorialspoint.com/r/index.htm
+
+swirl teaches you R programming and data science interactively, at your own pace, and right in the R console!  
+https://swirlstats.com
+
+swirl_courses  
+https://github.com/swirldev/swirl_courses#swirl-courses
+
+https://research.csiro.au/software/r-workshop-notes/
+
+Digital Storytelling With R  
+http://www.storybench.org/tag/rstats/
+
+https://github.com/ines/course-starter-r
+
+https://masalmon.eu/2017/12/11/goodrpackages/#short-tutorials
+
+*** https://www.infoworld.com/article/3411819/do-more-with-r-video-tutorials.html
+
+*** Interactive Tutorials for R  
+https://rstudio.github.io/learnr/?utm_source=recordnotfound.com
+
+A Guide to Getting International Statistics into R  
+https://erikgahner.dk/2019/a-guide-to-getting-international-statistics-into-r/
+
+Statistics with R  
+http://zoonek2.free.fr/UNIX/48_R/all.html
+
+Tutorials  
+https://www.diigo.com/profile/cengel/R?type=all&sort=updated
+
+R Bootcamp  
+https://r-bootcamp.netlify.com/
+
+Free online courses, tutorials and tools - Learn to use earth science and other data in R & Python  
+*** https://www.earthdatascience.org/
+
+RStudio Cloud Primers  
+*** https://rstudio.cloud/learn/primers
+
+adventr: An Adventure in Statistics interactive tutorials  
+*** http://milton-the-cat.rocks/home/adventr.html
+
+An Adventure in Statistics  
+*** https://www.discoveringstatistics.com/statistics-hell-p/
+
+Graphical Capabilities of R  
+https://hub.packtpub.com/graphical-capabilities-r/
+
+How to write the first for loop in R  
+https://www.r-bloggers.com/how-to-write-the-first-for-loop-in-r/
+
+How to build a website with Blogdown in R  
+*** http://www.storybench.org/how-to-build-a-website-with-blogdown-in-r/
+
+How to access APIs in R  
+http://www.storybench.org/how-to-access-apis-in-r/
+
+Scraping HTML tables and downloading files with R  
+http://www.storybench.org/scraping-html-tables-and-downloading-files-with-r/
+
+---
+
+## Quick R (DataCamp)  
+https://www.statmethods.net/about/sitemap.html  
+https://www.statmethods.net/index.html  
+
+---
+
+## R Studio
+R Studio increase Font size  
+https://community.rstudio.com/t/font-size-files-plot-packages-help-viewer-tabs/41583
+
+RStudio Addin: Replace in Files  
+https://www.r-bloggers.com/rstudio-addin-replace-in-files/
+
+---
+
+## R Environment
+R Environment and Scope  
+https://www.datamentor.io/r-programming/environment-scope/
+
+How to use objects from global environment in Rstudio Markdown  
+https://stackoverflow.com/questions/34029611/how-to-use-objects-from-global-environment-in-rstudio-markdown
+
+---
+
+## R Conference Shares
+University of Florida  
+https://github.com/ufrmeetup
+
+useR! 2019 - Welcome - Keynote: Julia Stewart Lowndes  
+https://m.youtube.com/watch?feature=youtu.be&start=2710&v=Z8PqwFPqn6Y
+
+useR! 2019 - Keynote: Julie Josse  
+https://m.youtube.com/watch?feature=youtu.be&start=1816&v=z8IuuDe5oXs
+
+---
+
+# Data Viz
+https://www.datacamp.com/community/tutorials/visualize-data-vim-package
+
+*** https://www.datacamp.com/community/tutorials/data-visualization-highcharter-r
+
+Raincloud plots: a multi-platform tool for robust data visualization  
+https://wellcomeopenresearch.org/articles/4-63/v1
+
+Customizing Graphics and Creating a Bar Chart and Scatterplot in R  
+https://hub.packtpub.com/customizing-graphics-and-creating-bar-chart-and-scatterplot-r/
+
+https://github.com/clauswilke/dataviz
+
+https://serialmentor.com/dataviz/  
+https://serialmentor.com/dataviz/geospatial-data.html
+
+---
+
+# ETC ...
+
+Version control  
+https://peerj.com/preprints/3159/
+
+Tidy data  
+https://www.jstatsoft.org/article/view/v059i10/v59i10.pdf
+
+R Ladies Slack Community  
+https://rladies-community-slack.herokuapp.com/
+
+I “only” use R for descriptive stats — and that’s OK  
+https://rfortherestofus.com/2018/12/descriptive-stats-r/
+
+---
+
+Query openrouteservice from R  
+https://maps.openrouteservice.org/  
+https://giscience.github.io/openrouteservice-r/articles/openrouteservice.html#optimization
+
+*** write r-blog post without having a blog  
+http://r-posts.com/
+
+Organizing, Clarifying and Communicating the R Data Analyses  
+https://hub.packtpub.com/organizing-clarifying-and-communicating-r-data-analyses/
+
+Downloading Fitbit Data Histories with R  
+https://www.r-bloggers.com/downloading-fitbit-data-histories-with-r-2/
+
+Draw your Data and Download  
+http://drawdata.xyz/
+
+https://www.r-bloggers.com/a-full-rstudio-server-setup-for-data-science-in-5-minutes/
+
+Vectorize In R  
+https://wetlandscapes.com/
+
+Topics in Data Visualization > Modules  
+https://canvas.instructure.com/courses/946353/modules#module_962002
+
+---
+
+## Music
+https://leonawicz.github.io/tabr/
+
+https://community.rstudio.com/t/using-instead-of/43255
+
+---
+
+## Audio
+*** Audio from graph
+https://coolbutuseless.github.io/2019/10/04/introducing-devoutaudio-an-experimental-package-for-rendering-graphics-as-audio/
+
+---
+
+## Weather
+*** https://cran.r-project.org/web/packages/weathercan/index.html
+
+https://www.google.ca/search?client=safari&hl=en-ca&sxsrf=ACYBGNRGYI_on_MQmpJ7GEwSM05gNnRdAQ%3A1573946634282&ei=CoXQXdLuEJC_0PEPzLKiyAE&q=analysis+of+weather+time+series+in+r&oq=analysis+of+weather+time+series+in+r&gs_l=mobile-gws-wiz-serp.3...7501.9948..11336...0.1..0.102.643.7j1......0....1.........0i71j35i304i39j0i13i5i30j0i8i13i30j30i10.6mdD7eNyVIQ
+
+*** https://github.com/ropensci/weathercan
+
+http://ropensci.github.io/weathercan/
+
+---
+
+## CV
+[Building a data-driven CV with R](https://livefreeordichotomize.com/2019/09/04/building_a_data_driven_cv_with_r/)
+
+[CV built using RMarkdown and pagedown package- N Strayer](https://github.com/nstrayer/cv)
+
+[CV - Sam Abbott](https://github.com/seabbs/cv)
+
+Templates and tools for making a Resume CV  
+https://pkg.mitchelloharawild.com/vitae/
+
+*** https://livefreeordichotomize.com/2019/09/04/building_a_data_driven_cv_with_r/
+
+https://ccgilroy.github.io/resume/
+
+https://github.com/mitchelloharawild/vitae
+
+--- 
+
+## R Help
+
+R Search
+https://rseek.org/
+
+R Search Engine - DSC Data Science Central  
+https://www.datasciencecentral.com/page/search?q=R&cx=007889287169707156432%3A04zouenp6u0&ie=UTF-8&cof=FORID%3A11%3BNB%3A1&sa=Search
+
+R package? GPS time Is it day or night?  
+https://twitter.com/lilybentley/status/1194573171220996097?s=21
+
+https://stackoverflow.com/questions/58605034/increase-plot-layout-and-reduce-the-legend-list
+
+R not reading in projection info on Mac OSX  
+https://gis.stackexchange.com/questions/19064/opening-shapefile-in-r
+
+Diagnosing a non-responsive RStudio console  
+https://community.rstudio.com/t/diagnosing-a-non-responsive-rstudio-console/4601/9
+
+---
+
+## Twitter
+*** https://happygitwithr.com/
+
+https://twitter.com/lucystats/status/1193964858007523328?s=21
+
+https://www.rdocumentation.org/packages/twitteR/versions/1.1.9
+
+http://www.storybench.org/get-twitter-data-rtweet-r/
+
+R package? GPS time Is it day or night?  
+https://twitter.com/lilybentley/status/1194573171220996097?s=21
+
+https://twitter.com/jasminehanye/status/1194282511012171777?s=21
+
+21 Recipes for Mining Twitter Data with rtweet  
+https://rud.is/books/21-recipes/
+
+---
+
+# R Packages
+
+*** https://www.haktansuren.com/installing-r-package-fixing-package-xxx-is-not-available-for-r-version-x-y-z-warning/
+
+https://rfortherestofus.com/2019/10/how-to-make-functions-in-r/
+
+https://medium.com/analytics-vidhya/advanced-data-wrangling-in-r-4-f98693b92851
+
+https://medium.com/analytics-vidhya/group-manipulation-in-r-3-5554a0c1b544?
+
+https://medium.com/analytics-vidhya/statistical-visualization-in-r-2-9e9070bcdecf?
+
+https://medium.com/analytics-vidhya/many-ways-of-reading-data-into-r-1-52b02825cb27?
+
+https://stackoverflow.com/questions/25721884/how-should-i-deal-with-package-xxx-is-not-available-for-r-version-x-y-z-wa
+
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
+
+## Details
+https://www.hvitfeldt.me/pkgcal2019/3/  
+https://yonicd.github.io/details/articles/index.html  
+https://yonicd.github.io/details/articles/custom.html  
+https://yonicd.github.io/details/articles/sessioninfo.html
+
+*** https://www.hvitfeldt.me/packagecalendar/2019/  
+https://www.hvitfeldt.me/packagecalendar/2018/
+
+*** https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/
+
+https://hilaryparker.com/2014/05/27/sunsets-in-google-calendar-using-r/
+
+Installing R packages  
+https://www.r-bloggers.com/installing-r-packages/
+
+*** List r packages installed before reinstalling 
+```{r}
+# Before re-installing R, save a list of all your packages (otherwise you'll have to do it by hand)  
+#packs <- installed.packages()  
+#packs <- mypacks[c(1:2),]  
+# save packs as .csv or other format
+# reload .csv
+#install.packages(packs[,1])
+```
+*** {beepr} for victory noises when your scripts complete  
+https://cran.r-project.org/web/packages/beepr/index.html  
+https://www.r-project.org/nosvn/pandoc/beepr.html  
+https://cran.r-project.org/web/packages/beepr/beepr.pdf
+
+[The drake R Package User Manual](https://books.ropensci.org/drake/index.html)
+
+learnr  
+https://blog.rstudio.com/2017/07/11/introducing-learnr/
+
+CRAN packages  
+http://dirk.eddelbuettel.com/cranberries/cran/updated/index.html
+
+https://cran.r-project.org/web/packages/janeaustenr/index.html
+
+https://stat.ethz.ch/R-manual/R-devel/library/base/html/system.html  
+https://www.rdocumentation.org/packages/base/versions/3.6.1/topics/system  
+https://stat.ethz.ch/R-manual/R-devel/library/base/html/system2.html
+
+https://swirlstats.com/students.html
+https://github.com/swirldev/swirl_courses#swirl-courses
+
+
+## Tables
+https://cran.r-project.org/web/packages/expss/index.html  
+https://cran.r-project.org/web/packages/expss/expss.pdf  
+
+https://cran.r-project.org/web/packages/huxtable/index.html  
+https://cran.r-project.org/web/packages/huxtable/huxtable.pdf
+
+https://cran.r-project.org/web/packages/polite/index.html  
+https://cran.r-project.org/web/packages/polite/polite.pdf
+
+https://cran.r-project.org/web/packages/searcher/searcher.pdf
+
+*** Did you know, using "searcher" package, you could automatically to search stackoverflow , google, GitHub and many more sites for errors , packages or topics
+
+
+RSQLite: 'SQLite' Interface for R  
+https://cran.r-project.org/web/packages/RSQLite/
+
+*** The R Commander: A Basic-Statistics GUI for R
+https://socialsciences.mcmaster.ca/jfox/Misc/Rcmdr/
+
+Rayshader  
+https://github.com/PennMUSA/MasterClass2019_3DMappingAndViz/blob/master/MusaMasterclass.md
+
+https://cran.r-project.org/web/packages/beepr/beepr.pdf
+
+xkcd: Plotting ggplot2 Graphics in an XKCD Style  
+https://cran.r-project.org/web/packages/xkcd/index.html
+
+*** curated list of awesome R packages, frameworks and software  
+https://awesome-r.com/
+
+API client for the Internet Archive  
+https://lincolnmullen.com/software/internetarchive/
+
+ggtree: an r package for visualization and annotation of phylogenetic trees with their covariates and other associated data  
+https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12628
+
+assign {base}	- Assign a Value to a Name  
+https://stat.ethz.ch/R-manual/R-devel/library/base/html/assign.html
+
+summary {base} Object Summaries  
+https://stat.ethz.ch/R-manual/R-devel/library/base/html/summary.html
+
+---
+
+## Dplyr
+https://m.youtube.com/watch?reload=9&feature=youtu.be&v=ztcsf7G4S78
+
+dplyr: separate and unite  
+https://youtu.be/ztcsf7G4S78
+
+https://github.com/tidyverse/dtplyr
+
+dplyr Tidy Animated Verbs  
+https://www.garrickadenbuie.com/project/tidyexplain/
+
+Chapter 5: plyr  
+https://ademos.people.uic.edu/Chapter5.html
+
+---
+
+## Tidyverse Resources
+Modern R with the tidyverse  
+https://b-rodrigues.github.io/modern_R/
+
+Tidylog provides feedback about basic dplyr operations  
+*** https://github.com/elbersb/tidylog
+
+Query R data frames with SQL  
+https://github.com/ianmcook/tidyquery
+
+The tidyverse style guide - Hadley Wickham  
+*** https://style.tidyverse.org/
+
+https://www.tidytuesday.com/6
+
+https://www.tidytuesday.com/episodes
+
+Text Mining with R   
+https://www.tidytextmining.com/
+
+https://www.tidytextmining.com/
+
+Getting Started with the Tidyverse in R  
+http://www.storybench.org/getting-started-with-tidyverse-in-r/
+
+https://www.tidyverse.org/articles/2019/09/tidyr-1-0-0/
+
+A moderndive into R and the tidyverse  
+*** https://moderndive.com/index.html
+
+https://moderndive.com/scripts/04-tidy.R
+
+pivot_longer: Pivot data from wide to long  
+https://rdrr.io/a/github/tidyverse/tidyr/man/pivot_longer.html
+
+https://github.com/matloff/TidyverseSkeptic
+
+https://www.r-bloggers.com/why-i-dont-use-the-tidyverse/
+
+---
+
+# Github Resources
+*** https://happygitwithr.com/  
+https://happygitwithr.com/rmd-test-drive.html
+
+** https://github.com/mountainmath/cancensus
+
+https://github.com/viveksrinivasanss/Data_Science_Using_R/tree/master/code
+
+https://rawcdn.githack.com/EmilHvitfeldt/oRganized-talk/209977121efa5d3a97d4fb86090b9c6dfcd9f6b0/2018-10-29_getting-organized-with-r.html#1
+
+https://rawcdn.githack.com/EmilHvitfeldt/laerug-Text-Mining-2018/29f1b3b2f96c0a2f23fbfea9620e404adc3c85af/slides.html#1
+
+https://github.com/elbersb/tidylog
+
+https://github.com/datacamp/datacamp-light
+
+*** https://coolbutuseless.github.io/2019/10/09/the-miniverse-a-collection-of-document-creation-packages-for-rstats/
+
+https://github.com/jolars/qualpalr
+
+https://rladiesbelgrade.github.io/DSC5_RWS/DSRWay.html#1
+
+https://lindeloev.github.io/mcp/
+
+https://github.com/jennybc/send-email-with-r
+
+Enter URL of the HTML file to preview:  
+*** http://htmlpreview.github.io/
+
+https://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R
+
+https://github.com/rstudio-education/arm-workshop-rsc2019
+
+https://github.com/ropensci/geojsonio
+
+https://github.com/ropensci/rtweet
+
+https://github.com/ACCLAB/dabestr
+
+https://m-clark.github.io/data-processing-and-visualization/
+
+https://edwinth.github.io/ADSwR/
+
+*** https://github.com/ropensci/internetarchive
+
+https://jdblischak.github.io/workflowr/articles/wflow-02-customization.html
+
+*** https://jdblischak.github.io/workflowr/
+
+*** https://jdbcode.github.io/Snazzy-EE-TS-GIF/
+
+https://jrnold.github.io/r4ds-exercise-solutions/
+
+https://github.com/qinwf/awesome-R
+
+*** sublime
+https://github.com/randy3k/R-Box/
+
+https://rstudio.github.io/r2d3/
+
+https://gist.github.com/mollietaylor
+
+https://github.com/AndyBunn
+
+https://sejdemyr.github.io/#teaching
+
+https://davisvaughan.github.io/almanac/articles/almanac.html
+
+https://github.com/coryc3133/uoregon_r_bootcamp
+
+https://github.com/gadenbuie/tidyexplain/tree/master/R
+
+https://github.com/gadenbuie/tidyexplain
+
+https://www.r-bloggers.com/tidy-evaluation-in-r-simple-examples/
+
+https://github.com/thebioengineer/tidytuesdayR
+
+*** https://github.com/sctyner/memer
+
+*** https://jdblischak.github.io/workflowr/
+
+Bhaskar V. Karambelkar  - leaflet
+https://www.karambelkar.info/  
+https://github.com/bhaskarvk  
+https://github.com/bhaskarvk?tab=repositories
+
+--- 
+
+# DataCamp Resources
+*** Convert any blog or website to an interactive learning platform for data science  
+https://github.com/datacamp/datacamp-light
+
+https://www.datacamp.com/community/tutorials/detect-anomalies-anomalize-r
+
+https://www.datacamp.com/community/tutorials/merging-datasets-r
+
+https://www.datacamp.com/community/tutorials/tutorial-on-loops-in-r
+
+https://datacamp-community-prod.s3.amazonaws.com/e04c5a6b-4aca-46f5-8cd5-803d975ccc4b
+
+Five Tips to Improve Your R Code - Datacamp  
+https://www.datacamp.com/community/tutorials/five-tips-r-code-improve
+
+[Markdown in Jupyter Notebook](https://www.datacamp.com/community/tutorials/markdown-in-jupyter-notebook)
+
+https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook
+
+Cluster Analysis (DataCamp)  
+https://www.statmethods.net/advstats/cluster.html
+
+https://www.datacamp.com/community/tutorials/r-formula-tutorial
+
+https://www.datacamp.com/community/tutorials/r-web-scraping-rvest
+
+https://www.datacamp.com/courses/introduction-to-time-series-analysis
+
+https://www.datacamp.com/community/tutorials/time-series-r
+
+## Quick R (DataCamp)  
+Quick R Site map  
+https://www.statmethods.net/about/sitemap.html  
+Quick R About  
+https://www.statmethods.net/index.html  
+Customizing R Startup  
+https://www.statmethods.net/interface/customizing.html  
+
+https://www.datacamp.com/community/tutorials/visualize-data-vim-package
+
+*** https://www.datacamp.com/community/tutorials/data-visualization-highcharter-r
+
+---
+
+# Update R keep packages
+http://pierre.pudlo.perso.luminy.univ-amu.fr/wordpress/keeping-all-installed-packages-while-updating-r/
+
+https://www.r-bloggers.com/upgrade-r-without-losing-your-packages/
+
+https://community.rstudio.com/t/reinstalling-packages-on-new-version-of-r/7670/8
+
+https://www.r-bloggers.com/updating-r-but-keeping-your-installed-packages/
+
+https://stat.ethz.ch/R-manual/R-devel/library/utils/html/installed.packages.html
+
+https://community.rstudio.com/t/issue-with-installed-packages/9458/8
+
+---
+
+# Other R links - unsorted
+
+*** https://www.r-bloggers.com/how-to-learn-r-2/  
+*** https://paulvanderlaken.com/2017/08/10/r-resources-cheatsheets-tutorials-books/
+
+*** https://paulvanderlaken.com/2018/05/21/r-tips-and-tricks/
+
+https://blog.r-hub.io/2019/12/03/readmes/
+
+https://bookdown.org/
+
+https://stackoverflow.com/questions/4459969/are-there-any-platforms-for-which-the-file-separator-isnt
+
+http://vita.had.co.nz/papers/model-vis.pdf
+
+*** https://r4ds.had.co.nz/
+
+Forecasting: Principles and Practice  
+https://otexts.com/fpp3/
+
+Text Analysis  
+http://rpubs.com/bnevt0/AT336106
+
+https://joshuamrosenberg.com/post/2019/11/13/using-r-with-7th-grade-science-students/
+
+https://rsuite.io/RSuite_Download.php
+
+https://h-savran.blogspot.com/2017/08/learn-r-part-4-data-frames.html
+
+http://www.r-fiddle.org/#/fiddle?id=SC5V50Pe&version=1
+
+*** https://blog.rstudio.com/2019/11/06/renv-project-environments-for-r/
+
+https://malco.io/2018/11/05/why-should-i-use-the-here-package-when-i-m-already-using-projects/
+
+https://alan-y.netlify.com/post/objectremover-rstudio-addin/
+
+*** https://towardsdatascience.com/exploring-highcharts-in-r-f754143efda7
+
+https://github.com/gadenbuie/tidyexplain/blob/master/README.md
+
+https://stackoverflow.com/questions/59116030/conditional-replacement-while-match-on-a-variable
+
+*** knitr  
+https://www.datafix.com.au/cookbook/  
+*** https://github.com/yihui/knitr-examples/blob/master/009-slides.Rmd
+
+https://stackoverflow.com/questions/59102998/passing-numeric-value-into-a-function-that-uses-dplyr
+
+https://www.learnstatswithjamovi.com/
+
+https://stackoverflow.com/questions/59033918/conditionally-aggregate-dataframe-rows-that-dont-contain-certain-values
+
+https://mdsumner.github.io/spex/  
+https://github.com/mdsumner/spex
+
+https://www.r-bloggers.com/geocoding-with-tidygeocoder/
+
+https://socialsciences.mcmaster.ca/jfox/Books/Companion/downloads.html  
+https://socialsciences.mcmaster.ca/jfox/Books/Companion/index.html
+
+https://www.inwt-statistics.com/read-blog/debugging-in-r.html
+
+https://vickysteeves.gitlab.io/repro-papers/
+
+https://github.com/laRusers/socalr2019
+
+** http://faculty.marshall.usc.edu/gareth-james/ISL/  
+http://faculty.marshall.usc.edu/gareth-james/ISL/All%20Labs.txt
+
+*** Hands-On Programming with  
+https://rstudio-education.github.io/hopr/
+
+*** https://www.r-bloggers.com/5-ways-to-subset-a-data-frame-in-r/
+
+*** https://livebook.manning.com/book/practical-data-science-with-r-second-edition/welcome/v-6/0
+
+http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/R/rFunctionsList.pdf
+
+*** https://rich-iannone.github.io/blastula/articles/simple_composition.html  
+https://randr.rocks/post/blastula-0-3/
+
+https://www.eddjberry.com/post/writing-your-thesis-with-bookdown/  
+*** https://bookdown.org/yihui/bookdown/
+
+https://medium.com/@HadrienD/an-introduction-to-apis-for-r-users-223597a5ce0d
+
+*** https://github.com/bcgov/bcgov-data-science-resources/wiki/Installing-R-&-RStudio
+
+** https://joss.theoj.org/papers/10.21105/joss.01686
+
+*** https://www.datasciencecentral.com/profiles/blogs/the-ultimate-r-cheatsheet
+
+https://www.datasciencecentral.com/profiles/blogs/7-visualizations-you-should-learn-in-r
+
+How to share data for collaboration
+https://peerj.com/collections/50-practicaldatascistats/
+
+https://peerj.com/preprints/3139/
+
+https://rstudio.github.io/learnr/
+
+https://github.com/rstudio-education/datascience-box
+
+https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts
+
+https://github.com/ropensci/plotly
+
+https://rstudio.github.io/DT/
+https://renkun-ken.github.io/formattable/
+
+https://github.com/carlganz/rintrojs
+
+Visdat when we started loading data!  
+https://github.com/rfordatascience/tidytuesday/blob/master/README.md
+
+https://wiki.qcbs.ca/geostatistics
+
+https://blog.rstudio.com/2017/07/11/introducing-learnr/
+
+http://adv-r.had.co.nz/Style.html
+
+https://www.r-bloggers.com/5-ways-to-subset-a-data-frame-in-r/
+
+https://www.r-bloggers.com/how-to-install-packages-on-r-screenshots/
+
+*** https://rladiessydney.org/courses/ryouwithme/
+
+*** https://cedricscherer.netlify.com/top/links/
+
+https://drsimonj.svbtle.com/five-simple-tricks-to-improve-your-r-code
+
+---
+
+This web document were created with R Markdown, using RStudio v.1.1.463 and R v.3.6.1.
+
+---
