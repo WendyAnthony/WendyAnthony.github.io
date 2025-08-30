@@ -1,0 +1,395 @@
+---
+title: "Project Proposal for Vizualizing HAT's GOE Monitoring Data"
+author: "Wendy Anthony"
+date: "2025/08/30"
+output:
+  html_document:
+    df_print: paged
+    toc: yes 
+    toc_depth: 3
+    toc_float: yes
+    number_sections: yes
+  pdf_document: 
+    # default
+    latex_engine: xelatex
+    toc: true
+mainfont: Monaco # change from default TimesRoman - same font used by RStudio
+fontsize: 11pt
+---
+
+```{r, output-option-pdf, , include=FALSE}
+# output: pdf_document
+```
+
+```{r, output-option-html, , include=FALSE}
+# output:
+#   html_document:
+#     toc: yes 
+#     toc_depth: 3
+#     toc_float: yes
+#     number_sections: yes
+```
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Idea for Draft Project Proposal
+- I am a student in UVic's Restoration of Natural Systems program interested in making a significant contribution to the local restoration community, and I'm looking to assist an interested community partner through the creation of a Final Restoration Project 
+- Nancy Shackelford (RNS Director) suggested that I might consider helping HAT GOE Monitoring Project by creating a tool for vizualizing GOE Monitoring Data. 
+- I propose to create a customized-for-HAT automatic coding tool that can be used by non-coders. 
+- I have already spent almost 30 hours (during August 2025) reviewing and learning the new-to-me R code I would need to complete this project, and feel confident I will be able to learn any other R code as will be deemed needed after consultation with HAT, and receiving HAT DATA to analyze its structure and formats 
+
+# What I need
+## From HAT
+- access to HAT GOE Monitoring Data 
+- support, input, and feedback in order 
+- I met with Vanessa Brownlee 2025-08-27, who asked that I send her further information about my proposed project, and though still new to her position, she seemed to be willing for me to start this project in Fall 2025 semester 
+
+## From RNS
+- support and supervision from RNS Nancy Shackelford, particularly before she goes on sabatical July 2026 
+
+# What I can offer
+- A keen interest in restoring Garry Oak Ecosystems 
+- Extensive knowledge and experience with coding using `R` 
+- I am a self-motivated, low maintenance student, very interested in the natural environment, and who loves to continue learning in meaningful ways 
+- I can also assist HAT with the monitoring raw data clean-up as needed 
+
+
+# Proposed Deliverables
+## Written report
+- The report will provide a record of the work I did to complete this project 
+- Report will follow the format, length, and expectations of RNS program 
+
+## Tutorials for using Data Vizualization Tools
+- easy to understand 
+- customized 
+
+## RMarkdown Data Processing Document 
+- for data downloading, cleaning, and formatting data visualizations 
+- explain process for preparing data for use 
+- can be used to create HTML or pdf reports 
+- HTML Document includes a Table of Contents for easy navigation between parts 
+
+## Shiny interactive tool 
+- https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/ 
+- using data processed with RMarkdown document 
+- for choosing data variables to visualize in tables, plot charts, and maps 
+
+## Vizualizations
+- data tables, chart plots, maps 
+
+# Data
+- Data used for this proposal is from the report that HAT used as a model for their GOE Monitoring Project 
+- Malloff, J., & Shackelford, N. (2024). <i>Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems.</i> Restoration Futures Lab at the University of Victoria. 
+
+
+## Data download and formatting
+- Data (in excel or csv format) is uploaded 
+- Data is formatted, saved, and managed to be useful for creating visualizations 
+- The code has been hidden for this report, highlighting only the resulting plots 
+
+```{r, load-libraries, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+library(shiny)
+library(tidyverse)
+library(plotly)
+```
+
+```{r, load-data, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# Site Data
+geo_eccc <- read.csv("SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
+# Site Details
+Sites_eccc <- read.csv("SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
+```
+
+```{r, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+Percentage_ns <- geo_eccc$Proportion_of_native_species * 100
+```
+
+```{r, add-column, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+geo_eccc <- cbind(geo_eccc, Percentage_ns)
+```
+
+```{r, arange-order-df, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+Sites_eccc_1 <- Sites_eccc %>% arrange(Sites_eccc$Site)
+geo_eccc_1 <- geo_eccc %>% arrange(geo_eccc$Site)
+```
+
+```{r, cbind-arranged-df, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+geo_eccc_sites <- cbind(Sites_eccc_1, geo_eccc_1)
+```
+
+```{r, remove-duplicate-columns, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+geo_eccc_sites_1 <- geo_eccc_sites[c(-9,-10)]
+```
+
+```{r, rename-columns-baser, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Land.Manager"] <- "Land_Manager"
+names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Main.Restoration.Type"] <- "Main_Restoration_Type"
+names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Restoration.Intensity"] <- "Restoration_Intensity"
+names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Area.ha"] <- "Area_ha"
+```
+
+```{r, create-csv-combined-datasets, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+write.csv(geo_eccc_sites_1, "geo_eccc_all_site_data.csv", row.names = FALSE)
+```
+
+\newpage
+
+# Data Visualization Examples
+
+## Data Table (Malloff & Shackelford, 2024)
+\renewcommand{\arraystretch}{.25}
+### Full Data Table
+
+```{r, data table_html, echo=FALSE}
+# for html
+DT::datatable(geo_eccc_sites_1)
+```
+
+### Table Head of Site Information
+```{r, data-table-pdf-sites, echo=FALSE, warning=FALSE}
+
+# pdf
+kableExtra::kable(
+  head(Sites_eccc_1), booktabs = TRUE, linesep = ""
+) %>%
+  kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
+```
+
+### Head of Site Data
+```{r, data-table-pdf-data, echo=FALSE, warning=FALSE}
+
+# pdf
+kableExtra::kable(
+  head(geo_eccc_1), booktabs = TRUE, linesep = ""
+) %>%
+  kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
+```
+
+\newpage
+## Map of Site Locations
+
+### Leaflet Map with Circle Markers 
+- Data from previous data table is summarized in the map marker popups 
+- click markers to open site data summary window 
+
+```{r, leaflet_map_circle_markers_sized_radius, echo=FALSE, fig.align = 'center'}
+
+geo_eccc_sites_1 <- read.csv("geo_eccc_all_site_data.csv")
+
+library(dplyr)
+library(leaflet)
+library(htmlwidgets) # for responsive web map
+
+title <- '<p style="text-align: center; height: 30px; ">
+<span style="font-size:10px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>ECCC GOE 2023 Monitoring Sites</span><br>
+<span style="font-size:8px;font-style:italic; background-color: rgba(255, 255, 255, 0.9;">(Malloff & Shackelford, 2024)</span></p>'
+ 
+pal <- colorFactor(c("#d7191c", "#2c7bb6"), domain = c("Saanich Peninsula", "Gulf Islands"))
+
+ECCC_map_2 <- leaflet(geo_eccc_sites_1) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addCircleMarkers(
+             ~ Lng, ~ Lat, 
+         
+             radius = ~ifelse(Subregion == "Saanich Peninsula", 8, 8),
+    fillColor = ~pal(Subregion),
+    color = "black",
+    weight = 3, # size of circle border
+    stroke = TRUE, fillOpacity = 0.5,
+             popup = paste0("<b>ECCC GOE 2023 Monitoring Data</b>", "<br>", "<i>(Malloff & Shackelford, 2024)</i>", "<br><br>",
+               "<b>Site:</b> ", "<b>", geo_eccc_sites_1$Site, "</b>", "</b>", "<br><br>", "<b>Subregion:</b> ", geo_eccc_sites_1$Subregion, "<br>",
+                        "<b>Latitude:</b> ", geo_eccc_sites_1$Lat, "<br>", "<b>Longitude:</b> ", geo_eccc_sites_1$Lng,  "<br><br>",
+                        "<b>Land Manager:</b> ", geo_eccc_sites_1$Land_Manager, "<br>",
+                        "<b>Main Restoration:</b> ", geo_eccc_sites_1$Main_Restoration_Type, "<br>",
+                        "<b>Restoration Intensity:</b> ", geo_eccc_sites_1$Restoration_Intensity, "<br>",
+                        "<b> Area:</b> ", geo_eccc_sites_1$Area_ha, " ha",
+                        "<br><br>",
+                        "<b>Proportion of native species:</b> ", geo_eccc_sites_1$Proportion_of_native_species, "<br>",
+                        "<b>Cultural species richness:</b> ", geo_eccc_sites_1$Cultural_species_richness, "<br>",
+                        "<b>Exotic species:</b> ", geo_eccc_sites_1$Exotic_species, "<br>",
+                        "<b>Trampling:</b> ", geo_eccc_sites_1$Trampling, "<br>",
+                        "<b>Herbivory:</b> ", geo_eccc_sites_1$Herbivory, "<br>",
+                        "<b>Composite Index:</b> ", geo_eccc_sites_1$Composite_Index, "<br>")) %>%
+  setView(-123.44799, 48.64919, 10) %>%
+  # add controls
+  addMiniMap(width = 100, height = 100, zoomLevelOffset = -4) %>%
+  addControl(title, position = "topright")
+
+# Display map
+ECCC_map_2
+```
+
+\newpage
+
+## Subregion Plots
+
+```{r, plots_Exotic_species, echo=FALSE, results=FALSE, results='hide', include=FALSE, message=FALSE}
+subregion_exsp <- ggplot(geo_eccc, 
+                    aes(x = Subregion, y = Exotic_species)) +
+                    geom_violin(fill = "seagreen2") +
+                    geom_boxplot(width = 0.1, fill = "sandybrown") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(vjust = 1, size = 9)) +
+                    labs(title='Plotting Subregion by Exotic Species',
+                      subtitle='ECCC',
+                      x = "Subregion", y = "Exotic Species")
+subregion_exsp
+# plotly won't work here
+```
+
+
+```{r, plots_Percentage_ns, echo=FALSE, results=FALSE, results='hide', include=FALSE, message=FALSE}
+
+subregion_nsp <- ggplot(geo_eccc, 
+                    aes(x = Subregion, y = Percentage_ns)) +
+                    geom_violin(fill = "seagreen2") +
+                    geom_boxplot(width = 0.1, fill = "sandybrown") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(vjust = 1, size = 9)) +
+                    labs(title='Plotting Subregion by Percentage of Native Species',
+                      subtitle='ECCC',
+                       x = "Subregion", y = "Percentage Native Species")
+subregion_nsp
+# plotly won't work here
+```
+
+### Violin/Bar Plot: Compare Subregions Exotic and Native Species
+```{r, cowplot_violin_subr, echo=FALSE}
+library(cowplot)
+
+subregion_exsp_1 <- subregion_exsp + labs(title='Exotic Species',
+                      subtitle='ECCC (Malloff & Shackelford, 2024)'
+                      )
+
+subregion_nsp_1 <- subregion_nsp + labs(title='Native Species',
+                      subtitle='ECCC (Malloff & Shackelford, 2024)',
+                      caption = "Chart by Wendy Anthony \n 2025-08-27")
+
+plot_grid(subregion_exsp_1, subregion_nsp_1, labels = "AUTO")
+```
+
+\newpage
+
+## Site Plots
+
+### Point Plot: Compare Sites by Restoration Intensity
+- click data points for tool-tip of data results 
+
+```{r, plots-site-Restoration-Intensity-order-point, echo=FALSE}
+
+# Step 1
+desired_levels <- c("high", "moderate", "low", "minimal")
+# create new df to create desired levels
+geo_eccc_sites_2 <- geo_eccc_sites_1
+# this changes data type from character to factor
+geo_eccc_sites_2$Restoration_Intensity <- factor(geo_eccc_sites_1$Restoration_Intensity, levels = desired_levels)
+
+# step 2
+geo_eccc_sites_2 <- geo_eccc_sites_2[order(geo_eccc_sites_2$Restoration_Intensity),]
+
+# values in order now -- ?? how to change to reverse order 
+site_restInt <- ggplot(geo_eccc_sites_2,
+       aes(x = Site, y = reorder(Restoration_Intensity, desc(Restoration_Intensity)), color = Subregion)) +
+  # reorder y variable axis
+  # https://stackoverflow.com/questions/28391850/reverse-order-of-discrete-y-axis-in-ggplot2s
+# y = Restoration_Intensity
+                    geom_point(shape = 18, size = 2) +
+  #geom_bar(stat="identity") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    theme(legend.position="bottom") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Plotting Sites by Restoration Intensity',
+                      subtitle='ECCC (Malloff & Shackelford, 2024)',
+                      caption = "Chart by Wendy Anthony \n 2025-08-22", x = "Site", y = "Restoration Intensity")
+
+ggplotly(site_restInt)
+```
+
+
+\newpage
+
+### Point Plot: Sites Ordered by Restoration Intensity
+- this uses the same plot code as the previous example, changing only the order of the restoration intensity from minimal to high 
+- click data points for tool-tip of data results 
+
+```{r, plots_site_Restoration_Intensity_order_point_1, echo=FALSE}
+
+# Step 1
+desired_levels <- c("high", "moderate", "low", "minimal")
+# create new df to create desired levels
+geo_eccc_sites_2 <- geo_eccc_sites_1
+# this changes data type from character to factor
+geo_eccc_sites_2$Restoration_Intensity <- factor(geo_eccc_sites_1$Restoration_Intensity, levels = desired_levels)
+
+# step 2
+geo_eccc_sites_2 <- geo_eccc_sites_2[order(geo_eccc_sites_2$Restoration_Intensity),]
+
+# values in order now -- ?? how to change to reverse order 
+site_restInt_x <- ggplot(geo_eccc_sites_2,
+       aes(x = reorder(Site, 
+                       desc(Restoration_Intensity)), 
+           y = reorder(Restoration_Intensity, desc(Restoration_Intensity)), color = Subregion)) +
+  # reorder y variable axis
+  # https://stackoverflow.com/questions/28391850/reverse-order-of-discrete-y-axis-in-ggplot2s
+# y = Restoration_Intensity
+                    geom_point(shape = 18, size = 2) +
+  #geom_bar(stat="identity") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    theme(legend.position="bottom") + 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Plot Site Restoration Intensity',
+                      subtitle='ECCC (Malloff & Shackelford, 2024)',
+                      caption = "Chart by Wendy Anthony \n 2025-08-26",
+                      x = "Site", y = "Restoration Intensity")
+
+# ggplotly(site_restInt_x)
+leg <- list(
+  font = list(
+    family = "sans-serif",
+    size = 8,
+    color = "#000"))
+# xanchor = "center", too far left
+plot <- ggplotly(site_restInt_x)
+plot <- plot %>% layout(legend = list(x = 0.15, y = -0.5, orientation = 'h', size = 0.025))  
+plot <- plot %>% layout(legend = leg)
+#plot
+ggplotly(plot)
+```
+
+
+\newpage
+
+### Point Plot: Individual Site - Uplands Variables of Degradation
+
+```{r, plots-Uplands-Degrade, echo=FALSE}
+# Uplands
+Uplands <- geo_eccc_1[24, ]
+Uplands <- Uplands[, -c(1,2,3,4,8,9,10)]
+# names(Uplands)
+Uplands_long <- Uplands %>% pivot_longer(everything(), names_to = "variable", values_to = "value")
+
+Uplands_long_plot <- ggplot(Uplands_long,
+                aes(x = variable,
+                    y = value)) +
+      ylim(0, 50) +
+      geom_point(shape = 17, 
+                 color = "red", 
+                 fill = "red",
+                 size = 2) +
+      theme_minimal() +                        theme(legend.position="none") +
+      theme(
+        axis.text.x = 
+          element_text(angle = 25, 
+                       vjust = 1,
+                       hjust=1, 
+                       size = 7)) +
+      labs(title='Plotting Uplands Degradation Variables',
+        subtitle='ECCC (Malloff & Shackelford, 2024)',
+        caption = "Chart by Wendy Anthony \n 2025-08-30")
+Uplands_long_plot
+```
+
