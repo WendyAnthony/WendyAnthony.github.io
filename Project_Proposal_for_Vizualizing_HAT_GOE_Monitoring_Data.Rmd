@@ -4,15 +4,15 @@ subtitle: "Vizualizing HAT's GOE Monitoring Data"
 author: "Wendy Anthony"
 date: "2025/09/01"
 output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
   html_document:
     df_print: paged
     toc: yes
     toc_depth: 3
     toc_float: yes
     number_sections: yes
-  pdf_document:
-    latex_engine: xelatex
-    toc: yes
   word_document:
     toc: yes
     toc_depth: '3'
@@ -33,30 +33,29 @@ library(DiagrammeR)
 ```
 
 # The Idea behind submitting this project proposal
-- I am a student in UVic's Restoration of Natural Systems program, as well as the equivalent of a double major in Environmental Studies and Geography, and a life-long learner with an interest in making a significant contribution to the local restoration community, and I'm looking to assist a willing community partner through the creation of a Final Restoration Project 
+- I am a student in UVic's Restoration of Natural Systems program, as well as having the equivalent of a double major in Environmental Studies and Geography, and being a life-long learner with an interest in making a significant contribution to the local restoration community, and I'm looking to assist a willing community partner through the creation of my Final RNS Restoration Project. 
 - Nancy Shackelford (RNS Director) suggested that I might consider helping HAT GOE Monitoring Project of Southern Vancouver Island by creating a tool for vizualizing GOE Monitoring Data. 
 
-# Background
+# Background (include reference to literature)
 - Data used for this proposal is from two tables in the report that HAT used as a model for their GOE Monitoring Project (Malloff & Shackelford, 2024)
 - use data to represent data in a visual manner, to make it more understandable than a table of numbers (?? CITE ??)
 
 # Project Partner
-- I have already spoken to Vanessa Brownlee, Habitat Restoration Coordinator, Habitat Acquisition Trust (HAT) on 2025-08-27, who was very interested in my proposed project idea, and seemed willing to consider letting me start in Fall 2025.
-- I have already spoken briefly to Board Chair Andy MacKinnon at the HAT Social 2025-08-27, and he seemed keen to know I was interested in doing my RNS Final Project with HAT and was looking forward to know more about what I had in mind. 
+- I have already spoken to Vanessa Brownlee, Habitat Restoration Coordinator at Habitat Acquisition Trust (HAT) on 2025-08-27, who was very interested in my proposed project idea, and seemed willing to consider letting me start in Fall 2025.
+- I have also already spoken briefly to Board Chair Andy MacKinnon at the HAT Social 2025-08-27, and he seemed keen to know I was interested in doing my RNS Final Project with HAT and was looking forward to know more about what I had in mind. 
 
 # Project Goals (overarching purpose)
-- I propose to create a customized, automatic coding and reporting tool, with tutorial instructions, using open-source tools like R libraries which can be used by non-coders at HAT for formatting and interactively visualizing data collected at multiple sites for their Garry Oak Ecosystem (GOE) Monitoring Program, to determine what stories the collected data may illustrate much easier than tables of numbers
-- a tool for communicating
+- I propose to create a customized, automatic coding and reporting tool, using open-source tools R package libraries, which can be used by non-coders at HAT for data formatting and interactively visualizing data collected at multiple sites for their Garry Oak Ecosystem (GOE) Monitoring Program, including tutorial instructions, to determine what stories the collected data may illustrate, as an easier way for communication data information than looking at tables of numbers.   
 
 # Project Objectives (actionable targets)
-- Analyze the collected data to understand the underlying structure, ensure the use of consistent naming protocols for variables, and format data to be usable for use with data visualization code
-- Create data visualization code, using RStudio, RMarkdown, and RShiny, to create appropriate visualizations to enable a better understanding of the collected data
-- Customize data tools to reflect a consistent presence that uses HAT's colours, logos, and plotting themes
-- Create RMarkdown documents to automatically download and format data, create data visualizations, produce reports for the whole project and individual sites
-- Create scaleable data visualization tools that can have more sites added, sites with different measuring and sensitivity criteria (e.g. First Nations GOE sites)
-- Track differences between sites: native species, exotic invasive species, 
-- Create custom functions for reading, analyzing, and plotting data 
-- Create an interactive, browser-based Shiny app for user-chosen custom-make data visualization plots and maps for selected location(s), and variables, with the ability to download the resulting data, html widgets, plot images, and interactive web maps
+- Analyze the collected data to understand the underlying structure, while ensuring the use of consistent naming protocols for variables, and formatting data to be usable for use with data visualization code.
+- Write data visualization code, using RStudio, RMarkdown, and RShiny, to create appropriate visualizations to enable a better understanding of the collected data.
+- Customize data tools to reflect a consistent style that uses HAT's colours, logos, and plotting themes.
+- Create RMarkdown documents to automatically download and format data, create data visualizations, and produce reports for the whole project and individual sites.
+- Create scaleable data visualization tools that can have more sites added, with different measuring and sensitivity criteria (e.g. First Nations GOE sites).
+- Track differences between sites: e.g. native species, exotic invasive species, etc.
+- Create custom R functions for reading, analyzing, and plotting data. 
+- Create an interactive, browser-based Shiny app for user-chosen, custom-make data visualization plots and maps for selected location(s) and variables, with the ability to save and download the resulting data, html widgets, plot images, and interactive web maps
 
 
 # What I need
@@ -254,8 +253,8 @@ mermaid(
 - The code has been hidden for this report, highlighting only the resulting plots 
 
 ## Load Site Data
-<details><summary><b><i>Click to see results of `data`</i></b></summary><p>
-```{r, load-data, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+<details><summary><b><i>Click to see R code for `Loading Data`</i></b></summary><p>
+```{r, load-data}
 ## Details doesn't work in pdf - remove when knitting
 # Site Data
 geo_eccc <- read.csv("data/SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
@@ -266,35 +265,65 @@ Sites_eccc <- read.csv("data/SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, s
 </p></details>
 
 ```{r, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# Percentage_ns <- geo_eccc$Proportion_of_native_species * 100
+```
+
+## Data Cleaning and Transformation
+<details><summary><b><i>Click to see R code for `Data Cleaning and Transformation`</i></b></summary><p>
+```{r, data-cleaning}
+# create new column with percentages as whole number
 Percentage_ns <- geo_eccc$Proportion_of_native_species * 100
-```
 
-```{r, add-column, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# add-new column
 geo_eccc <- cbind(geo_eccc, Percentage_ns)
-```
 
-```{r, arange-order-df, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# arrange order
 Sites_eccc_1 <- Sites_eccc %>% arrange(Sites_eccc$Site)
 geo_eccc_1 <- geo_eccc %>% arrange(geo_eccc$Site)
-```
 
-```{r, cbind-arranged-df, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# bind 2 dataframes together
 geo_eccc_sites <- cbind(Sites_eccc_1, geo_eccc_1)
-```
 
-```{r, remove-duplicate-columns, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# Remove duplicate columns
 geo_eccc_sites_1 <- geo_eccc_sites[c(-9,-10)]
-```
 
-```{r, rename-columns-baser, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# Rename columns
 names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Land.Manager"] <- "Land_Manager"
 names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Main.Restoration.Type"] <- "Main_Restoration_Type"
 names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Restoration.Intensity"] <- "Restoration_Intensity"
 names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Area.ha"] <- "Area_ha"
+
+# write csv file with combined data
+write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE)
+```
+</p></details>
+
+```{r, add-column, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+#geo_eccc <- cbind(geo_eccc, Percentage_ns)
+```
+
+```{r, arange-order-df, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# Sites_eccc_1 <- Sites_eccc %>% arrange(Sites_eccc$Site)
+# geo_eccc_1 <- geo_eccc %>% arrange(geo_eccc$Site)
+```
+
+```{r, cbind-arranged-df, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+#geo_eccc_sites <- cbind(Sites_eccc_1, geo_eccc_1)
+```
+
+```{r, remove-duplicate-columns, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# geo_eccc_sites_1 <- geo_eccc_sites[c(-9,-10)]
+```
+
+```{r, rename-columns-baser, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Land.Manager"] <- "Land_Manager"
+# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Main.Restoration.Type"] <- "Main_Restoration_Type"
+# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Restoration.Intensity"] <- "Restoration_Intensity"
+# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Area.ha"] <- "Area_ha"
 ```
 
 ```{r, create-csv-combined-datasets, echo=FALSE, results=FALSE, results='hide', message=FALSE}
-write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE)
+# write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE)
 ```
 
 \newpage
