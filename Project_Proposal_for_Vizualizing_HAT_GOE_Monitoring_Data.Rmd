@@ -1,19 +1,21 @@
 ---
 title: "Project Proposal for Vizualizing HAT's GOE Monitoring Data"
 author: "Wendy Anthony"
-date: "2025/08/30"
+date: "2025/08/31"
 output:
   html_document:
     df_print: paged
-    toc: yes 
+    toc: yes
     toc_depth: 3
     toc_float: yes
     number_sections: yes
-  pdf_document: 
-    # default
+  pdf_document:
     latex_engine: xelatex
-    toc: true
-mainfont: Monaco # change from default TimesRoman - same font used by RStudio
+    toc: yes
+  word_document:
+    toc: yes
+    toc_depth: '3'
+mainfont: Monaco
 fontsize: 11pt
 ---
 
@@ -34,73 +36,226 @@ fontsize: 11pt
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r, load-libraries, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+library(shiny)
+library(tidyverse)
+library(plotly)
+library(leaflet)
+library(DiagrammeR)
+```
+
 # Idea for Draft Project Proposal
 - I am a student in UVic's Restoration of Natural Systems program interested in making a significant contribution to the local restoration community, and I'm looking to assist an interested community partner through the creation of a Final Restoration Project 
-- Nancy Shackelford (RNS Director) suggested that I might consider helping HAT GOE Monitoring Project by creating a tool for vizualizing GOE Monitoring Data. 
-- I propose to create a customized-for-HAT automatic coding tool that can be used by non-coders. 
-- I have already spent almost 30 hours (during August 2025) reviewing and learning the new-to-me R code I would need to complete this project, and feel confident I will be able to learn any other R code as will be deemed needed after consultation with HAT, and receiving HAT DATA to analyze its structure and formats 
+- Nancy Shackelford (RNS Director) suggested that I might consider helping HAT GOE Monitoring Project of Southern Vancouver Island by creating a tool for vizualizing GOE Monitoring Data. 
+
+# Background
+- Data used for this proposal is from the report that HAT used as a model for their GOE Monitoring Project (Malloff & Shackelford, 2024)
+- use data to represent data in a visual manner,
+
+# Project Partner
+- I have already spoken to Vanessa Brownlee, Habitat Restoration Coordinator, Habitat Acquisition Trust (HAT) on 2025-08-27
+
+# Project Goals (overarching purpose)
+- I propose to create a customized, automatic coding and reporting tool, with tutorial instructions, using open-source tools like R libraries which can be used by non-coders at HAT for formatting and interactively visualizing data collected at multiple sites for their Garry Oak Ecosystem (GOE) Monitoring Program, to determine what stories the collected data may illustrate much easier than tables of numbers
+- a tool for communicating
+
+# Project Objectives (actionable targets)
+- Analyze the collected data to understand the underlying structure, ensure the use of consistent naming protocols for variables, and format data to be usable for use with data visualization code
+- Create data visualization code, using RStudio, RMarkdown, and RShiny, to create appropriate visualizations to enable a better understanding of the collected data
+- Customize data tools to reflect a consistent presence that uses HAT's colours, logos, and plotting themes
+- Create RMarkdown documents to automatically download and format data, create data visualizations, produce reports for the whole project and individual sites
+- Create scaleable data visualization tools that can have more sites added, sites with different measuring and sensitivity criteria (e.g. First Nations GOE sites)
+- Track differences between sites: native species, exotic invasive species, 
+- Create custom functions for reading, analyzing, and plotting data 
+- Create an interactive, browser-based Shiny app for user-chosen custom-make data visualization plots and maps for selected location(s), and variables, with the ability to download the resulting data, html widgets, plot images, and interactive web maps
+
 
 # What I need
 ## From HAT
 - access to HAT GOE Monitoring Data 
-- support, input, and feedback in order 
+- support, input, and feedback 
 - I met with Vanessa Brownlee 2025-08-27, who asked that I send her further information about my proposed project, and though still new to her position, she seemed to be willing for me to start this project in Fall 2025 semester 
 
 ## From RNS
 - support and supervision from RNS Nancy Shackelford, particularly before she goes on sabatical July 2026 
 
 # What I can offer
-- A keen interest in restoring Garry Oak Ecosystems 
-- Extensive knowledge and experience with coding using `R` 
-- I am a self-motivated, low maintenance student, very interested in the natural environment, and who loves to continue learning in meaningful ways 
-- I can also assist HAT with the monitoring raw data clean-up as needed 
+- I am a self-motivated, low maintenance student, very interested in the natural environment, and who loves to continue learning in meaningful ways, and help create useful digital tools to enhance the learning experience
+- I have extensive experience with coding using `R`, expecially with data visualization and mapping techniiques, often learning new method through self-researched knowledge as the need arose. 
+- My long-standing, keen interest in local Garry Oak Ecosystems, including helping remove invasive species and plant native species in a variety of local restoration projects, and while also observing changes over time, I am intrigued by learning how to visualize monitoring measurements to see if the data can help recognize if there are any patterns of change over time and location. 
+- I have already spent almost 30 hours (during August 2025), creating, cleaning, formatting, and filtering example data (Malloff & Shackelford, 2024), and then reviewing and learning the new-to-me R code I would need to complete this project. I feel confident I will be able to learn any other R code as will be deemed needed after consultation with HAT, and receiving HAT DATA to analyze its structure and formats 
+- I can also assist HAT with cleaning and formatting the raw data clean-up as needed 
 
+# Project Methods for HAT Data visualization (with Timeline)
+- Continue to research and learn how to code in Shiny reactively in order to make interactive data choices (e.g. a drop-down list of Sites) respond to a prior data choice (e.g. Subregions), in order to filter the results of specific interest. I'd like to extend these interactive choice reactions to the selection of monitoring variables being measured in order to be able to make custom-made visualizations and analysis with only a few clicks 
+- Sign any data confidentiality agreements as may be required by HAT
+- Consult with HAT restoration monitor team to explore and understand the nature of the collected data, data format (forms, spreadsheets), the variables that are being measured, any indices to be calculated using the collected data, what questions they would like to explore with the data
+- Create a Project folder, with subfolders for R scripts, raw data, processed data, images, reports, download a copy of the current data (including any meta data e.g. measurement units, description of measurement variable, date collected, etc)
+- Clean data, check for errors, inconsistencies, data quality, calculate values from raw data measurements
+- create file and variable naming protocols
+- Create data visualization plot charts that appropriate to reflect the nature of the variables being measured
+- Mermaid Flow Chart for Methods
 
 # Proposed Deliverables
-## Written report
-- The report will provide a record of the work I did to complete this project 
-- Report will follow the format, length, and expectations of RNS program 
 
-## Tutorials for using Data Vizualization Tools
-- easy to understand 
-- customized 
+## Data Visualizations
+- data tables, chart plots, interactive maps 
+- for individual sites
+- for comparing sites (all together, or grouped by subregion)
+- statistical analysis, and data summary stats (depending on HAT goals)
 
 ## RMarkdown Data Processing Document 
 - for data downloading, cleaning, and formatting data visualizations 
 - explain process for preparing data for use 
-- can be used to create HTML or pdf reports 
-- HTML Document includes a Table of Contents for easy navigation between parts 
+- can be used to create HTML, pdf, or Word reports, with table of contents, plot output images, and even code if desired 
+- HTML Document includes a linked Table of Contents for easy navigation between sections 
+
+## Customizations
+- colour palette for background app
+- change default colour palette from pink and blue to something else
+- add HAT logo
+- add colour to Shiny tabs
+- create custom HAT plot chart theme 
+- Individual site reports
 
 ## Shiny interactive tool 
 - https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/ 
 - using data processed with RMarkdown document 
 - for choosing data variables to visualize in tables, plot charts, and maps 
 
-## Vizualizations
-- data tables, chart plots, maps 
+## Tutorials for using Data visualization Tools
+- easy to understand 
+- customized 
 
-# Data
-- Data used for this proposal is from the report that HAT used as a model for their GOE Monitoring Project 
+## Presentation
+- The completed project will be presented to HAT, my community partner
+
+## Written report
+- The final RNS report will document the work I did to complete this project 
+- Report will follow the expectations of RNS program, including format (submit as Word document) and length (5000 words), to eventually be published in the online journal Ecorestoration: RNS Technical Series
+
+# Bibliography
 - Malloff, J., & Shackelford, N. (2024). <i>Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems.</i> Restoration Futures Lab at the University of Victoria. 
 
+\newpage
+# Workflow Graph
+```{r ER390-mermaid-graph-shapes, echo=FALSE}
+DiagrammeR("
+graph TB
+ A[Wendy]-- send proposal -->B[Vanessa HAT]
+ A[Wendy]-- send proposal -->F[Nancy RNS]
+ B-- decision needed -->C(Decide if I can start ER390 Fall 2025)
+ F-- decision needed -->C(Decide if I can start ER390 Fall 2025)
+ A-- analyzes & cleans -->B1(Data)
+ B1-- results in -->G(Filtered Data)
+ D-.->|if Yes ask for Data|B
+ B-.->|send HAT data|A
+ C-- if -->D((YES))
+ C-- if -->E((NO))
+ H[Variable Names]-- in -->G
+ E-->I[Reconsider please?]
+ I-- ask -->F
+ A-- codes in -->K(RMarkdown)
+ K-- to create -->J(DataVisualizations)
+ J-- using -->H
+ D-- begin -->L((Start Project))
+ J-- used in -->M{Shiny}
+ M-- reactively -->G
+ L-- using -->K
+ M-- produces user-chosen -->J
+ 
+ 
+ style A fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style B fill:#87AB51, stroke:#333, stroke-width:1px  
+ style B1 fill:#9AA
+ style C fill:#E5E25F, stroke:#333, stroke-width:2px  
+ style D fill:#87AB51
+ style E fill:#cf1d2f
+ style F fill:#87AB51, stroke:#333, stroke-width:1px  
+ style G fill:#9AA
+ style H fill:
+ style I fill:
+ style J fill:
+ style K fill:#E5E25F, stroke:#333, stroke-width:2px  
+ style L fill:#87AB51, stroke:#333, stroke-width:3px  
+")
+# #3C8937 Forest Green
 
+# A Wendy
+# B Vanessa
+# B1 Data
+# C Decide if I can start ER390 Fall 2025
+# D Yes
+# E No
+# F Nancy
+# G Filtered Data
+# H Variable Names
+# I Reconsider please?
+# J DataVisualizations
+# K RMarkdown
+# L Start ER390 HAT Project
+# M Shiny
+```
+
+\newpage
+# Proposed Timeline
+- red coloured items are considered critical  
+- grey items are completed  
+```{r gantt, echo=FALSE, include=TRUE, message=FALSE}
+ER390_gantt <- read.csv("ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
+# str(ER390_gantt)
+# NOTE: dates need to be chr in order for Gantt code to work properly
+# names(ER390_gantt)
+# # convert start and end dates from chr to date 
+# changes way date is displayed in Gantt
+# but now I loose my Gantt 
+ # ER390_gantt$start <- as.Date(ER390_gantt$start)
+ # ER390_gantt$end <- as.Date(ER390_gantt$end)
+# str(ER390_gantt)
+
+library(tidyr)
+library(dplyr)
+library(DiagrammeR)
+
+mermaid(
+  paste0(
+    # mermaid "header", each component separated with "\n" (line break)
+    "gantt", "\n",
+    "dateFormat  YYYY-MM-DD", "\n",
+    "title ER390 HAT Data Viz Project Proposed Timeline", "\n",
+    # unite the first two columns (task & status) and separate them with ":"
+    # then, unite the other columns and separate them with ","
+    # this will create the required mermaid "body"
+    paste(ER390_gantt %>%
+            unite(i, task, status, sep = ":") %>%
+            unite(j, i, pos, start, end, sep = ",") %>%
+            .$j,
+          collapse = "\n"
+    ), "\n"
+  )
+)
+  
+```
+
+\newpage
+***
+
+# Results of Example Data Visualizations 
 ## Data download and formatting
 - Data (in excel or csv format) is uploaded 
 - Data is formatted, saved, and managed to be useful for creating visualizations 
 - The code has been hidden for this report, highlighting only the resulting plots 
 
-```{r, load-libraries, echo=FALSE, results=FALSE, results='hide', message=FALSE}
-library(shiny)
-library(tidyverse)
-library(plotly)
-```
-
+## Load Site Data
+<details><summary><b><i>Click to see results of `data`</i></b></summary><p>
 ```{r, load-data, echo=FALSE, results=FALSE, results='hide', message=FALSE}
 # Site Data
 geo_eccc <- read.csv("SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
 # Site Details
 Sites_eccc <- read.csv("SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
 ```
+
+</p></details>
 
 ```{r, echo=FALSE, results=FALSE, results='hide', message=FALSE}
 Percentage_ns <- geo_eccc$Proportion_of_native_species * 100
@@ -136,10 +291,10 @@ write.csv(geo_eccc_sites_1, "geo_eccc_all_site_data.csv", row.names = FALSE)
 
 \newpage
 
-# Data Visualization Examples
+# Data Visualization Example Results
 
 ## Data Table (Malloff & Shackelford, 2024)
-\renewcommand{\arraystretch}{.25}
+
 ### Full Data Table
 
 ```{r, data table_html, echo=FALSE}
@@ -147,10 +302,16 @@ write.csv(geo_eccc_sites_1, "geo_eccc_all_site_data.csv", row.names = FALSE)
 DT::datatable(geo_eccc_sites_1)
 ```
 
-### Table Head of Site Information
-```{r, data-table-pdf-sites, echo=FALSE, warning=FALSE}
 
-# pdf
+### Table Head of Site Information
+
+```{r data-table-pdf-sites, echo=FALSE, warning=FALSE}
+# - table is too wide for pdf because variable names are too long
+
+# kable not supported by word
+## for pdf use kableExtra::kable to print small version of head
+#   kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
+
 kableExtra::kable(
   head(Sites_eccc_1), booktabs = TRUE, linesep = ""
 ) %>%
@@ -158,9 +319,14 @@ kableExtra::kable(
 ```
 
 ### Head of Site Data
-```{r, data-table-pdf-data, echo=FALSE, warning=FALSE}
 
-# pdf
+```{r data-table-pdf-data, echo=FALSE, warning=FALSE}
+# - table is too wide for pdf because variable names are too long
+
+# kable not supported by word
+## for pdf use kableExtra::kable to print small version of head
+#   kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
+
 kableExtra::kable(
   head(geo_eccc_1), booktabs = TRUE, linesep = ""
 ) %>%
@@ -174,7 +340,9 @@ kableExtra::kable(
 - Data from previous data table is summarized in the map marker popups 
 - click markers to open site data summary window 
 
-```{r, leaflet_map_circle_markers_sized_radius, echo=FALSE, fig.align = 'center'}
+```{r    aflet_map_circle_markers_sized_radius, echo=FALSE}
+# not supported by docx format
+# , fig.align = 'center'
 
 geo_eccc_sites_1 <- read.csv("geo_eccc_all_site_data.csv")
 
@@ -215,10 +383,11 @@ ECCC_map_2 <- leaflet(geo_eccc_sites_1) %>%
   setView(-123.44799, 48.64919, 10) %>%
   # add controls
   addMiniMap(width = 100, height = 100, zoomLevelOffset = -4) %>%
-  addControl(title, position = "topright")
+  addControl(title, position = "topright") 
 
 # Display map
 ECCC_map_2
+saveWidget(ECCC_map_2, "ECCC_map_2.html")
 ```
 
 \newpage
@@ -277,43 +446,7 @@ plot_grid(subregion_exsp_1, subregion_nsp_1, labels = "AUTO")
 ## Site Plots
 
 ### Point Plot: Compare Sites by Restoration Intensity
-- click data points for tool-tip of data results 
-
-```{r, plots-site-Restoration-Intensity-order-point, echo=FALSE}
-
-# Step 1
-desired_levels <- c("high", "moderate", "low", "minimal")
-# create new df to create desired levels
-geo_eccc_sites_2 <- geo_eccc_sites_1
-# this changes data type from character to factor
-geo_eccc_sites_2$Restoration_Intensity <- factor(geo_eccc_sites_1$Restoration_Intensity, levels = desired_levels)
-
-# step 2
-geo_eccc_sites_2 <- geo_eccc_sites_2[order(geo_eccc_sites_2$Restoration_Intensity),]
-
-# values in order now -- ?? how to change to reverse order 
-site_restInt <- ggplot(geo_eccc_sites_2,
-       aes(x = Site, y = reorder(Restoration_Intensity, desc(Restoration_Intensity)), color = Subregion)) +
-  # reorder y variable axis
-  # https://stackoverflow.com/questions/28391850/reverse-order-of-discrete-y-axis-in-ggplot2s
-# y = Restoration_Intensity
-                    geom_point(shape = 18, size = 2) +
-  #geom_bar(stat="identity") +
-                    theme_minimal() + #get rid of grey background and tick marks 
-                    theme(legend.position="bottom") + #remove legend 
-                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-                    labs(title='Plotting Sites by Restoration Intensity',
-                      subtitle='ECCC (Malloff & Shackelford, 2024)',
-                      caption = "Chart by Wendy Anthony \n 2025-08-22", x = "Site", y = "Restoration Intensity")
-
-ggplotly(site_restInt)
-```
-
-
-\newpage
-
-### Point Plot: Sites Ordered by Restoration Intensity
-- this uses the same plot code as the previous example, changing only the order of the restoration intensity from minimal to high 
+- Sites are ordered by the level of restoration intensity, ranging from high to minimal 
 - click data points for tool-tip of data results 
 
 ```{r, plots_site_Restoration_Intensity_order_point_1, echo=FALSE}
@@ -331,13 +464,14 @@ geo_eccc_sites_2 <- geo_eccc_sites_2[order(geo_eccc_sites_2$Restoration_Intensit
 # values in order now -- ?? how to change to reverse order 
 site_restInt_x <- ggplot(geo_eccc_sites_2,
        aes(x = reorder(Site, 
-                       desc(Restoration_Intensity)), 
+                       -desc(Restoration_Intensity)), 
            y = reorder(Restoration_Intensity, desc(Restoration_Intensity)), color = Subregion)) +
   # reorder y variable axis
   # https://stackoverflow.com/questions/28391850/reverse-order-of-discrete-y-axis-in-ggplot2s
 # y = Restoration_Intensity
                     geom_point(shape = 18, size = 2) +
   #geom_bar(stat="identity") +
+#  scale_fill_brewer(palette = "Dark2") +
                     theme_minimal() + #get rid of grey background and tick marks 
                     theme(legend.position="bottom") + 
                     theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
@@ -345,6 +479,9 @@ site_restInt_x <- ggplot(geo_eccc_sites_2,
                       subtitle='ECCC (Malloff & Shackelford, 2024)',
                       caption = "Chart by Wendy Anthony \n 2025-08-26",
                       x = "Site", y = "Restoration Intensity")
+
+# ggplot
+# site_restInt_x
 
 # ggplotly(site_restInt_x)
 leg <- list(
@@ -354,8 +491,9 @@ leg <- list(
     color = "#000"))
 # xanchor = "center", too far left
 plot <- ggplotly(site_restInt_x)
-plot <- plot %>% layout(legend = list(x = 0.15, y = -0.5, orientation = 'h', size = 0.025))  
+plot <- plot %>% layout(legend = list(leg, x = 0.15, y = -0.5, orientation = 'h', size = 0.025))  
 plot <- plot %>% layout(legend = leg)
+
 #plot
 ggplotly(plot)
 ```

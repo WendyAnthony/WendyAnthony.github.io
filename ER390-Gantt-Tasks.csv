@@ -1,0 +1,33 @@
+task,status,pos,start,end
+Nancy suggested Topic ,crit,first_1,2025-07-22,2025-07-23
+Applied RNS,"crit, done",first_2,2025-08-21,2025-08-22
+Talked to Vanessa at HAT,crit,first_3,2025-08-27,2025-08-28
+Writing Proposal,crit,first_4,2025-08-22,5d
+Email Nancy & Vanessa,crit,first_5,2025-09-02,2025-09-03
+1st Semester,active,sm_1,2025-09-03,110d
+Work on Project,active,p_1,2025-09-03,2026-08-31
+Research R code,active,r_1,2025-09-03,220d
+Reseach Literature,active,r_2,2025-09-03,2026-05-31
+Created Gantt Chart timeline,active,c_2,2025-08-31,3d
+Creating RMarkdown code,done,m_1,2025-08-04,2025-08-31
+Create Tutorials,active,t_1,after m_1,220d
+Report templates,active,m_2,after m_1,180d
+Create Reports,active,m_2,after m_1,220d
+Data Vizualizations,active,c_3,2025-08-04,220d
+Created Shiny App,done,s_1,2025-08-18,2025-08-28
+Refining Shiny App,active,s_2,2025-08-18,220d
+Interactive Data Table,done,s_3,2025-08-18,2025-08-19
+Create Shiny Clone,active,s_4,2025-09-30,180d
+Example ECCC Data,"crit, done",d_1,2025-08-04,10d
+Consult HAT requirements,crit,h_1,2025-09-03,120d
+Gather HAT data,crit,d_2,2025-09-10,60d
+Analyze HAT data,crit,d_3,2025-09-10,90d
+Customize HAT themes & colours,active,e_1,2025-10-01,60d
+2nd Semester,active,sm_2,2026-01-05,110d
+Create R Package,active,e_2,2026-01-31,120d
+Gather new HAT data,crit,d_4,2026-05-01,30d
+Analyze HAT data,crit,d_5,2026-05-01,30d
+Incorporate New Data in Dataviz,active,d_6,2026-05-01,30d
+3rd Semester,active,sm_3,2026-05-06,110d
+Presentation to HAT,crit,p_2,2026-06-01,30d
+Write Final Report,crit,p_3,2026-01-15,2026-08-15

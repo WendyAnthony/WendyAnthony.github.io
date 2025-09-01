@@ -21,12 +21,12 @@ sidebarLayout(
   # sidebarPanel
   sidebarPanel(width = 3,
     span(style = "font-weight:bold; font-size:11px;", "Using the App: "),
-    span(style = "font-size:10px;", "Choose All or one Subregion/Site; click tab results: Table, Comparing Subregions, Comparing Sites"),
+    span(style = "font-size:12px;", "Choose All or one Subregion/Site; click tab results: Table, Comparing Subregions, Comparing Sites"),
     br(),br(),
     selectInput("Menu1","Choose a Subregion", choices = c("All", unique(geo_eccc_sites_2$Subregion))),
     selectInput("Menu2","Choose an Site", choices = c("All", unique(geo_eccc_sites_2$Site))),
     span(style = "font-weight:bold; font-size:11px;", "About the Data: "),
-    span(style = "font-size:9px;", "GOE Data from report tables: Malloff, J., & Shackelford, N. (2024). Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. Restoration Futures Lab at the University of Victoria.
+    span(style = "font-size:12px;", "GOE Data from report tables: Malloff, J., & Shackelford, N. (2024). Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. Restoration Futures Lab at the University of Victoria.
 ")
   ),
   # mainPanel
@@ -34,11 +34,11 @@ sidebarLayout(
     # tabsetPanel
 tabsetPanel(
   id = "tabset",
-  selected = "About This App",
-tabPanel("About This App",  htmlOutput("text")),
+  selected = "Data Table",
+tabPanel("About Proposed App",  htmlOutput("text")),
 tabPanel("Data Table", p(style = "font-size:9px;", "GOE Data from report tables: Malloff, J., & Shackelford, N. (2024). Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. Restoration Futures Lab at the University of Victoria.
 "), tableOutput("table1")),
-tabPanel("Comparing Subregions",
+tabPanel("Compare Subregions",
          p(style = "font-size:9px;", "GOE Data from report tables: Malloff, J., & Shackelford, N. (2024). Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. Restoration Futures Lab at the University of Victoria."),
          fluidRow(
             column(6, plotOutput("plot2")),
@@ -46,16 +46,17 @@ tabPanel("Comparing Subregions",
             #column(6, plotOutput("plot8")),
             column(6, plotOutput("plot9"))
          )),
-# tabs seem to break if I tryto reuse plot
-tabPanel("Comparing Sites",
+# tabs seem to break if I try to reuse plot
+tabPanel("Compare Sites",
          p(style = "font-size:9px;", "GOE Data from report tables: Malloff, J., & Shackelford, N. (2024). Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. Restoration Futures Lab at the University of Victoria.
 "),
          p(style = "font-size:11px;", "Note: Charts are interactive by hovering or clicking the data"),
          fluidRow(
            column(6, plotlyOutput("plot5")),
-           column(6, plotlyOutput("plot10")),
-           column(6, plotlyOutput("plot6")),
-           column(6, plotlyOutput("plot11"))
+#           column(6, plotlyOutput("plot10")),
+           column(6, plotlyOutput("plot6"))
+#,
+#           column(6, plotlyOutput("plot11"))
          ))
 #,
 # tabPanel("Plot Output",  plotOutput("plot")),
