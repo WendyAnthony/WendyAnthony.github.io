@@ -1,7 +1,8 @@
 ---
-title: "Project Proposal for Vizualizing HAT's GOE Monitoring Data"
+title: "ER390 Project Proposal"
+subtitle: "Vizualizing HAT's GOE Monitoring Data"
 author: "Wendy Anthony"
-date: "2025/08/31"
+date: "2025/09/01"
 output:
   html_document:
     df_print: paged
@@ -15,22 +16,9 @@ output:
   word_document:
     toc: yes
     toc_depth: '3'
-mainfont: Monaco
-fontsize: 11pt
+# mainfont: Monaco #default Times Roman
+# fontsize: 12pt # use with mainfont: Monaco
 ---
-
-```{r, output-option-pdf, , include=FALSE}
-# output: pdf_document
-```
-
-```{r, output-option-html, , include=FALSE}
-# output:
-#   html_document:
-#     toc: yes 
-#     toc_depth: 3
-#     toc_float: yes
-#     number_sections: yes
-```
 
 ```{r, setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -44,16 +32,17 @@ library(leaflet)
 library(DiagrammeR)
 ```
 
-# Idea for Draft Project Proposal
-- I am a student in UVic's Restoration of Natural Systems program interested in making a significant contribution to the local restoration community, and I'm looking to assist an interested community partner through the creation of a Final Restoration Project 
+# The Idea behind submitting this project proposal
+- I am a student in UVic's Restoration of Natural Systems program, as well as the equivalent of a double major in Environmental Studies and Geography, and a life-long learner with an interest in making a significant contribution to the local restoration community, and I'm looking to assist a willing community partner through the creation of a Final Restoration Project 
 - Nancy Shackelford (RNS Director) suggested that I might consider helping HAT GOE Monitoring Project of Southern Vancouver Island by creating a tool for vizualizing GOE Monitoring Data. 
 
 # Background
-- Data used for this proposal is from the report that HAT used as a model for their GOE Monitoring Project (Malloff & Shackelford, 2024)
-- use data to represent data in a visual manner,
+- Data used for this proposal is from two tables in the report that HAT used as a model for their GOE Monitoring Project (Malloff & Shackelford, 2024)
+- use data to represent data in a visual manner, to make it more understandable than a table of numbers (?? CITE ??)
 
 # Project Partner
-- I have already spoken to Vanessa Brownlee, Habitat Restoration Coordinator, Habitat Acquisition Trust (HAT) on 2025-08-27
+- I have already spoken to Vanessa Brownlee, Habitat Restoration Coordinator, Habitat Acquisition Trust (HAT) on 2025-08-27, who was very interested in my proposed project idea, and seemed willing to consider letting me start in Fall 2025.
+- I have already spoken briefly to Board Chair Andy MacKinnon at the HAT Social 2025-08-27, and he seemed keen to know I was interested in doing my RNS Final Project with HAT and was looking forward to know more about what I had in mind. 
 
 # Project Goals (overarching purpose)
 - I propose to create a customized, automatic coding and reporting tool, with tutorial instructions, using open-source tools like R libraries which can be used by non-coders at HAT for formatting and interactively visualizing data collected at multiple sites for their Garry Oak Ecosystem (GOE) Monitoring Program, to determine what stories the collected data may illustrate much easier than tables of numbers
@@ -72,9 +61,10 @@ library(DiagrammeR)
 
 # What I need
 ## From HAT
-- access to HAT GOE Monitoring Data 
+- permission to participate in a HAT-related project
+- access to HAT GOE Monitoring Data, including metadata
 - support, input, and feedback 
-- I met with Vanessa Brownlee 2025-08-27, who asked that I send her further information about my proposed project, and though still new to her position, she seemed to be willing for me to start this project in Fall 2025 semester 
+- I met with Vanessa Brownlee at the HAT Social 2025-08-27, who asked that I send her further information about my proposed project, and though still new to her position, she seemed to be willing for me to start this project in Fall 2025 semester 
 
 ## From RNS
 - support and supervision from RNS Nancy Shackelford, particularly before she goes on sabatical July 2026 
@@ -83,10 +73,10 @@ library(DiagrammeR)
 - I am a self-motivated, low maintenance student, very interested in the natural environment, and who loves to continue learning in meaningful ways, and help create useful digital tools to enhance the learning experience
 - I have extensive experience with coding using `R`, expecially with data visualization and mapping techniiques, often learning new method through self-researched knowledge as the need arose. 
 - My long-standing, keen interest in local Garry Oak Ecosystems, including helping remove invasive species and plant native species in a variety of local restoration projects, and while also observing changes over time, I am intrigued by learning how to visualize monitoring measurements to see if the data can help recognize if there are any patterns of change over time and location. 
-- I have already spent almost 30 hours (during August 2025), creating, cleaning, formatting, and filtering example data (Malloff & Shackelford, 2024), and then reviewing and learning the new-to-me R code I would need to complete this project. I feel confident I will be able to learn any other R code as will be deemed needed after consultation with HAT, and receiving HAT DATA to analyze its structure and formats 
-- I can also assist HAT with cleaning and formatting the raw data clean-up as needed 
+- I have already spent more than 30 hours (during August 2025), creating, cleaning, formatting, and filtering example data (Malloff & Shackelford, 2024), and then reviewing and learning the new-to-me R code I would need to complete this project. I feel confident I will be able to learn any other R code as will be deemed needed after consultation with HAT, and receiving HAT DATA to analyze its structure and formats 
+- I can also assist HAT with any raw data clean-up as needed, including creating R code for calculating any indices from the measurement data
 
-# Project Methods for HAT Data visualization (with Timeline)
+- (see Gantt Chart for proposed timeline and Mermaid Flow Chart for Methods Workflow)
 - Continue to research and learn how to code in Shiny reactively in order to make interactive data choices (e.g. a drop-down list of Sites) respond to a prior data choice (e.g. Subregions), in order to filter the results of specific interest. I'd like to extend these interactive choice reactions to the selection of monitoring variables being measured in order to be able to make custom-made visualizations and analysis with only a few clicks 
 - Sign any data confidentiality agreements as may be required by HAT
 - Consult with HAT restoration monitor team to explore and understand the nature of the collected data, data format (forms, spreadsheets), the variables that are being measured, any indices to be calculated using the collected data, what questions they would like to explore with the data
@@ -94,7 +84,8 @@ library(DiagrammeR)
 - Clean data, check for errors, inconsistencies, data quality, calculate values from raw data measurements
 - create file and variable naming protocols
 - Create data visualization plot charts that appropriate to reflect the nature of the variables being measured
-- Mermaid Flow Chart for Methods
+- Documents my methods, successes, and failures in the process of the project
+- Continual research for finding appropriate R coding methods, and to contribute to writing my final paper
 
 # Proposed Deliverables
 
@@ -140,61 +131,77 @@ library(DiagrammeR)
 \newpage
 # Workflow Graph
 ```{r ER390-mermaid-graph-shapes, echo=FALSE}
-DiagrammeR("
+DiagrammeR::DiagrammeR("
 graph TB
- A[Wendy]-- send proposal -->B[Vanessa HAT]
- A[Wendy]-- send proposal -->F[Nancy RNS]
- B-- decision needed -->C(Decide if I can start ER390 Fall 2025)
- F-- decision needed -->C(Decide if I can start ER390 Fall 2025)
- A-- analyzes & cleans -->B1(Data)
- B1-- results in -->G(Filtered Data)
- D-.->|if Yes ask for Data|B
- B-.->|send HAT data|A
- C-- if -->D((YES))
- C-- if -->E((NO))
- H[Variable Names]-- in -->G
- E-->I[Reconsider please?]
- I-- ask -->F
- A-- codes in -->K(RMarkdown)
- K-- to create -->J(DataVisualizations)
- J-- using -->H
- D-- begin -->L((Start Project))
- J-- used in -->M{Shiny}
- M-- reactively -->G
- L-- using -->K
- M-- produces user-chosen -->J
+
+A1[Wendy]
+A2[Vanessa HAT]
+A3[Nancy RNS]
+
+A((Start Project))
+D(Raw Data)
+E(Filtered Data)
+F[Variable Names]
+K(RMarkdown)
+V(DataVisualizations)
+R(Reports)
+S{Shiny app}
+D1((Deiverables))
+D2(Data Best practises protocols)
+D3(Report Templates)
+D4(Automatic Coding templates)
+D5(Tutorial: PDF, HTML, video)
+D6(Instruction manual)
+
+ A1-->A
+ A1-- consult -->A3
+ A3-- feedback -->A1
+ A2-- feedback -->A1
+ A3-- liaise -->A2
+ A1-.->|ask for Data|A2
+ A2-.->|send raw HAT data|D
+ A-- analyze & clean -->D
+ D-- results in -->E
+ A-- code in -->K
+ K-- to create -->V
+ V-- using -->F
+ F-- in -->E
+ V-- used in -->S
+ S-- reactively -->E
+ S-- produces user-chosen -->V
+ A-- produces -->R
+ A-- sends -->R
+ A-->D1
+ S-->D1
+ R-->D1
+ D2-->D1
+ D3-->D1
+ D4-->D1
+ D5-->D1
+ D6-->D1
  
  
- style A fill:#E5E25F, stroke:#333, stroke-width:1px  
- style B fill:#87AB51, stroke:#333, stroke-width:1px  
- style B1 fill:#9AA
- style C fill:#E5E25F, stroke:#333, stroke-width:2px  
- style D fill:#87AB51
- style E fill:#cf1d2f
- style F fill:#87AB51, stroke:#333, stroke-width:1px  
- style G fill:#9AA
- style H fill:
- style I fill:
- style J fill:
+ 
+ style A1 fill:#dff5f0, stroke:#333, stroke-width:2px  
+ style A2 fill:#dff5f0, stroke:#333, stroke-width:2px  
+ style A3 fill:#dff5f0, stroke:#333, stroke-width:2px  
+ style A fill:#c3faca, stroke:#333, stroke-width:3px  
+ style D fill:#ddfac3, stroke:#333, stroke-width:3px  
+ style D1 fill:#c3faca, stroke:#333, stroke-width:1px  
+ style D2 fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style D3 fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style D4 fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style D5 fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style D6 fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style E fill:#ddfac3, stroke:#333, stroke-width:3px  
+ style F fill:#cdd9c3
  style K fill:#E5E25F, stroke:#333, stroke-width:2px  
- style L fill:#87AB51, stroke:#333, stroke-width:3px  
+ style R fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style S fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style V fill:#E5E25F, stroke:#333, stroke-width:1px  
 ")
 # #3C8937 Forest Green
 
-# A Wendy
-# B Vanessa
-# B1 Data
-# C Decide if I can start ER390 Fall 2025
-# D Yes
-# E No
-# F Nancy
-# G Filtered Data
-# H Variable Names
-# I Reconsider please?
-# J DataVisualizations
-# K RMarkdown
-# L Start ER390 HAT Project
-# M Shiny
 ```
 
 \newpage
@@ -202,7 +209,7 @@ graph TB
 - red coloured items are considered critical  
 - grey items are completed  
 ```{r gantt, echo=FALSE, include=TRUE, message=FALSE}
-ER390_gantt <- read.csv("ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
+ER390_gantt <- read.csv("data/ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
 # str(ER390_gantt)
 # NOTE: dates need to be chr in order for Gantt code to work properly
 # names(ER390_gantt)
@@ -249,10 +256,11 @@ mermaid(
 ## Load Site Data
 <details><summary><b><i>Click to see results of `data`</i></b></summary><p>
 ```{r, load-data, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+## Details doesn't work in pdf - remove when knitting
 # Site Data
-geo_eccc <- read.csv("SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
+geo_eccc <- read.csv("data/SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
 # Site Details
-Sites_eccc <- read.csv("SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
+Sites_eccc <- read.csv("data/SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
 ```
 
 </p></details>
@@ -286,7 +294,7 @@ names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Area.ha"] <- "Area_ha"
 ```
 
 ```{r, create-csv-combined-datasets, echo=FALSE, results=FALSE, results='hide', message=FALSE}
-write.csv(geo_eccc_sites_1, "geo_eccc_all_site_data.csv", row.names = FALSE)
+write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE)
 ```
 
 \newpage
@@ -296,7 +304,7 @@ write.csv(geo_eccc_sites_1, "geo_eccc_all_site_data.csv", row.names = FALSE)
 ## Data Table (Malloff & Shackelford, 2024)
 
 ### Full Data Table
-
+- the full table is too wide for use in pdf because variable names are too long
 ```{r, data table_html, echo=FALSE}
 # for html
 DT::datatable(geo_eccc_sites_1)
@@ -337,14 +345,13 @@ kableExtra::kable(
 ## Map of Site Locations
 
 ### Leaflet Map with Circle Markers 
-- Data from previous data table is summarized in the map marker popups 
-- click markers to open site data summary window 
+- Data  is summarized in map marker popups with summary of site data
 
 ```{r    aflet_map_circle_markers_sized_radius, echo=FALSE}
 # not supported by docx format
 # , fig.align = 'center'
 
-geo_eccc_sites_1 <- read.csv("geo_eccc_all_site_data.csv")
+geo_eccc_sites_1 <- read.csv("data/geo_eccc_all_site_data.csv")
 
 library(dplyr)
 library(leaflet)
@@ -387,13 +394,13 @@ ECCC_map_2 <- leaflet(geo_eccc_sites_1) %>%
 
 # Display map
 ECCC_map_2
-saveWidget(ECCC_map_2, "ECCC_map_2.html")
+saveWidget(ECCC_map_2, "output/ECCC_map_2.html")
 ```
 
 \newpage
 
 ## Subregion Plots
-
+- these plots compare a variable of 2 Subregions
 ```{r, plots_Exotic_species, echo=FALSE, results=FALSE, results='hide', include=FALSE, message=FALSE}
 subregion_exsp <- ggplot(geo_eccc, 
                     aes(x = Subregion, y = Exotic_species)) +
@@ -498,36 +505,4 @@ plot <- plot %>% layout(legend = leg)
 ggplotly(plot)
 ```
 
-
-\newpage
-
-### Point Plot: Individual Site - Uplands Variables of Degradation
-
-```{r, plots-Uplands-Degrade, echo=FALSE}
-# Uplands
-Uplands <- geo_eccc_1[24, ]
-Uplands <- Uplands[, -c(1,2,3,4,8,9,10)]
-# names(Uplands)
-Uplands_long <- Uplands %>% pivot_longer(everything(), names_to = "variable", values_to = "value")
-
-Uplands_long_plot <- ggplot(Uplands_long,
-                aes(x = variable,
-                    y = value)) +
-      ylim(0, 50) +
-      geom_point(shape = 17, 
-                 color = "red", 
-                 fill = "red",
-                 size = 2) +
-      theme_minimal() +                        theme(legend.position="none") +
-      theme(
-        axis.text.x = 
-          element_text(angle = 25, 
-                       vjust = 1,
-                       hjust=1, 
-                       size = 7)) +
-      labs(title='Plotting Uplands Degradation Variables',
-        subtitle='ECCC (Malloff & Shackelford, 2024)',
-        caption = "Chart by Wendy Anthony \n 2025-08-30")
-Uplands_long_plot
-```
 
