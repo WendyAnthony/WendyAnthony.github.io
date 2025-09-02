@@ -4,15 +4,15 @@ subtitle: "Vizualizing HAT's GOE Monitoring Data"
 author: "Wendy Anthony"
 date: "2025/09/01"
 output:
-  pdf_document:
-    latex_engine: xelatex
-    toc: yes
   html_document:
     df_print: paged
     toc: yes
     toc_depth: 3
     toc_float: yes
     number_sections: yes
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
   word_document:
     toc: yes
     toc_depth: '3'
