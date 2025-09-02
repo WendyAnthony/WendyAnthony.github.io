@@ -2,17 +2,17 @@
 title: "ER390 Project Proposal"
 subtitle: "Vizualizing HAT's GOE Monitoring Data"
 author: "Wendy Anthony"
-date: "2025/09/01"
+date: "2025/09/02"
 output:
-  pdf_document:
-    latex_engine: xelatex
-    toc: yes
   html_document:
     df_print: paged
     toc: yes
     toc_depth: 3
     toc_float: yes
     number_sections: yes
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
   word_document:
     toc: yes
     toc_depth: '3'
@@ -43,6 +43,7 @@ library(DiagrammeR)
 # Project Partner
 - I have already spoken to Vanessa Brownlee, Habitat Restoration Coordinator at Habitat Acquisition Trust (HAT) on 2025-08-27, who was very interested in my proposed project idea, and Vanessa seemed willing to consider letting me start in Fall 2025.
 - I have also already spoken briefly to Board Chair Andy MacKinnon at the HAT Social 2025-08-27, and he seemed keen to know I was interested in doing my RNS Final Project with HAT and was looking forward to know more about what I had in mind. 
+- I would be prepared to make a presentation to the board to request HAT approval for this ER390 Final Restoration Project if that would be helpful.
 
 # Project Goals and Overall Purpose
 - I propose to create a customized, automatic coding and reporting tool, using open-source tools R package libraries, which can be used by non-coders at HAT for data formatting and interactively visualizing data collected at multiple sites for their Garry Oak Ecosystem (GOE) Monitoring Program, including tutorial instructions, to determine what stories the collected data may illustrate, as an easier way for communication data information than looking at tables of numbers.
