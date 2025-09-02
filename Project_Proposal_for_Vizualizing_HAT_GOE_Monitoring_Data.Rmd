@@ -4,15 +4,15 @@ subtitle: "Vizualizing HAT's GOE Monitoring Data"
 author: "Wendy Anthony"
 date: "2025/09/01"
 output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
   html_document:
     df_print: paged
     toc: yes
     toc_depth: 3
     toc_float: yes
     number_sections: yes
-  pdf_document:
-    latex_engine: xelatex
-    toc: yes
   word_document:
     toc: yes
     toc_depth: '3'
@@ -48,7 +48,7 @@ library(DiagrammeR)
 - I propose to create a customized, automatic coding and reporting tool, using open-source tools R package libraries, which can be used by non-coders at HAT for data formatting and interactively visualizing data collected at multiple sites for their Garry Oak Ecosystem (GOE) Monitoring Program, including tutorial instructions, to determine what stories the collected data may illustrate, as an easier way for communication data information than looking at tables of numbers.   
 
 # Project Objectives (SMART actionable targets)
-- see Gantt Chart for timeline, and DiagrammeR flowchart for work flow
+- See flowchart for work flow (fig.1), and Gantt Chart for timeline (fig.2)
 - Analyze the collected data to understand the underlying structure, while ensuring the use of consistent naming protocols for variables, and formatting data to be usable for use with data visualization code.
 - Write data visualization code, using RStudio, RMarkdown, and RShiny, to create appropriate visualizations to enable a better understanding of the collected data.
 - Customize data tools to reflect a consistent style that uses HAT's colours, logos, and plotting themes.
@@ -77,8 +77,7 @@ library(DiagrammeR)
 - I can also assist HAT with any raw data clean-up as needed, including creating R code for calculating any indices from the measurement data
 
 # Project Methods for HAT Data visualization
-- (see Gantt Chart for proposed timeline and Mermaid 
-Flow Chart for Methods Workflow)
+- See flowchart for work flow (fig.1), and Gantt Chart for timeline (fig.2)
 - Continue to research and learn how to code in Shiny reactively in order to make interactive data choices (e.g. a drop-down list of Sites) respond to a prior data choice (e.g. Subregions), in order to filter the results of specific interest. I'd like to extend these interactive choice reactions to the selection of monitoring variables being measured in order to be able to make custom-made visualizations and analysis with only a few clicks 
 - Sign any data confidentiality agreements as may be required by HAT
 - Consult with HAT restoration monitor team to explore and understand the nature of the collected data, data format (forms, spreadsheets), the variables that are being measured, any indices to be calculated using the collected data, what questions they would like to explore with the data
@@ -90,8 +89,7 @@ Flow Chart for Methods Workflow)
 - Continual research for finding appropriate R coding methods, and to contribute to writing my final paper
 
 # Proposed Deliverables
-- (see Gantt Chart for proposed timeline and Mermaid 
-Flow Chart for Methods Workflow)
+- See flowchart for work flow (fig.1), and Gantt Chart for timeline (fig.2)
 - All of the following will be created using RStudio
 
 ## Data Visualizations
@@ -140,88 +138,6 @@ Flow Chart for Methods Workflow)
 \newpage
 # Workflow Graph
 - The workflow shows how the raw data, from HAT monitoring measurements, is transformed and included in code to produce a variety of deliverable products.
-```{r ER390-mermaid-graph-shapes, echo=FALSE}
-# DiagrammeR::DiagrammeR("
-# graph TB
-# 
-# A1[Wendy]
-# A2[Vanessa HAT]
-# A3[Nancy RNS]
-# 
-# A((Start Project))
-# D(Raw Data)
-# E(Filtered Data)
-# F[Variable Names]
-# K(RMarkdown)
-# V(DataVisualizations)
-# R(Reports)
-# S{Shiny app}
-# D1((Deiverables))
-# D2(Data Best practises protocols)
-# D3(Report Templates)
-# D4(Automatic Coding templates)
-# D5(Tutorial: PDF, HTML, video)
-# D6(Instruction manual)
-# P(Presentation)
-# RP(R Package)
-# W(Written Report)
-# 
-#  A1-->A
-#  A1-.->|consult|A3
-#  A3-.->|feedback|A1
-#  A2-.->|feedback|A1
-#  A3-.->|liaise|A2
-#  A1-.->|ask for Data|A2
-#  A2-.->|send raw HAT data|D
-#  A-- analyze & clean -->D
-#  D-- results in -->E
-#  A-- code in -->K
-#  K-- to create -->V
-#  V-- using -->F
-#  F-- in -->E
-#  V-- used in -->S
-#  S-- reactively -->E
-#  S-- produces user-chosen -->V
-#  A-- produces -->R
-#  A-- sends -->R
-#  A-- e.g. -->D1
-#  S-- e.g. -->D1
-#  R-- e.g. -->D1
-#  D2-- e.g. -->D1
-#  D3-- e.g. -->D1
-#  D4-- e.g. -->D1
-#  D5-- e.g. -->D1
-#  D6-- e.g. -->D1
-#  P-- e.g. -->D1
-#  RP-- e.g. -->D1
-#  W-->D1
-#  
-#  style A1 fill:#dff5f0, stroke:#333, stroke-width:2px  
-#  style A2 fill:#dff5f0, stroke:#333, stroke-width:2px  
-#  style A3 fill:#dff5f0, stroke:#333, stroke-width:2px  
-#  style A fill:#c3faca, stroke:#333, stroke-width:3px  
-#  style D fill:#ddfac3, stroke:#333, stroke-width:3px  
-#  style D1 fill:#c3faca, stroke:#333, stroke-width:1px  
-#  style D2 fill:#E5E25F, stroke:#333, stroke-width:1px  
-#  style D3 fill:#E5E25F, stroke:#333, stroke-width:1px  
-#  style D4 fill:#E5E25F, stroke:#333, stroke-width:1px  
-#  style D5 fill:#E5E25F, stroke:#333, stroke-width:1px  
-#  style D6 fill:#E5E25F, stroke:#333, stroke-width:1px  
-#  style E fill:#ddfac3, stroke:#333, stroke-width:3px  
-#  style F fill:#cdd9c3
-#  style K fill:#E5E25F, stroke:#333, stroke-width:2px  
-#  style P fill:#E5E25F, stroke:#333, stroke-width:1px  
-#  style R fill:#E5E25F, stroke:#333, stroke-width:1px  
-#  style RP fill:#E5E25F, stroke:#333, stroke-width:1px  
-#  style S fill:#E5E25F, stroke:#333, stroke-width:1px  
-#  style V fill:#E5E25F, stroke:#333, stroke-width:1px  
-#  style W fill:#E5E25F, stroke:#333, stroke-width:1px  
-# 
-# ")
-# # #3C8937 Forest Green
-
-```
-
 
 ```{r ER390-2-mermaid-graph-shapes, echo=FALSE}
 DiagrammeR::DiagrammeR("
@@ -333,11 +249,13 @@ W(Written Report)
 # S1[Interactive user-created data viz]
 # W1[final writeup]
 ```
+fig.1: ER390 Methods Workflow Diagram 
 
 \newpage
 # Proposed Timeline (Look at SMART Objectives)
 - red coloured items are considered critical  
 - grey items are completed  
+
 ```{r gantt, echo=FALSE, include=TRUE, message=FALSE}
 ER390_gantt <- read.csv("data/ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
 # str(ER390_gantt)
@@ -373,6 +291,7 @@ mermaid(
 )
   
 ```
+fig.2: Gantt Proposed ER390 Timeline 
 
 \newpage
 ***
@@ -464,12 +383,13 @@ write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE
 ## Data Table (Malloff & Shackelford, 2024)
 
 ### Full Data Table
+
 - The full table is too wide for use in pdf because current variable names are too long.
+
 ```{r, data table_html, echo=FALSE}
 # for html
 DT::datatable(geo_eccc_sites_1)
 ```
-
 
 ### Table Head of Site Information
 
@@ -501,6 +421,8 @@ kableExtra::kable(
   kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
 ```
 
+fig.3,4,5: Example Data Table
+
 \newpage
 ## Map of Site Locations
 
@@ -508,7 +430,7 @@ kableExtra::kable(
 - The Leaflet Map is created using R code in RMarkdown.
 - Data  is summarized in map marker popups with summary of site data
 
-```{r    aflet_map_circle_markers_sized_radius, echo=FALSE}
+```{r Leaflet_map_circle_markers_sized_radius, echo=FALSE}
 # not supported by docx format
 # , fig.align = 'center'
 
@@ -557,11 +479,12 @@ ECCC_map_2 <- leaflet(geo_eccc_sites_1) %>%
 ECCC_map_2
 saveWidget(ECCC_map_2, "output/ECCC_map_2.html")
 ```
-
+fig.6: Interactive Leaflet Map with Example Sites Data
 \newpage
 
 ## Subregion Plots
 - These plot compare monitoring variable measurement results between two Subregions.
+
 ```{r, plots_Exotic_species, echo=FALSE, results=FALSE, results='hide', include=FALSE, message=FALSE}
 subregion_exsp <- ggplot(geo_eccc, 
                     aes(x = Subregion, y = Exotic_species)) +
@@ -595,6 +518,7 @@ subregion_nsp
 ```
 
 ### Violin/Bar Plot: Compare Subregions Exotic and Native Species
+
 ```{r, cowplot_violin_subr, echo=FALSE}
 library(cowplot)
 
@@ -608,6 +532,8 @@ subregion_nsp_1 <- subregion_nsp + labs(title='Native Species',
 
 plot_grid(subregion_exsp_1, subregion_nsp_1, labels = "AUTO")
 ```
+
+fig.7: Violin / bar plot comparing variables of 2 Subregions
 
 \newpage
 
@@ -665,5 +591,7 @@ plot <- plot %>% layout(legend = leg)
 #plot
 ggplotly(plot)
 ```
+fig.8: Point Plot of Restoration Intensity of Example Sites
+
 
 
