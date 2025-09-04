@@ -270,6 +270,7 @@ mermaid(
 )
   
 ```
+
 Figure 2: Gantt Proposed ER390 Timeline 
 
 \newpage
