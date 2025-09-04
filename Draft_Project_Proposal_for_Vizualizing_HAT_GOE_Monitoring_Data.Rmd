@@ -35,7 +35,7 @@ library(DiagrammeR)
 # The Idea behind submitting this project proposal
 - I am a student in UVic's Restoration of Natural Systems program, as well as having the equivalent of a double major in Environmental Studies and Geography, and being a life-long learner with an interest in making a significant contribution to the local restoration community, and I'm looking to assist a willing community partner through the creation of my Final RNS Restoration Project. 
 - Nancy Shackelford (RNS Director) suggested that I might consider helping HAT GOE Monitoring Project of Southern Vancouver Island by creating a tool for vizualizing GOE Monitoring Data. 
-- I propose starting this project in the Fall term, and while HAT is preparing to share data later in October, I could continue on the coding work I started in August (over 35 hours logged so far), and create automatic code function snippets that can be reused by just changing the choice of variable, which could then be incorporated into an R Package. When HAT is ready for me in October, I should be able to find ways to use R code to help clean their data.
+- I propose starting this project in the Fall term, and while HAT is preparing to share data later in October, I could continue on the coding work I started in August (over 35 hours logged so far), and create automatic code function snippets that can be reused by just changing the choice of variable, which could then be incorporated into an R Package. When HAT is ready for me in October, I should be able to find ways to use R code to help clean their data. See [Proposed Gantt Timeline Chart](#gantt)
 
 
 # Background 
@@ -52,7 +52,7 @@ library(DiagrammeR)
 - This project proposal has been completed using code in RMarkdown, as a showcase of the types of visualizations tools and reports that I propose to offer HAT, adapting the code to be based on HAT monitoring data.
 
 # Project Objectives (SMART actionable targets)
-- See flowchart for work flow (Figure 1), and Gantt Chart for proposed timeline (Figure 2)
+- See Work flow [Flowchart, Figure 1](#workflow), and Gantt Chart [Proposed Timeline, Figure 2](#gantt))
 - **Analyze the collected data** to understand the underlying structure, while ensuring the use of consistent naming protocols for variables, and formatting data to be usable for use with data visualization code.
 - **Write data visualization code**, using RStudio, RMarkdown, and RShiny, to create appropriate visualizations to enable a better understanding of the collected data.
 - **Customize data tools** to reflect a consistent style that uses HAT's colours, logos, and plotting themes.
@@ -60,6 +60,7 @@ library(DiagrammeR)
 - **Create scaleable data visualization tools** that can have more sites added, with different measuring and sensitivity criteria (e.g. First Nations GOE sites), as well as multi-year data.
 - **Track differences between individual sites** using variables such as native species, exotic species, and other metrics or indices that HAT measures
 - **Create custom R functions** for reading, analyzing, and plotting data, which could be incorporated into a customized R package for HAT. 
+- **Create tools for next season use**  to ensure consistent use of data variable names, and to incorporate any lessons learned in the process of working with it data in year one.
 - **Create an interactive, web-browser-based Shiny App** for user-chosen, custom-make data visualization plots and maps for selected location(s) and variables, with the ability to save and download the resulting data, html widgets, plot images, interactive web maps, and perform statistical analysis.
 - **Recognize the sensitive and confidential nature of First Nations data** by, after receiving consent, creating separate data visualization code, that may also require using different variables depending on the individual land project goals.
 
@@ -109,6 +110,9 @@ library(DiagrammeR)
 - easy to understand 
 - customized 
 
+## Create Report Templates
+- for customized individual site reports, as well as total project reports, and others as requested by HAT
+
 ## Best practises for file naming, variable, naming, etc.
 - ensure consistency in naming files, variables, file folder structure
 
@@ -128,7 +132,7 @@ library(DiagrammeR)
 - McKay, S. K. (2020). Data visualization for ecological analysis and restoration. US Army Corp of Engineers:Ecosystem Management and Restoration Research Program (EMRRP) Webinar Series. https://cw-environment.erdc.dren.mil/webinars/20Feb5-EcoMod-DataViz.pdf
 
 \newpage
-# Workflow Graph
+# Workflow Graph {#workflow}
 - The workflow shows how the raw data, from HAT monitoring measurements, would be transformed and included in code to produce a variety of deliverable products.
 - This graph is made with code from DiagrammeR, using a colour-blind friendly colour palette.
 
@@ -256,9 +260,11 @@ W(Written Report)
 Figure 1: Project method workflow diagram for ER390 data visualization for HAT
 
 \newpage
-# Proposed Timeline (Look at SMART Objectives)
+# Proposed Timeline (Look at SMART Objectives) {#gantt}
 - red coloured items are considered critical  
 - grey items are completed  
+- Note: This chart was coded with DiagrammeR using an imported csv file of data
+
 
 ```{r gantt, echo=FALSE, include=TRUE, message=FALSE}
 ER390_gantt <- read.csv("data/ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
