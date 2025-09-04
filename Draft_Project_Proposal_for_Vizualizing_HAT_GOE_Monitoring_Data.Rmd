@@ -75,7 +75,7 @@ I propose to create a customized, automatic coding and reporting tool, using ope
 # Proposed Deliverables {#deliverables} 
 See *[WorkFlowchart, Figure 1](#workflow)*, and *[Proposed Timeline, Figure 2](#gantt)*; All deliverables created using RStudio
 
-**Data Visualizations**: Including data tables, plots, interactive maps; for individual sites, comparing sites, or confidentially for First Nations; See next section *[example visualization](#)*
+**Data Visualizations**: Including data tables, plots, interactive maps; for individual sites, comparing sites, or confidentially for First Nations; See *[Example Visualization](#visualizations)* in next section 
 
 **RMarkdown Data Processing Document**: Data downloading, data cleaning and preparation; create data visualizations; Create reports in HTML, pdf, or Word with plot output images, or code snippets
 
@@ -97,7 +97,7 @@ See *[WorkFlowchart, Figure 1](#workflow)*, and *[Proposed Timeline, Figure 2](#
 
 \newpage
 # Workflow Graph {#workflow}
-- See [Objectives](#objectives), [Methods](#methods), and [Deliverables](#deliverables)
+- See *[Objectives](#objectives), [Methods](#methods), and [Deliverables](#deliverables)*
 - The workflow shows how the raw data, from HAT monitoring measurements, would be transformed and included in code to produce a variety of deliverable products.
 - This graph is made with code from DiagrammeR, using a colour-blind friendly colour palette.
 
