@@ -1,0 +1,606 @@
+---
+title: "Draft ER390 Project Proposal"
+subtitle: "Vizualizing HAT's GOE Monitoring Data"
+author: "Wendy Anthony"
+date: "2025/09/03"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: yes
+  word_document:
+    toc: yes
+    toc_depth: '3'
+# mainfont: Monaco #default Times Roman
+# fontsize: 12pt # use with mainfont: Monaco
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, load-libraries, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+library(shiny)
+library(tidyverse)
+library(plotly)
+library(leaflet)
+library(DiagrammeR)
+```
+
+# The Idea behind submitting this project proposal
+- I am a student in UVic's Restoration of Natural Systems program, as well as having the equivalent of a double major in Environmental Studies and Geography, and being a life-long learner with an interest in making a significant contribution to the local restoration community, and I'm looking to assist a willing community partner through the creation of my Final RNS Restoration Project. 
+- Nancy Shackelford (RNS Director) suggested that I might consider helping HAT GOE Monitoring Project of Southern Vancouver Island by creating a tool for vizualizing GOE Monitoring Data. 
+- I propose starting this project in the Fall term, and while HAT is preparing to share data later in October, I could continue on the coding work I started in August (over 35 hours logged so far), and create automatic code function snippets that can be reused by just changing the choice of variable, which could then be incorporated into an R Package. When HAT is ready for me in October, I should be able to find ways to use R code to help clean their data.
+
+
+# Background 
+- Data used for this proposal is from two tables in the report that HAT used as a model for their GOE Monitoring Project (Malloff & Shackelford, 2024). In order to compare monitoring results from multiple restoration projects, consistent measurements of vegetation composition (e.g. native and exotic species cover) may help identify responses to the stressors affecting already compromised and rare Garry Oak Ecosystems. Representing data in a visual manner can help make complex data more understandable than a table of numbers, and may reveal patterns or trends resulting from different restoration management actions (Malloff & Shackelford, 2024).
+- Data visualization can represent abstract information visually, allowing for data exploration and analysis, modelling restoration management alternatives,  data-based story-telling, and communicating potential insights, to help understand and make restoration management decisions. Using RMarkdown to generate reports helps create research methods that are reproducible (McKay, 2020). 
+
+# Project Partner
+- I have already spoken to Vanessa Brownlee, Habitat Restoration Coordinator at Habitat Acquisition Trust (HAT) on 2025-08-27, who was very interested in my proposed project idea, and Vanessa seemed willing to consider letting me start in Fall 2025.
+- I have also already spoken briefly to Board Chair Andy MacKinnon at the HAT Social 2025-08-27, and he seemed keen to know I was interested in doing my RNS Final Project with HAT and was looking forward to know more about what I had in mind. 
+- I am prepared to be guided by HAT's preferences as I offer my help to create a tool to automate some data indices calculations and visualization that would hopefully prove to be useful, and adaptable, to HAT's long-term monitoring programs.
+
+# Project Goals and Overall Purpose
+- I propose to create a customized, automatic coding and reporting tool, using open-source tools R package libraries, which can be used by non-coders at HAT for data formatting and interactively visualizing data collected at multiple sites for their Garry Oak Ecosystem (GOE) Monitoring Program, including tutorial instructions, to determine what stories the collected data may illustrate, as an easier way for communication data information than looking at tables of numbers.
+- This project proposal has been completed using code in RMarkdown, as a showcase of the types of visualizations tools and reports that I propose to offer HAT, adapting the code to be based on HAT monitoring data.
+
+# Project Objectives (SMART actionable targets)
+- See flowchart for work flow (Figure 1), and Gantt Chart for proposed timeline (Figure 2)
+- **Analyze the collected data** to understand the underlying structure, while ensuring the use of consistent naming protocols for variables, and formatting data to be usable for use with data visualization code.
+- **Write data visualization code**, using RStudio, RMarkdown, and RShiny, to create appropriate visualizations to enable a better understanding of the collected data.
+- **Customize data tools** to reflect a consistent style that uses HAT's colours, logos, and plotting themes.
+- **Create RMarkdown documents**, with reusable code, useable without needing to know how to code to automatically download and format data, create data visualizations, and produce reports for the whole project and individual sites.
+- **Create scaleable data visualization tools** that can have more sites added, with different measuring and sensitivity criteria (e.g. First Nations GOE sites), as well as multi-year data.
+- **Track differences between individual sites** using variables such as native species, exotic species, and other metrics or indices that HAT measures
+- **Create custom R functions** for reading, analyzing, and plotting data, which could be incorporated into a customized R package for HAT. 
+- **Create an interactive, web-browser-based Shiny App** for user-chosen, custom-make data visualization plots and maps for selected location(s) and variables, with the ability to save and download the resulting data, html widgets, plot images, interactive web maps, and perform statistical analysis.
+- **Recognize the sensitive and confidential nature of First Nations data** by, after receiving consent, creating separate data visualization code, that may also require using different variables depending on the individual land project goals.
+
+# Project Methods for HAT Data visualization
+- See flowchart for work flow (Figure 1), and Gantt Chart for timeline (Figure 2)
+- Continue to research and learn how to code in Shiny reactively in order to make interactive data choices (e.g. a drop-down list of Sites) respond to a prior data choice (e.g. Subregions), in order to filter the results of specific interest. I'd like to extend these interactive choice reactions to the selection of monitoring variables being measured in order to be able to make custom-made visualizations and analysis with only a few clicks 
+- Sign any data confidentiality agreements as may be required by HAT
+- Consult with HAT restoration monitor team to explore and understand the nature of the collected data, data format (forms, spreadsheets), the variables that are being measured, any indices to be calculated using the collected data, what questions they would like to explore with the data
+- Create a Project folder, with subfolders for R scripts, raw data, processed data, images, reports, download a copy of the current data (including any meta data e.g. measurement units, description of measurement variable, date collected, etc)
+- Analyze and clean data, check for errors, inconsistencies, data quality, calculate indices values from raw data measurements
+- create file and variable naming protocols
+- Create data visualization plot charts that appropriate to reflect the nature of the variables being measured
+- Documents my methods, successes, and failures in the process of the project
+- Continual research for finding appropriate R coding methods, and to contribute to writing my final paper
+
+# Proposed Deliverables
+- See flowchart for work flow (Figure 1), and Gantt Chart for timeline (Figure 2)
+- All of the following deliverables will be created using RStudio
+
+## Data Visualizations
+- See example visualization results in next section
+- data tables, chart plots, interactive maps 
+- for individual sites
+- for comparing sites (all together, or grouped by subregion, or separately by First Nations if they choose to participate)
+- statistical analysis, and data summary stats (depending on HAT goals)
+
+## RMarkdown Data Processing Document 
+- for data downloading, cleaning, and formatting data visualizations 
+- explain process for preparing data for use 
+- can be used to create HTML, pdf, or Word reports, with table of contents, plot output images, and even code if desired 
+- HTML Document includes a linked Table of Contents for easy navigation between sections 
+
+## Customizations for Plot-Charts, Reports, and Shiny App
+- colour palette for background app
+- change default colour palette in data vizualization plots from pink and blue to some other colour appropriate to HAT and the data
+- add HAT logo
+- add colour to Shiny tabs
+- create custom HAT plot chart theme, including colours, backgrounds, etc 
+- Individual site reports
+
+## Shiny App Interactive Data Viz Tool 
+- https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/ 
+- using data processed with RMarkdown document 
+- for choosing data variables to visualize in tables, plot charts, and maps 
+
+## Tutorials for using Data visualization Tools
+- easy to understand 
+- customized 
+
+## Best practises for file naming, variable, naming, etc.
+- ensure consistency in naming files, variables, file folder structure
+
+## Write R program for Hat’s requirements
+- Given time, and HAT’s interest, I would be prepared to create a HAT-specific R program library, with all the functions required to create the data visualizations and reports for HAT’s monitoring program
+
+## Presentation
+- The completed project will be presented to my community partner HAT
+- The presentation would include a slide show, live demonstrations of Data Visualization Tools, and a draft copy of my final written report, with the final approved copy sent to HAT when finished and ready to be published.
+
+## Written Report
+- The final RNS report will document the work I did to complete this project 
+- Report will follow the expectations of RNS program, including format (submit as Word document) and length (5000 words), due 2026-08-15, to eventually be published in the online journal Ecorestoration: RNS Technical Series
+
+# Bibliography
+- Malloff, J., & Shackelford, N. (2024). <i>Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems.</i> Restoration Futures Lab at the University of Victoria. 
+- McKay, S. K. (2020). Data visualization for ecological analysis and restoration. US Army Corp of Engineers:Ecosystem Management and Restoration Research Program (EMRRP) Webinar Series. https://cw-environment.erdc.dren.mil/webinars/20Feb5-EcoMod-DataViz.pdf
+
+\newpage
+# Workflow Graph
+- The workflow shows how the raw data, from HAT monitoring measurements, would be transformed and included in code to produce a variety of deliverable products.
+- This graph is made with code from DiagrammeR, using a colour-blind friendly colour palette.
+
+```{r ER390-2-mermaid-graph-shapes, echo=FALSE}
+DiagrammeR::DiagrammeR("
+graph TB
+
+A1[Wendy]
+A2[Nancy - RNS]
+A3[Vanessa - HAT]
+
+A((Project))
+C((Code))
+D(Raw Data)
+E(Transformed & Filtered Data)
+F[Variable Names]
+K{RMarkdown}
+RC[Reusable Code]
+V{DataVisualizations}
+RT{Report Templates}
+MR{Make Reports}
+IA{Interactive Web Shiny App}
+S(Shiny app)
+D1((Deliverables))
+D2(Data Best practises)
+D3(Reports)
+D4(Data Vizualizations)
+D5(Instruction Tutorials)
+D6(RMarkdown Documents)
+D7(Customizations)
+P(Presentation to HAT)
+RP(R Package)
+U(User Interaction)
+W(Written Report)
+
+ A1-.->|begins|A
+ A1-.->|consult|A2
+ A2-.->|feedback|A1
+ A3-.->|feedback|A1
+ A2-.->|liaise|A3
+ A3-.->|share Data|A1
+ A3-.->|Feature Requests|A1
+ A3-.->|send raw HAT data|D
+ A-- Wendy creates -->C
+ A-->D1
+ C-- analyze & clean -->D
+ D-- Data Transformations results in -->E
+ C-- code in -->K
+ K-- to create -->V
+ V-- using -->F
+ F-- in -->E
+ MR-- from -->K
+ V-- used in -->IA
+ IA-- acts reactively with -->E
+ IA-- produces user-chosen -->V
+ K-- produces -->RC
+ RC-- used in -->V
+ RC-- used in -->RT
+ K-- produces -->RT
+ D1-- e.g. -->D6
+ D1-- e.g. -->D4
+ D1-- e.g. -->S
+ D1-- e.g. -->D2
+ D1-- e.g. -->D5
+ D1-- e.g. -->D7
+ D1-- e.g. -->D3
+ D1-- e.g. -->RP
+ D1-- e.g. -->P
+ D1-->W
+ 
+ style A1 fill:#f6e8c3, stroke:#333, stroke-width:2px  
+ style A3 fill:#f6e8c3, stroke:#333, stroke-width:2px  
+ style A2 fill:#f6e8c3, stroke:#333, stroke-width:2px  
+ style A fill:#80cdc1, stroke:#333, stroke-width:3px  
+ style C fill:#35978f, stroke:#333, stroke-width:1px  
+ style D fill:#c7eae5, stroke:#333, stroke-width:3px  
+ style D1 fill:#80cdc1, stroke:#333, stroke-width:1px  
+ style D2 fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style D3 fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style D4 fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style D5 fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style D6 fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style D7 fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style E fill:#c7eae5, stroke:#333, stroke-width:3px  
+ style F fill:#c7eae5, stroke:#333, stroke-width:3px  
+ style IA fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style K fill:#dfc27d, stroke:#333, stroke-width:2px  
+ style MR fill:#dfc27d, stroke:#333, stroke-width:2px  
+ style P fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style RC fill:#c7eae5, stroke:#333, stroke-width:3px  
+ style RP fill:#dfc27d, stroke:#333, stroke-width:1px 
+ style RT fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style S fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style V fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style W fill:#dfc27d, stroke:#333, stroke-width:1px  
+
+")
+# #3C8937 Forest Green
+ #99cc6e
+
+# colourblind friendly colours
+# https://colorbrewer2.org/#type=diverging&scheme=BrBG&n=9
+
+
+#bf812d
+#dfc27d
+#f6e8c3
+#f5f5f5
+#c7eae5
+#80cdc1
+#35978f
+
+# D2(Data - Best practises protocols)
+# D5(Tutorial: PDF, HTML, video, Instruction manual)
+# D21[File Protocols - naming, saving ]
+# D31[Templates, auto creation]
+# D41[Automatic Coding Templates]
+# D51[Instructions for use]
+# P1[to HAT]
+# RP1[create R library with reusable functions]
+# R1[customized automatically created]
+# S1[Interactive user-created data viz]
+# W1[final writeup]
+```
+Figure 1: Project method workflow diagram for ER390 data visualization for HAT
+
+\newpage
+# Proposed Timeline (Look at SMART Objectives)
+- red coloured items are considered critical  
+- grey items are completed  
+
+```{r gantt, echo=FALSE, include=TRUE, message=FALSE}
+ER390_gantt <- read.csv("data/ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
+# str(ER390_gantt)
+# NOTE: dates need to be chr in order for Gantt code to work properly
+# names(ER390_gantt)
+# # convert start and end dates from chr to date 
+# changes way date is displayed in Gantt
+# but now I loose my Gantt 
+ # ER390_gantt$start <- as.Date(ER390_gantt$start)
+ # ER390_gantt$end <- as.Date(ER390_gantt$end)
+# str(ER390_gantt)
+
+library(tidyr)
+library(dplyr)
+library(DiagrammeR)
+
+mermaid(
+  paste0(
+    # mermaid "header", each component separated with "\n" (line break)
+    "gantt", "\n",
+    "dateFormat  YYYY-MM-DD", "\n",
+    "title ER390 HAT Data Viz Project Proposed Timeline", "\n",
+    # unite the first two columns (task & status) and separate them with ":"
+    # then, unite the other columns and separate them with ","
+    # this will create the required mermaid "body"
+    paste(ER390_gantt %>%
+            unite(i, task, status, sep = ":") %>%
+            unite(j, i, pos, start, end, sep = ",") %>%
+            .$j,
+          collapse = "\n"
+    ), "\n"
+  )
+)
+  
+```
+Figure 2: Gantt Proposed ER390 Timeline 
+
+\newpage
+***
+
+# Example Data Visualization Results
+## Data download and formatting
+- These example visualizations use GOE monitoring data from report by Malloff & Shackelford (2024)
+- Data (in excel or csv format) is uploaded 
+- Data is formatted, saved, and managed to be useful for creating visualizations
+- The code has been hidden for the HTML report, highlighting only the resulting plots, though is visible in PDF document. The R code has been documented using hidden comments.
+
+## Load Site Data
+<details><summary><b><i>Click open to see R code for `Loading Data`</i></b></summary><p>
+```{r, load-data}
+# Load data and create 2 data frames
+# Load Site Data
+geo_eccc <- read.csv("data/SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
+# Load Site Details
+Sites_eccc <- read.csv("data/SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
+```
+
+</p></details>
+
+```{r, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# Percentage_ns <- geo_eccc$Proportion_of_native_species * 100
+```
+
+## Data Cleaning and Transformation
+<details><summary><b><i>Click open to see R code for `Data Cleaning and Transformation`</i></b></summary><p>
+```{r, data-cleaning}
+# create new column with proportions changed to percentage as a whole number
+Percentage_ns <- geo_eccc$Proportion_of_native_species * 100
+
+# add-new column for Percentages
+geo_eccc <- cbind(geo_eccc, Percentage_ns)
+
+# arrange order of site names
+Sites_eccc_1 <- Sites_eccc %>% arrange(Sites_eccc$Site)
+geo_eccc_1 <- geo_eccc %>% arrange(geo_eccc$Site)
+
+# bind 2 dataframes together
+# this requires Sites rows from both data frames to be in alphabetical order
+## to assign the data rows correctly 
+geo_eccc_sites <- cbind(Sites_eccc_1, geo_eccc_1)
+
+# Remove duplicate columns resulting from binding 2 data frames
+geo_eccc_sites_1 <- geo_eccc_sites[c(-9,-10)]
+
+# Rename columns to remove dot-format
+names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Land.Manager"] <- "Land_Manager"
+names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Main.Restoration.Type"] <- "Main_Restoration_Type"
+names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Restoration.Intensity"] <- "Restoration_Intensity"
+names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Area.ha"] <- "Area_ha"
+
+# write csv file with combined data 
+## to create new data file which is used for creating the visualizations
+write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE)
+```
+</p></details>
+
+```{r, add-column, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+#geo_eccc <- cbind(geo_eccc, Percentage_ns)
+```
+
+```{r, arange-order-df, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# Sites_eccc_1 <- Sites_eccc %>% arrange(Sites_eccc$Site)
+# geo_eccc_1 <- geo_eccc %>% arrange(geo_eccc$Site)
+```
+
+```{r, cbind-arranged-df, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+#geo_eccc_sites <- cbind(Sites_eccc_1, geo_eccc_1)
+```
+
+```{r, remove-duplicate-columns, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# geo_eccc_sites_1 <- geo_eccc_sites[c(-9,-10)]
+```
+
+```{r, rename-columns-baser, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Land.Manager"] <- "Land_Manager"
+# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Main.Restoration.Type"] <- "Main_Restoration_Type"
+# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Restoration.Intensity"] <- "Restoration_Intensity"
+# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Area.ha"] <- "Area_ha"
+```
+
+```{r, create-csv-combined-datasets, echo=FALSE, results=FALSE, results='hide', message=FALSE}
+# write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE)
+```
+
+\newpage
+
+# Data Visualization Example Results
+
+## Data Table 
+- using data from Malloff & Shackelford (2024) 
+
+### Full Data Table
+
+- The full table is too wide for use in pdf because current variable names are too long.
+
+```{r, data table_html, echo=FALSE}
+# for html
+DT::datatable(geo_eccc_sites_1)
+```
+
+### Table Head of Site Information
+
+```{r data-table-pdf-sites, echo=FALSE, warning=FALSE}
+# - table is too wide for pdf because variable names are too long
+
+# kable not supported by word
+## for pdf use kableExtra::kable to print small version of head
+#   kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
+
+kableExtra::kable(
+  head(Sites_eccc_1), booktabs = TRUE, linesep = ""
+) %>%
+  kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
+```
+
+### Table Head of Site Data
+
+```{r data-table-pdf-data, echo=FALSE, warning=FALSE}
+# - table is too wide for pdf because variable names are too long
+
+# kable not supported by word
+## for pdf use kableExtra::kable to print small version of head
+#   kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
+
+kableExtra::kable(
+  head(geo_eccc_1), booktabs = TRUE, linesep = ""
+) %>%
+  kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
+```
+
+Figures 3,4,5: Example Data Tables
+
+\newpage
+## Map of Site Locations
+
+### Leaflet Map with Circle Markers 
+- The Leaflet Map is created using R code in RMarkdown.
+- Data  is summarized in map marker popups with summary of site data
+
+```{r Leaflet_map_circle_markers_sized_radius, echo=FALSE}
+# not supported by docx format
+# , fig.align = 'center'
+
+geo_eccc_sites_1 <- read.csv("data/geo_eccc_all_site_data.csv")
+
+library(dplyr)
+library(leaflet)
+library(htmlwidgets) # for responsive web map
+
+title <- '<p style="text-align: center; height: 30px; ">
+<span style="font-size:10px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>ECCC GOE 2023 Monitoring Sites</span><br>
+<span style="font-size:8px;font-style:italic; background-color: rgba(255, 255, 255, 0.9;">(Malloff & Shackelford, 2024)</span></p>'
+ 
+pal <- colorFactor(c("#d7191c", "#2c7bb6"), domain = c("Saanich Peninsula", "Gulf Islands"))
+
+ECCC_map_2 <- leaflet(geo_eccc_sites_1) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addCircleMarkers(
+             ~ Lng, ~ Lat, 
+         
+             radius = ~ifelse(Subregion == "Saanich Peninsula", 8, 8),
+    fillColor = ~pal(Subregion),
+    color = "black",
+    weight = 3, # size of circle border
+    stroke = TRUE, fillOpacity = 0.5,
+             popup = paste0("<b>ECCC GOE 2023 Monitoring Data</b>", "<br>", "<i>(Malloff & Shackelford, 2024)</i>", "<br><br>",
+               "<b>Site:</b> ", "<b>", geo_eccc_sites_1$Site, "</b>", "</b>", "<br><br>", "<b>Subregion:</b> ", geo_eccc_sites_1$Subregion, "<br>",
+                        "<b>Latitude:</b> ", geo_eccc_sites_1$Lat, "<br>", "<b>Longitude:</b> ", geo_eccc_sites_1$Lng,  "<br><br>",
+                        "<b>Land Manager:</b> ", geo_eccc_sites_1$Land_Manager, "<br>",
+                        "<b>Main Restoration:</b> ", geo_eccc_sites_1$Main_Restoration_Type, "<br>",
+                        "<b>Restoration Intensity:</b> ", geo_eccc_sites_1$Restoration_Intensity, "<br>",
+                        "<b> Area:</b> ", geo_eccc_sites_1$Area_ha, " ha",
+                        "<br><br>",
+                        "<b>Proportion of native species:</b> ", geo_eccc_sites_1$Proportion_of_native_species, "<br>",
+                        "<b>Cultural species richness:</b> ", geo_eccc_sites_1$Cultural_species_richness, "<br>",
+                        "<b>Exotic species:</b> ", geo_eccc_sites_1$Exotic_species, "<br>",
+                        "<b>Trampling:</b> ", geo_eccc_sites_1$Trampling, "<br>",
+                        "<b>Herbivory:</b> ", geo_eccc_sites_1$Herbivory, "<br>",
+                        "<b>Composite Index:</b> ", geo_eccc_sites_1$Composite_Index, "<br>")) %>%
+  setView(-123.44799, 48.64919, 10) %>%
+  # add controls
+  addMiniMap(width = 100, height = 100, zoomLevelOffset = -4) %>%
+  addControl(title, position = "topright") 
+
+# Display map
+ECCC_map_2
+saveWidget(ECCC_map_2, "output/ECCC_map_2.html")
+```
+Figure 6: Interactive Leaflet Map with Example Sites Data
+\newpage
+
+## Subregion Plots
+- These plot compare monitoring variable measurement results between two Subregions.
+
+```{r, plots_Exotic_species, echo=FALSE, results=FALSE, results='hide', include=FALSE, message=FALSE}
+subregion_exsp <- ggplot(geo_eccc, 
+                    aes(x = Subregion, y = Exotic_species)) +
+                    geom_violin(fill = "seagreen2") +
+                    geom_boxplot(width = 0.1, fill = "sandybrown") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(vjust = 1, size = 9)) +
+                    labs(title='Plotting Subregion by Exotic Species',
+                      subtitle='ECCC',
+                      x = "Subregion", y = "Exotic Species")
+subregion_exsp
+# plotly won't work here
+```
+
+
+```{r, plots_Percentage_ns, echo=FALSE, results=FALSE, results='hide', include=FALSE, message=FALSE}
+
+subregion_nsp <- ggplot(geo_eccc, 
+                    aes(x = Subregion, y = Percentage_ns)) +
+                    geom_violin(fill = "seagreen2") +
+                    geom_boxplot(width = 0.1, fill = "sandybrown") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(vjust = 1, size = 9)) +
+                    labs(title='Plotting Subregion by Percentage of Native Species',
+                      subtitle='ECCC',
+                       x = "Subregion", y = "Percentage Native Species")
+subregion_nsp
+# plotly won't work here
+```
+
+### Violin/Bar Plot: Compare Subregions Exotic and Native Species
+
+```{r, cowplot_violin_subr, echo=FALSE}
+library(cowplot)
+
+subregion_exsp_1 <- subregion_exsp + labs(title='Exotic Species',
+                      subtitle='ECCC (Malloff & Shackelford, 2024)'
+                      )
+
+subregion_nsp_1 <- subregion_nsp + labs(title='Native Species',
+                      subtitle='ECCC (Malloff & Shackelford, 2024)',
+                      caption = "Chart by Wendy Anthony \n 2025-08-27")
+
+plot_grid(subregion_exsp_1, subregion_nsp_1, labels = "AUTO")
+```
+
+Figure 7: Violin / bar plot comparing variables of 2 Subregions
+
+\newpage
+
+## Site Plots
+
+### Point Plot: Compare Individual Sites by Restoration Intensity
+- Sites are ordered by the level of restoration intensity, ranging from high to minimal 
+- This plotly-style chart becomes interactive by clicking data points for view a tool-tip of data results. 
+
+```{r, plots_site_Restoration_Intensity_order_point_1, echo=FALSE}
+
+# Step 1
+desired_levels <- c("high", "moderate", "low", "minimal")
+# create new df to create desired levels
+geo_eccc_sites_2 <- geo_eccc_sites_1
+# this changes data type from character to factor
+geo_eccc_sites_2$Restoration_Intensity <- factor(geo_eccc_sites_1$Restoration_Intensity, levels = desired_levels)
+
+# step 2
+geo_eccc_sites_2 <- geo_eccc_sites_2[order(geo_eccc_sites_2$Restoration_Intensity),]
+
+# values in order now -- ?? how to change to reverse order 
+site_restInt_x <- ggplot(geo_eccc_sites_2,
+       aes(x = reorder(Site, 
+                       -desc(Restoration_Intensity)), 
+           y = reorder(Restoration_Intensity, desc(Restoration_Intensity)), color = Subregion)) +
+  # reorder y variable axis
+  # https://stackoverflow.com/questions/28391850/reverse-order-of-discrete-y-axis-in-ggplot2s
+# y = Restoration_Intensity
+                    geom_point(shape = 18, size = 2) +
+  #geom_bar(stat="identity") +
+#  scale_fill_brewer(palette = "Dark2") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    theme(legend.position="bottom") + 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Plot Site Restoration Intensity',
+                      subtitle='ECCC (Malloff & Shackelford, 2024)',
+                      caption = "Chart by Wendy Anthony \n 2025-08-26",
+                      x = "Site", y = "Restoration Intensity")
+
+# ggplot
+# site_restInt_x
+
+# ggplotly(site_restInt_x)
+leg <- list(
+  font = list(
+    family = "sans-serif",
+    size = 8,
+    color = "#000"))
+# xanchor = "center", too far left
+plot <- ggplotly(site_restInt_x)
+plot <- plot %>% layout(legend = list(leg, x = 0.15, y = -0.5, orientation = 'h', size = 0.025))  
+plot <- plot %>% layout(legend = leg)
+
+#plot
+ggplotly(plot)
+```
+Figure 8: Point Plot of Restoration Intensity of Example Sites
+
+
+
