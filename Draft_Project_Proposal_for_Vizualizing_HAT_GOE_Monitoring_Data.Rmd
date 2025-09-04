@@ -51,7 +51,7 @@ library(DiagrammeR)
 - I propose to create a customized, automatic coding and reporting tool, using open-source tools R package libraries, which can be used by non-coders at HAT for data formatting and interactively visualizing data collected at multiple sites for their Garry Oak Ecosystem (GOE) Monitoring Program, including tutorial instructions, to determine what stories the collected data may illustrate, as an easier way for communication data information than looking at tables of numbers.
 - This project proposal has been completed using code in RMarkdown, as a showcase of the types of visualizations tools and reports that I propose to offer HAT, adapting the code to be based on HAT monitoring data.
 
-# Project Objectives (SMART actionable targets)
+# Project Objectives (SMART actionable targets) {#objectives}
 - See Work flow [Flowchart, Figure 1](#workflow), and Gantt Chart [Proposed Timeline, Figure 2](#gantt))
 - **Analyze the collected data** to understand the underlying structure, while ensuring the use of consistent naming protocols for variables, and formatting data to be usable for use with data visualization code.
 - **Write data visualization code**, using RStudio, RMarkdown, and RShiny, to create appropriate visualizations to enable a better understanding of the collected data.
@@ -64,8 +64,8 @@ library(DiagrammeR)
 - **Create an interactive, web-browser-based Shiny App** for user-chosen, custom-make data visualization plots and maps for selected location(s) and variables, with the ability to save and download the resulting data, html widgets, plot images, interactive web maps, and perform statistical analysis.
 - **Recognize the sensitive and confidential nature of First Nations data** by, after receiving consent, creating separate data visualization code, that may also require using different variables depending on the individual land project goals.
 
-# Project Methods for HAT Data visualization
-- See flowchart for work flow (Figure 1), and Gantt Chart for timeline (Figure 2)
+# Project Methods for HAT Data visualization {#methods}
+- See Work flow [Flowchart, Figure 1](#workflow), and Gantt Chart [Proposed Timeline, Figure 2](#gantt))
 - Continue to research and learn how to code in Shiny reactively in order to make interactive data choices (e.g. a drop-down list of Sites) respond to a prior data choice (e.g. Subregions), in order to filter the results of specific interest. I'd like to extend these interactive choice reactions to the selection of monitoring variables being measured in order to be able to make custom-made visualizations and analysis with only a few clicks 
 - Sign any data confidentiality agreements as may be required by HAT
 - Consult with HAT restoration monitor team to explore and understand the nature of the collected data, data format (forms, spreadsheets), the variables that are being measured, any indices to be calculated using the collected data, what questions they would like to explore with the data
@@ -76,8 +76,8 @@ library(DiagrammeR)
 - Documents my methods, successes, and failures in the process of the project
 - Continual research for finding appropriate R coding methods, and to contribute to writing my final paper
 
-# Proposed Deliverables
-- See flowchart for work flow (Figure 1), and Gantt Chart for timeline (Figure 2)
+# Proposed Deliverables {#deliverables}
+- See Work flow [Flowchart, Figure 1](#workflow), and Gantt Chart [Proposed Timeline, Figure 2](#gantt))
 - All of the following deliverables will be created using RStudio
 
 ## Data Visualizations
@@ -129,10 +129,11 @@ library(DiagrammeR)
 
 # Bibliography
 - Malloff, J., & Shackelford, N. (2024). <i>Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems.</i> Restoration Futures Lab at the University of Victoria. 
-- McKay, S. K. (2020). Data visualization for ecological analysis and restoration. US Army Corp of Engineers:Ecosystem Management and Restoration Research Program (EMRRP) Webinar Series. https://cw-environment.erdc.dren.mil/webinars/20Feb5-EcoMod-DataViz.pdf
+- McKay, S. K. (2020). <i>Data visualization for ecological analysis and restoration.</i> US Army Corp of Engineers:Ecosystem Management and Restoration Research Program (EMRRP) Webinar Series. https://cw-environment.erdc.dren.mil/webinars/20Feb5-EcoMod-DataViz.pdf
 
 \newpage
 # Workflow Graph {#workflow}
+- See [Objectives](#objectives), [Methods](#methods), and [Deliverables](#deliverables)
 - The workflow shows how the raw data, from HAT monitoring measurements, would be transformed and included in code to produce a variety of deliverable products.
 - This graph is made with code from DiagrammeR, using a colour-blind friendly colour palette.
 
@@ -264,6 +265,7 @@ Figure 1: Project method workflow diagram for ER390 data visualization for HAT
 - red coloured items are considered critical  
 - grey items are completed  
 - Note: This chart was coded with DiagrammeR using an imported csv file of data
+- See [Objectives](#objectives), [Methods](#methods), and [Deliverables](#deliverables)
 
 
 ```{r gantt, echo=FALSE, include=TRUE, message=FALSE}

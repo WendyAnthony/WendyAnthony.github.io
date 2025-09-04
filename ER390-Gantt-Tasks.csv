@@ -17,7 +17,7 @@ Create Workflow graph,done,c_2,2025-08-31,2025-09-03
 Creating RMarkdown code,done,m_1,2025-08-04,2025-09-03
 Refining RMarkdown code,active,s_2,2025-09-03,2026-07-31
 Create Tutorials,active,t_1,after m_1,2026-07-31
-Report templates,active,m_2,after m_1,2026-07-31
+Create Report templates,active,m_2,after m_1,2026-07-31
 Help HAT set up R studio,active,h_3,2025-10-13,30d
 Create Periodic RSN-HAT Reports,active,m_2,after m_1,30d
 Create Periodic RSN-HAT Reports,active,m_3,after m_2,30d
@@ -34,7 +34,7 @@ Data Vizualizations,active,c_3,2025-08-04,2026-07-31
 Create Shiny app example with some working  reactive components,done,s_1,2025-08-18,2025-09-03
 Refining Shiny App,active,s_2,2025-08-18,2026-07-31
 Interactive Data Table,done,s_3,2025-08-18,2025-08-19
-Create Shiny Clone,active,s_4,2025-09-30,180d
+Create Shiny Clone to work in webpage,active,s_4,2025-09-30,180d
 Example ECCC Data,"crit, done",d_1,2025-08-04,10d
 Consult HAT requirements,crit,h_1,2025-09-03,120d
 Gather 1st Year HAT data,crit,d_2,2025-10-13,15d
