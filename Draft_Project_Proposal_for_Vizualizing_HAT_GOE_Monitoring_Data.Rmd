@@ -33,7 +33,7 @@ library(DiagrammeR)
 ```
 \newpage
 # The Idea behind submitting this project proposal
-Nancy Shackelford (RNS Director) suggested that creating a data visualization tool for HAT GOE Monitoring for a suitable ER390 Final Project. I propose starting Fall 2025 term. While waiting for HAT to prepare to share data in October, I could continue the coding work I started in August (36+ hours), to create reproducible code snippets for use when HAT data is ready to be shared. I could also create R code to help with October data cleaning task. See *[Proposed Gantt Timeline Chart](#gantt)*
+Nancy Shackelford (RNS Director) suggested creating a data visualization tool for HAT GOE Monitoring as a suitable ER390 Final Project. I propose starting Fall 2025 term. While waiting for HAT to prepare to share data in October, I could continue the coding work I started in August (36+ hours), to create reproducible code snippets for use when HAT data is ready to be shared. I could also create R code to help with October data cleaning task. See *[Proposed Gantt Timeline Chart](#gantt)*
 
 
 # Background 
@@ -46,12 +46,12 @@ Data used for this proposal is from two tables in the report that HAT used for m
 I spoke to Vanessa Brownlee, Habitat Restoration Coordinator at Habitat Acquisition Trust (HAT) Social on 2025-08-27, who was very interested in my proposed project idea, and seemed willing to consider letting me start in Fall 2025, with data available later in October. I also later spoke briefly to Board Chair Andy MacKinnon, who seemed keen to know of my interest in doing my RNS Final Project with HAT and looks forward to learning more. I'm prepared to be guided by HAT's preferences, timing, and data protocols.
 
 # Project Goals and Overall Purpose
-I propose to create a customized, automatic coding and reporting tool, using open-source R package libraries, for use by non-coders for data formatting and interactively visualizing data collected at multiple sites for HAT Garry Oak Ecosystem (GOE) Monitoring Program, including tutorial instructions, to help determine any patterns in collected data, and provide an interactive way to communication information about the data. This project proposal was created using code in RMarkdown, to showcase types of visualizations tools and reports that I propose to offer HAT, after adapting code to reflect HAT's data.
+I propose to create a customized, automatic coding and reporting tool, including tutorial instructions, for use by non-coders, using open-source R package libraries, for data formatting and interactively visualizing data collected at multiple sites for HAT Garry Oak Ecosystem (GOE) Monitoring Program, to provide an interactive way to communication information about the data, and help determine any patterns. This project proposal was created using R code in RMarkdown, to showcase some types of visualizations tools and reports that I propose to offer to create for HAT, after adapting code to reflect HAT's data.
 
 # Project Objectives (SMART actionable targets) {#objectives}
 - See *[WorkFlowchart, Figure 1](#workflow)*, and Gantt Chart *[Proposed Timeline, Figure 2](#gantt)*
 - **Analyze collected data** to understand underlying structure, ensure use of consistent naming protocols for variables, and format data to be usable for use with data visualization code.
-- **Write data visualization code**, using RStudio, RMarkdown, and RShiny, to create appropriate visualizations to enable a better understanding of the collected data.
+- **Write data visualization code** for HAT data using RStudio, RMarkdown, and RShiny, to create appropriate visualizations to enable a better understanding of the collected data.
 - **Customize data tools** to reflect consistent styles using HAT's colours, logos, and plotting themes.
 - **Create RMarkdown documents**, with reproducible code, for non-coders, to automatically download and format data, create data visualizations, and produce customized reports.
 - **Create scaleable data visualization tools** that can have more sites added, with different measuring and sensitivity criteria (e.g. First Nations GOE sites), and multi-year data.
@@ -66,7 +66,7 @@ I propose to create a customized, automatic coding and reporting tool, using ope
 - Continue research for Shiny reactive code to make interactive data choices (e.g. drop-down lists), respond to choices, filter results. Interactive choices will eventually react to variable selections to make custom-made visualizations and analysis with only a few clicks 
 - Sign any HAT data confidentiality agreements as may be required
 - Consult with HAT restoration monitor team to explore and understand the nature of the collected data, data format (forms, spreadsheets), the variables that are being measured, any indices to be calculated using the collected data, what questions they would like to explore with the data
-- Create a Project folder, with subfolders for R scripts, raw data, processed data, images, reports, meta data (units, descriptions, etc); create file and variable naming protocols
+- Create a portable Project folder, with subfolders for R scripts, raw data, processed data, images, reports, meta data (units, descriptions, etc); create file and variable naming protocols
 - Analyze and clean data, check for errors, inconsistencies; calculate indices values from raw data
 - Create data visualization plot charts that appropriately reflect nature of variables being measured
 - Documents my methods, successes, and failures in the process of the project
@@ -75,13 +75,13 @@ I propose to create a customized, automatic coding and reporting tool, using ope
 # Proposed Deliverables {#deliverables} 
 See *[WorkFlowchart, Figure 1](#workflow)*, and *[Proposed Timeline, Figure 2](#gantt)*; All deliverables created using RStudio
 
-**Data Visualizations**: Including data tables, plots, interactive maps; for individual sites, comparing sites, or confidentially for First Nations; See *[Example Visualization](#visualizations)* in next section 
+**Data Visualizations**: Including data tables, plots, interactive maps; for subgroups, individual sites, site comparison, or for confidentialuse by First Nations; See *[Example Visualization](#visualizations)*
 
 **RMarkdown Data Processing Document**: Data downloading, data cleaning and preparation; create data visualizations; Create reports in HTML, pdf, or Word with plot output images, or code snippets
 
 **Customizations**: Create customized colour palette for Plot themes, App, Reports; add HAT logo
 
-**Shiny App Interactive Data Viz Tool**: Data processed with RMarkdown document; choose data variables to visualize in tables, plot, maps; https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/ 
+**Shiny App Interactive Data Viz Tool**: Data processed with RMarkdown document; choose data variables to visualize in tables, plot, maps; app can also run locally <font size="6">*https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/*</font> 
 
 **Tutorials for using Data visualization Tools**: customized, easy to understand 
 
@@ -173,8 +173,8 @@ W(Written Report)
  style A1 fill:#f6e8c3, stroke:#333, stroke-width:2px  
  style A3 fill:#f6e8c3, stroke:#333, stroke-width:2px  
  style A2 fill:#f6e8c3, stroke:#333, stroke-width:2px  
- style A fill:#80cdc1, stroke:#333, stroke-width:3px  
- style C fill:#35978f, stroke:#333, stroke-width:1px  
+ style A fill:#80cdc1, stroke:#333, stroke-width:4px  
+ style C fill:#80cdc1, stroke:#333, stroke-width:3px  
  style D fill:#c7eae5, stroke:#333, stroke-width:3px  
  style D1 fill:#80cdc1, stroke:#333, stroke-width:1px  
  style D2 fill:#dfc27d, stroke:#333, stroke-width:1px  
@@ -231,8 +231,8 @@ Figure 1: Project method workflow diagram for ER390 data visualization for HAT
 # Proposed Timeline (Look at SMART Objectives) {#gantt}
 - red coloured items are considered critical  
 - grey items are completed  
-- Note: This chart was coded with DiagrammeR using an imported csv file of data
-- See [Objectives](#objectives), [Methods](#methods), and [Deliverables](#deliverables)
+- Note: This chart was coded with DiagrammeR using an imported csv file of data, however, there is no colour control
+- See *[Objectives](#objectives), [Methods](#methods), and [Deliverables](#deliverables)*
 
 
 ```{r gantt, echo=FALSE, include=TRUE, message=FALSE}
@@ -256,7 +256,7 @@ mermaid(
     # mermaid "header", each component separated with "\n" (line break)
     "gantt", "\n",
     "dateFormat  YYYY-MM-DD", "\n",
-    "title ER390 HAT Data Viz Project Proposed Timeline", "\n",
+    "title ER390 HAT Data Viz Project Proposed Timeline 2025-2026", "\n",
     # unite the first two columns (task & status) and separate them with ":"
     # then, unite the other columns and separate them with ","
     # this will create the required mermaid "body"
