@@ -39,6 +39,9 @@ Work on R code,active,p_12,2026-01-05,2026-04-02
 Research R code,active,r_12,2026-01-05,2026-04-02
 Reseach Literature,active,r_22,2026-01-05,2026-04-02
 Creating RMarkdown code,active,m_12,2026-01-05,2026-04-02
+Create Periodic RSN-HAT Reports,active,m_5,2026-01-05,30d
+Create Periodic RSN-HAT Reports,active,m_6,2026-02-05,30d
+Create Periodic RSN-HAT Reports,active,m_7,2026-03-05,30d
 Refining RMarkdown code,active,s_22,2026-01-05,2026-04-02
 Create R Package,active,e_22,2026-01-05,2026-04-02
 Create Tutorials,active,t_12,2026-01-05,2026-04-02
@@ -50,18 +53,16 @@ Research for Final Report ,active,p_32,2026-01-05,2026-04-02
 Write Final Report due 2026-08-15,crit,p_4,2026-01-05,2026-04-02
 Gather new HAT data,crit,d_4,2026-05-01,30d
 Analyze HAT data,crit,d_5,2026-05-01,30d
-Create Periodic RSN-HAT Reports,active,m_5,2026-01-05,30d
-Create Periodic RSN-HAT Reports,active,m_6,2026-02-05,30d
-Create Periodic RSN-HAT Reports,active,m_7,2026-03-05,30d
-Create Periodic RSN-HAT Reports,active,m_8,2026-05-05,30d
-Create Periodic RSN-HAT Reports,active,m_9,2026-06-05,30d
-Create Periodic RSN-HAT Reports,active,m_10,2026-07-05,30d
 Incorporate New Data in Dataviz,active,d_6,2026-05-01,30d
 3rd Semester,active,sm_3,2026-05-06,2026-08-21
+Nancy starts sabbatical,crit,n_1,2026-07-01,2026-08-31
 Work on R code,active,p_13,2026-05-06,2026-07-31
 Research R code,active,r_13,2026-05-06,2026-07-31
 Reseach Literature,active,r_23,2026-05-06,2026-07-31
 Creating RMarkdown code,active,m_13,2026-05-06,2026-07-31
+Create Periodic RSN-HAT Reports,active,m_8,2026-05-05,30d
+Create Periodic RSN-HAT Reports,active,m_9,2026-06-05,30d
+Create Periodic RSN-HAT Reports,active,m_10,2026-07-05,30d
 Refining RMarkdown code,active,s_23,2026-05-06,2026-07-31
 Create R Package,active,e_23,2026-05-06,2026-07-31
 Create Tutorials,active,t_13,2026-05-06,2026-07-31
