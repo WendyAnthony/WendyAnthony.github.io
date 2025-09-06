@@ -32,8 +32,8 @@ library(leaflet)
 library(DiagrammeR)
 ```
 \newpage
-# The Idea behind submitting this project proposal
-After hearing the suggestion to create a data visualization tool for HAT GOE Monitoring as a suitable ER390 Final Project, I began thinking about several creative solutions. I gathered data from the project publication that influenced HAT’s project design, began to develop coding ideas, modifiable to visualize HAT data when available in October, which could also prove useful to develop a framework to compare results between multiple Garry Oak Ecosystem Monitoring Projects if similar assessment measurements and indices have been used (Malloff & Shackelford, 2024). See *[Project Goals](#goals)*
+# The Idea Behind This Proposal
+After hearing the suggestion to create a data visualization tool for HAT GOE Monitoring as a suitable ER390 Final Project, I began thinking about several creative solutions. I gathered data from the project publication that influenced HAT’s project design, began to develop coding ideas, modifiable to visualize HAT data when available in October, which could also prove useful to develop a framework to compare results between multiple Garry Oak Ecosystem Monitoring Projects if similar assessment measurements and indices have been used (Malloff & Shackelford, 2024). See *[Project Goals](#goals)* 
 
 
 # Background 
