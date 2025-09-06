@@ -1,18 +1,18 @@
 ---
-title: "Draft ER390 Project Proposal"
+title: "ER390 Project Proposal"
 subtitle: "Visualizing HAT's GOE Monitoring Data"
 author: "Wendy Anthony"
 date: "2025/09/08"
 output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
   html_document:
     df_print: paged
     toc: yes
     toc_depth: 3
     toc_float: yes
     number_sections: yes
-  pdf_document:
-    latex_engine: xelatex
-    toc: yes
   word_document:
     toc: yes
     toc_depth: '3'
@@ -33,7 +33,7 @@ library(DiagrammeR)
 ```
 \newpage
 # The Idea behind submitting this project proposal
-After hearing the suggestion to create a data visualization tool for HAT GOE Monitoring as a suitable ER390 Final Project, I began thinking about several creative solutions. I gathered data from the project publication that influenced HAT’s project design, began to develop coding ideas, modifiable to visualize HAT data when available in October, which could also prove useful to develop a framework to compare results between multiple Garry Oak Ecosystem Monitoring Projects if similar assessment measurements and indices have been used (Malloff & Shackelford, 2024). See *[Proposed Gantt Timeline Chart](#gantt)*
+After hearing the suggestion to create a data visualization tool for HAT GOE Monitoring as a suitable ER390 Final Project, I began thinking about several creative solutions. I gathered data from the project publication that influenced HAT’s project design, began to develop coding ideas, modifiable to visualize HAT data when available in October, which could also prove useful to develop a framework to compare results between multiple Garry Oak Ecosystem Monitoring Projects if similar assessment measurements and indices have been used (Malloff & Shackelford, 2024). See *[Project Goals](#goals)*
 
 
 # Background 
@@ -45,7 +45,7 @@ Comparing monitoring results from multiple restoration projects requires consist
 # Project Partner
 I spoke to Vanessa Brownlee, Habitat Restoration Coordinator at Habitat Acquisition Trust (HAT) Social on 2025-08-27, who expressed interest in my proposed project idea, and seemed willing to consider letting me start in Fall 2025, with data available later in October. I also later spoke briefly to Board Chair Andy MacKinnon, who seemed keen to know of my interest in doing my RNS Final Project with HAT and looks forward to learning more. I'm prepared to be guided by HAT's preferences, timing, and data protocols.
 
-# Project Goals and Overall Purpose
+# Project Goals and Overall Purpose {#goals}
 I propose to create a customized, coding and reporting tool, including tutorial instructions, for use by non-coders, using open-source R package libraries, for data formatting and interactively visualizing data collected at multiple sites for HAT Garry Oak Ecosystem (GOE) Monitoring Program, to provide an interactive way to communication information about the data, and help determine any patterns through analysis. This project proposal was created using R code in RMarkdown, to showcase some visualizations tools and reports that could be created for HAT, after adapting code to reflect available HAT data. An overarching goal would be to create code to compare GOE Monitoring Projects which use the same measurement parameters.
 
 # Project Objectives {#objectives}
