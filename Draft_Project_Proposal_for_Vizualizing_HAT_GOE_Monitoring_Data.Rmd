@@ -2,7 +2,7 @@
 title: "Draft ER390 Project Proposal"
 subtitle: "Visualizing HAT's GOE Monitoring Data"
 author: "Wendy Anthony"
-date: "2025/09/04"
+date: "2025/09/08"
 output:
   html_document:
     df_print: paged
@@ -45,7 +45,7 @@ Comparing monitoring results from multiple restoration projects requires consist
 # Project Partner
 I spoke to Vanessa Brownlee, Habitat Restoration Coordinator at Habitat Acquisition Trust (HAT) Social on 2025-08-27, who expressed interest in my proposed project idea, and seemed willing to consider letting me start in Fall 2025, with data available later in October. I also later spoke briefly to Board Chair Andy MacKinnon, who seemed keen to know of my interest in doing my RNS Final Project with HAT and looks forward to learning more. I'm prepared to be guided by HAT's preferences, timing, and data protocols.
 
-# Project Goals and Overall Purpose (problem/opportunity)
+# Project Goals and Overall Purpose
 I propose to create a customized, coding and reporting tool, including tutorial instructions, for use by non-coders, using open-source R package libraries, for data formatting and interactively visualizing data collected at multiple sites for HAT Garry Oak Ecosystem (GOE) Monitoring Program, to provide an interactive way to communication information about the data, and help determine any patterns through analysis. This project proposal was created using R code in RMarkdown, to showcase some visualizations tools and reports that could be created for HAT, after adapting code to reflect available HAT data. An overarching goal would be to create code to compare GOE Monitoring Projects which use the same measurement parameters.
 
 # Project Objectives {#objectives}
@@ -71,17 +71,17 @@ I propose to create a customized, coding and reporting tool, including tutorial 
 - Develop functional parts one-at-a-time to ensure correct operation before starting next part as coding is not always a linear process, with some functions taking longer to develop; troubleshoot small sections to get a fully working product before moving further adding more functionality
 
 # Proposed Deliverables {#deliverables} 
-See *[WorkFlowchart, Figure 1](#workflow)*, and *[Proposed Timeline, Figure 2](#gantt)*; All deliverables created using RStudio  
-**Data Visualizations**: Including data tables, plots, interactive maps; for subgroups, individual sites, site comparison, or for confidential use by First Nations; See *[Example Visualization](#visualizations)*  
-**RMarkdown Data Processing Document**: Data downloading, data cleaning and preparation for use in visualizations, create data visualizations for use in Shiny App; Create reports in HTML, pdf, or Word with plot output images, or code snippets  
-**Customizations**: Create customized colour palette for Plot themes, App, Reports; add HAT logo  
-**Shiny App Interactive Data Viz Tool**: Data processed in RMarkdown document; choose data variables to visualize tables, plot, maps, stats; run local for confidentiality <font size="1">*https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/*</font>   
-**Tutorials for using Data visualization Tools**: customized, easy to understand   
-**Create Report Templates**: Customized fpr individual site, total project reports, or as requested by HAT  
-**Best practises for data files**: To ensure naming consistency in  files, variables, folder structure, etc.  
-**Create Customized Functions for HAT** to form core of a HAT-specific R Package library  
-**Presentation**: Completed project presented to community partner HAT; including slide show, live demonstrations of Data Visualization Tools, and final copy of my written report when approved to be published.  
-**Written Report**: Due 2026-08-15, document project, using R code, and visualizing ecological restoration monitoring data; publish in Ecorestoration: RNS Technical Series    
+- See *[WorkFlowchart, Figure 1](#workflow)*, and *[Proposed Timeline, Figure 2](#gantt)*; All deliverables created using RStudio
+- **Data Visualizations**: Including data tables, plots, interactive maps; for subgroups, individual sites, site comparison, or for confidential use by First Nations; See *[Example Visualization](#visualizations)*
+- **RMarkdown Data Processing Document**: Data downloading, data cleaning and preparation for use in visualizations, create data visualizations for use in Shiny App; Create reports in HTML, pdf, or Word with plot output images, or code snippets
+- **Customizations**: Create customized colour palette for Plot themes, App, Reports; add HAT logo
+- **Shiny App Interactive Data Viz Tool**: Data processed in RMarkdown document; choose data variables to visualize tables, plot, maps, stats; run local for confidentiality <font size="1">*https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/*</font>
+- **Tutorials for using Data visualization Tools**: customized, easy to understand
+- **Create Report Templates**: Customized for individual site, total project reports, or at HAT's request
+- **Best practises for data files**: To ensure naming consistency in  files, variables, folder structure, etc.
+- **Create Customized Functions for HAT** to form core of a HAT-specific R Package library
+- **Presentation**: Completed project presented to community partner HAT; including slide show, live demonstrations of Data Visualization Tools, and copy of written report when approved for publishing.
+- **Written Report**: Due 2026-08-15, document project, using R code, and visualizing ecological restoration monitoring data; publish in Ecorestoration: RNS Technical Series
 
 \newpage
 # Workflow Graph {#workflow}
@@ -223,10 +223,10 @@ Figure 1: Project method workflow diagram for ER390 data visualization for HAT
 
 \newpage
 # Proposed Timeline {#gantt}
-- red coloured items are considered critical  
-- grey items are completed  
-- Note: This chart was coded with DiagrammeR using an imported csv file of data, however, there is no colour control
-- See *[Objectives](#objectives), [Methods](#methods), and [Deliverables](#deliverables)*
+- red coloured items are considered critical
+- grey items are completed
+- Note: Chart coded with DiagrammeR using imported csv file of data, but no colour control
+- See *[Objectives](#objectives), [Methods](#methods), and [Deliverables](#deliverables)*  
 
 
 ```{r gantt, echo=FALSE, include=TRUE, message=FALSE}
