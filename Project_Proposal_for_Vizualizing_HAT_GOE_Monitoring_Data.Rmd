@@ -1,18 +1,18 @@
 ---
 title: "ER390 Project Proposal"
-subtitle: "Vizualizing HAT's GOE Monitoring Data"
+subtitle: "Visualizing HAT's GOE Monitoring Data"
 author: "Wendy Anthony"
-date: "2025/09/02"
+date: "2025/09/08"
 output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
   html_document:
     df_print: paged
     toc: yes
     toc_depth: 3
     toc_float: yes
     number_sections: yes
-  pdf_document:
-    latex_engine: xelatex
-    toc: yes
   word_document:
     toc: yes
     toc_depth: '3'
@@ -31,140 +31,87 @@ library(plotly)
 library(leaflet)
 library(DiagrammeR)
 ```
+\newpage
+# The Idea Behind This Proposal
+After hearing the suggestion to create a data visualization tool for HAT Garry Oak Ecosystems (GOE) Monitoring for a suitable ER390 Final Project, I began thinking about several creative solutions. I gathered table data from the ECCC Monitoring report that influenced HAT’s project design (Malloff & Shackelford, 2024), and began to develop code, modifiable for HAT data when available in October, which should also prove useful to developfunctional frameworks for comparing results between multiple Garry Oak Ecosystem Monitoring (GOEM) Projects if similar assessment measurements and indices were used. ***(See [Goals](#goals))*** 
 
-# The Idea behind submitting this project proposal
-- I am a student in UVic's Restoration of Natural Systems program, as well as having the equivalent of a double major in Environmental Studies and Geography, and being a life-long learner with an interest in making a significant contribution to the local restoration community, and I'm looking to assist a willing community partner through the creation of my Final RNS Restoration Project. 
-- Nancy Shackelford (RNS Director) suggested that I might consider helping HAT GOE Monitoring Project of Southern Vancouver Island by creating a tool for vizualizing GOE Monitoring Data. 
 
-# Background (include reference to literature)
-- Data used for this proposal is from two tables in the report that HAT used as a model for their GOE Monitoring Project (Malloff & Shackelford, 2024)
-- use data to represent data in a visual manner, to make it more understandable than a table of numbers (?? CITE ??)
+# Background 
+Comparing monitoring results from multiple restoration projects requires consistent measurements of vegetation composition (e.g. native and exotic species cover), which may help identify responses to stressors affecting already compromised and rare GOE. Representing data in a visual manner can help make complex data more understandable than a tables of numbers, and may reveal patterns or trends resulting from different restoration management actions (Malloff & Shackelford, 2024). Data visualization can represent abstract information visually,  allow for data exploration and analysis, model restoration management alternatives, create data-based story-telling, and communicating potential insights, to help make effective restoration management decisions. RMarkdown-generated reports help create reproducible research (McKay, 2020).  
+° Malloff, J., & Shackelford, N. (2024). *Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems.* Restoration Futures Lab at the University of Victoria.  
+° McKay, S. K. (2020). *Data visualization for ecological analysis and restoration.* US Army Corp of Engineers:Ecosystem Management and Restoration Research Program (EMRRP) Webinar Series. https://cw-environment.erdc.dren.mil/webinars/20Feb5-EcoMod-DataViz.pdf  
+
 
 # Project Partner
-- I have already spoken to Vanessa Brownlee, Habitat Restoration Coordinator at Habitat Acquisition Trust (HAT) on 2025-08-27, who was very interested in my proposed project idea, and Vanessa seemed willing to consider letting me start in Fall 2025.
-- I have also already spoken briefly to Board Chair Andy MacKinnon at the HAT Social 2025-08-27, and he seemed keen to know I was interested in doing my RNS Final Project with HAT and was looking forward to know more about what I had in mind. 
-- I would be prepared to make a presentation to the board to request HAT approval for this ER390 Final Restoration Project if that would be helpful.
+I spoke to Vanessa Brownlee, Habitat Restoration Coordinator at Habitat Acquisition Trust (HAT) Social on 2025-08-27, who expressed interest in my proposed project idea, and seemed willing to consider letting me start in Fall 2025, with data available later in October. I also later spoke briefly to Board Chair Andy MacKinnon, who seemed keen to know of my interest in doing my RNS Final Project with HAT and looks forward to learning more. I'm prepared to be guided by HAT's preferences, timing, and data protocols.
 
-# Project Goals and Overall Purpose
-- I propose to create a customized, automatic coding and reporting tool, using open-source tools R package libraries, which can be used by non-coders at HAT for data formatting and interactively visualizing data collected at multiple sites for their Garry Oak Ecosystem (GOE) Monitoring Program, including tutorial instructions, to determine what stories the collected data may illustrate, as an easier way for communication data information than looking at tables of numbers.
-- This project proposal has been completed using code in RMarkdown, as a showcase of the types of visualizations tools and reports that I propose to offer HAT, adapting the code to be based on HAT monitoring data.
+# Project Goals and Overall Purpose {#goals}
+I propose to create a customized, coding and reporting tool, including tutorial instructions, for use by non-coders, using open-source R package libraries, for data formatting and interactively visualizing data collected at multiple sites for HAT Garry Oak Ecosystem (GOE) Monitoring Program, to provide an interactive way to communication information about the data, and help determine any patterns through analysis. This project proposal was created using R code in RMarkdown, to showcase some visualizations tools and reports that could be created for HAT, after adapting code to reflect available HAT data. An overarching goal is to create code for comparing GOE Monitoring Projects using the same measurement parameter metrics.
 
-# Project Objectives (SMART actionable targets)
-- See flowchart for work flow (fig.1), and Gantt Chart for proposed timeline (fig.2)
-- **Analyze the collected data** to understand the underlying structure, while ensuring the use of consistent naming protocols for variables, and formatting data to be usable for use with data visualization code.
-- **Write data visualization code**, using RStudio, RMarkdown, and RShiny, to create appropriate visualizations to enable a better understanding of the collected data.
-- **Customize data tools** to reflect a consistent style that uses HAT's colours, logos, and plotting themes.
-- **Create RMarkdown documents**, with reusable code, useable without needing to know how to code to automatically download and format data, create data visualizations, and produce reports for the whole project and individual sites.
-- **Create scaleable data visualization tools** that can have more sites added, with different measuring and sensitivity criteria (e.g. First Nations GOE sites), as well as multi-year data.
-- **Track differences between individual sites** using variables such as native species, exotic species, and other metrics or indices that HAT measures
-- **Create custom R functions** for reading, analyzing, and plotting data, which could be incorporated into a customized R package for HAT. 
-- **Create an interactive, web-browser-based Shiny App** for user-chosen, custom-make data visualization plots and maps for selected location(s) and variables, with the ability to save and download the resulting data, html widgets, plot images, and interactive web maps
-- **Recognize the sensitive and confidential nature of First Nations data** by, after receiving consent, creating separate data visualization code, that may also require using different variables depending on the individual land project goals.
+# Project Objectives {#objectives}
+- ***(See [WorkFlowchart, Figure 1](#workflow)*** and ***Gantt Chart [Proposed Timeline, Figure 2](#gantt))***
+- **Analyze and transform collected data** to understand data, structure, ensure consistent naming protocols, format data for code use, create code to clean raw data, calculate metrics.
+- **Write data visualization code** for HAT data using RStudio, RMarkdown (Rmd), and RShiny, using reproducible code to create appropriate visualizations to enable a better understanding of the collected data, for use by non-coders, download, format and save data, produce customized reports. Create custom R functions to read, analyze, and plot data, as basis for HAT `goemR` package.
+- **Create interactive data visualization tools**  Scaleable, allow for more sites added, multi-year data, different measuring and sensitivity criteria (e.g. First Nations GOE sites); customize for consistent styles using HAT colours, logos, and plot themes.
+- **Create interactive, browser-based Shiny App** User-chosen, custom-make data visualization plots, maps, and statistical analysis; select location(s) and variables; download results.
+- **Develop code to compare GOE Monitoring Projects Data** HAT data with ECCC data using same measurement parameters (Malloff & Shackelford, 2024), 
+- **Analyze results patterns** individual site differences, variables and other metrics/indices
 
 
-# What I need (Include in Email)
-## From HAT
-- permission to participate in a HAT-related project
-- access to HAT GOE Monitoring Data, including metadata
-- support, input, and feedback 
-- I met with Vanessa Brownlee at the HAT Social 2025-08-27, who asked that I send her further information about my proposed project, and though still new to her position, she seemed to be willing for me to start this project in Fall 2025 semester 
+# Project Methods {#methods}
+- ***(See [WorkFlowchart, Figure 1](#workflow)*** and ***Gantt Chart [Proposed Timeline, Figure 2](#gantt))***
+- Continue research for Shiny reactive code to make interactive data choices (e.g. drop-down lists), respond to choices, filter results. Interactive choices will eventually react to other variable selections to make custom-made visualizations and analysis with only a few clicks 
+- Code in RMD test files until code functions correctly, before copying code to working RMD file and Shiny App. Develop functional code chunks one-at-a-time to ensure correct operation before starting next part - coding is not a linear process - some functions take longer to develop; troubleshoot small sections to get a fully working product before adding more functionality
+- Code will be commented for communication and reproducible
+- Create random ECCC 2nd year test data for creating multi-year, multi-project comparisons
+- Sign any HAT data confidentiality agreements as required
+- Consult with HAT restoration monitor team to understand collected data, formats (forms, spreadsheets, csv), variables measured, indices to be calculated, questions to explore with data to analyze results
+- Analyze, transform, clean data, check for inconsistencies; calculate indices from ***(See [Data Code](#data))***
+- Create data visualization plot charts that best reflect nature of variables being measured
+- Create HAT-customized colour palettes, report and plot themes
+- Create portable Project folder, with subfolders: R scripts, raw data, processed data, images, reports, meta data (units, data descriptions, etc); create naming protocols; version-saving with GitHub
+- Document methods, successes, and failures in the process of the project for final paper
+- Continued research for reproducible R code, and effective use of data visualization in ecological restoration monitoring, for final report
 
-## From RNS
-- support and supervision from RNS Nancy Shackelford, particularly before she goes on sabbatical July 2026 
-
-# What I can offer (Include in Email)
-- I am a self-motivated, low maintenance, highly independent student, very interested in the natural environment, who loves to continue learning in meaningful ways, and help create useful digital tools to enhance the learning experience.
-- I have extensive experience with coding using `R`, especially with data visualization and mapping techniques, often learning new method through self-researched knowledge as the need arose. 
-- My long-standing, keen interest in local Garry Oak Ecosystems, including helping remove invasive species and plant native species in a variety of local restoration projects, and while also observing changes over time, I am intrigued by learning how to visualize monitoring measurements to see if the data can help recognize if there are any patterns of change over time and location. 
-- I am prepared to be guided by HAT's preferences as I offer my help to create a tool to automate some data indices calculations and visualization that would hopefully prove to be useful, and adaptable, to HAT's long-term monitoring programs.
-- I have already spent more than 30 hours (during August 2025), reviewing and learning the new-to-me R code I would need to complete this project, creating, cleaning, formatting, and filtering example data from a report of the multiple-site Garry Oak Ecosystem monitoring project which was used as a model to help inform Hat's current monitoring project (Malloff & Shackelford, 2024). I feel confident I will be able to learn any other R code as I need to continue to develop a reactive-to-user choice interactive tool, which I have already started as a  demonstration for the still-developing proposed Shiny App idea https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/ , as well as any other code requirement to handle any data visualization needs requested through  consultation with HAT, especially after receiving HAT DATA in order to analyze its structure and formats, and how I might be able to adapt the code I've been developing over the last month. 
-- I can also assist HAT with any raw data clean-up as needed, including creating R code for calculating any indices from the measurement data, as well as helping to set-up an RStudio environment so HAT can use the RMarkdown code files I'm developing to see if the user-experience needs any 'tweaks'.
-
-# Project Methods for HAT Data visualization
-- See flowchart for work flow (fig.1), and Gantt Chart for timeline (fig.2)
-- Continue to research and learn how to code in Shiny reactively in order to make interactive data choices (e.g. a drop-down list of Sites) respond to a prior data choice (e.g. Subregions), in order to filter the results of specific interest. I'd like to extend these interactive choice reactions to the selection of monitoring variables being measured in order to be able to make custom-made visualizations and analysis with only a few clicks 
-- Sign any data confidentiality agreements as may be required by HAT
-- Consult with HAT restoration monitor team to explore and understand the nature of the collected data, data format (forms, spreadsheets), the variables that are being measured, any indices to be calculated using the collected data, what questions they would like to explore with the data
-- Create a Project folder, with subfolders for R scripts, raw data, processed data, images, reports, download a copy of the current data (including any meta data e.g. measurement units, description of measurement variable, date collected, etc)
-- Analyze and clean data, check for errors, inconsistencies, data quality, calculate indices values from raw data measurements
-- create file and variable naming protocols
-- Create data visualization plot charts that appropriate to reflect the nature of the variables being measured
-- Documents my methods, successes, and failures in the process of the project
-- Continual research for finding appropriate R coding methods, and to contribute to writing my final paper
-
-# Proposed Deliverables
-- See flowchart for work flow (fig.1), and Gantt Chart for timeline (fig.2)
-- All of the following deliverables will be created using RStudio
-
-## Data Visualizations
-- See example visualization results in next section
-- data tables, chart plots, interactive maps 
-- for individual sites
-- for comparing sites (all together, or grouped by subregion, or separately by First Nations if they choose to participate)
-- statistical analysis, and data summary stats (depending on HAT goals)
-
-## RMarkdown Data Processing Document 
-- for data downloading, cleaning, and formatting data visualizations 
-- explain process for preparing data for use 
-- can be used to create HTML, pdf, or Word reports, with table of contents, plot output images, and even code if desired 
-- HTML Document includes a linked Table of Contents for easy navigation between sections 
-
-## Customizations for Plot-Charts, Reports, and Shiny App
-- colour palette for background app
-- change default colour palette in data vizualization plots from pink and blue to some other colour appropriate to HAT and the data
-- add HAT logo
-- add colour to Shiny tabs
-- create custom HAT plot chart theme, including colours, backgrounds, etc 
-- Individual site reports
-
-## Shiny App Interactive Data Viz Tool 
-- https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/ 
-- using data processed with RMarkdown document 
-- for choosing data variables to visualize in tables, plot charts, and maps 
-
-## Tutorials for using Data visualization Tools
-- easy to understand 
-- customized 
-
-## Best practises for file naming, variable, naming, etc.
-- ensure consistency in naming files, variables, file folder structure
-
-## Write R program for Hat’s requirements
-- Given time, and HAT’s interest, I would be prepared to create a HAT-specific R program library, with all the functions required to create the data visualizations and reports for HAT’s monitoring program
-
-## Presentation
-- The completed project will be presented to my community partner HAT
-- The presentation would include a slide show, live demonstrations of Data Visualization Tools, and a draft copy of my final written report, with the final approved copy sent to HAT when finished and ready to be published.
-
-## Written Report
-- The final RNS report will document the work I did to complete this project 
-- Report will follow the expectations of RNS program, including format (submit as Word document) and length (5000 words), due 2026-08-15, to eventually be published in the online journal Ecorestoration: RNS Technical Series
-
-# Bibliography
-- Malloff, J., & Shackelford, N. (2024). <i>Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems.</i> Restoration Futures Lab at the University of Victoria. 
+# Deliverables {#deliverables} 
+- ***(See [WorkFlowchart, Figure 1](#workflow)*** and ***[Proposed Timeline, Figure 2](#gantt))***; RStudio creates Deliverables
+- **Data Visualizations**: Including data tables, plots, interactive maps; for subgroups, individual sites, site comparison, or for confidential use by First Nations; ***(See [Example Visualization](#visualizations))***
+- **RMarkdown Data Processing Document Tool**: Data download, cleaning, transformation for visualization code used in Shiny App; reports: HTML, pdf, Word, with plot output, or code snippets
+- **Customizations**: Create customized colour palette for Plot themes, App, Reports; add HAT logo
+- **Shiny App Interactive Data Viz Tool**: Data processed in Rmd; choose variables to visualize tables, plot, maps, stats; run local for confidentiality. ***(See [Shiny App Sampler](https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/))*** 
+- **Tutorials for using Data visualization Tools**: customized, easy to understand
+- **Create Report Templates**: Customized for individual site, total project reports, or at HAT's request
+- **Best practises for data files**: To ensure naming consistency in  files, variables, folder structure, etc.
+- **Create Customized Functions for HAT** to form core of a HAT-specific R Package library
+- **Presentation**: Completed project presented to community partner HAT; including slide show, live demonstrations of Data Visualization Tools, and copy of written report when approved for publishing.
+- **Written Report**: Due 2026-08-15, document project, using reproducible R code, and visualizing ecological restoration monitoring data; publish in Ecorestoration: RNS Technical Series
 
 \newpage
-# Workflow Graph
-- The workflow shows how the raw data, from HAT monitoring measurements, is transformed and included in code to produce a variety of deliverable products.
-- This graph is made using DiagrammeR code, with a colour-blind friendly colour palette from ColorBrewer
+# Workflow Graph {#workflow}
+- ***(See [Objectives](#objectives)***, ***[Methods](#methods)***, and ***[Deliverables](#deliverables))***
+- The workflow shows how the raw data, from HAT monitoring measurements, would be transformed and included in code to produce a variety of deliverable data vizualization products.
+- This graph is made with R code from DiagrammeR, using a colour-blind friendly colour palette.
 
 ```{r ER390-2-mermaid-graph-shapes, echo=FALSE}
 DiagrammeR::DiagrammeR("
 graph TB
 
 A1[Wendy]
-A2[Vanessa - HAT]
-A3[Nancy - RNS]
+A2[Nancy - RNS]
+A3[Vanessa - HAT]
 
-A((Project))
-C((Code))
+A((ER390 Project))
+C((R Code))
 D(Raw Data)
-E(Filtered Data)
+E(Transformed & Filtered Data)
 F[Variable Names]
+H[HAT]
 K{RMarkdown}
-RC[Reusable Code]
+RC[Reproducible Code]
 V{DataVisualizations}
+AR{Analyze Results}
 RT{Report Templates}
+MR{Make Reports}
 IA{Interactive Web Shiny App}
 S(Shiny app)
 D1((Deliverables))
@@ -172,32 +119,39 @@ D2(Data Best practises)
 D3(Reports)
 D4(Data Vizualizations)
 D5(Instruction Tutorials)
-D6(RMarkdown Documents)
-D7(Customizations)
-P(Presentation to HAT)
+D6(GOEM HAT/ECCC Comparison Code)
+D7(RMarkdown Documents)
+D8(Customizations)
+P(HAT Presentation)
 RP(R Package)
 W(Written Report)
 
  A1-.->|begins|A
- A1-.->|consult|A3
- A3-.->|feedback|A1
+ A-- for -->H
+ A1-.->|consult with|A2
  A2-.->|feedback|A1
- A3-.->|liaise|A2
- A1-.->|ask for Data|A2
- A2-.->|send raw HAT data|D
+ A3-.->|consultation & feedback|A1
+ A2-.->|liaise with|A3
+ A2-.->|share ECCC Data|D
+ A3-.->|share Data|A1
+ A3-.->|Request Features|A1
+ A3-.->|share HAT data|D
  A-- Wendy creates -->C
  A-->D1
  C-- analyze & clean -->D
- D-- results in -->E
+ D-- Data Transformations results in -->E
  C-- code in -->K
  K-- to create -->V
  V-- using -->F
  F-- in -->E
+ MR-- with -->K
  V-- used in -->IA
- IA-- reactively -->E
+ IA-- acts reactively with -->E
  IA-- produces user-chosen -->V
+ V-- with -->IA
  K-- produces -->RC
  RC-- used in -->V
+ AR-- from -->V
  RC-- used in -->RT
  K-- produces -->RT
  D1-- e.g. -->D6
@@ -206,16 +160,17 @@ W(Written Report)
  D1-- e.g. -->D2
  D1-- e.g. -->D5
  D1-- e.g. -->D7
+ D1-- e.g. -->D8
  D1-- e.g. -->D3
  D1-- e.g. -->RP
  D1-- e.g. -->P
- D1-->W
+ D1-- e.g. -->W
  
  style A1 fill:#f6e8c3, stroke:#333, stroke-width:2px  
  style A2 fill:#f6e8c3, stroke:#333, stroke-width:2px  
  style A3 fill:#f6e8c3, stroke:#333, stroke-width:2px  
- style A fill:#80cdc1, stroke:#333, stroke-width:3px  
- style C fill:#35978f, stroke:#333, stroke-width:1px  
+ style A fill:#80cdc1, stroke:#333, stroke-width:4px  
+ style C fill:#80cdc1, stroke:#333, stroke-width:3px  
  style D fill:#c7eae5, stroke:#333, stroke-width:3px  
  style D1 fill:#80cdc1, stroke:#333, stroke-width:1px  
  style D2 fill:#dfc27d, stroke:#333, stroke-width:1px  
@@ -224,16 +179,20 @@ W(Written Report)
  style D5 fill:#dfc27d, stroke:#333, stroke-width:1px  
  style D6 fill:#dfc27d, stroke:#333, stroke-width:1px  
  style D7 fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style D8 fill:#dfc27d, stroke:#333, stroke-width:1px  
  style E fill:#c7eae5, stroke:#333, stroke-width:3px  
- style F fill:#c7eae5
+ style F fill:#c7eae5, stroke:#333, stroke-width:3px  
+ style H fill:#f6e8c3, stroke:#333, stroke-width:2px  
  style IA fill:#dfc27d, stroke:#333, stroke-width:1px  
  style K fill:#dfc27d, stroke:#333, stroke-width:2px  
+ style MR fill:#dfc27d, stroke:#333, stroke-width:2px  
  style P fill:#dfc27d, stroke:#333, stroke-width:1px  
  style RC fill:#c7eae5, stroke:#333, stroke-width:3px  
  style RP fill:#dfc27d, stroke:#333, stroke-width:1px 
  style RT fill:#dfc27d, stroke:#333, stroke-width:1px  
  style S fill:#dfc27d, stroke:#333, stroke-width:1px  
  style V fill:#dfc27d, stroke:#333, stroke-width:1px  
+ style AR fill:#dfc27d, stroke:#333, stroke-width:1px  
  style W fill:#dfc27d, stroke:#333, stroke-width:1px  
 
 ")
@@ -264,12 +223,14 @@ W(Written Report)
 # S1[Interactive user-created data viz]
 # W1[final writeup]
 ```
-fig.1: ER390 Methods Workflow Diagram 
+Figure 1: Project method workflow diagram for ER390 data visualization for HAT
 
 \newpage
-# Proposed Timeline (Look at SMART Objectives)
-- red coloured items are considered critical  
-- grey items are completed  
+# Proposed Timeline {#gantt}
+- red coloured items are considered critical
+- grey items are completed
+- Note: Gantt Chart coded with DiagrammeR using imported csv file of data, but no colour or size control
+- ***(See [Objectives](#objectives)***, ***[Methods](#methods)***, and ***[Deliverables](#deliverables))***  
 
 ```{r gantt, echo=FALSE, include=TRUE, message=FALSE}
 ER390_gantt <- read.csv("data/ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
@@ -282,6 +243,7 @@ ER390_gantt <- read.csv("data/ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
  # ER390_gantt$start <- as.Date(ER390_gantt$start)
  # ER390_gantt$end <- as.Date(ER390_gantt$end)
 # str(ER390_gantt)
+# can't change width of chart, or remove left margin
 
 library(tidyr)
 library(dplyr)
@@ -292,7 +254,7 @@ mermaid(
     # mermaid "header", each component separated with "\n" (line break)
     "gantt", "\n",
     "dateFormat  YYYY-MM-DD", "\n",
-    "title ER390 HAT Data Viz Project Proposed Timeline", "\n",
+    "title ER390 HAT Data Viz Project Proposed Timeline 2025-2026", "\n",
     # unite the first two columns (task & status) and separate them with ":"
     # then, unite the other columns and separate them with ","
     # this will create the required mermaid "body"
@@ -306,13 +268,14 @@ mermaid(
 )
   
 ```
-fig.2: Gantt Proposed ER390 Timeline 
+
+Figure 2: Gantt Proposed ER390 Timeline, Sep 2025-Jul 2026 
 
 \newpage
 ***
 
-# Example Data Visualization Results
-## Data download and formatting
+# Example Data Visualization Results 
+## Data download and formatting {#data}
 - These example visualizations use GOE monitoring data from report by Malloff & Shackelford (2024)
 - Data (in excel or csv format) is uploaded 
 - Data is formatted, saved, and managed to be useful for creating visualizations
@@ -397,10 +360,10 @@ write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE
 
 \newpage
 
-# Data Visualization Example Results
+# Data Visualization Example Results {#visualizations}
 
 ## Data Table 
-- using data from Malloff & Shackelford (2024) 
+- Data from Malloff & Shackelford (2024) 
 
 ### Full Data Table
 
@@ -441,14 +404,14 @@ kableExtra::kable(
   kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
 ```
 
-fig.3,4,5: Example Data Tables
+Figures 3,4,5: Example Data Table Formats, with Head showing only first 6 rows.
 
 \newpage
 ## Map of Site Locations
 
 ### Leaflet Map with Circle Markers 
 - The Leaflet Map is created using R code in RMarkdown.
-- Data  is summarized in map marker popups with summary of site data
+- Data (Malloff & Shackelford, 2024) is summarized in map marker popups with summary of site data
 
 ```{r Leaflet_map_circle_markers_sized_radius, echo=FALSE}
 # not supported by docx format
@@ -499,7 +462,7 @@ ECCC_map_2 <- leaflet(geo_eccc_sites_1) %>%
 ECCC_map_2
 saveWidget(ECCC_map_2, "output/ECCC_map_2.html")
 ```
-fig.6: Interactive Leaflet Map with Example Sites Data
+Figure 6: Interactive Leaflet Map with Example Sites Data
 \newpage
 
 ## Subregion Plots
@@ -553,7 +516,7 @@ subregion_nsp_1 <- subregion_nsp + labs(title='Native Species',
 plot_grid(subregion_exsp_1, subregion_nsp_1, labels = "AUTO")
 ```
 
-fig.7: Violin / bar plot comparing variables of 2 Subregions
+Figure 7: Violin / bar plot compares variables of 2 Subregions
 
 \newpage
 
@@ -561,7 +524,7 @@ fig.7: Violin / bar plot comparing variables of 2 Subregions
 
 ### Point Plot: Compare Individual Sites by Restoration Intensity
 - Sites are ordered by the level of restoration intensity, ranging from high to minimal 
-- This plotly-style chart becomes interactive by clicking data points for view a tool-tip of data results. 
+- This plotly-style chart becomes interactive in html version by clicking data points for view a tool-tip of data results. 
 
 ```{r, plots_site_Restoration_Intensity_order_point_1, echo=FALSE}
 
@@ -589,7 +552,7 @@ site_restInt_x <- ggplot(geo_eccc_sites_2,
                     theme_minimal() + #get rid of grey background and tick marks 
                     theme(legend.position="bottom") + 
                     theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-                    labs(title='Plot Site Restoration Intensity',
+                    labs(title='Plot Site Restoration Intensity (High to Low)',
                       subtitle='ECCC (Malloff & Shackelford, 2024)',
                       caption = "Chart by Wendy Anthony \n 2025-08-26",
                       x = "Site", y = "Restoration Intensity")
@@ -611,7 +574,7 @@ plot <- plot %>% layout(legend = leg)
 #plot
 ggplotly(plot)
 ```
-fig.8: Point Plot of Restoration Intensity of Example Sites
+Figure 8: Point Plot of Restoration Intensity of Example Sites, coloured by Subregion.
 
 
 
