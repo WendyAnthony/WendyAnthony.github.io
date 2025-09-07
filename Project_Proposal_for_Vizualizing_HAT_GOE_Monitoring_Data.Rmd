@@ -54,15 +54,15 @@ I propose to create a customized, coding and reporting tool, including tutorial 
 - **Write data visualization code** for HAT data using RStudio, RMarkdown (Rmd), and RShiny, using reproducible code to create appropriate visualizations to enable a better understanding of the collected data, for use by non-coders, download, format and save data, produce customized reports. Create custom R functions to read, analyze, and plot data, as basis for HAT `goemR` package.
 - **Create interactive data visualization tools**  Scaleable, allow for more sites added, multi-year data, different measuring and sensitivity criteria (e.g. First Nations GOE sites); customize for consistent styles using HAT colours, logos, and plot themes.
 - **Create interactive, browser-based Shiny App** User-chosen, custom-make data visualization plots, maps, and statistical analysis; select location(s) and variables; download results.
-- **Develop code to compare GOE Monitoring Projects Data** HAT data with ECCC data using same measurement parameters (Malloff & Shackelford, 2024), 
-- **Analyze results patterns** individual site differences, variables and other metrics/indices
+- **Develop code to compare GOE Monitoring Projects Data** HAT data with ECCC data using the same measurement parameters and metrics (Malloff & Shackelford, 2024).
+- **Analyze results patterns** individual site differences, variables and other metrics/indices.
 
 
 # Project Methods {#methods}
 - ***(See [WorkFlowchart, Figure 1](#workflow)*** and ***Gantt Chart [Proposed Timeline, Figure 2](#gantt))***
 - Continue research for Shiny reactive code to make interactive data choices (e.g. drop-down lists), respond to choices, filter results. Interactive choices will eventually react to other variable selections to make custom-made visualizations and analysis with only a few clicks 
 - Code in RMD test files until code functions correctly, before copying code to working RMD file and Shiny App. Develop functional code chunks one-at-a-time to ensure correct operation before starting next part - coding is not a linear process - some functions take longer to develop; troubleshoot small sections to get a fully working product before adding more functionality; Code will be commented for communication and reproducibility; Create code functions for R Package
-- Create random ECCC 2nd year test data for creating multi-year, multi-project comparisons
+- Create random ECCC 2nd year test data for producing multi-year, multi-project comparisons
 - Sign any HAT data confidentiality agreements as required
 - Consult with HAT restoration monitor team to understand collected data, formats (forms, spreadsheets, csv), variables measured, indices to be calculated, questions to explore with data to analyze results
 - Analyze, transform, clean data, check for inconsistencies; calculate indices from ***(See [Data Code](#data))***
@@ -278,7 +278,7 @@ Figure 2: Gantt Proposed ER390 Timeline, Sep 2025-Jul 2026
 - These example visualizations use GOE monitoring data from report by Malloff & Shackelford (2024)
 - Data (in excel or csv format) is uploaded 
 - Data is formatted, saved, and managed to be useful for creating visualizations
-- The code has been hidden for the HTML report, highlighting only the resulting plots, though is visible in PDF document. The R code has been documented using hidden comments.
+- The code has been hidden for the HTML report, highlighting only the resulting plots, though becomes visible in PDF document. The R code has been documented using hidden comments.
 
 ## Load Site Data
 <details><summary><b><i>Click open to see R code for `Loading Data`</i></b></summary><p>
@@ -366,7 +366,7 @@ write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE
 
 ### Full Data Table
 
-- The full table is too wide for use in pdf because current variable names are too long.
+- The full table is too wide for use in pdf because current variable names are too long, and unlike HTML, PDFs do not allow sideways scrolling.
 
 ```{r, data table_html, echo=FALSE}
 # for html
@@ -403,14 +403,14 @@ kableExtra::kable(
   kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
 ```
 
-Figures 3,4,5: Example Data Table Formats, with Head showing only first 6 rows.
+Figures 3,4,5: Example Data Table Formats, with Table Head showing only first 6 rows.
 
 \newpage
 ## Map of Site Locations
 
 ### Leaflet Map with Circle Markers 
 - The Leaflet Map is created using R code in RMarkdown.
-- Data (Malloff & Shackelford, 2024) is summarized in map marker popups with summary of site data
+- Data is summarized in map marker popups with summary of site data (Malloff & Shackelford, 2024). 
 
 ```{r Leaflet_map_circle_markers_sized_radius, echo=FALSE}
 # not supported by docx format
@@ -466,6 +466,7 @@ Figure 6: Interactive Leaflet Map with Example Sites Data
 
 ## Subregion Plots
 - These plot compare monitoring variable measurement results between two Subregions.
+- Data from Malloff & Shackelford (2024). 
 
 ```{r, plots_Exotic_species, echo=FALSE, results=FALSE, results='hide', include=FALSE, message=FALSE}
 subregion_exsp <- ggplot(geo_eccc, 
@@ -522,8 +523,9 @@ Figure 7: Violin / bar plot compares variables of 2 Subregions
 ## Site Plots
 
 ### Point Plot: Compare Individual Sites by Restoration Intensity
-- Sites are ordered by the level of restoration intensity, ranging from high to minimal 
+- Sites are ordered by the level of restoration intensity, ranging from high to minimal. 
 - This plotly-style chart becomes interactive in html version by clicking data points for view a tool-tip of data results. 
+- Data from Malloff & Shackelford (2024).
 
 ```{r, plots_site_Restoration_Intensity_order_point_1, echo=FALSE}
 

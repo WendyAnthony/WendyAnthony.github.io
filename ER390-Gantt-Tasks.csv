@@ -15,29 +15,29 @@ Reseach Literature,active,r_21,2025-09-03,2025-12-03
 Create Gantt Chart timeline,"crit, done",c_1,2025-08-31,2025-09-05
 Create Workflow graph,"crit, done",c_2,2025-08-31,2025-09-05
 Creating RMarkdown code,"crit, done",m_1,2025-08-04,2025-08-28
-Gather Example ECCC Data Metrics,"crit, done",d_1,2025-08-04,10d
+Gather Example ECCC Data Metrics,crit,d_1,2025-08-04,10d
 Creating RMarkdown code,active,m_11,2025-09-03,2025-12-03
 Create Periodic RSN-HAT Reports,active,m_2,2025-09-03,30d
 Create Periodic RSN-HAT Reports,active,m_3,2025-10-03,30d
 Create Periodic RSN-HAT Reports,active,m_4,2025-11-03,20d
 Refining RMarkdown code,active,s_21,2025-09-03,2025-12-03
-Gather Example ECCC Raw Data,"crit, done",d_1,2025-09-03,2025-12-03
-Create Code to Compare ECCC & HAT Data,"crit, done",d_1,2025-09-03,2025-12-03
+Gather Example ECCC Raw Data,crit,d_1,2025-09-03,2025-12-03
+Create Code to Compare ECCC & HAT Data,crit,d_1,2025-09-03,2025-12-03
 Create R Package,active,e_21,2025-09-03,2025-12-03
 Create Tutorials,active,t_11,2025-09-03,2025-12-03
 Create Report templates,active,m_21,2025-09-03,2025-12-03
 Research for Final Report ,active,p_31,2025-09-03,2025-12-03
-Help HAT set up R studio,active,h_3,2025-10-03,30d
+Help HAT set up R studio,active,h_3,2025-10-03,2025-12-03
 Data Vizualizations,active,c_31,2025-09-03,2025-12-03
 Create Shiny app example with some working  reactive components,"crit, done",s_1,2025-08-18,2025-09-04
 Refining Shiny App,active,s_21,2025-09-03,2025-12-03
 Interactive Data Table,done,s_3,2025-08-18,2025-08-19
 Create Shiny Clone in webpage,active,s_41,2025-09-03,2025-12-03
 Consult HAT requirements,crit,h_1,2025-09-09,2025-12-03
-Gather 1st Year HAT data,crit,d_2,2025-10-13,2025-12-03
+Gather HAT data,crit,d_2,2025-10-13,2025-12-03
 Code to clean/analyze hat data,crit,d_3,2025-10-13,2025-12-03
-Analyze 1st Year HAT data,crit,d_4,2025-10-13,2025-12-03
-Incorporate New Data in Dataviz,crit,d_6,2025-10-13,2025-12-03
+Analyze HAT data,crit,d_4,2025-10-13,2025-12-03
+Incorporate HAT Data in Dataviz,crit,d_6,2025-10-13,2025-12-03
 Customize HAT themes & colours,active,e_1,2025-10-01,2025-12-03
 2nd Semester,active,sm_2,2026-01-05,2026-04-02
 Work on R code,active,p_12,2026-01-05,2026-04-02
@@ -45,14 +45,14 @@ Research R code,active,r_12,2026-01-05,2026-04-02
 Creating RMarkdown code,active,m_12,2026-01-05,2026-04-02
 Create Periodic RSN-HAT Reports,active,m_5,2026-01-05,30d
 Create Periodic RSN-HAT Reports,active,m_6,2026-02-05,30d
-Create Periodic RSN-HAT Reports,active,m_7,2026-03-05,30d
+Create Periodic RSN-HAT Reports,active,m_7,2026-03-05,2026-04-02
 Refining RMarkdown code,active,s_22,2026-01-05,2026-04-02
 Create R Package,active,e_22,2026-01-05,2026-04-02
 Create Tutorials,active,t_12,2026-01-05,2026-04-02
 Create Report templates,active,m_22,2026-01-05,2026-04-02
 Data Vizualizations,active,c_32,2026-01-05,2026-04-02
 Refining Shiny App,active,s_22,2026-01-05,2026-04-02
-Create Shiny Clone in webpage,active,s_42,2026-01-05,2026-04-02
+Create Shiny Clone webpage,active,s_42,2026-01-05,2026-04-02
 Research Literature for Final Report ,active,p_32,2026-01-05,2026-04-02
 Begin Writing Final Report,crit,p_4,2026-01-05,2026-04-02
 3rd Semester,active,sm_3,2026-05-06,2026-08-21
