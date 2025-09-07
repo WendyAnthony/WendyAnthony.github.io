@@ -3,8 +3,8 @@ Nancy suggested Topic ,"crit, done",first_1,2025-07-22,2025-07-23
 Applied RNS,"crit, done",first_2,2025-08-21,2025-08-22
 Talked to Vanessa at HAT,"crit, done",first_3,2025-08-27,2025-08-28
 Writing Draft Proposal,"crit, done",first_4,2025-08-22,2025-09-08
-Email Nancy ,"crit, done",first_5,2025-08-25,2025-09-04
-Email Vanessa Thanx,crit,first_6,2025-09-04,5d
+Email Nancy ,"crit, done",first_5,2025-08-25,2025-09-08
+Email Vanessa Thanx,crit,first_6,2025-09-08,2025-09-10
 UVic Deadlines - TCA430 Drop Date  - ER390 Enroll Date,crit,first_7,2025-09-16,2025-09-19
 1st Semester,active,sm_1,2025-09-03,2025-12-03
 Request HAT approval for project,crit,h_1,2025-09-04,10d
@@ -15,11 +15,14 @@ Reseach Literature,active,r_21,2025-09-03,2025-12-03
 Create Gantt Chart timeline,"crit, done",c_1,2025-08-31,2025-09-05
 Create Workflow graph,"crit, done",c_2,2025-08-31,2025-09-05
 Creating RMarkdown code,"crit, done",m_1,2025-08-04,2025-08-28
+Gather Example ECCC Data Metrics,"crit, done",d_1,2025-08-04,10d
 Creating RMarkdown code,active,m_11,2025-09-03,2025-12-03
 Create Periodic RSN-HAT Reports,active,m_2,2025-09-03,30d
 Create Periodic RSN-HAT Reports,active,m_3,2025-10-03,30d
-Create Periodic RSN-HAT Reports,active,m_4,2025-11-03,30d
+Create Periodic RSN-HAT Reports,active,m_4,2025-11-03,20d
 Refining RMarkdown code,active,s_21,2025-09-03,2025-12-03
+Gather Example ECCC Raw Data,"crit, done",d_1,2025-09-03,2025-12-03
+Create Code to Compare ECCC & HAT Data,"crit, done",d_1,2025-09-03,2025-12-03
 Create R Package,active,e_21,2025-09-03,2025-12-03
 Create Tutorials,active,t_11,2025-09-03,2025-12-03
 Create Report templates,active,m_21,2025-09-03,2025-12-03
@@ -30,15 +33,15 @@ Create Shiny app example with some working  reactive components,"crit, done",s_1
 Refining Shiny App,active,s_21,2025-09-03,2025-12-03
 Interactive Data Table,done,s_3,2025-08-18,2025-08-19
 Create Shiny Clone in webpage,active,s_41,2025-09-03,2025-12-03
-Example ECCC Data,"crit, done",d_1,2025-08-04,10d
 Consult HAT requirements,crit,h_1,2025-09-09,2025-12-03
 Gather 1st Year HAT data,crit,d_2,2025-10-13,2025-12-03
-Analyze 1st Year HAT data,crit,d_3,2025-10-13,2025-12-03
+Code to clean/analyze hat data,crit,d_3,2025-10-13,2025-12-03
+Analyze 1st Year HAT data,crit,d_4,2025-10-13,2025-12-03
+Incorporate New Data in Dataviz,crit,d_6,2025-10-13,2025-12-03
 Customize HAT themes & colours,active,e_1,2025-10-01,2025-12-03
 2nd Semester,active,sm_2,2026-01-05,2026-04-02
 Work on R code,active,p_12,2026-01-05,2026-04-02
 Research R code,active,r_12,2026-01-05,2026-04-02
-Reseach Literature,active,r_22,2026-01-05,2026-04-02
 Creating RMarkdown code,active,m_12,2026-01-05,2026-04-02
 Create Periodic RSN-HAT Reports,active,m_5,2026-01-05,30d
 Create Periodic RSN-HAT Reports,active,m_6,2026-02-05,30d
@@ -50,25 +53,23 @@ Create Report templates,active,m_22,2026-01-05,2026-04-02
 Data Vizualizations,active,c_32,2026-01-05,2026-04-02
 Refining Shiny App,active,s_22,2026-01-05,2026-04-02
 Create Shiny Clone in webpage,active,s_42,2026-01-05,2026-04-02
-Research for Final Report ,active,p_32,2026-01-05,2026-04-02
-Write Final Report due 2026-08-15,crit,p_4,2026-01-05,2026-04-02
-Incorporate New Data in Dataviz,active,d_6,2026-05-01,30d
+Research Literature for Final Report ,active,p_32,2026-01-05,2026-04-02
+Begin Writing Final Report,crit,p_4,2026-01-05,2026-04-02
 3rd Semester,active,sm_3,2026-05-06,2026-08-21
 Nancy starts sabbatical,crit,n_1,2026-07-01,2026-08-31
-Work on R code,active,p_13,2026-05-06,2026-07-01
+Incorporate HAT & ECCC Data in Dataviz,active,d_6,2026-05-06,30d
+Refine R code,active,p_13,2026-05-06,2026-07-01
 Research R code,active,r_13,2026-05-06,2026-07-01
 Reseach Literature,active,r_23,2026-05-06,2026-07-31
-Creating RMarkdown code,active,m_13,2026-05-06,2026-07-01
+Refine RMarkdown code,active,m_13,2026-05-06,2026-07-01
 Create Periodic RSN-HAT Reports,active,m_8,2026-05-05,30d
-Create Periodic RSN-HAT Reports,active,m_9,2026-06-05,30d
-Create Periodic RSN-HAT Reports,active,m_10,2026-07-05,30d
-Refining RMarkdown code,active,s_23,2026-05-06,2026-07-01
-Create R Package,active,e_23,2026-05-06,2026-07-01
-Create Tutorials,active,t_13,2026-05-06,2026-07-01
+Create Periodic RSN-HAT Reports,active,m_9,2026-06-05,20d
+Refine R Package,active,e_23,2026-05-06,2026-07-01
+Refine Tutorials,active,t_13,2026-05-06,2026-07-01
 Create Report templates,active,m_23,2026-05-06,2026-07-01
 Data Vizualizations,active,c_33,2026-05-06,2026-07-01
 Refining Shiny App,active,s_23,2026-05-06,2026-07-01
 Create Shiny Clone in webpage,active,s_43,2026-05-06,2026-07-01
-Research for Final Report ,active,3,2026-05-06,2026-07-31
+Research Literature for Final Report ,active,r_33,2026-05-06,2026-07-31
 Presentation to HAT,crit,p_2,2026-06-01,30d
 Write Final Report due 2026-08-15,crit,p_41,2026-05-06,2026-08-15

@@ -1,0 +1,19 @@
+task,status,pos,start,end
+3rd Semester,active,sm_3,2026-05-06,2026-08-21
+Nancy starts sabbatical,crit,n_1,2026-07-01,2026-08-31
+Incorporate New Data in Dataviz,active,d_6,2026-05-06,30d
+Refine R code,active,p_13,2026-05-06,2026-07-01
+Research R code,active,r_13,2026-05-06,2026-07-01
+Reseach Literature,active,r_23,2026-05-06,2026-07-31
+Refine RMarkdown code,active,m_13,2026-05-06,2026-07-01
+Create Periodic RSN-HAT Reports,active,m_8,2026-05-05,30d
+Create Periodic RSN-HAT Reports,active,m_9,2026-06-05,20d
+Create R Package,active,e_23,2026-05-06,2026-07-01
+Create Tutorials,active,t_13,2026-05-06,2026-07-01
+Create Report templates,active,m_23,2026-05-06,2026-07-01
+Data Vizualizations,active,c_33,2026-05-06,2026-07-01
+Refining Shiny App,active,s_23,2026-05-06,2026-07-01
+Create Shiny Clone in webpage,active,s_43,2026-05-06,2026-07-01
+Research Literature for Final Report ,active,r_33,2026-05-06,2026-07-31
+Presentation to HAT,crit,p_2,2026-06-01,30d
+Write Final Report due 2026-08-15,crit,p_41,2026-05-06,2026-08-15

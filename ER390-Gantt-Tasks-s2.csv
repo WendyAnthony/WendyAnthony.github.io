@@ -1,0 +1,17 @@
+task,status,pos,start,end
+2nd Semester,active,sm_2,2026-01-05,2026-04-02
+Work on R code,active,p_12,2026-01-05,2026-04-02
+Research R code,active,r_12,2026-01-05,2026-04-02
+Creating RMarkdown code,active,m_12,2026-01-05,2026-04-02
+Create Periodic RSN-HAT Reports,active,m_5,2026-01-05,30d
+Create Periodic RSN-HAT Reports,active,m_6,2026-02-05,30d
+Create Periodic RSN-HAT Reports,active,m_7,2026-03-05,30d
+Refining RMarkdown code,active,s_22,2026-01-05,2026-04-02
+Create R Package,active,e_22,2026-01-05,2026-04-02
+Create Tutorials,active,t_12,2026-01-05,2026-04-02
+Create Report templates,active,m_22,2026-01-05,2026-04-02
+Data Vizualizations,active,c_32,2026-01-05,2026-04-02
+Refining Shiny App,active,s_22,2026-01-05,2026-04-02
+Create Shiny Clone in webpage,active,s_42,2026-01-05,2026-04-02
+Research Literature for Final Report ,active,p_32,2026-01-05,2026-04-02
+Begin Writing Final Report,crit,p_4,2026-01-05,2026-04-02
