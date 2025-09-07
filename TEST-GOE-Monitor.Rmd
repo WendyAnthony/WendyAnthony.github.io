@@ -10,7 +10,7 @@ output:
     number_sections: yes
 ---
 Creation date: 2025/08/04
-Modified Date & Time: 2025/08/27 @ 08:29
+Modified Date & Time: 2025/08/31 @ 22:02
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -26,18 +26,18 @@ library(DiagrammeR)
 
 
 # Data
-- Note Data is in `TEST-GOE-Monitor.xlsx` file, with one worksheet for Data, and one worksheet for Site info
-- Save each worksheet to 2 separate csv files `Site-Data-TEST-GOE-Monitor.csv` & `SiteData-TEST-GOE-Monitor.csv`
+- Note Data is in `data_raw/TEST-GOE-Monitor.xlsx` file, with one worksheet for Data, and one worksheet for Site info
+- Save each worksheet to 2 separate csv files `data/SiteDetails-TEST-GOE-Monitor.csv` & `data/SiteData-TEST-GOE-Monitor.csv`
 
 ## Load Data
 - Data Cleaning to ensure no space at beginning of any text values and column headings
-Note: SiteDetails-TEST-GOE-Monitor.csv has space in front of values 
- NEED TO change `TEST-GOE-Monitor.xlsx` excel file first, then resave as csv
+Note: data/SiteDetails-TEST-GOE-Monitor.csv has space in front of values 
+ NEED TO change `data_raw/TEST-GOE-Monitor.xlsx` excel file first, then resave as csv
 ```{r load-data}
 # Site Data
-geo_eccc <- read.csv("SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
+geo_eccc <- read.csv("data/SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
 # Site Details
-Sites_eccc <- read.csv("SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
+Sites_eccc <- read.csv("data/SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
 ```
 
 ## Data Discovery
@@ -143,8 +143,113 @@ names(geo_eccc_sites_1)
 
 ### Create and save new csv file with both datasets 
 ```{r create-csv-combined-datasets}
-write.csv(geo_eccc_sites_1, "geo_eccc_all_site_data.csv", row.names = FALSE)
+write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE)
 ```
+
+
+## Randomly Change Numbers to Create New Data Set for Year 2
+```{r random-df-yr2}
+geo_eccc_random_2024 <- read.csv("data/TEST-GOE-Monitor-randomChange-diffYear-TEST.csv", header = TRUE, sep = ",")
+
+library(dplyr)
+# https://stackoverflow.com/questions/73773734/adding-a-random-value-to-each-value-in-the-data-conditional-on-the-column-means
+# this adds some values that are negative
+# geo_eccc_random_2024 <- geo_eccc_random_2024 %>%
+#  mutate(across(where(is.numeric), \(x) x + rnorm(n(), mean = 0, sd = 0.5 * mean(x))))
+# need to avoid one column year
+str(geo_eccc_random_2024)
+# change year to date for the moment
+# geo_eccc_random_2024$Year1 <- geo_eccc_random_2024$Year
+# https://stackoverflow.com/questions/69555486/how-can-i-convert-a-column-of-date-time-data-from-numeric-to-character-in-r
+
+geo_eccc_random_2024$Year <- as.character(geo_eccc_random_2024$Year) 
+str(geo_eccc_random_2024) 
+
+geo_eccc_random_2024[] <- lapply(geo_eccc_random_2024, function(x) {
+  if(!is.numeric(x)) x else x + rnorm(length(x), 0, 0.1 * mean(x))
+  })
+geo_eccc_random_2024
+```
+
+### Data Cleaning and Transformation
+<details><summary><b><i>Click open to see R code for `Data Cleaning and Transformation`</i></b></summary><p>
+```{r, data-cleaning-random-newYear}
+
+# check each column for negative value
+# https://stackoverflow.com/questions/50078917/replace-negative-values-with-positive-values-in-r
+# z<--pmin(-z, z) 
+geo_eccc_random_2024$Proportion_of_native_species <--pmin(-geo_eccc_random_2024$Proportion_of_native_species, geo_eccc_random_2024$Proportion_of_native_species) 
+
+geo_eccc_random_2024$Cultural_species_richness <--pmin(-geo_eccc_random_2024$Cultural_species_richness, geo_eccc_random_2024$Cultural_species_richness) 
+
+geo_eccc_random_2024$Exotic_species <--pmin(-geo_eccc_random_2024$Exotic_species, geo_eccc_random_2024$Exotic_species) 
+
+geo_eccc_random_2024$Trampling <--pmin(-geo_eccc_random_2024$Trampling, geo_eccc_random_2024$Trampling) 
+
+geo_eccc_random_2024$Herbivory <--pmin(-geo_eccc_random_2024$Herbivory, geo_eccc_random_2024$Herbivory) 
+
+geo_eccc_random_2024$Composite_Index <--pmin(-geo_eccc_random_2024$Composite_Index, geo_eccc_random_2024$Composite_Index) 
+
+names(geo_eccc_random_2024)
+str(geo_eccc_random_2024)
+
+# https://www.reddit.com/r/rstats/comments/wfn1rf/forcing_visualizations_in_r_to_have_only_2/
+# round numbers to 2 digits
+library(dplyr)
+
+geo_eccc_random_2024 %>% mutate_if(is.numeric, round, digits=2) -> geo_eccc_random_2024
+
+str(geo_eccc_random_2024)
+
+# create new column with proportions changed to percentage as a whole number
+# As this Makes Anniversary Island Proportion >1 change to 1
+# data.frame[row_number, column_number] = new_value
+# geo_eccc_random_2024[1, 3] <- 1
+# but if more than one row ends up being more than 1
+# https://stackoverflow.com/questions/66398854/r-set-column-to-maximum-of-current-entry-and-specified-value-in-an-elegant-way
+# this made them all to 1
+# geo_eccc_random_2024$Proportion_of_native_species <- pmax(geo_eccc_random_2024$Proportion_of_native_species, 1)
+# https://stackoverflow.com/questions/66398854/r-set-column-to-maximum-of-current-entry-and-specified-value-in-an-elegant-way
+# data.table version data[foo < 1, foo := 1])
+# doesn't work
+# geo_eccc_random_2024[geo_eccc_random_2024$Proportion_of_native_species > 1.0000, geo_eccc_random_2024$Proportion_of_native_species == 1.0000]
+
+# change Year back to number
+geo_eccc_random_2024$Year <- as.numeric(as.character(geo_eccc_random_2024$Year))
+str(geo_eccc_random_2024) 
+
+# WHAT TO DO IF PROPORTION OF NATIVE SPECIES is >1
+
+geo_eccc_random_2024
+
+Percentage_ns <- geo_eccc_random_2024$Proportion_of_native_species * 100
+
+# add-new column for Percentages
+geo_eccc_random_2024 <- cbind(geo_eccc_random_2024, Percentage_ns)
+
+# arrange order of site names
+Sites_eccc_1 <- Sites_eccc %>% arrange(Sites_eccc$Site)
+geo_eccc_random_2024_1 <- geo_eccc_random_2024 %>% arrange(geo_eccc_random_2024$Site)
+
+# bind 2 dataframes together
+# this requires Sites rows from both data frames to be in alphabetical order
+## to assign the data rows correctly 
+geo_eccc_random_2024_sites <- cbind(Sites_eccc_1, geo_eccc_random_2024_1)
+
+# Remove duplicate columns resulting from binding 2 data frames
+geo_eccc_random_2024_sites_1 <- geo_eccc_random_2024_sites[c(-9,-10)]
+
+# Rename columns to remove dot-format
+names(geo_eccc_random_2024_sites_1)[names(geo_eccc_random_2024_sites_1) == "Land.Manager"] <- "Land_Manager"
+names(geo_eccc_random_2024_sites_1)[names(geo_eccc_random_2024_sites_1) == "Main.Restoration.Type"] <- "Main_Restoration_Type"
+names(geo_eccc_random_2024_sites_1)[names(geo_eccc_random_2024_sites_1) == "Restoration.Intensity"] <- "Restoration_Intensity"
+names(geo_eccc_random_2024_sites_1)[names(geo_eccc_random_2024_sites_1) == "Area.ha"] <- "Area_ha"
+
+# write csv file with combined data 
+## to create new data file which is used for creating the visualizations
+write.csv(geo_eccc_random_2024_sites_1, "data/geo_eccc_random_2024_all_site_data.csv", row.names = FALSE)
+```
+</p></details>
 
 
 ---
@@ -592,6 +697,36 @@ Anniversary_Island_long_plot  <-  ggplot(Anniversary_Island_long,
 Anniversary_Island_long_plot
 ```
 
+### Point Plot: Individual Site - Uplands Variables of Degradation
+
+```{r, plots-Uplands-Degrade, echo=FALSE}
+# Uplands
+Uplands <- geo_eccc_1[24, ]
+Uplands <- Uplands[, -c(1,2,3,4,8,9,10)]
+# names(Uplands)
+Uplands_long <- Uplands %>% pivot_longer(everything(), names_to = "variable", values_to = "value")
+
+Uplands_long_plot <- ggplot(Uplands_long,
+                aes(x = variable,
+                    y = value)) +
+      ylim(0, 50) +
+      geom_point(shape = 17, 
+                 color = "red", 
+                 fill = "red",
+                 size = 2) +
+      theme_minimal() +                        theme(legend.position="none") +
+      theme(
+        axis.text.x = 
+          element_text(angle = 25, 
+                       vjust = 1,
+                       hjust=1, 
+                       size = 7)) +
+      labs(title='Plotting Uplands Degradation Variables',
+        subtitle='ECCC (Malloff & Shackelford, 2024)',
+        caption = "Chart by Wendy Anthony \n 2025-08-30")
+Uplands_long_plot
+```
+
 
 ## Bar Variables Compare Uplands
 ```{r compare-bar-Variables-uplands}
@@ -764,7 +899,7 @@ ggplot(geo_eccc_1,
 # Test GGplot Function
 ## Violin Chart Function
 ```{r Test-GGplot-Function-violin}
-geo_eccc <- read.csv("SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
+geo_eccc <- read.csv("data/SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
 str(geo_eccc)
 names(geo_eccc)
 
@@ -798,7 +933,7 @@ subregion_var_violin(geo_eccc,'Plotting Subregion by Cultural_species_richness',
 ## Point Chart Function
 ### ggplot point chart
 ```{r Test-GGplot-Function-point}
-geo_eccc <- read.csv("SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
+geo_eccc <- read.csv("data/SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
 
 str(geo_eccc)
 names(geo_eccc)
@@ -830,7 +965,7 @@ subregion_var_point(geo_eccc,'Plotting Site by Exotic Species', 'Malloff & Shack
 
 ### plotly ggplot point chart
 ```{r Test-GGplot-Function-point-plotly}
-geo_eccc <- read.csv("SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
+geo_eccc <- read.csv("data/SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
 
 str(geo_eccc)
 names(geo_eccc)
@@ -868,7 +1003,7 @@ ggplotly(p2)
 ## Custom Icons
 ```{r leaflet-map-custom-icons}
 
-Sites_eccc <- read.csv("SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
+Sites_eccc <- read.csv("data/SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
 
 names(Sites_eccc)
 
@@ -913,7 +1048,7 @@ ECCC_map <- leaflet(Sites_eccc) %>%
 ECCC_map
 
 # Save map
-saveWidget(ECCC_map, "ECCC_map.html")
+saveWidget(ECCC_map, "output/ECCC_map_custom_icons.html")
 
 ```
 
@@ -953,7 +1088,7 @@ ECCC_map <- leaflet(Sites_eccc) %>%
 ECCC_map
 
 # Save map
-saveWidget(ECCC_map, "ECCC_map.html")
+saveWidget(ECCC_map, "output/ECCC_map_circle_markers.html")
 
 ```
 
@@ -996,7 +1131,7 @@ ECCC_map <- leaflet(Sites_eccc) %>%
 ECCC_map
 
 # Save map
-saveWidget(ECCC_map, "ECCC_map.html")
+saveWidget(ECCC_map, "output/ECCC_map_area.html")
 
 ```
 
@@ -1005,7 +1140,7 @@ saveWidget(ECCC_map, "ECCC_map.html")
 geo_eccc_all_site_data.csv
 ```{r leaflet-map-circle-markers-sized-Composite-Index}
 
-geo_eccc_sites_1 <- read.csv("geo_eccc_all_site_data.csv")
+geo_eccc_sites_1 <- read.csv("data/geo_eccc_all_site_data.csv")
 names(geo_eccc_sites_1)
 
 library(dplyr)
@@ -1056,7 +1191,7 @@ ECCC_map_1 <- leaflet(geo_eccc_sites_1) %>%
 ECCC_map_1
 
 # Save map
-saveWidget(ECCC_map_1, "ECCC_map_CI.html")
+saveWidget(ECCC_map_1, "output/ECCC_map_CI.html")
 
 ```
 
@@ -1065,7 +1200,7 @@ saveWidget(ECCC_map_1, "ECCC_map_CI.html")
 geo_eccc_all_site_data.csv
 ```{r leaflet-map-circle-markers-sized-radius}
 
-geo_eccc_sites_1 <- read.csv("geo_eccc_all_site_data.csv")
+geo_eccc_sites_1 <- read.csv("data/geo_eccc_all_site_data.csv")
 names(geo_eccc_sites_1)
 
 library(dplyr)
@@ -1120,11 +1255,624 @@ ECCC_map_2 <- leaflet(geo_eccc_sites_1) %>%
 ECCC_map_2
 
 # Save map
-saveWidget(ECCC_map_2, "ECCC_map_radius-1.html")
+saveWidget(ECCC_map_2, "output/ECCC_map_radius-1.html")
 
 ```
 
 ---
+
+# Mermaid Methods Flow Chart
+## Flow for ER390 Monitoring Data 
+```{r diagramr-Wendy-Hat-Tech-Data}
+DiagrammeR("
+sequenceDiagram;
+   Wendy->>HAT: ask for data;
+   database->>HAT: monitoring data;
+   database->>RStudio: upload and filter data;
+   RStudio->>HAT: Report;
+   HAT->>Wendy: data;
+   alt monitoring data available
+     RestorationTech->>database: upload data;
+     RestorationTech->>Site: monitor;
+     Site->>database: Site Monitoring Data;
+     RStudio->>database: query data;
+     Wendy->>RStudio: create data viz code;
+   else data unavailable
+     database->>RestorationTech: data not available;
+     RestorationTech->>Site: remonitor;
+     RestorationTech->>SiteCommunity: ask to remonitor;
+     SiteCommunity->>RestorationTech: OK to remonitor;
+   end
+")
+
+```
+
+##  Graph for ER390 Proposal Methods Workflow
+```{r ER390-Proposal-mermaid-graph-shapes, echo=FALSE}
+DiagrammeR("
+graph TB
+ A[Wendy]-- send proposal -->B[Vanessa HAT]
+ A[Wendy]-- send proposal -->F[Nancy RNS]
+ B-- decision needed -->C(Decide if I can start ER390 Fall 2025)
+ F-- decision needed -->C(Decide if I can start ER390 Fall 2025)
+ A-- analyzes & cleans -->B1(Data)
+ B1-- results in -->G(Filtered Data)
+ D-.->|if Yes ask for Data|B
+ B-.->|send HAT data|A
+ C-- if -->D((YES))
+ C-- if -->E((NO))
+ H[Variable Names]-- in -->G
+ E-->I[Reconsider please?]
+ I-- ask -->F
+ A-- codes in -->K(RMarkdown)
+ K-- to create -->J(DataVisualizations)
+ J-- using -->H
+ D-- begin -->L((Start Project))
+ J-- used in -->M{Shiny}
+ M-- reactively -->G
+ L-- using -->K
+ M-- produces user-chosen -->J
+ 
+ 
+ style A fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style B fill:#87AB51, stroke:#333, stroke-width:1px  
+ style B1 fill:#9AA
+ style C fill:#E5E25F, stroke:#333, stroke-width:2px  
+ style D fill:#87AB51
+ style E fill:#cf1d2f
+ style F fill:#87AB51, stroke:#333, stroke-width:1px  
+ style G fill:#9AA
+ style H fill:
+ style I fill:
+ style J fill:
+ style K fill:#E5E25F, stroke:#333, stroke-width:2px  
+ style L fill:#87AB51, stroke:#333, stroke-width:3px  
+")
+# #3C8937 Forest Green
+
+# A Wendy
+# B Vanessa
+# B1 Data
+# C Decide if I can start ER390 Fall 2025
+# D Yes
+# E No
+# F Nancy
+# G Filtered Data
+# H Variable Names
+# I Reconsider please?
+# J DataVisualizations
+# K RMarkdown
+# L Start ER390 HAT Project
+# M Shiny
+```
+
+## Workflow Graph
+```{r ER390-mermaid-graph-shapes, echo=FALSE}
+DiagrammeR::DiagrammeR("
+graph TB
+
+A1[Wendy]
+A2[Vanessa HAT]
+A3[Nancy RNS]
+
+A((Start Project))
+D(Raw Data)
+E(Filtered Data)
+F[Variable Names]
+K(RMarkdown)
+V(DataVisualizations)
+R(Reports)
+S{Shiny app}
+D1((Deiverables))
+D2(Data Best practises protocols)
+D3(Report Templates)
+D4(Automatic Coding templates)
+D5(Tutorial: PDF, HTML, video)
+D6(Instruction manual)
+
+ A1-->A
+ A1-- consult -->A3
+ A3-- feedback -->A1
+ A2-- feedback -->A1
+ A3-- liaise -->A2
+ A1-.->|ask for Data|A2
+ A2-.->|send raw HAT data|D
+ A-- analyze & clean -->D
+ D-- results in -->E
+ A-- code in -->K
+ K-- to create -->V
+ V-- using -->F
+ F-- in -->E
+ V-- used in -->S
+ S-- reactively -->E
+ S-- produces user-chosen -->V
+ A-- produces -->R
+ A-- sends -->R
+ A-->D1
+ S-->D1
+ R-->D1
+ D2-->D1
+ D3-->D1
+ D4-->D1
+ D5-->D1
+ D6-->D1
+ 
+ 
+ 
+ style A1 fill:#dff5f0, stroke:#333, stroke-width:2px  
+ style A2 fill:#dff5f0, stroke:#333, stroke-width:2px  
+ style A3 fill:#dff5f0, stroke:#333, stroke-width:2px  
+ style A fill:#c3faca, stroke:#333, stroke-width:3px  
+ style D fill:#ddfac3, stroke:#333, stroke-width:3px  
+ style D1 fill:#c3faca, stroke:#333, stroke-width:1px  
+ style D2 fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style D3 fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style D4 fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style D5 fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style D6 fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style E fill:#ddfac3, stroke:#333, stroke-width:3px  
+ style F fill:#cdd9c3
+ style K fill:#E5E25F, stroke:#333, stroke-width:2px  
+ style R fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style S fill:#E5E25F, stroke:#333, stroke-width:1px  
+ style V fill:#E5E25F, stroke:#333, stroke-width:1px  
+")
+# #3C8937 Forest Green
+
+```
+
+## Examples
+
+### Example graph
+```{r mermaid-methods-flowchart-example}
+DiagrammeR("
+graph TB
+ A-->B
+ A-->C
+ C-->E
+ B-->D
+ C-->D
+ D-->F
+ E-->F
+")
+
+```
+### example Diagrammer shapes
+```{r diagrammer-graph-shapes, echo=FALSE}
+DiagrammeR("
+graph LR
+ A(Rounded)-->B[Squared]
+ B-->C{A Decision}
+ C-->D[Square One]
+ C-->E[Square Two]
+ E-->F((Circle))
+ D-->F
+ style A fill:#E5E25F, stroke:#333, stroke-width:4px  
+ style B fill:#87AB51, stroke:#9AA, stroke-width:2px
+ style C fill:#3C8937, stroke:#333, stroke-width:1px
+ style D fill:#23772C, stroke:#333, stroke-width:2px
+ style E fill:#B6E6E6, stroke:#9C2, stroke-width:2px
+")
+# Note: using ; semi-colons includes code at top of graph, and style doesn't work
+# graph LR;A(Rounded)-->B[Squared];B-->C{A Decision};
+#  C-->D[Square One];C-->E[Square Two];
+#  style A fill:#E5E25F;  style B fill:#87AB51; style C fill:#3C8937;
+#  style D fill:#23772C;  style E fill:#B6E6E6;
+```
+
+### example Mermaid shapes
+```{r mermaid-shapes}
+mermaid("
+        graph BT
+        A((Salinity))
+        A-->B(Barnacles)
+        B-.->|-0.10|B1{Mussels}
+        A-- 0.30 -->B1
+ 
+        C[Air Temp]
+        C-->B
+        C-.->E(Macroalgae)
+        E-->B1
+        C== 0.89 ==>B1
+ 
+        style A fill:#FFF, stroke:#333, stroke-width:4px
+        style B fill:#9AA, stroke:#9AA, stroke-width:2px
+        style B1 fill:#879, stroke:#333, stroke-width:1px
+        style C fill:#ADF, stroke:#333, stroke-width:2px
+        style E fill:#9C2, stroke:#9C2, stroke-width:2px
+ 
+        ")
+
+```
+
+
+### Example sequenceDiagram
+```{r example-sequenceDiagram}
+  DiagrammeR("
+sequenceDiagram;
+   customer->>ticket seller: ask for a ticket;
+   ticket seller->>database: seats;
+   alt tickets available
+     database->>ticket seller: ok;
+     ticket seller->>customer: confirm;
+     customer->>ticket seller: ok;
+     ticket seller->>database: book a seat;
+     ticket seller->>printer: print a ticket;
+   else sold out
+     database->>ticket seller: none left;
+     ticket seller->>customer: sorry;
+   end
+")
+```
+
+
+## Gantt Charts for Timelines
+### Style Gantt code chunk
+- supposed to widen Gantt chart, but doesn't
+```{css, echo = FALSE}
+# https://github.com/laurent22/joplin/issues/6711
+# https://bookdown.org/yihui/rmarkdown-cookbook/chunk-styling.html
+  .wider-gantt {
+	width:100%;
+  font-size:14;
+  }
+```
+### Gantt Chart ER390
+```{r class.source="wider-gantt",  gantt}
+mermaid("
+gantt
+dateFormat  YYYY-MM-DD
+title ER390 HAT Data Viz Project Timeline
+
+section ER390 Project
+  Nancy suggested Topic          :crit, done, first_7, 2025-07-22, 2025-07-23
+  Talked to Vanessa at HAT       :crit, done, first_8, 2025-08-27,  2025-08-28
+  Writing Proposal               :crit, active, first_9, 2025-08-27, 5d
+  Start Project  			           :active, first_10, 2025-09-03, 356d
+
+section Important Things
+  Applied For RNS Program         :crit, done, 2025-08-21, 24h
+  Created Gantt Chart             :active, 2025-08-31, 24h
+
+section Basic Tasks
+  Creating RMarkdown code    :done, a1, 2025-08-04, 2025-08-31
+  Writing Proposal            :active, after a1, 2025-08-31, 3d
+  Email Nancy-RNS & Vanessa-HAT :active, 2025-09-02
+
+section Shiny App
+  Created Shiny App             :done, first_1, 2025-08-18, 2025-08-28
+  Refining Shiny App            :active, first_5, 2025-08-18, 130d
+  Interactive Data Table        :done, 2025-08-18, 2025-08-19
+
+section RMarkdown
+  Created Test Document         :done, first_6, 2025-08-04, 2025-08-05
+
+section Shiny Clone
+  Create Shiny Clone            :active, first_11, 2025-09-30, 150d
+
+section Data Collection
+  Collecting Example Data       :done, first_2, 2025-08-04, 10d
+  Finish Collecting Data        : first_3, after first_2, 5d
+  Do this after that            : first_4, after first_3, 5d
+
+section Critical Tasks
+  Completed, critical task      :done, done, import_1, 2025-08-18, 24h
+  Also done, also critical      :active, done, import_2, after import_1, 2d
+  Doing this important task now :active, active, import_3, after import_2, 3d
+  Next critical task            :active, import_4, after import_3, 5d
+
+
+section Interactive Data Viz
+  First extras                  : extras_1, after import_4, 3d
+  Second helping                : extras_2, after extras_1, 20h
+  More of the extras            : extras_3, after extras_1, 48h
+  
+section The Extras
+  Customize colours for HAT     :  2025-10-01, 2025-12-15
+  Create R Package for HAT      :  2026-01-31, 2026-04-30
+
+
+")
+
+```
+
+### Gantt ER390 dataframe
+```{r gantt-df}
+ER390_gantt <- read.csv("data/ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
+
+library(tidyr)
+library(dplyr)
+library(DiagrammeR)
+
+mermaid(
+  paste0(
+    # mermaid "header", each component separated with "\n" (line break)
+    "gantt", "\n",
+    "dateFormat  YYYY-MM-DD", "\n",
+    "title ER390 HAT Data Viz Project Timeline", "\n",
+    # unite the first two columns (task & status) and separate them with ":"
+    # then, unite the other columns and separate them with ","
+    # this will create the required mermaid "body"
+    paste(ER390_gantt %>%
+            unite(i, task, status, sep = ":") %>%
+            unite(j, i, pos, start, end, sep = ",") %>%
+            .$j,
+          collapse = "\n"
+    ), "\n"
+  )
+)
+
+```
+
+
+
+### Gantt ggplot 1
+```{r}
+library(reshape2)
+library(ggplot2)
+
+tasks <- c("Review literature", "Mung data", "Stats analysis", "Write Report")
+dfr <- data.frame(
+  name        = factor(tasks, levels = tasks),
+  start.date  = as.Date(c("2010-08-24", "2010-10-01", "2010-11-01", "2011-02-14")),
+  end.date    = as.Date(c("2010-10-31", "2010-12-14", "2011-02-28", "2011-04-30")),
+  is.critical = c(TRUE, FALSE, FALSE, TRUE)
+)
+mdfr <- melt(dfr, measure.vars = c("start.date", "end.date"))
+
+gantt_ggplot <- ggplot(mdfr, aes(value, name, colour = is.critical)) + 
+  # Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+  geom_line(linewidth = 6) +
+  xlab(NULL) + 
+  ylab(NULL)
+gantt_ggplot
+
+```
+
+```{r}
+# https://stackoverflow.com/questions/3550341/gantt-charts-with-r
+
+tasks <- c("Review literature", "Mung data", "Stats analysis", "Write Report")
+dfr <- data.frame(
+  name        = factor(tasks, levels = tasks),
+  start.date  = as.Date(c("2010-08-24", "2010-10-01", "2010-11-01", "2011-02-14")),
+  end.date    = as.Date(c("2010-10-31", "2010-12-14", "2011-02-28", "2011-04-30")),
+  is.critical = c(TRUE, FALSE, FALSE, TRUE)
+)
+
+ggplot(dfr, aes(x =start.date, xend= end.date, y=name, yend = name, color=is.critical)) +
+  geom_segment(size = 6) +
+  xlab(NULL) + ylab(NULL)
+```
+
+### Gantt ggplot 2
+```{r}
+library(reshape2)
+tasks <- c("Review literature", "Mung data", "Stats analysis", "Write Report")
+dfrP <- data.frame(
+  name        = factor(tasks, levels = tasks),
+  start.date  = as.Date(c("2010-08-24", "2010-10-01", "2010-11-01", "2011-02-14")),
+  end.date    = as.Date(c("2010-10-31", "2010-12-14", "2011-02-28", "2011-04-30")),
+  is.critical = c(TRUE, FALSE, FALSE, TRUE)
+)
+dfrR <- data.frame(
+  name        = factor(tasks, levels = tasks),
+  start.date  = as.Date(c("2010-08-22", "2010-10-10", "2010-11-01", NA)),
+  end.date    = as.Date(c("2010-11-03", "2010-12-22", "2011-02-24", NA)),
+  is.critical = c(TRUE, FALSE, FALSE,TRUE)
+)
+mdfr <- merge(data.frame(type="Plan", melt(dfrP, measure.vars = c("start.date", "end.date"))),
+  data.frame(type="Real", melt(dfrR, measure.vars = c("start.date", "end.date"))), all=T)
+
+library(ggplot2)
+ggplot(mdfr, aes(x=value, y=type, color=is.critical))+
+  geom_line(linewidth=6) +
+  facet_grid(name ~ .) +
+  scale_y_discrete(limits=c("Real", "Plan")) +
+  xlab(NULL) + ylab(NULL)
+
+```
+
+### Gantt timevis interactive
+```{r}
+# https://stackoverflow.com/questions/3550341/gantt-charts-with-r
+library(timevis)
+
+data <- data.frame(
+  id      = 1:4,
+  content = c("Item one"  , "Item two"  ,"Ranged item", "Item four"),
+  start   = c("2016-01-10", "2016-01-11", "2016-01-20", "2016-02-14 15:00:00"),
+  end     = c(NA          ,           NA, "2016-02-04", NA)
+)
+
+timevis(data)
+
+```
+
+## Gantt Proposed Timeline {#gantt}
+- red coloured items are considered critical
+- grey items are completed
+- Note: Gantt Chart coded with DiagrammeR using imported csv file of data, but no colour or size control
+### Sep 2025 - Aug 2026
+```{r gantt, echo=FALSE, include=TRUE, message=FALSE}
+ER390_gantt <- read.csv("data/ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
+# str(ER390_gantt)
+# NOTE: dates need to be chr in order for Gantt code to work properly
+# names(ER390_gantt)
+# # convert start and end dates from chr to date 
+# changes way date is displayed in Gantt
+# but now I loose my Gantt 
+ # ER390_gantt$start <- as.Date(ER390_gantt$start)
+ # ER390_gantt$end <- as.Date(ER390_gantt$end)
+# str(ER390_gantt)
+# can't change width of chart, or remove left margin
+
+library(tidyr)
+library(dplyr)
+library(DiagrammeR)
+
+mermaid(
+  paste0(
+    # mermaid "header", each component separated with "\n" (line break)
+    "gantt", "\n",
+    "dateFormat  YYYY-MM-DD", "\n",
+    "title ER390 HAT Data Viz Project Proposed Timeline 2025-2026", "\n",
+    # unite the first two columns (task & status) and separate them with ":"
+    # then, unite the other columns and separate them with ","
+    # this will create the required mermaid "body"
+    paste(ER390_gantt %>%
+            unite(i, task, status, sep = ":") %>%
+            unite(j, i, pos, start, end, sep = ",") %>%
+            .$j,
+          collapse = "\n"
+    ), "\n"
+  )
+)
+  
+```
+
+Figure 2: Gantt Proposed ER390 Timeline, Sep 2025-Jul 2026 
+
+\newpage
+
+### Sep-Dec, 2025
+```{r gantt-s1, echo=FALSE, include=TRUE, message=FALSE}
+ER390_gantt_1 <- read.csv("data/ER390-Gantt-Tasks-s1.csv", header = TRUE, sep = ",")
+# str(ER390_gantt)
+# NOTE: dates need to be chr in order for Gantt code to work properly
+# names(ER390_gantt)
+# # convert start and end dates from chr to date 
+# changes way date is displayed in Gantt
+# but now I loose my Gantt 
+ # ER390_gantt$start <- as.Date(ER390_gantt$start)
+ # ER390_gantt$end <- as.Date(ER390_gantt$end)
+# str(ER390_gantt)
+# can't change width of chart, or remove left margin
+
+library(tidyr)
+library(dplyr)
+library(DiagrammeR)
+
+mermaid(
+  paste0(
+    # mermaid "header", each component separated with "\n" (line break)
+    "gantt", "\n",
+    "dateFormat  YYYY-MM-DD", "\n",
+    "title ER390 HAT Data Viz Project Proposed Timeline Sep-Dec, 2025", "\n",
+    # unite the first two columns (task & status) and separate them with ":"
+    # then, unite the other columns and separate them with ","
+    # this will create the required mermaid "body"
+    paste(ER390_gantt_1 %>%
+            unite(i, task, status, sep = ":") %>%
+            unite(j, i, pos, start, end, sep = ",") %>%
+            .$j,
+          collapse = "\n"
+    ), "\n"
+  )
+)
+  
+```
+
+Figure 2.1: Gantt Proposed ER390 Timeline Sep-Dec, 2025
+
+\newpage
+
+### Jan-Apr 2026 
+
+```{r gantt-s2, echo=FALSE, include=TRUE, message=FALSE}
+ER390_gantt_2 <- read.csv("data/ER390-Gantt-Tasks-s2.csv", header = TRUE, sep = ",")
+# str(ER390_gantt)
+# NOTE: dates need to be chr in order for Gantt code to work properly
+# names(ER390_gantt)
+# # convert start and end dates from chr to date 
+# changes way date is displayed in Gantt
+# but now I loose my Gantt 
+ # ER390_gantt$start <- as.Date(ER390_gantt$start)
+ # ER390_gantt$end <- as.Date(ER390_gantt$end)
+# str(ER390_gantt)
+# can't change width of chart, or remove left margin
+
+library(tidyr)
+library(dplyr)
+library(DiagrammeR)
+
+mermaid(
+  paste0(
+    # mermaid "header", each component separated with "\n" (line break)
+    "gantt", "\n",
+    "dateFormat  YYYY-MM-DD", "\n",
+    "title ER390 HAT Data Viz Project Proposed Timeline Jan-Apr 2026", "\n",
+    # unite the first two columns (task & status) and separate them with ":"
+    # then, unite the other columns and separate them with ","
+    # this will create the required mermaid "body"
+    paste(ER390_gantt_2 %>%
+            unite(i, task, status, sep = ":") %>%
+            unite(j, i, pos, start, end, sep = ",") %>%
+            .$j,
+          collapse = "\n"
+    ), "\n"
+  )
+)
+  
+```
+
+Figure 2.2: Gantt Proposed ER390 Timeline, Jan-Apr 2026 
+
+\newpage
+
+### May-Jul, 2026
+
+```{r gantt-s3, echo=FALSE, include=TRUE, message=FALSE}
+ER390_gantt_3 <- read.csv("data/ER390-Gantt-Tasks-s3.csv", header = TRUE, sep = ",")
+# str(ER390_gantt)
+# NOTE: dates need to be chr in order for Gantt code to work properly
+# names(ER390_gantt)
+# # convert start and end dates from chr to date 
+# changes way date is displayed in Gantt
+# but now I loose my Gantt 
+ # ER390_gantt$start <- as.Date(ER390_gantt$start)
+ # ER390_gantt$end <- as.Date(ER390_gantt$end)
+# str(ER390_gantt)
+# can't change width of chart, or remove left margin
+
+library(tidyr)
+library(dplyr)
+library(DiagrammeR)
+
+mermaid(
+  paste0(
+    # mermaid "header", each component separated with "\n" (line break)
+    "gantt", "\n",
+    "dateFormat  YYYY-MM-DD", "\n",
+    "title ER390 HAT Data Viz Project Proposed Timeline May-Jul, 2026", "\n",
+    # unite the first two columns (task & status) and separate them with ":"
+    # then, unite the other columns and separate them with ","
+    # this will create the required mermaid "body"
+    paste(ER390_gantt_3 %>%
+            unite(i, task, status, sep = ":") %>%
+            unite(j, i, pos, start, end, sep = ",") %>%
+            .$j,
+          collapse = "\n"
+    ), "\n"
+  )
+)
+  
+```
+
+Figure 2.3: Gantt Proposed ER390 Timeline May-Jul, 2026
+
+
+# Images Include when knitting
+```{r, echo=FALSE}
+    knitr::include_graphics("images/HAT_logo_ss_1.png")
+```
+
+# Descriptive Summary Stats
+```{r descriptive-summary-stats}
+summary(geo_eccc)
+```
+
+
 
 # Shiny 
 ## Shiny Gadget
@@ -1236,7 +1984,7 @@ lmGadget(iris, "Sepal.Length", "Sepal.Width")
 `app-WORKS-TabsetLayout-choose-Reactive-Table-Plot-BoxNames-comments-showcase.R`
 ```{r, Shiny-app-inline-showcase, echo=FALSE, eval = TRUE}
 # Download data
-geo_eccc_sites_2 <- read.csv("geo_eccc_all_site_data.csv", header = TRUE, sep = ",")
+geo_eccc_sites_2 <- read.csv("data/geo_eccc_all_site_data.csv", header = TRUE, sep = ",")
 
 # Package Libraries
 library(shiny)
@@ -1653,7 +2401,7 @@ output$plot7 <- renderPlotly({
 ### Reactive choose 
 ```{r, Shiny-app-inline, echo=FALSE}
 library(shiny)
-geo_eccc <- read.csv("SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
+geo_eccc <- read.csv("data/SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
 colnames(geo_eccc)
 str(geo_eccc)
 
@@ -1746,7 +2494,7 @@ library(dplyr)
 ############################################################
 ## Data
 # note Restoration_Intensity column values all had a space in front of value - wasn't sorting properly ... changed
-geo_eccc_sites <- read.csv("geo_eccc_all_site_data.csv", header = TRUE, sep = ",")
+geo_eccc_sites <- read.csv("data/geo_eccc_all_site_data.csv", header = TRUE, sep = ",")
 names(geo_eccc_sites)
 str(geo_eccc_sites)
 
@@ -1855,7 +2603,7 @@ https://stackoverflow.com/questions/52880657/in-an-shiny-app-i-want-a-plot-to-up
 library(shiny)
 library(DT)
 
-geo_eccc <- read.csv("geo_eccc_all_site_data.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
+geo_eccc <- read.csv("data/geo_eccc_all_site_data.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
 
 shinyApp(
 ui <- basicPage(
@@ -1987,7 +2735,7 @@ server <- function(input, output) {
   output$my_plot <- renderPlot({
 
     #Read in the sample csv
-    dat <- read.csv("TEST-GOE-Monitor.csv")
+    dat <- read.csv("data/TEST-GOE-Monitor.csv")
 
     #Pull out a column for the x and y axis each
     x_axis <- dat[, input$x_select]
@@ -2018,7 +2766,7 @@ server <- function(input, output) {
   output$my_plot1 <- renderPlot({
 
     #Read in the sample csv
-    dat <- read.csv("TEST-GOE-Monitor.csv")
+    dat <- read.csv("data/TEST-GOE-Monitor.csv")
 
     #Pull out a column for the x and y axis each
     x_axis <- dat[, input$x_select]
@@ -2050,357 +2798,6 @@ server <- function(input, output) {
 
 
 
-
-# Mermaid Methods Flow Chart
-## Flow for ER390 Monitoring Data 
-```{r diagramr-Wendy-Hat-Tech-Data}
-DiagrammeR("
-sequenceDiagram;
-   Wendy->>HAT: ask for data;
-   database->>HAT: monitoring data;
-   database->>RStudio: upload and filter data;
-   RStudio->>HAT: Report;
-   HAT->>Wendy: data;
-   alt monitoring data available
-     RestorationTech->>database: upload data;
-     RestorationTech->>Site: monitor;
-     Site->>database: Site Monitoring Data;
-     RStudio->>database: query data;
-     Wendy->>RStudio: create data viz code;
-   else data unavailable
-     database->>RestorationTech: data not available;
-     RestorationTech->>Site: remonitor;
-     RestorationTech->>SiteCommunity: ask to remonitor;
-     SiteCommunity->>RestorationTech: OK to remonitor;
-   end
-")
-
-```
-
-##  Graph for ER390 Methods Workflow
-```{r ER390-mermaid-graph-shapes, echo=FALSE}
-DiagrammeR("
-graph TB
- A[Wendy]-- send proposal -->B[Vanessa HAT]
- A[Wendy]-- send proposal -->F[Nancy RNS]
- B-- decision needed -->C(Decide if I can start ER390 Fall 2025)
- F-- decision needed -->C(Decide if I can start ER390 Fall 2025)
- A-- analyzes & cleans -->B1(Data)
- B1-- results in -->G(Filtered Data)
- D-.->|if Yes ask for Data|B
- B-.->|send HAT data|A
- C-- if -->D((YES))
- C-- if -->E((NO))
- H[Variable Names]-- in -->G
- E-->I[Reconsider please?]
- I-- ask -->F
- A-- codes in -->K(RMarkdown)
- K-- to create -->J(DataVisualizations)
- J-- using -->H
- D-- begin -->L((Start Project))
- J-- used in -->M{Shiny}
- M-- reactively -->G
- L-- using -->K
- M-- produces user-chosen -->J
- 
- 
- style A fill:#E5E25F, stroke:#333, stroke-width:1px  
- style B fill:#87AB51, stroke:#333, stroke-width:1px  
- style B1 fill:#9AA
- style C fill:#E5E25F, stroke:#333, stroke-width:2px  
- style D fill:#87AB51
- style E fill:#cf1d2f
- style F fill:#87AB51, stroke:#333, stroke-width:1px  
- style G fill:#9AA
- style H fill:
- style I fill:
- style J fill:
- style K fill:#E5E25F, stroke:#333, stroke-width:2px  
- style L fill:#87AB51, stroke:#333, stroke-width:3px  
-")
-# #3C8937 Forest Green
-
-# A Wendy
-# B Vanessa
-# B1 Data
-# C Decide if I can start ER390 Fall 2025
-# D Yes
-# E No
-# F Nancy
-# G Filtered Data
-# H Variable Names
-# I Reconsider please?
-# J DataVisualizations
-# K RMarkdown
-# L Start ER390 HAT Project
-# M Shiny
-```
-## Examples
-
-### Example graph
-```{r mermaid-methods-flowchart-example}
-DiagrammeR("
-graph TB
- A-->B
- A-->C
- C-->E
- B-->D
- C-->D
- D-->F
- E-->F
-")
-
-```
-### example Diagrammer shapes
-```{r diagrammer-graph-shapes, echo=FALSE}
-DiagrammeR("
-graph LR
- A(Rounded)-->B[Squared]
- B-->C{A Decision}
- C-->D[Square One]
- C-->E[Square Two]
- E-->F((Circle))
- D-->F
- style A fill:#E5E25F, stroke:#333, stroke-width:4px  
- style B fill:#87AB51, stroke:#9AA, stroke-width:2px
- style C fill:#3C8937, stroke:#333, stroke-width:1px
- style D fill:#23772C, stroke:#333, stroke-width:2px
- style E fill:#B6E6E6, stroke:#9C2, stroke-width:2px
-")
-# Note: using ; semi-colons includes code at top of graph, and style doesn't work
-# graph LR;A(Rounded)-->B[Squared];B-->C{A Decision};
-#  C-->D[Square One];C-->E[Square Two];
-#  style A fill:#E5E25F;  style B fill:#87AB51; style C fill:#3C8937;
-#  style D fill:#23772C;  style E fill:#B6E6E6;
-```
-
-### example Mermaid shapes
-```{r mermaid-shapes}
-mermaid("
-        graph BT
-        A((Salinity))
-        A-->B(Barnacles)
-        B-.->|-0.10|B1{Mussels}
-        A-- 0.30 -->B1
- 
-        C[Air Temp]
-        C-->B
-        C-.->E(Macroalgae)
-        E-->B1
-        C== 0.89 ==>B1
- 
-        style A fill:#FFF, stroke:#333, stroke-width:4px
-        style B fill:#9AA, stroke:#9AA, stroke-width:2px
-        style B1 fill:#879, stroke:#333, stroke-width:1px
-        style C fill:#ADF, stroke:#333, stroke-width:2px
-        style E fill:#9C2, stroke:#9C2, stroke-width:2px
- 
-        ")
-
-```
-
-
-### Example sequenceDiagram
-```{r example-sequenceDiagram}
-  DiagrammeR("
-sequenceDiagram;
-   customer->>ticket seller: ask for a ticket;
-   ticket seller->>database: seats;
-   alt tickets available
-     database->>ticket seller: ok;
-     ticket seller->>customer: confirm;
-     customer->>ticket seller: ok;
-     ticket seller->>database: book a seat;
-     ticket seller->>printer: print a ticket;
-   else sold out
-     database->>ticket seller: none left;
-     ticket seller->>customer: sorry;
-   end
-")
-```
-
-
-## Gantt Charts for Timelines
-### Style Gantt code chunk
-- supposed to widen Gantt chart, but doesn't
-```{css, echo = FALSE}
-# https://github.com/laurent22/joplin/issues/6711
-# https://bookdown.org/yihui/rmarkdown-cookbook/chunk-styling.html
-  .wider-gantt {
-	width:100%;
-  font-size:14;
-  }
-```
-### Gantt Chart ER390
-```{r class.source="wider-gantt",  gantt}
-mermaid("
-gantt
-dateFormat  YYYY-MM-DD
-title ER390 HAT Data Viz Project Timeline
-
-section ER390 Project
-  Nancy suggested Topic          :crit, done, first_7, 2025-07-22, 2025-07-23
-  Talked to Vanessa at HAT       :crit, done, first_8, 2025-08-27,  2025-08-28
-  Writing Proposal               :crit, active, first_9, 2025-08-27, 5d
-  Start Project  			           :active, first_10, 2025-09-03, 356d
-
-section Important Things
-  Applied For RNS Program         :crit, done, 2025-08-21, 24h
-  Created Gantt Chart             :active, 2025-08-31, 24h
-
-section Basic Tasks
-  Creating RMarkdown code    :done, a1, 2025-08-04, 2025-08-31
-  Writing Proposal            :active, after a1, 2025-08-31, 3d
-  Email Nancy-RNS & Vanessa-HAT :active, 2025-09-02
-
-section Shiny App
-  Created Shiny App             :done, first_1, 2025-08-18, 2025-08-28
-  Refining Shiny App            :active, first_5, 2025-08-18, 130d
-  Interactive Data Table        :done, 2025-08-18, 2025-08-19
-
-section RMarkdown
-  Created Test Document         :done, first_6, 2025-08-04, 2025-08-05
-
-section Shiny Clone
-  Create Shiny Clone            :active, first_11, 2025-09-30, 150d
-
-section Data Collection
-  Collecting Example Data       :done, first_2, 2025-08-04, 10d
-  Finish Collecting Data        : first_3, after first_2, 5d
-  Do this after that            : first_4, after first_3, 5d
-
-section Critical Tasks
-  Completed, critical task      :done, done, import_1, 2025-08-18, 24h
-  Also done, also critical      :active, done, import_2, after import_1, 2d
-  Doing this important task now :active, active, import_3, after import_2, 3d
-  Next critical task            :active, import_4, after import_3, 5d
-
-
-section Interactive Data Viz
-  First extras                  : extras_1, after import_4, 3d
-  Second helping                : extras_2, after extras_1, 20h
-  More of the extras            : extras_3, after extras_1, 48h
-  
-section The Extras
-  Customize colours for HAT     :  2025-10-01, 2025-12-15
-  Create R Package for HAT      :  2026-01-31, 2026-04-30
-
-
-")
-
-```
-
-### Gantt ER390 dataframe
-```{r gantt-df}
-ER390_gantt <- read.csv("ER390-Gantt-Tasks.csv", header = TRUE, sep = ",")
-
-library(tidyr)
-library(dplyr)
-library(DiagrammeR)
-
-mermaid(
-  paste0(
-    # mermaid "header", each component separated with "\n" (line break)
-    "gantt", "\n",
-    "dateFormat  YYYY-MM-DD", "\n",
-    "title ER390 HAT Data Viz Project Timeline", "\n",
-    # unite the first two columns (task & status) and separate them with ":"
-    # then, unite the other columns and separate them with ","
-    # this will create the required mermaid "body"
-    paste(ER390_gantt %>%
-            unite(i, task, status, sep = ":") %>%
-            unite(j, i, pos, start, end, sep = ",") %>%
-            .$j,
-          collapse = "\n"
-    ), "\n"
-  )
-)
-
-```
-
-
-
-### Gantt ggplot 1
-```{r}
-library(reshape2)
-library(ggplot2)
-
-tasks <- c("Review literature", "Mung data", "Stats analysis", "Write Report")
-dfr <- data.frame(
-  name        = factor(tasks, levels = tasks),
-  start.date  = as.Date(c("2010-08-24", "2010-10-01", "2010-11-01", "2011-02-14")),
-  end.date    = as.Date(c("2010-10-31", "2010-12-14", "2011-02-28", "2011-04-30")),
-  is.critical = c(TRUE, FALSE, FALSE, TRUE)
-)
-mdfr <- melt(dfr, measure.vars = c("start.date", "end.date"))
-
-gantt_ggplot <- ggplot(mdfr, aes(value, name, colour = is.critical)) + 
-  geom_line(size = 6) +
-  xlab(NULL) + 
-  ylab(NULL)
-gantt_ggplot
-
-```
-
-```{r}
-# https://stackoverflow.com/questions/3550341/gantt-charts-with-r
-
-tasks <- c("Review literature", "Mung data", "Stats analysis", "Write Report")
-dfr <- data.frame(
-  name        = factor(tasks, levels = tasks),
-  start.date  = as.Date(c("2010-08-24", "2010-10-01", "2010-11-01", "2011-02-14")),
-  end.date    = as.Date(c("2010-10-31", "2010-12-14", "2011-02-28", "2011-04-30")),
-  is.critical = c(TRUE, FALSE, FALSE, TRUE)
-)
-
-ggplot(dfr, aes(x =start.date, xend= end.date, y=name, yend = name, color=is.critical)) +
-  geom_segment(size = 6) +
-  xlab(NULL) + ylab(NULL)
-```
-
-### Gantt ggplot 2
-```{r}
-library(reshape2)
-tasks <- c("Review literature", "Mung data", "Stats analysis", "Write Report")
-dfrP <- data.frame(
-  name        = factor(tasks, levels = tasks),
-  start.date  = as.Date(c("2010-08-24", "2010-10-01", "2010-11-01", "2011-02-14")),
-  end.date    = as.Date(c("2010-10-31", "2010-12-14", "2011-02-28", "2011-04-30")),
-  is.critical = c(TRUE, FALSE, FALSE, TRUE)
-)
-dfrR <- data.frame(
-  name        = factor(tasks, levels = tasks),
-  start.date  = as.Date(c("2010-08-22", "2010-10-10", "2010-11-01", NA)),
-  end.date    = as.Date(c("2010-11-03", "2010-12-22", "2011-02-24", NA)),
-  is.critical = c(TRUE, FALSE, FALSE,TRUE)
-)
-mdfr <- merge(data.frame(type="Plan", melt(dfrP, measure.vars = c("start.date", "end.date"))),
-  data.frame(type="Real", melt(dfrR, measure.vars = c("start.date", "end.date"))), all=T)
-
-library(ggplot2)
-ggplot(mdfr, aes(x=value, y=type, color=is.critical))+
-  geom_line(size=6)+
-  facet_grid(name ~ .) +
-  scale_y_discrete(limits=c("Real", "Plan")) +
-  xlab(NULL) + ylab(NULL)
-
-```
-
-### Gantt timevis interactive
-```{r}
-# https://stackoverflow.com/questions/3550341/gantt-charts-with-r
-library(timevis)
-
-data <- data.frame(
-  id      = 1:4,
-  content = c("Item one"  , "Item two"  ,"Ranged item", "Item four"),
-  start   = c("2016-01-10", "2016-01-11", "2016-01-20", "2016-02-14 15:00:00"),
-  end     = c(NA          ,           NA, "2016-02-04", NA)
-)
-
-timevis(data)
-
-```
 
 
 ---
