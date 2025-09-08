@@ -61,7 +61,7 @@ I propose to create a customized coding and reporting tool, including tutorial i
 # Project Methods {#methods}
 - ***(See [WorkFlowchart, Figure 1](#workflow)*** & ***Gantt Chart [Proposed Timeline, Figure 2](#gantt))***
 - Continue research for Shiny reactive code to make interactive data choices (e.g. drop-down lists), respond to choices, and filter results. 
-- Code in RMD test files until code functions correctly, before copying code to working RMD file and Shiny App. Develop functional code chunks one-at-a-time to ensure correct operation before starting next part - coding is not a linear process - some functions take longer to develop; troubleshoot small sections to get a fully working product before adding more functionality; Code will be commented for communication and reproducibility; Create reuseable code functions as basis for R Package
+- Code in Rmd test files until code functions correctly, before copying code to working Rmd file and Shiny App. Develop functional code chunks one-at-a-time to ensure correct operation before starting next part - coding is not a linear process - some functions take longer to develop; troubleshoot small sections to get a fully working product before adding more functionality; Code will be commented for communication and reproducibility; Create reuseable code functions as basis for R Package
 - Create random ECCC 2nd year test data for producing multi-year, multi-project comparisons
 - Sign any HAT data confidentiality agreements as required
 - Consult with HAT restoration monitor team to understand collected data, formats (forms, spreadsheets, csv), variables measured, indices to be calculated, questions to explore with data to analyze results
