@@ -165,7 +165,7 @@ server <- function(input, output, session){
     str3a <- paste("Shiny Interactive Dataviz Tool is one of the proposed final product deliverables for ER390 Final Project,
                    created with code written in RMarkdown Code Document")
     str3b <- paste("To be customized for HAT's GOE Monitoring Data with HAT preferences for logo, background, color, colour of tabs, coloured theme, styles for plots, etc.")
-    str3c <- paste("I still need to work on getting leaflet mat map to recognize reactive variable values that are chosen,
+    str3c <- paste("I still need to work on getting leaflet map to recognize reactive variable values that are chosen,
                    and already reflected in tables and plots")
     str3d <- paste("I would also like to add choosing different variables to display interactively in plots, or perhaps even choose the type of plot to use")
     str4 <- paste("II. Data Preparation")
