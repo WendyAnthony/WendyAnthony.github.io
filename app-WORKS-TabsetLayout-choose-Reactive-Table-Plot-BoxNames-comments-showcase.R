@@ -5,7 +5,7 @@
 ## LEAFLET NOT WORKING ??? 2025-08-28
 
 # Download data
-geo_eccc_sites_2 <- read.csv("geo_eccc_all_site_data.csv", header = TRUE, sep = ",")
+goe_eccc_sites_2 <- read.csv("data/goe_eccc_all_site_data.csv", header = TRUE, sep = ",")
 
 # Package Libraries
 library(shiny)
@@ -21,13 +21,25 @@ sidebarLayout(
   # sidebarPanel
   sidebarPanel(width = 3,
     span(style = "font-weight:bold; font-size:11px;", "Using the App: "),
-    span(style = "font-size:12px;", "Choose All or one Subregion/Site; click tab results: Table, Comparing Subregions, Comparing Sites"),
+    br(),
+    span(style = "font-size:12px;", "° Choose All or one Subregion/Site"),
+    br(),
+    span(style = "font-size:12px;", "° Click tab to view results: Data Table, Compare Subregions, Compare Sites"),
+    br(),
+    span(style = "font-size:12px;", "° Reset choices to All before choosing new Site Data to visualize"),
     br(),br(),
-    selectInput("Menu1","Choose a Subregion", choices = c("All", unique(geo_eccc_sites_2$Subregion))),
-    selectInput("Menu2","Choose an Site", choices = c("All", unique(geo_eccc_sites_2$Site))),
+    selectInput("Menu1","Choose a Subregion", choices = c("All", unique(goe_eccc_sites_2$Subregion))),
+    selectInput("Menu2","Choose an Site", choices = c("All", unique(goe_eccc_sites_2$Site))),
     span(style = "font-weight:bold; font-size:11px;", "About the Data: "),
-    span(style = "font-size:12px;", "GOE Data from report tables: Malloff, J., & Shackelford, N. (2024). Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. Restoration Futures Lab at the University of Victoria.
-")
+    br(),
+    span(style = "font-size:12px;", "° GOE Data from report tables: Malloff, J., & Shackelford, N. (2024). "),
+    span(style = "font-size:12px; font-style:italic;", "Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. "),
+    span(style = "font-size:12px;", "Restoration Futures Lab at the University of Victoria.
+"),
+    # Footer
+    br(),br(),br(),br(),
+    span(style = "font-size:10px; font-style:italic;", "Shiny App Showcase Example created by Wendy Anthony, modified 2025-09-08"),
+
   ),
   # mainPanel
   mainPanel(
@@ -46,7 +58,7 @@ tabPanel("Compare Subregions",
             #column(6, plotOutput("plot8")),
             column(6, plotOutput("plot9"))
          )),
-# tabs seem to break if I try to reuse plot
+# tabs seem to break if I try to reuse same plot - keep separate
 tabPanel("Compare Sites",
          p(style = "font-size:9px;", "GOE Data from report tables: Malloff, J., & Shackelford, N. (2024). Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. Restoration Futures Lab at the University of Victoria.
 "),
@@ -57,6 +69,22 @@ tabPanel("Compare Sites",
            column(6, plotlyOutput("plot6"))
 #,
 #           column(6, plotlyOutput("plot11"))
+         )),
+tabPanel("Statistics",
+         p(style = "font-size:11px;", "Descriptive summary table of data statistics"),
+         p(style = "font-size:9px;", "GOE Data from report tables: Malloff, J., & Shackelford, N. (2024). Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. Restoration Futures Lab at the University of Victoria.
+"),
+         fluidRow(
+           verbatimTextOutput("stats")
+         )),
+tabPanel("Map",
+         p(style = "font-size:9px;", "GOE Data from report tables: Malloff, J., & Shackelford, N. (2024). Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. Restoration Futures Lab at the University of Victoria.
+"),
+         p(style = "font-size:11px;", "Note: Click markers to open popup data. The map is not yet responsive to variable choice, but is in progress ..."),
+         p(style = "font-size:11px;", "The interactive leaflet web map, is embedded in an iFrame from"),
+         HTML('<a href="https://wendyanthony.github.io/ECCC_map_radius-1.html" target="_blank">Interactive Webpage Leaflet Map</a>'),
+         fluidRow(
+           htmlOutput("frame")
          ))
 #,
 # tabPanel("Plot Output",  plotOutput("plot")),
@@ -70,10 +98,13 @@ tabPanel("Compare Sites",
 
 # end tabsetPanel
 )
+
 # end mainPanel
-  )
+)
+
 # end sidebarLayout
 )
+
 # end Fluid Page
 )
 
@@ -82,17 +113,17 @@ server <- function(input, output, session){
 
   data_1 <- reactive({
     if(input$Menu1 == "All"){
-      geo_eccc_sites_2
+      goe_eccc_sites_2
     }else{
-      geo_eccc_sites_2[which(geo_eccc_sites_2$Subregion == input$Menu1),]
+      goe_eccc_sites_2[which(goe_eccc_sites_2$Subregion == input$Menu1),]
     }
   })
 
   data_2 <- reactive({
     if (input$Menu2 == "All"){
-      geo_eccc_sites_2
+      goe_eccc_sites_2
     }else{
-      geo_eccc_sites_2[which(geo_eccc_sites_2$Site == input$Menu2),]
+      goe_eccc_sites_2[which(goe_eccc_sites_2$Site == input$Menu2),]
     }
   })
 
@@ -104,8 +135,8 @@ server <- function(input, output, session){
       updateSelectInput(session,"Menu1","Choose a name", choices = c('All',unique(data_2()$Subregion)))
     }
     else if (input$Menu1 == "All" & input$Menu2 == "All"){
-      updateSelectInput(session,"Menu2","Choose a Site", choices = c('All',unique(geo_eccc_sites_2$Site)))
-      updateSelectInput(session,"Menu1","Choose a Subregion", choices = c('All',unique(geo_eccc_sites_2$Subregion)))
+      updateSelectInput(session,"Menu2","Choose a Site", choices = c('All',unique(goe_eccc_sites_2$Site)))
+      updateSelectInput(session,"Menu1","Choose a Subregion", choices = c('All',unique(goe_eccc_sites_2$Subregion)))
     }
   })
 
@@ -116,10 +147,10 @@ server <- function(input, output, session){
     }else if (input$Menu1 == "All"){
       data_2()
     }else if (input$Menu2 == "All" & input$Menu1 == "All"){
-      geo_eccc_sites_2
+      goe_eccc_sites_2
     }
     else{
-      geo_eccc_sites_2[which(geo_eccc_sites_2$Site == input$Menu2 & geo_eccc_sites_2$Subregion == input$Menu1),]
+      goe_eccc_sites_2[which(goe_eccc_sites_2$Site == input$Menu2 & goe_eccc_sites_2$Subregion == input$Menu1),]
     }
   })
 
@@ -129,32 +160,54 @@ server <- function(input, output, session){
   # https://stackoverflow.com/questions/33392784/make-bold-text-in-html-output-r-shiny
   output$text <- renderUI({
     str1 <- paste("Proposed Interactive Data Viz Tool")
-    str1a <- paste("to be customized for HAT's GOE Monitoring Data")
     str2 <- paste("Here is what I propose to offer ...")
     str3 <- paste("I. Deliverables: Final Products")
-    str3a <- paste("Shiny Interactive Dataviz Tool, RMarkdown Code Document that cleans data, and creates dataviz")
+    str3a <- paste("Shiny Interactive Dataviz Tool is one of the proposed final product deliverables for ER390 Final Project,
+                   created with code written in RMarkdown Code Document")
+    str3b <- paste("To be customized for HAT's GOE Monitoring Data with HAT preferences for logo, background, color, colour of tabs, coloured theme, styles for plots, etc.")
+    str3c <- paste("I still need to work on getting leaflet mat map to recognize reactive variable values that are chosen,
+                   and already reflected in tables and plots")
+    str3d <- paste("I would also like to add choosing different variables to display interactively in plots, or perhaps even choose the type of plot to use")
     str4 <- paste("II. Data Preparation")
-    str4a <- paste("Cleaning data, ensure consistent naming and data formats, data transformation, saving outputs, storing data")
+    str4a <- paste("GOE Data used in the demonstration app is from report tables: Malloff, J., & Shackelford, N. (2024). Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems.
+                   Restoration Futures Lab at the University of Victoria.")
+    str4b <- paste("Could also include uploading data and saving filtered data both as CSV files and as plot images, creating screen shots.")
+    str4c <- paste("Cleaning data, ensure consistent naming and data formats, transforming data, saving outputs, storing data")
     str5 <- paste("III. Interactive Data Tables")
     str5a <- paste("Filter by Subregion Group or Site; Search; Save Results")
     str6 <- paste("IV. Plots")
-    str6a <- paste("Dot plots, bar charts, violin plots, Individual Sites, Subregion Group, multi-year, save results")
-    str7 <- paste("V. Maps")
+    str6a <- paste("Dot plots, bar charts, violin plots, Interactive Plotly plots, or HAT’s preferred plot style or type, by Individual Sites or Subregion Group, multi-year, save results")
+    str6b <- paste("V. Statistical Analysis")
+    str6c <- paste("Interactive choice of variables to analyze for correlation")
+    str7 <- paste("VI. Maps")
     str7a <- paste("Markers sized equally, or by a variable value, with Site information embedded in pop-ups")
-    str7b <- paste(' e.g. <a href="https://wendyanthony.github.io/ECCC_map_radius-1.html" target="_blank">Interactive Webpage Leaflet Map</a>')
+    str7b <- paste("The leaflet map is still in test mode and not yet reactive to variable choice")
+    str7c <- paste(' e.g. <a href="https://wendyanthony.github.io/ECCC_map_radius-1.html" target="_blank">Interactive Webpage Leaflet Map</a>')
+    str7d <- paste("Shiny App Proposal created by Wendy Anthony, modified 2025-09-08")
+
+
     HTML(paste0('<H2>', str1, '</H2>',
-                '<H3>', str1a, '</H3>',
                 str2, '<br/>',
                 '<H4>', str3, '</H4>',
                 '° ', str3a, '<br/>',
+                '° ', str3b, '<br/>',
+                '° ', str3c, '<br/>',
+                '° ', str3d, '<br/>',
                 '<H4>', str4, '</H4>',
                 '° ', str4a, '<br/>',
+                '° ', str4b, '<br/>',
+                '° ', str4c, '<br/>',
                 '<H4>', str5, '</H4>',
                 '° ', str5a, '<br/>',
                 '<H4>', str6, '</H4>',
                 '° ', str6a, '<br/>',
+                '<H4>', str6b, '</H4>',
+                '° ', str6c, '<br/>',
                 '<H4>', str7, '</H4>',
-                '° ', str7a, str7b, '<br/>','<br/>'
+                '° ', str7a, '<br/>',
+                '° ', str7b, str7c,
+                '<br/>','<br/>','<br/>','<br/>',
+                '° ', '<i>', str7d, '<i>'
                 ))
   })
 
@@ -236,7 +289,7 @@ output$plot8 <- renderPlot({
 # Plot works
 output$plot9 <- renderPlot({
   d <- data3()
-names(geo_eccc_sites_2)
+names(goe_eccc_sites_2)
   ggplot(d,
          aes(x = Subregion, y = Percentage_ns)) +
     geom_violin(fill = "seagreen2") +
@@ -374,6 +427,24 @@ output$plot7 <- renderPlotly({
     labs(title='Comparinging Sites by Herbivory',
          subtitle='ECCC GOE Site Monitoring',
          caption = "Chart by Wendy Anthony \n 2025-08-19")
+})
+
+# Statistics summary
+
+output$stats <- renderPrint({
+  d <- data3()
+    summary(d)
+})
+
+# map iframe
+observe({
+  test <<- paste0("https://wendyanthony.github.io/ECCC_map_radius-1.html")
+})
+
+output$frame <- renderUI({
+  my_test <- tags$iframe(src=test, height=800, width=800)
+  print(my_test)
+  my_test
 })
 
 # # Create the base map

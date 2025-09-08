@@ -1,0 +1,25 @@
+"Subregion","Site","Land_Manager","Main_Restoration_Type","Restoration_Intensity","Area_ha","Lat","Lng","Proportion_of_native_species","Cultural_species_richness","Exotic_species","Trampling","Herbivory","Composite_Index","Year","Percentage_ns"
+"Gulf Islands","Anniversary Island","GINPR","herbivore reduction","high",4.39,48.82291937,-123.1823297,0.91,2.73,4.01,3.66,1.66,1.79,2024,91
+"Gulf Islands","AVNR","Saltspring conservancy","herbivore reduction","minimal",20.54,48.80351391,-123.4425083,0.52,1.17,62.47,6.89,35.28,0.68,2024,52
+"Saanich Peninsula","Bear Hill Park","CRD","invasive removal","low",3.8,48.54638676,-123.4077754,0.66,2.06,24.63,7.06,8.44,1.04,2024,66
+"Gulf Islands","Brackman Island","GINPR","invasive removal","high",4.41,48.71896669,-123.3863804,0.69,2.66,12.25,7.45,0.82,2.02,2024,69
+"Saanich Peninsula","Camas Hill","HAT","invasive removal","high",10.1,48.40173201,-123.5974587,0.49,2.57,25.42,7.01,4.38,1.23,2024,49
+"Gulf Islands","Crows Nest","Trinity Western University","herbivore reduction","high",15.34,48.78236526,-123.4612467,0.66,1.15,38.62,1.35,25.17,0.99,2024,66
+"Gulf Islands","Dock Islet N ","GINPR","herbivore reduction","high",0.54,48.67172621,-123.3577287,0.74,3.65,4.92,12.69,1.85,1.55,2024,74
+"Gulf Islands","Eagle Islet","GINPR","herbivore reduction","high",1.34,48.63573836,-123.32935,0.53,0.59,24.21,16.91,1.04,0.73,2024,53
+"Saanich Peninsula","Gonzales Hill Park","CRD","invasive removal","low",1.16,48.41447664,-123.323699,0.28,0.56,82.67,10.08,1.61,0.43,2024,28
+"Saanich Peninsula","Gore Park","Central Saanich","invasive removal","moderate",0.74,48.46093,-123.33328,0.57,4.47,14.3,8.22,2.33,1.56,2024,57
+"Saanich Peninsula","Highrock Park","City of Esquimalt","invasive removal","low",2.88,48.43449,-123.4066,0.47,1.66,36.04,8.33,0.02,1.21,2024,47
+"Saanich Peninsula","Mill Hill Park","CRD","invasive removal","high",16.66,48.457728,-123.479491,0.48,1.57,37.48,15.97,26.05,0.32,2024,48
+"Gulf Islands","Mt Maxwell","BC Parks","herbivore reduction","moderate",35.84,48.80992011,-123.5227678,0.51,0.22,63.99,9.98,4.09,0.25,2024,51
+"Saanich Peninsula","Oak Haven Park","CRD","invasive removal","high",3.16,48.56418627,-123.4470656,0.5,1.35,28.43,1.37,13.5,0.86,2024,50
+"Gulf Islands","Owl Islet","GINPR","none known","minimal",1.49,48.82656136,-123.4005566,0.72,1.94,28.79,10.72,1.21,1.39,2024,72
+"Gulf Islands","Reay Islet","GINPR","herbivore reduction","high",1.97,48.68334587,-123.3293175,0.68,3.38,14.07,12.02,7.61,0.85,2024,68
+"Gulf Islands","Retreat Island","Galiano Conservancy","none known","minimal",1.11,48.9403368,-123.5041681,0.56,2.34,29.67,32.65,0.54,0.88,2024,56
+"Gulf Islands","Rum Islet","GINPR","none known","minimal",1.44,48.66274423,-123.2781064,0.47,1.24,72.39,20.25,69.71,0.03,2024,47
+"Saanich Peninsula","Scafe Hill","CRD","invasive removal","low",3.36,48.49351846,-123.486898,0.35,1.28,61.33,11.37,1.17,0.35,2024,35
+"Saanich Peninsula","Seymour Hill","CRD","invasive removal","low",3.22,48.46762957,-123.4659684,0.32,2.15,67.28,9.26,1.33,0.9,2024,32
+"Gulf Islands","SISCENEM","WSANEC","none known","minimal",3.83,48.62042965,-123.2731841,0.68,3.18,16.82,12.07,0.84,1.72,2024,68
+"Saanich Peninsula","Stewart Hill","CRD","invasive removal","low",3.46,48.49664244,-123.4913375,0.4,1.09,73.44,4.42,0.94,0.8,2024,40
+"Saanich Peninsula","Trial Island",NA,"invasive removal","high",11.58,48.39652597,-123.3058486,0.43,3.71,30.86,2.77,0.43,1.58,2024,43
+"Saanich Peninsula","Uplands Park","District of Oak Bay","invasive removal","high",20.03,48.43912056,-123.2953267,0.45,1.65,45.9,2.97,6.92,1.02,2024,45

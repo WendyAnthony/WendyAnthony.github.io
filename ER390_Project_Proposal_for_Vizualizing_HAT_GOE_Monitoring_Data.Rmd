@@ -285,7 +285,7 @@ Figure 2: Gantt Chart for Proposed ER390 Timeline, Sep 2025-Jul 2026
 ```{r, load-data}
 # Load data and create 2 data frames
 # Load Site Data
-geo_eccc <- read.csv("data/SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
+goe_eccc <- read.csv("data/SiteData-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
 # Load Site Details
 Sites_eccc <- read.csv("data/SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, sep = ",")
 ```
@@ -293,69 +293,69 @@ Sites_eccc <- read.csv("data/SiteDetails-TEST-GOE-Monitor.csv", header = TRUE, s
 </p></details>
 
 ```{r, echo=FALSE, results=FALSE, results='hide', message=FALSE}
-# Percentage_ns <- geo_eccc$Proportion_of_native_species * 100
+# Percentage_ns <- goe_eccc$Proportion_of_native_species * 100
 ```
 
 ## Data Cleaning and Transformation
 <details><summary><b><i>Click open to see R code for `Data Cleaning and Transformation`</i></b></summary><p>
 ```{r, data-cleaning}
 # create new column with proportions changed to percentage as a whole number
-Percentage_ns <- geo_eccc$Proportion_of_native_species * 100
+Percentage_ns <- goe_eccc$Proportion_of_native_species * 100
 
 # add-new column for Percentages
-geo_eccc <- cbind(geo_eccc, Percentage_ns)
+goe_eccc <- cbind(goe_eccc, Percentage_ns)
 
 # arrange row order of site names for binding 2 dataframes
 Sites_eccc_1 <- Sites_eccc %>% arrange(Sites_eccc$Site)
-geo_eccc_1 <- geo_eccc %>% arrange(geo_eccc$Site)
+goe_eccc_1 <- goe_eccc %>% arrange(goe_eccc$Site)
 
 ## make sure both data file columns have same data type str()
-## make sure they have the same number of rows e.g. length(unique(geo_eccc_1$Site))
+## make sure they have the same number of rows e.g. length(unique(goe_eccc_1$Site))
 
 # bind 2 dataframes together by columns
-geo_eccc_sites <- cbind(Sites_eccc_1, geo_eccc_1)
+goe_eccc_sites <- cbind(Sites_eccc_1, goe_eccc_1)
 
 # Remove duplicate columns resulting from binding 2 data frames
-geo_eccc_sites_1 <- geo_eccc_sites[c(-9,-10)]
+goe_eccc_sites_1 <- goe_eccc_sites[c(-9,-10)]
 
 # Rename columns to remove dot-format
-names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Land.Manager"] <- "Land_Manager"
-names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Main.Restoration.Type"] <- "Main_Restoration_Type"
-names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Restoration.Intensity"] <- "Restoration_Intensity"
-names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Area.ha"] <- "Area_ha"
+names(goe_eccc_sites_1)[names(goe_eccc_sites_1) == "Land.Manager"] <- "Land_Manager"
+names(goe_eccc_sites_1)[names(goe_eccc_sites_1) == "Main.Restoration.Type"] <- "Main_Restoration_Type"
+names(goe_eccc_sites_1)[names(goe_eccc_sites_1) == "Restoration.Intensity"] <- "Restoration_Intensity"
+names(goe_eccc_sites_1)[names(goe_eccc_sites_1) == "Area.ha"] <- "Area_ha"
 
 # write csv file with combined data 
 ## creates new data file used for creating visualizations
-write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE)
+write.csv(goe_eccc_sites_1, "data/goe_eccc_all_site_data.csv", row.names = FALSE)
 ```
 </p></details>
 
 ```{r, add-column, echo=FALSE, results=FALSE, results='hide', message=FALSE}
-#geo_eccc <- cbind(geo_eccc, Percentage_ns)
+#goe_eccc <- cbind(goe_eccc, Percentage_ns)
 ```
 
 ```{r, arange-order-df, echo=FALSE, results=FALSE, results='hide', message=FALSE}
 # Sites_eccc_1 <- Sites_eccc %>% arrange(Sites_eccc$Site)
-# geo_eccc_1 <- geo_eccc %>% arrange(geo_eccc$Site)
+# goe_eccc_1 <- goe_eccc %>% arrange(goe_eccc$Site)
 ```
 
 ```{r, cbind-arranged-df, echo=FALSE, results=FALSE, results='hide', message=FALSE}
-#geo_eccc_sites <- cbind(Sites_eccc_1, geo_eccc_1)
+#goe_eccc_sites <- cbind(Sites_eccc_1, goe_eccc_1)
 ```
 
 ```{r, remove-duplicate-columns, echo=FALSE, results=FALSE, results='hide', message=FALSE}
-# geo_eccc_sites_1 <- geo_eccc_sites[c(-9,-10)]
+# goe_eccc_sites_1 <- goe_eccc_sites[c(-9,-10)]
 ```
 
 ```{r, rename-columns-baser, echo=FALSE, results=FALSE, results='hide', message=FALSE}
-# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Land.Manager"] <- "Land_Manager"
-# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Main.Restoration.Type"] <- "Main_Restoration_Type"
-# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Restoration.Intensity"] <- "Restoration_Intensity"
-# names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Area.ha"] <- "Area_ha"
+# names(goe_eccc_sites_1)[names(goe_eccc_sites_1) == "Land.Manager"] <- "Land_Manager"
+# names(goe_eccc_sites_1)[names(goe_eccc_sites_1) == "Main.Restoration.Type"] <- "Main_Restoration_Type"
+# names(goe_eccc_sites_1)[names(goe_eccc_sites_1) == "Restoration.Intensity"] <- "Restoration_Intensity"
+# names(goe_eccc_sites_1)[names(goe_eccc_sites_1) == "Area.ha"] <- "Area_ha"
 ```
 
 ```{r, create-csv-combined-datasets, echo=FALSE, results=FALSE, results='hide', message=FALSE}
-# write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE)
+# write.csv(goe_eccc_sites_1, "data/goe_eccc_all_site_data.csv", row.names = FALSE)
 ```
 
 \newpage
@@ -371,7 +371,7 @@ write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE
 
 ```{r, data table_html, echo=FALSE}
 # for html
-DT::datatable(geo_eccc_sites_1)
+DT::datatable(goe_eccc_sites_1)
 ```
 
 ### Table Head of Site Information
@@ -399,7 +399,7 @@ kableExtra::kable(
 #   kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
 
 kableExtra::kable(
-  head(geo_eccc_1), booktabs = TRUE, linesep = ""
+  head(goe_eccc_1), booktabs = TRUE, linesep = ""
 ) %>%
   kableExtra::kable_styling(latex_options = "hold_position", font_size = 6)
 ```
@@ -417,7 +417,7 @@ Figures 3,4,5: Example Data Table Formats, with Table Head showing only first 6 
 # not supported by docx format
 # , fig.align = 'center'
 
-geo_eccc_sites_1 <- read.csv("data/geo_eccc_all_site_data.csv")
+goe_eccc_sites_1 <- read.csv("data/goe_eccc_all_site_data.csv")
 
 library(dplyr)
 library(leaflet)
@@ -429,7 +429,7 @@ title <- '<p style="text-align: center; height: 30px; ">
  
 pal <- colorFactor(c("#d7191c", "#2c7bb6"), domain = c("Saanich Peninsula", "Gulf Islands"))
 
-ECCC_map_2 <- leaflet(geo_eccc_sites_1) %>%
+ECCC_map_2 <- leaflet(goe_eccc_sites_1) %>%
   addProviderTiles("Esri.WorldImagery") %>%
   addCircleMarkers(
              ~ Lng, ~ Lat, 
@@ -440,19 +440,19 @@ ECCC_map_2 <- leaflet(geo_eccc_sites_1) %>%
     weight = 3, # size of circle border
     stroke = TRUE, fillOpacity = 0.5,
              popup = paste0("<b>ECCC GOE 2023 Monitoring Data</b>", "<br>", "<i>(Malloff & Shackelford, 2024)</i>", "<br><br>",
-               "<b>Site:</b> ", "<b>", geo_eccc_sites_1$Site, "</b>", "</b>", "<br><br>", "<b>Subregion:</b> ", geo_eccc_sites_1$Subregion, "<br>",
-                        "<b>Latitude:</b> ", geo_eccc_sites_1$Lat, "<br>", "<b>Longitude:</b> ", geo_eccc_sites_1$Lng,  "<br><br>",
-                        "<b>Land Manager:</b> ", geo_eccc_sites_1$Land_Manager, "<br>",
-                        "<b>Main Restoration:</b> ", geo_eccc_sites_1$Main_Restoration_Type, "<br>",
-                        "<b>Restoration Intensity:</b> ", geo_eccc_sites_1$Restoration_Intensity, "<br>",
-                        "<b> Area:</b> ", geo_eccc_sites_1$Area_ha, " ha",
+               "<b>Site:</b> ", "<b>", goe_eccc_sites_1$Site, "</b>", "</b>", "<br><br>", "<b>Subregion:</b> ", goe_eccc_sites_1$Subregion, "<br>",
+                        "<b>Latitude:</b> ", goe_eccc_sites_1$Lat, "<br>", "<b>Longitude:</b> ", goe_eccc_sites_1$Lng,  "<br><br>",
+                        "<b>Land Manager:</b> ", goe_eccc_sites_1$Land_Manager, "<br>",
+                        "<b>Main Restoration:</b> ", goe_eccc_sites_1$Main_Restoration_Type, "<br>",
+                        "<b>Restoration Intensity:</b> ", goe_eccc_sites_1$Restoration_Intensity, "<br>",
+                        "<b> Area:</b> ", goe_eccc_sites_1$Area_ha, " ha",
                         "<br><br>",
-                        "<b>Proportion of native species:</b> ", geo_eccc_sites_1$Proportion_of_native_species, "<br>",
-                        "<b>Cultural species richness:</b> ", geo_eccc_sites_1$Cultural_species_richness, "<br>",
-                        "<b>Exotic species:</b> ", geo_eccc_sites_1$Exotic_species, "<br>",
-                        "<b>Trampling:</b> ", geo_eccc_sites_1$Trampling, "<br>",
-                        "<b>Herbivory:</b> ", geo_eccc_sites_1$Herbivory, "<br>",
-                        "<b>Composite Index:</b> ", geo_eccc_sites_1$Composite_Index, "<br>")) %>%
+                        "<b>Proportion of native species:</b> ", goe_eccc_sites_1$Proportion_of_native_species, "<br>",
+                        "<b>Cultural species richness:</b> ", goe_eccc_sites_1$Cultural_species_richness, "<br>",
+                        "<b>Exotic species:</b> ", goe_eccc_sites_1$Exotic_species, "<br>",
+                        "<b>Trampling:</b> ", goe_eccc_sites_1$Trampling, "<br>",
+                        "<b>Herbivory:</b> ", goe_eccc_sites_1$Herbivory, "<br>",
+                        "<b>Composite Index:</b> ", goe_eccc_sites_1$Composite_Index, "<br>")) %>%
   setView(-123.44799, 48.64919, 10) %>%
   # add controls
   addMiniMap(width = 100, height = 100, zoomLevelOffset = -4) %>%
@@ -470,7 +470,7 @@ Figure 6: Interactive Leaflet Map with Example Sites Data (Malloff & Shackelford
 - Data from Malloff & Shackelford (2024). 
 
 ```{r, plots_Exotic_species, echo=FALSE, results=FALSE, results='hide', include=FALSE, message=FALSE}
-subregion_exsp <- ggplot(geo_eccc, 
+subregion_exsp <- ggplot(goe_eccc, 
                     aes(x = Subregion, y = Exotic_species)) +
                     geom_violin(fill = "seagreen2") +
                     geom_boxplot(width = 0.1, fill = "sandybrown") +
@@ -487,7 +487,7 @@ subregion_exsp
 
 ```{r, plots_Percentage_ns, echo=FALSE, results=FALSE, results='hide', include=FALSE, message=FALSE}
 
-subregion_nsp <- ggplot(geo_eccc, 
+subregion_nsp <- ggplot(goe_eccc, 
                     aes(x = Subregion, y = Percentage_ns)) +
                     geom_violin(fill = "seagreen2") +
                     geom_boxplot(width = 0.1, fill = "sandybrown") +
@@ -533,15 +533,15 @@ Figure 7: Violin / bar plot compares variables of 2 Subregions
 # Step 1
 desired_levels <- c("high", "moderate", "low", "minimal")
 # create new df to create desired levels
-geo_eccc_sites_2 <- geo_eccc_sites_1
+goe_eccc_sites_2 <- goe_eccc_sites_1
 # this changes data type from character to factor
-geo_eccc_sites_2$Restoration_Intensity <- factor(geo_eccc_sites_1$Restoration_Intensity, levels = desired_levels)
+goe_eccc_sites_2$Restoration_Intensity <- factor(goe_eccc_sites_1$Restoration_Intensity, levels = desired_levels)
 
 # step 2
-geo_eccc_sites_2 <- geo_eccc_sites_2[order(geo_eccc_sites_2$Restoration_Intensity),]
+goe_eccc_sites_2 <- goe_eccc_sites_2[order(goe_eccc_sites_2$Restoration_Intensity),]
 
 # values in order now -- ?? how to change to reverse order 
-site_restInt_x <- ggplot(geo_eccc_sites_2,
+site_restInt_x <- ggplot(goe_eccc_sites_2,
        aes(x = reorder(Site, 
                        -desc(Restoration_Intensity)), 
            y = reorder(Restoration_Intensity, desc(Restoration_Intensity)), color = Subregion)) +
