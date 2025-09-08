@@ -33,7 +33,7 @@ library(DiagrammeR)
 ```
 \newpage
 # The Idea Behind This Proposal
-After hearing the suggestion to create a data visualization tool for HAT Garry Oak Ecosystems (GOE) Monitoring for a suitable ER390 Final Project, I began thinking about several creative solutions. I gathered table data from the ECCC Monitoring report that influenced HAT’s project design (Malloff & Shackelford, 2024), and began to develop R code, modifiable for HAT data when available in October, and which should also prove useful to develop functional frameworks for comparing results between multiple Garry Oak Ecosystem Monitoring (GOEM) Projects if similar assessment measurements and indices were used ***(See [Goals](#goals))***.  
+After hearing the suggestion to create a data visualization tool for HAT Garry Oak Ecosystems (GOE) Monitoring as a suitable ER390 Final Project, I began thinking about several creative solutions. I gathered table data from the ECCC Monitoring report that influenced HAT’s project design (Malloff & Shackelford, 2024), and began to develop R code, modifiable for HAT data when available in October, and which should also prove useful to develop functional frameworks for comparing results between multiple Garry Oak Ecosystem Monitoring (GOEM) Projects if similar assessment measurements and indices were used ***(See [Goals](#goals))***.  
 
 
 # Background Research 
