@@ -75,7 +75,7 @@ I propose to create a customized coding and reporting tool, including tutorial i
 # Project Deliverables {#deliverables} 
 - ***(See [WorkFlowchart, Figure 1](#workflow)*** & ***[Proposed Timeline, Figure 2](#gantt))***; RStudio-created Deliverables
 - **RMarkdown Data Processing Document Tool**: Data download, cleaning, transformation for visualization code used in Shiny App; reports: HTML, pdf, Word, with plot output, or code snippets
-- **Customizations**: Create customized colour palette for Plot themes, App, Reports; add HAT logo
+- **Customizations**: Create HAT-customized colour palette for Plot themes, App, Reports; add logo
 - **Create Customized Functions for HAT** to form core of a HAT-specific R Package library
 - **Create Report Templates**: Customized for individual site, total project reports, or at HAT's request
 - **Data Visualizations**: Including data tables, plots, interactive maps; for subgroups, individual sites, site comparison, or for confidential use by First Nations ***(See [Example Visualization](#visualizations))***
