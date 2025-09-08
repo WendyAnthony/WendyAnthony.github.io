@@ -33,7 +33,7 @@ library(DiagrammeR)
 ```
 \newpage
 # The Idea Behind This Proposal
-After hearing the suggestion to create a data visualization tool for HAT Garry Oak Ecosystems (GOE) Monitoring for a suitable ER390 Final Project, I began thinking about several creative solutions. I gathered table data from the ECCC Monitoring report that influenced HAT’s project design (Malloff & Shackelford, 2024), and began to develop code, modifiable for HAT data when available in October, which should also prove useful to develop functional frameworks for comparing results between multiple Garry Oak Ecosystem Monitoring (GOEM) Projects if similar assessment measurements and indices were used ***(See [Goals](#goals))***.  
+After hearing the suggestion to create a data visualization tool for HAT Garry Oak Ecosystems (GOE) Monitoring for a suitable ER390 Final Project, I began thinking about several creative solutions. I gathered table data from the ECCC Monitoring report that influenced HAT’s project design (Malloff & Shackelford, 2024), and began to develop code, modifiable for HAT data when available in October, and which should also prove useful to develop functional frameworks for comparing results between multiple Garry Oak Ecosystem Monitoring (GOEM) Projects if similar assessment measurements and indices were used ***(See [Goals](#goals))***.  
 
 
 # Background Research 
@@ -46,26 +46,26 @@ Comparing monitoring results from multiple restoration projects requires consist
 I spoke to Vanessa Brownlee, Habitat Restoration Coordinator at Habitat Acquisition Trust (HAT), during their 2025-08-27 Social Gathering, who expressed interest in my proposed project idea, wanted me to send her more information about what I had in mind, and seemed willing to consider me starting in Fall 2025, with the understanding that interactions will be limited and data will not be available until later in October. I also later spoke briefly to Board Chair Andy MacKinnon, who seemed keen to know of my interest in doing my RNS Final Project with HAT and looks forward to learning more. I'm prepared to be guided by HAT's goals, preferences, timing, and data protocols, with Nancy Shackelford's RNS guidance and support.
 
 # Project Goals and Overall Purpose {#goals}
-I propose to create a customized coding and reporting tool, including tutorial instructions, for use by non-coders, using open-source R package libraries, to format data and interactively visualize data collected at multiple sites for HAT Garry Oak Ecosystem (GOE) Monitoring Program, providing an interactive way to communicate information about the data, and help to determine any patterns through analysis. This project proposal was created using R code in RMarkdown, to showcase some visualizations tools and reports that could be created for HAT, after adapting code to reflect HAT data. An overarching goal is to create code to compare multiple GOE Monitoring Projects which use the same measurement parameters and metrics.
+I propose to create a customized coding and reporting tool, including tutorial instructions, for use by non-coders, using open-source R package libraries, to format, and interactively visualize data collected at multiple sites for HAT Garry Oak Ecosystem (GOE) Monitoring Program, providing an interactive way to communicate information about the data, and help to determine any patterns through analysis. This project proposal was created using R code in RMarkdown, to showcase some visualizations tools and reports that could be created for HAT, after adapting code to reflect HAT data. An overarching goal is to create code to compare multiple GOE Monitoring Projects which use the same measurement parameters and metrics.
 
 # Project Objectives {#objectives}
-- ***(See [WorkFlowchart, Figure 1](#workflow)*** and ***Gantt Chart [Proposed Timeline, Figure 2](#gantt))***
+- ***(See [WorkFlowchart, Figure 1](#workflow)*** & ***Gantt Chart [Proposed Timeline, Figure 2](#gantt))***
 - **Analyze and transform collected data** to understand data, structure, ensure consistent naming protocols, format data for code use, create code to clean raw data, calculate metrics.
 - **Write data visualization code** for HAT data using RStudio, RMarkdown (Rmd), and RShiny, using reproducible code to create appropriate visualizations to enable a better understanding of the collected data; for use by non-coders; download, format,  save data and results; produce customized reports; create custom R functions to read, analyze, and plot data, as basis for proposed HAT `goemR` package.
 - **Create interactive data visualization tools**  Scaleable, to allow for more sites to be added; multi-year data; different measuring and sensitivity criteria (e.g. First Nations GOE sites); customize for consistent styles using HAT colours, logos, and plot themes.
-- **Create interactive, browser-based Shiny App** User-chosen, custom-made data visualization plots, maps, and statistical analysis; select location(s) and variables; download results.
+- **Create interactive, browser-based Shiny App** User-chosen, custom-made data visualization plots, maps, and statistical analysis; select location(s) and variables; upload data; download results. Interactive choices will react to other variable selections to make custom-made visualizations and analysis.
 - **Develop code to compare GOE Monitoring Projects Data** Compare HAT data with ECCC data using the same measurement parameters and metrics (Malloff & Shackelford, 2024).
-- **Analyze results patterns** using individual site differences, variables and other metrics and indices.
+- **Analyze results patterns** of individual site differences with variables, metrics and indices.
 
 
 # Project Methods {#methods}
-- ***(See [WorkFlowchart, Figure 1](#workflow)*** and ***Gantt Chart [Proposed Timeline, Figure 2](#gantt))***
-- Continue research for Shiny reactive code to make interactive data choices (e.g. drop-down lists), respond to choices, and filter results. Interactive choices will eventually react to other variable selections to make custom-made visualizations and analysis with only a few clicks 
-- Code in RMD test files until code functions correctly, before copying code to working RMD file and Shiny App. Develop functional code chunks one-at-a-time to ensure correct operation before starting next part - coding is not a linear process - some functions take longer to develop; troubleshoot small sections to get a fully working product before adding more functionality; Code will be commented for communication and reproducibility; Create reuseable code functions for R Package
+- ***(See [WorkFlowchart, Figure 1](#workflow)*** & ***Gantt Chart [Proposed Timeline, Figure 2](#gantt))***
+- Continue research for Shiny reactive code to make interactive data choices (e.g. drop-down lists), respond to choices, and filter results. 
+- Code in RMD test files until code functions correctly, before copying code to working RMD file and Shiny App. Develop functional code chunks one-at-a-time to ensure correct operation before starting next part - coding is not a linear process - some functions take longer to develop; troubleshoot small sections to get a fully working product before adding more functionality; Code will be commented for communication and reproducibility; Create reuseable code functions as basis for R Package
 - Create random ECCC 2nd year test data for producing multi-year, multi-project comparisons
 - Sign any HAT data confidentiality agreements as required
 - Consult with HAT restoration monitor team to understand collected data, formats (forms, spreadsheets, csv), variables measured, indices to be calculated, questions to explore with data to analyze results
-- Analyze, transform, clean data, check for inconsistencies; calculate indices ***(See [Data Code](#data))***
+- Analyze, clean, and transform data, check for inconsistencies; calculate indices ***(See [Data Code](#data))***
 - Create data visualization plot charts that best reflect nature of variables being measured
 - Create HAT-customized colour palettes, report and plot themes
 - Create portable Project folder, with subfolders: R scripts, raw data, processed data, images, reports, meta data (units, data descriptions, etc); create naming protocols; version-saving with GitHub
@@ -73,16 +73,16 @@ I propose to create a customized coding and reporting tool, including tutorial i
 - Continued research for using reproducible R code, and of effective use of data visualization in ecological restoration monitoring, for inclusion in final report
 
 # Project Deliverables {#deliverables} 
-- ***(See [WorkFlowchart, Figure 1](#workflow)*** and ***[Proposed Timeline, Figure 2](#gantt))***; RStudio creates Deliverables
-- **Data Visualizations**: Including data tables, plots, interactive maps; for subgroups, individual sites, site comparison, or for confidential use by First Nations ***(See [Example Visualization](#visualizations))***
+- ***(See [WorkFlowchart, Figure 1](#workflow)*** & ***[Proposed Timeline, Figure 2](#gantt))***; RStudio-created Deliverables
 - **RMarkdown Data Processing Document Tool**: Data download, cleaning, transformation for visualization code used in Shiny App; reports: HTML, pdf, Word, with plot output, or code snippets
 - **Customizations**: Create customized colour palette for Plot themes, App, Reports; add HAT logo
+- **Create Customized Functions for HAT** to form core of a HAT-specific R Package library
+- **Create Report Templates**: Customized for individual site, total project reports, or at HAT's request
+- **Data Visualizations**: Including data tables, plots, interactive maps; for subgroups, individual sites, site comparison, or for confidential use by First Nations ***(See [Example Visualization](#visualizations))***
 - **Shiny App Interactive Data Viz Tool**: Data processed in Rmd; choose variables to visualize tables, plot, maps, stats; run local for confidentiality ***(See [Shiny App Sampler](https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/))*** 
 - **Tutorials for using Data visualization Tools**: customized, easy to understand
-- **Create Report Templates**: Customized for individual site, total project reports, or at HAT's request
 - **Best practises for data files**: To ensure naming consistency in  files, variables, folder structure, etc.
-- **Create Customized Functions for HAT** to form core of a HAT-specific R Package library
-- **Presentation**: Completed project presented to community partner HAT; including slide show, live demonstrations of Data Visualization Tools, and copy of written report when approved for publishing.
+- **Presentation**: Present completed project to community partner HAT; including slides, live demonstrations of Data Visualization Tools, and written report after approval for publishing.
 - **Written Report**: Due 2026-08-15, document project, using reproducible R code, and visualizing ecological restoration monitoring data; publish in online journal Ecorestoration: RNS Technical Series
 
 \newpage
@@ -273,7 +273,7 @@ Figure 2: Gantt Chart for Proposed ER390 Timeline, Sep 2025-Jul 2026
 \newpage
 ***
 
-# Example Data Visualization Results 
+# Data Cleaning and Transformation Example Results 
 ## Data download and formatting {#data}
 - These example visualizations use GOE monitoring data from report by Malloff & Shackelford (2024)
 - Data (in excel or csv format) is uploaded 
@@ -305,13 +305,14 @@ Percentage_ns <- geo_eccc$Proportion_of_native_species * 100
 # add-new column for Percentages
 geo_eccc <- cbind(geo_eccc, Percentage_ns)
 
-# arrange order of site names
+# arrange row order of site names for binding 2 dataframes
 Sites_eccc_1 <- Sites_eccc %>% arrange(Sites_eccc$Site)
 geo_eccc_1 <- geo_eccc %>% arrange(geo_eccc$Site)
 
-# bind 2 dataframes together
-# this requires Sites rows from both data frames to be in alphabetical order
-## to assign the data rows correctly 
+## make sure both data file columns have same data type str()
+## make sure they have the same number of rows e.g. length(unique(geo_eccc_1$Site))
+
+# bind 2 dataframes together by columns
 geo_eccc_sites <- cbind(Sites_eccc_1, geo_eccc_1)
 
 # Remove duplicate columns resulting from binding 2 data frames
@@ -324,7 +325,7 @@ names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Restoration.Intensity"] <- "
 names(geo_eccc_sites_1)[names(geo_eccc_sites_1) == "Area.ha"] <- "Area_ha"
 
 # write csv file with combined data 
-## to create new data file which is used for creating the visualizations
+## creates new data file used for creating visualizations
 write.csv(geo_eccc_sites_1, "data/geo_eccc_all_site_data.csv", row.names = FALSE)
 ```
 </p></details>
@@ -465,7 +466,7 @@ Figure 6: Interactive Leaflet Map with Example Sites Data (Malloff & Shackelford
 \newpage
 
 ## Subregion Plots
-- These plot compare monitoring variable measurement results between two Subregions.
+- These plots compare monitoring variable measurement results between two Subregions.
 - Data from Malloff & Shackelford (2024). 
 
 ```{r, plots_Exotic_species, echo=FALSE, results=FALSE, results='hide', include=FALSE, message=FALSE}
