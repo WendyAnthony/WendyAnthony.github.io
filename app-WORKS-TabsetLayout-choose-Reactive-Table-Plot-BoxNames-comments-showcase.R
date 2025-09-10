@@ -38,7 +38,7 @@ sidebarLayout(
 "),
     # Footer
     br(),br(),br(),br(),
-    span(style = "font-size:10px; font-style:italic;", "Shiny App Showcase Example created by Wendy Anthony, modified 2025-09-08"),
+    span(style = "font-size:10px; font-style:italic;", "Shiny App Showcase Example created by Wendy Anthony, modified 2025-09-10"),
 
   ),
   # mainPanel
@@ -162,6 +162,7 @@ server <- function(input, output, session){
     str1 <- paste("Proposed Interactive Data Viz Tool")
     str2 <- paste("Here is what I propose to offer ...")
     str3 <- paste("I. Deliverables: Final Products")
+    str3a1 <- paste("Note: Data visualizations created will be based on the questions HAT wants the data to help answer")
     str3a <- paste("Shiny Interactive Dataviz Tool is one of the proposed final product deliverables for ER390 Final Project,
                    created with code written in RMarkdown Code Document")
     str3b <- paste("To be customized for HAT's GOE Monitoring Data with HAT preferences for logo, background, color, colour of tabs, coloured theme, styles for plots, etc.")
@@ -183,12 +184,13 @@ server <- function(input, output, session){
     str7a <- paste("Markers sized equally, or by a variable value, with Site information embedded in pop-ups")
     str7b <- paste("The leaflet map is still in test mode and not yet reactive to variable choice")
     str7c <- paste(' e.g. <a href="https://wendyanthony.github.io/ECCC_map_radius-1.html" target="_blank">Interactive Webpage Leaflet Map</a>')
-    str7d <- paste("Shiny App Proposal created by Wendy Anthony, modified 2025-09-08")
+    str7d <- paste("Shiny App Proposal created by Wendy Anthony, modified 2025-09-10")
 
 
     HTML(paste0('<H2>', str1, '</H2>',
                 str2, '<br/>',
                 '<H4>', str3, '</H4>',
+                '° ', '<b>', str3a1, '</b>', '<br/>',
                 '° ', str3a, '<br/>',
                 '° ', str3b, '<br/>',
                 '° ', str3c, '<br/>',
