@@ -1,8 +1,8 @@
 ---
-title: "ER390 Project Proposal (accepted 2025-09-08)"
+title: "ER390 Project Proposal"
 subtitle: "Visualizing HAT's GOE Monitoring Data"
 author: "Wendy Anthony wanthony@uvic.ca"
-date: "2025/09/09 updated with RNS-suggested changes"
+date: "2025/09/09"
 output:
   pdf_document:
     latex_engine: xelatex
