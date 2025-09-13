@@ -79,7 +79,7 @@ I propose to create a customized coding and reporting tool for non-coders, with 
 - **Create Customized Functions for HAT** to form core of a HAT-specific R Package library
 - **Create Report Templates**: Customized for individual site, total project reports, or at HAT's request
 - **Data Visualizations**: Including data tables, plots, interactive maps; for subgroups, individual sites, site comparison, or for confidential use by First Nations ***(See [Example Visualization](#visualizations))***
-- **Shiny App Interactive Data Viz Tool**: Data processed in Rmd; choose variables to visualize tables, plot, maps, stats; run local for confidentiality ***(See [Shiny App Sampler](https://goe-interact.shinyapps.io/Test-Shiny-GOE-Monitor/))*** 
+- **Shiny App Interactive Data Viz Tool**: Data processed in Rmd; choose variables to visualize tables, plot, maps, stats; run local for confidentiality ***(See [Shiny App Sampler](https://goe-interact.shinyapps.io/app-Exploring-GOE-Monitoring-Dataviz/))*** 
 - **Tutorials for using Data visualization Tools**: customized, easy to understand
 - **Best practises for data files**: To ensure naming consistency in  files, variables, folder structure, etc.
 - **Presentation**: Present completed project to community partner HAT; including slides, live demonstrations of Data Visualization Tools, and written report after approval for publishing.
@@ -653,7 +653,6 @@ sessionInfo()
 # [85] viridisLite_0.4.1       gargle_1.2.1           
 # [87] memoise_2.0.1           ellipsis_0.3.2    
 ```
-
 
 
 
