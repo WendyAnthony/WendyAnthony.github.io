@@ -244,13 +244,11 @@ server <- function(input, output, session){
   })
 
   # Download Button for reactive table data
-
   output$downloadData <- downloadHandler(
     filename = paste0("ReactiveEEECData-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S"), ".csv"),
     content = function(file){
       write.csv(data3(), file)
-    }
-  )
+    })
 
 # Plot works
 # output$plot <- renderPlot({
