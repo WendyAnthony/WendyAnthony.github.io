@@ -40,6 +40,8 @@ ui <- fluidPage(
                  span(style = "font-size:12px; font-style:italic;", "Feeling the Pulse: Monitoring methods and initial outcomes in oak meadow ecosystems. "),
                  span(style = "font-size:12px;", "Restoration Futures Lab at the University of Victoria.
 "),
+                 br(),br(),
+                 actionButton("resetBtn", "Reset Selection"),
                  tags$div(HTML("<hr style='height:2px;border-width:0;color:gray;background-color:gray'>")),
                  ## Screenshot buttons
                  tags$div(HTML("<b>Take Screenshots<br></b>")),
@@ -47,7 +49,6 @@ ui <- fluidPage(
                  # Works
                  screenshotButton(label = "Entire page", filename = paste0("ECCC-Screenshot-entirePage-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = FALSE, server_dir="."),
                  screenshotButton(label = "Input panel", id = "input_panel", filename = paste0("ECCC-Screenshot-entirePage-inputPanel-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = FALSE, server_dir="."),
-                 actionButton("resetBtn", "Reset Selection"),
                  # Footer
                  br(),br(),
                  span(style = "font-size:10px; font-style:italic;", "Shiny App Showcase Example created by Wendy Anthony, modified 2025-09-14"),
