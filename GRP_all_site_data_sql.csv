@@ -1,0 +1,207 @@
+"siteid","projectid","Site","Subregion","latitude","longitude","refecosystem","landcover","elevation","aspect","slope","temp","precip","disturbance"
+1,1,"Albert Head","C-SP",48.3911096,-123.4899215,"garry oak meadow","w",47,6.223422501,0.02425939,10.3,810,"none"
+2,1,"Alec Rocks 1","US-GI",48.42301275,-122.8506057,"garry oak meadow","w",2,0.981800976,0.015694647,9.9,585,"none"
+3,1,"Alec Rocks 2","US-GI",48.42247349,-122.8496832,"garry oak meadow","w",2,0.981800976,0.015694647,9.9,585,"none"
+4,1,"Amelia Island","C-EVII",49.30285996,-124.1522305,"garry oak meadow","w",6,1.239604358,0.032946056,9.1,1284,"none"
+5,1,"Battleship Island","US-GI",48.62452703,-123.1853406,"garry oak meadow","w",-37,5.379570982,0.180159967,10.1,702,"none"
+6,1,"Bear Hill A","C-SP",48.54630749,-123.4054432,"garry oak meadow","tc4",195,0.322988666,0.260333354,9.8,890,"none"
+7,1,"Bear Hill B","C-SP",48.54609661,-123.4087617,"garry oak meadow","csgo",154,5.268862052,0.25203843,9.8,890,"none"
+8,1,"Bear Hill C","C-SP",48.54574213,-123.4107735,"garry oak meadow","csgo",122,5.090687926,0.169345894,9.8,890,"none"
+9,1,"Boulder Island","US-GI",48.43249194,-122.8019169,"garry oak meadow","w",4,3.902757109,0.014718103,10.1,584,"none"
+10,1,"Boulderwood E","C-SP",48.50535295,-123.3721714,"garry oak meadow","tc4",132,1.932172902,0.093158323,9.8,890,"none"
+11,1,"Boulderwood W","C-SP",48.50544503,-123.3747557,"garry oak meadow","tc4",106,4.659652549,0.200033861,9.8,890,"none"
+12,1,"Brackman Island Patch 1","C-GI",48.71801632,-123.3856406,"garry oak meadow","w",5,1.788684218,0.026960146,9.5,995,"none"
+13,1,"Brackman Island Patch 2","C-GI",48.71976487,-123.385796,"garry oak meadow","w",4,1.265983361,0.029127271,9.5,995,"none"
+14,1,"Cairn Park","C-SP",48.43476003,-123.4069322,"garry oak meadow","a",65,2.124686528,0.046014727,10.3,810,"none"
+15,1,"Camrose Park","C-SP",48.45386912,-123.3518461,"garry oak meadow","a",57,3.529371867,0.065740381,10.3,810,"none"
+16,1,"Cedar Hill","C-SP",48.45794971,-123.3473993,"garry oak meadow","a",76,2.543853112,0.029483991,10.3,810,"none"
+17,1,"Channel Middle Island","C-GI",48.80159903,-123.3822772,"garry oak meadow","w",1,0.573779391,0.00809751,9.5,995,"none"
+18,1,"Chatterton Hill","C-SP",48.49138379,-123.3849236,"garry oak meadow","tco",30,1.368317542,0.038630775,10.3,810,"none"
+19,1,"Christmas Hill","C-SP",48.47366143,-123.3768791,"garry oak meadow","a",91,4.779032995,0.144868757,10.3,810,"none"
+20,1,"Coon Island","US-GI",48.59493006,-123.0193727,"garry oak meadow","w",2,1.758788587,0.02079151,9.9,648,"none"
+21,1,"Dean E","C-SP",48.61178696,-123.4419537,"garry oak meadow","tc4",271,2.085553621,0.343062919,9.8,890,"none"
+22,1,"Dean P","C-SP",48.61037516,-123.4432304,"garry oak meadow","c",261,2.565035262,0.301138894,9.8,890,"none"
+23,1,"Dean W","C-SP",48.60893281,-123.4464398,"garry oak meadow","c",256,3.036722925,0.152190788,9.8,890,"none"
+24,1,"Dock Island N","C-GI",48.67168823,-123.3576331,"garry oak meadow","w",1,0,0.005829265,9.5,995,"none"
+25,1,"Dock Island S","C-GI",48.67073063,-123.3577356,"garry oak meadow","w",2,3.141592654,0.003886201,9.5,995,"none"
+26,1,"Flint Beach Island","US-GI",48.41959154,-122.8681591,"garry oak meadow","w",3,3.690989948,0.049942834,9.9,585,"none"
+27,1,"Fortress Island","US-GI",48.46532115,-122.8384151,"garry oak meadow","w",2,4.123777323,0.011974729,9.9,585,"none"
+28,1,"Francis King N","C-SP",48.48698857,-123.4417375,"garry oak meadow","tc4",112,2.678300894,0.035823942,10.3,810,"none"
+29,1,"Francis King S","C-SP",48.47722879,-123.4504402,"garry oak meadow","a",91,5.018576211,0.029000694,10.3,810,"none"
+30,1,"Garibaldi Hill","C-SP",48.33693353,-123.5797218,"garry oak meadow","tc4",114,3.153175405,0.244955848,9.1,1184,"none"
+31,1,"Gonzales Hill","C-SP",48.41357911,-123.3250808,"garry oak meadow","w",56,4.177658111,0.147215248,10.5,692,"none"
+32,1,"Gore Park","C-SP",48.56658311,-123.4550525,"garry oak meadow","w",73,0.162046535,0.099103959,9.8,890,"none"
+33,1,"Gossip Island","US-GI",48.66306879,-123.1726041,"garry oak meadow","w",2,4.433166281,0.164189492,10.1,702,"none"
+34,1,"Horth Hill","C-SP",48.6834925,-123.4323672,"garry oak meadow","w",115,3.849797679,0.244446502,9.5,995,"none"
+35,1,"Iceberg Island","US-GI",48.42733943,-122.8895308,"garry oak meadow","w",1,5.49881626,0.008212191,9.9,585,"none"
+36,1,"Isabella Island Big","C-GI",48.72892157,-123.4307563,"garry oak meadow","w",1,0.984593618,0.003512467,9.5,995,"none"
+37,1,"Isabella Island Small","C-GI",48.72866532,-123.4318398,"garry oak meadow","w",1,2.156999035,0.003512467,9.5,995,"none"
+38,1,"Knockan N","C-SP",48.46999359,-123.4174824,"garry oak meadow","a",80,5.353325736,0.03086177,10.3,810,"none"
+39,1,"Knockan S","C-SP",48.4685274,-123.4194163,"garry oak meadow","a",67,3.361120443,0.093300211,10.3,810,"none"
+40,1,"Konukson A","C-SP",48.45448152,-123.274036,"garry oak meadow","w",36,3.316004862,0.038238118,10.5,692,"none"
+41,1,"Konukson B","C-SP",48.45503327,-123.2726601,"garry oak meadow","w",35,2.447601938,0.03890254,10.5,692,"none"
+42,1,"Layritz","C-SP",48.49049667,-123.4125818,"garry oak meadow","a",72,3.758960777,0.067811393,10.3,810,"none"
+43,1,"Little Channel Island","C-GI",48.80149118,-123.3819799,"garry oak meadow","w",1,0.573779391,0.00809751,9.5,995,"none"
+44,1,"Little D'Arcy Island","C-GI",48.56811743,-123.2655787,"garry oak meadow","w",8,3.193307814,0.028205339,10.1,702,"none"
+45,1,"Little McConnell Island","US-GI",48.59902097,-123.0256144,"garry oak meadow","w",2,4.860753594,0.0721721,9.9,648,"none"
+46,1,"Little Saanich Mountain N","C-SP",48.52399445,-123.4235882,"garry oak meadow","sc1",162,4.554399976,0.321863762,9.8,890,"none"
+47,1,"Little Saanich Mountain S","C-SP",48.51995994,-123.4188926,"garry oak meadow","sc1",213,3.843864276,0.22399181,9.8,890,"none"
+48,1,"Lone Tree","C-SP",48.51974581,-123.5152487,"garry oak meadow","tc4",274,4.511655052,0.457339802,8.7,1315,"none"
+49,1,"Long Islet","US-GI",48.43808322,-122.92601,"garry oak meadow","w",-13,4.031345922,0.139126018,9.9,585,"none"
+50,1,"Low Island","US-GI",48.58906996,-123.0258414,"garry oak meadow","w",1,4.124909087,0.059527194,9.9,648,"none"
+51,1,"McConnell Island","US-GI",48.5945052,-123.023812,"garry oak meadow","w",6,4.783104405,0.068643985,9.9,648,"none"
+52,1,"McConnell Island Patch B","US-GI",48.59865181,-123.0234253,"garry oak meadow","w",2,5.497128632,0.016497211,9.9,648,"none"
+53,1,"McConnell Island Patch C","US-GI",48.59649195,-123.0203496,"garry oak meadow","w",8,1.4256683,0.060388736,9.9,648,"none"
+54,1,"Mill Hill B","C-SP",48.46353083,-123.475958,"garry oak meadow","a",109,0.329214423,0.197629877,10.3,810,"none"
+55,1,"Mill Hill N","C-SP",48.46261701,-123.4767613,"garry oak meadow","a",132,0.135345834,0.182476055,10.3,810,"none"
+56,1,"Mill Hill S","C-SP",48.45700524,-123.4789805,"garry oak meadow","a",184,2.838719813,0.159995699,10.3,810,"none"
+57,1,"Moss Rock","C-SP",48.41160851,-123.3458352,"garry oak meadow","w",15,3.159195951,0.082178101,10.3,810,"none"
+58,1,"Mount Wells N","C-SP",48.4416672,-123.5554358,"garry oak meadow","tc4",277,5.255555386,0.400715369,9.1,1184,"none"
+59,1,"Mount Wells S","C-SP",48.43905747,-123.5548052,"garry oak meadow","tc4",301,1.589876492,0.341531076,9.1,1184,"none"
+60,1,"Mt. Doug A","C-SP",48.49103507,-123.3513213,"garry oak meadow","a",120,4.428753382,0.154974986,10.3,810,"none"
+61,1,"Mt. Doug B","C-SP",48.49271239,-123.3452413,"garry oak meadow","a",195,3.716538893,0.259148653,10.3,810,"none"
+62,1,"Mt. Tolmie","C-SP",48.45786156,-123.3240053,"garry oak meadow","a",112,6.21520786,0.097431551,10.5,692,"none"
+63,1,"Nanoose Hill","C-EVI",49.27352957,-124.1536747,"garry oak meadow","tc4",128,1.421094577,0.199803679,9.1,1284,"none"
+64,1,"Nanoose Peninsula","C-EVI",49.26923914,-124.1151129,"garry oak meadow","w",20,2.720624855,0.072460569,9.1,1284,"none"
+65,1,"North Ada Island 1","C-EVII",49.28780772,-124.0913359,"garry oak meadow","w",2,4.969249097,0.015338906,9.1,1284,"none"
+66,1,"North Ada Island 2","C-EVII",49.28675018,-124.0888154,"garry oak meadow","w",7,1.786287974,0.004556296,9.1,1284,"none"
+67,1,"North Enos 1","C-EVI",49.2880509,-124.1664429,"garry oak meadow","sc1",79,1.320413181,0.144472945,9.1,1284,"none"
+68,1,"North Enos 2","C-EVI",49.28734265,-124.1692446,"garry oak meadow","sc1",101,1.210475109,0.096415545,8.9,1372,"none"
+69,1,"North Enos 3","C-EVI",49.2885005,-124.1717894,"garry oak meadow","sc1",116,1.103654219,0.114162973,8.9,1372,"none"
+70,1,"North Enos 4","C-EVI",49.28850653,-124.1651713,"garry oak meadow","w",59,1.233557607,0.160551204,9.1,1284,"none"
+71,1,"North Enos Lake","C-EVI",49.27901291,-124.147995,"garry oak meadow","tc4",131,3.91569392,0.128723662,9.1,1284,"none"
+72,1,"Oak Haven","C-SP",48.56424514,-123.4469156,"garry oak meadow","tc4",102,5.944915927,0.131073986,9.8,890,"none"
+73,1,"Peacock Hill","C-SP",48.4502087,-123.3534696,"garry oak meadow","a",58,5.093447614,0.017875776,10.3,810,"none"
+74,1,"Reay Island","C-GI",48.68348733,-123.3293687,"garry oak meadow","w",2,6.283185307,0.001943108,9.8,790,"none"
+75,1,"Rip Island","US-GI",48.48426079,-122.8222303,"garry oak meadow","w",2,5.819911891,0.019546026,10.1,584,"none"
+76,1,"Rocky Point 1","C-SP",48.32466775,-123.5407405,"garry oak meadow","w",6,1.361654676,0.060588562,9.5,1014,"none"
+77,1,"Rocky Point 2","C-SP",48.32483969,-123.5405264,"garry oak meadow","w",6,1.361654676,0.060588562,9.5,1014,"none"
+78,1,"Rum Island","US-GI",48.47966552,-122.8296098,"garry oak meadow","w",1,0,0.005829265,10.1,584,"none"
+79,1,"Ruth Island","C-EVII",49.28178081,-124.1132828,"garry oak meadow","w",1,0.469679705,0.003277732,9.1,1284,"none"
+80,1,"S. Winchelsea Island","C-EVII",49.28955989,-124.0756303,"garry oak meadow","w",9,0.79298663,0.066544824,9.1,1284,"none"
+81,1,"Scafe Hill East","C-SP",48.49245422,-123.4854827,"garry oak meadow","tc4",194,2.108336078,0.392218301,10.3,810,"none"
+82,1,"Scafe Hill West","C-SP",48.49186869,-123.4891147,"garry oak meadow","tc4",175,3.497190163,0.230077313,10.3,810,"none"
+83,1,"Sentinel Island","US-GI",48.63906562,-123.1502943,"garry oak meadow","w",28,2.479520001,0.066420055,9.9,648,"none"
+84,1,"Seymour Hill 1","C-SP",48.46434148,-123.4650703,"garry oak meadow","a",69,3.896028622,0.153893031,10.3,810,"none"
+85,1,"Skull Island","US-GI",48.63916169,-122.9862482,"garry oak meadow","w",3,1.4059917,0.011843376,9.7,698,"none"
+86,1,"Small Winchelsea Island","C-EVII",49.29136401,-124.0832887,"garry oak meadow","w",6,3.069196744,0.020510511,9.1,1284,"none"
+87,1,"South Ada Island","C-EVII",49.28523139,-124.0942363,"garry oak meadow","w",10,0.947281816,0.038358469,9.1,1284,"none"
+88,1,"Southery Island","C-EVII",49.27604208,-124.103067,"garry oak meadow","w",6,0,0.015587045,9.1,1284,"none"
+89,1,"Stewart Hill","C-SP",48.49596261,-123.4926205,"garry oak meadow","tc4",251,3.68170061,0.135108647,10.3,810,"none"
+90,1,"Summit Hill","C-SP",48.44552791,-123.3540606,"garry oak meadow","a",61,5.673253428,0.05313791,10.3,810,"none"
+91,1,"Unnamed Near Ruth","C-EVII",49.27494761,-124.112999,"garry oak meadow","w",1,2.151954909,0.007098476,9.1,1284,"none"
+92,1,"Wallace Point","C-EVI",49.27115643,-124.1100753,"garry oak meadow","w",4,0.894323944,0.051310379,9.1,1284,"none"
+93,1,"Wallace Point Island","C-EVI",49.27101642,-124.1071851,"garry oak meadow","w",3,0.702026951,0.011483481,9.1,1284,"none"
+94,1,"Yeo 1","C-EVII",49.30612346,-124.1311499,"garry oak meadow","w",5,0.851846773,0.011833972,9.1,1284,"none"
+95,1,"Yeo 2","C-EVII",49.30524717,-124.133695,"garry oak meadow","w",4,3.141592654,0.001948536,9.1,1284,"none"
+96,1,"Yeo 3","C-EVII",49.3057856,-124.1363021,"garry oak meadow","w",4,5.632236227,0.004898807,9.1,1284,"none"
+97,2,"Albert_Head","C-SP",48.39059304,-123.4889871,"garry oak meadow","w",45,2.727130837,0.017991688,10.3,810,"none"
+98,2,"Bear_Hill_A","C-SP",48.54632041,-123.4061544,"garry oak meadow","tc4",196,5.806233242,0.257698229,9.8,890,"none"
+99,2,"Bear_Hill_B","C-SP",48.54559007,-123.4091565,"garry oak meadow","csgo",136,5.204757488,0.200731434,9.8,890,"none"
+100,2,"Boulderwood_E","C-SP",48.50522473,-123.3715873,"garry oak meadow","tc4",112,1.721063354,0.235665151,9.8,890,"none"
+101,2,"Boulderwood_W","C-SP",48.50547354,-123.3753122,"garry oak meadow","tc4",106,4.659652549,0.200033861,9.8,890,"none"
+102,2,"Camrose","C-SP",48.45381171,-123.3509791,"garry oak meadow","a",58,3.109737661,0.052061379,10.3,810,"none"
+103,2,"Cedar_Hill","C-SP",48.45872495,-123.3476314,"garry oak meadow","a",75,0.627152262,0.042400032,10.3,810,"none"
+104,2,"Chatterton","C-SP",48.49093138,-123.3846791,"garry oak meadow","tco",30,1.368317542,0.038630775,10.3,810,"none"
+105,2,"Christmas_Hill","C-SP",48.47392721,-123.3767843,"garry oak meadow","a",91,4.779032995,0.144868757,10.3,810,"none"
+106,2,"Francis_King_N","C-SP",48.48657994,-123.4415407,"garry oak meadow","a",104,1.878170301,0.156066813,10.3,810,"none"
+107,2,"Francis_King_S","C-SP",48.47747007,-123.4499185,"garry oak meadow","a",91,5.018576211,0.029000694,10.3,810,"none"
+108,2,"Garibaldi","C-SP",48.33819687,-123.5799221,"garry oak meadow","tc4",152,5.150061601,0.209469069,9.1,1184,"none"
+109,2,"Gonzales","C-SP",48.41338372,-123.3256864,"garry oak meadow","w",40,4.236428438,0.169626088,10.5,692,"none"
+110,2,"Gore","C-SP",48.56680152,-123.4552106,"garry oak meadow","w",73,0.162046535,0.099103959,9.8,890,"none"
+111,2,"Horth_Hill","C-SP",48.68326689,-123.4318315,"garry oak meadow","w",129,3.520152311,0.17996344,9.5,995,"none"
+112,2,"John_Dean_E","C-SP",48.61159179,-123.4419378,"garry oak meadow","c",271,2.085553621,0.343062919,9.8,890,"none"
+113,2,"John_Dean_P","C-SP",48.61024608,-123.4433098,"garry oak meadow","c",261,2.565035262,0.301138894,9.8,890,"none"
+114,2,"Knockan_N","C-SP",48.46977063,-123.4160281,"garry oak meadow","a",56,2.010776206,0.151658021,10.3,810,"none"
+115,2,"Knockan_S","C-SP",48.46839756,-123.4200484,"garry oak meadow","a",62,3.891413167,0.097928423,10.3,810,"none"
+116,2,"Konuckson_A","C-SP",48.45467775,-123.2738794,"garry oak meadow","w",36,3.316004862,0.038238118,10.5,692,"none"
+117,2,"Konuckson_B","C-SP",48.45500458,-123.2726369,"garry oak meadow","w",35,2.447601938,0.03890254,10.5,692,"none"
+118,2,"Layritz","C-SP",48.48995267,-123.4127013,"garry oak meadow","a",72,3.758960777,0.067811393,10.3,810,"none"
+119,2,"Little_Mt_Doug","C-SP",48.49115945,-123.3498562,"garry oak meadow","a",128,3.652402267,0.127384641,10.3,810,"none"
+120,2,"Moss_Rock","C-SP",48.41197506,-123.3459613,"garry oak meadow","w",31,3.057088571,0.051486506,10.3,810,"none"
+121,2,"Mount_Stewart","C-SP",48.49445679,-123.4913793,"garry oak meadow","tc4",204,2.661004373,0.293661489,10.3,810,"none"
+122,2,"Peacock","C-SP",48.45040477,-123.3530247,"garry oak meadow","a",56,1.03837249,0.032732918,10.3,810,"none"
+123,2,"Scafe_Hill_E","C-SP",48.49252194,-123.4851615,"garry oak meadow","tc4",194,2.108336078,0.392218301,10.3,810,"none"
+124,2,"Scafe_Hill_W","C-SP",48.49246859,-123.4892621,"garry oak meadow","tc4",193,4.388006253,0.189730941,10.3,810,"none"
+125,2,"Seymour","C-SP",48.46693331,-123.4639894,"garry oak meadow","a",126,4.236593378,0.209762508,10.3,810,"none"
+126,2,"Summit","C-SP",48.44526871,-123.3556395,"garry oak meadow","a",49,3.970642285,0.084409863,10.3,810,"none"
+127,3,"Mill Hill","C-SP",48.45654876,-123.4782586,"garry oak meadow","a",175,2.394538412,0.195332016,10.3,810,"na"
+128,4,"AuSable","US-Wash",48.21351154,-122.6323804,"prairie","tc4",61,6.283185307,0.00968803,10.1,641,"invasion"
+129,4,"Bellfountain","US-Oreg",44.40497816,-123.3481783,"prairie","tc4",133,3.83685818,0.018494683,10.5,1790,"invasion"
+130,4,"Cowichan","C-EVI",48.80775002,-123.6300208,"prairie","tc4",69,5.128583828,0.067187086,9.5,1166,"invasion"
+130,6,"Darcy","C-GI",48.56891,-123.273,"garry oak meadow",NA,NA,NA,NA,NA,NA,"none"
+131,4,"Glacial","US-Wash",46.86562571,-123.0494115,"prairie","h",44,4.48685241,0.00389369,9.8,1602,"invasion"
+131,6,"Halibut","C-GI",48.62137,-123.275,"garry oak meadow",NA,NA,NA,NA,NA,NA,"none"
+132,4,"Hoskins","US-Oreg",44.67878735,-123.4645453,"prairie","tc4",130,4.818305505,0.133934244,10.5,1823,"invasion"
+132,6,"Mandarte","C-GI",48.63321,-123.286,"garry oak meadow",NA,NA,NA,NA,NA,NA,"none"
+133,4,"Mima","US-Wash",46.89144917,-123.05139,"prairie","h",67,3.424498438,0.004533941,9.8,1602,"invasion"
+133,6,"Owl","C-GI",48.63321,-123.286,"garry oak meadow",NA,NA,NA,NA,NA,NA,"none"
+134,4,"Morgan","US-Wash",46.89962845,-122.7321228,"prairie","tc4",138,4.320956316,0.01510653,10.1,1297,"invasion"
+134,6,"Portland","C-GI",48.63321,-123.286,"garry oak meadow",NA,NA,NA,NA,NA,NA,"none"
+135,4,"Pigeon","US-Oreg",44.39692709,-123.3169817,"prairie","c",126,3.070056172,0.182127314,11.5,1205,"invasion"
+135,6,"Prevost","C-GI",48.63321,-123.286,"garry oak meadow",NA,NA,NA,NA,NA,NA,"none"
+136,6,"Rum","C-GI",48.63321,-123.286,"garry oak meadow",NA,NA,NA,NA,NA,NA,"none"
+136,4,"Scatter","US-Wash",46.8239538,-123.0280397,"prairie","h",55,4.71238898,1.39e-17,10.2,1470,"invasion"
+137,6,"SSI","C-GI",48.56891,-123.273,"garry oak meadow",NA,NA,NA,NA,NA,NA,"none"
+137,4,"Triangle","US-Wash",47.01298266,-122.428593,"prairie","tc4",125,5.477905674,0.00970429,10.4,1184,"invasion"
+138,6,"Tumbo","C-GI",48.79724,-123.062,"garry oak meadow",NA,NA,NA,NA,NA,NA,"none"
+138,4,"Weir","US-Wash",46.90434318,-122.735003,"prairie","tc4",136,4.5982499,0.016867619,10.1,1297,"invasion"
+139,5,"Crows Nest","C-GI",48.78644,-123.451254,"Garry oak meadow","tc6",235,2.174142586,0.18120532,9.5,995,NA
+139,6,"Wallace","C-GI",48.79724,-123.062,"garry oak meadow",NA,NA,NA,NA,NA,NA,"none"
+140,12,"Bear Hill Park","C-SP",48.54528271,-123.4052822,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+141,12,"Christmas Hill","C-SP",48.47378612,-123.3772008,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+142,12,"Cliffwood Neighhourhood","C-SP",48.50144197,-123.3699703,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+143,12,"Francis King Park","C-SP",48.48304152,-123.4531905,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+144,12,"JD to the south","C-SP",48.62320581,-123.4367592,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+145,12,"John Dean Park","C-SP",48.61389262,-123.4484833,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+146,12,"PKOLS Park","C-SP",48.49349763,-123.3428943,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+147,12,"Private near Knockan","C-SP",48.4699867,-123.4141116,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+148,12,"Seymour Hill","C-SP",48.46671511,-123.4633769,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+149,12,"Summit Park","C-SP",48.44539694,-123.353493,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+150,12,"Uplands Park","C-SP",48.44157507,-123.2991315,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+151,8,"Anniversary","C-GI",48.82363926,-123.1827647,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+152,8,"Arbutus","C-GI",48.70603973,-123.4356418,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+153,8,"Brackman","C-GI",48.71797432,-123.3860945,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+154,8,"Channel East","C-GI",48.80115115,-123.3807952,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+155,8,"Channel middle","C-GI",48.80190048,-123.3827074,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+156,8,"Channel West","C-GI",48.79959155,-123.3845009,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+157,8,"D'Arcy","C-GI",48.5684496,-123.2724329,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+158,8,"Dock 1 (North)","C-GI",48.67175418,-123.3576246,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+159,8,"Dock 2 (South)","C-GI",48.67081726,-123.3580526,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+160,8,"Dock 3 (West)","C-GI",48.6717811,-123.3633975,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+161,8,"Domville","C-GI",48.67000268,-123.3263997,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+162,8,"Flat top","US-GI",48.64680352,-123.0812672,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+163,8,"Galiano","C-GI",48.86972325,-123.3791743,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+164,8,"Georgeson","C-GI",48.84273491,-123.2339841,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+165,8,"Ilsa Leader","C-GI",48.72743715,-123.441497,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+166,8,"Imrie","C-GI",48.69452497,-123.3330945,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+167,8,"Isabella East","C-GI",48.72885431,-123.4307259,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+168,8,"Isabella West","C-GI",48.72862463,-123.4320022,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+169,8,"Jim Mcdonald","C-GI",48.86706599,-123.3489375,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+170,8,"Jones","US-GI",48.61377871,-123.0490595,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+171,8,"Little D'Arcy","C-GI",48.57109352,-123.269031,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+172,8,"Little McConnell","US-GI",48.59903245,-123.0257569,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+173,8,"Little Shell","C-GI",48.67004404,-123.3776331,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+174,8,"Lopez - Iceberg Point","US-GI",48.42132242,-122.8902902,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+175,8,"Mandarte","C-GI",48.63344079,-123.2863416,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+176,8,"McConnell","US-GI",48.59555125,-123.0241683,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+177,8,"Mini D'Arcy (Seal Rock)","C-GI",48.57463398,-123.2707715,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+178,8,"Orcas","US-GI",48.69005096,-122.8997083,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+179,8,"Pellow East","C-GI",48.72484883,-123.3577561,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+180,8,"Pellow middle","C-GI",48.72517978,-123.3583704,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+181,8,"Pellow West","C-GI",48.72555472,-123.3592976,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+182,8,"Pender - Gowlland Point","C-GI",48.73454424,-123.1877046,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+183,8,"Portland (East)","C-GI",48.72579326,-123.3635554,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+184,8,"Portland (West)","C-GI",48.72078976,-123.3807864,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+185,8,"Reay","C-GI",48.68358763,-123.3292862,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+186,8,"Rubly","C-GI",48.66560662,-123.3123147,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+187,8,"Ruckle Park (Salt Spring)","C-GI",48.78134378,-123.377528,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+188,8,"Rum","C-GI",48.66337223,-123.2785393,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+189,8,"Sallas Rock","C-GI",48.58501307,-123.2903121,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+190,8,"San Juan Island - Friday Harbor Labs","US-GI",48.54808908,-123.0080892,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+191,8,"Saturna","C-GI",48.78505671,-123.0454553,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+192,8,"Shaw","US-GI",48.54973722,-122.9585228,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+193,8,"Shell","C-GI",48.66975084,-123.3737463,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+194,8,"Sidney","C-GI",48.59268234,-123.2812697,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+195,8,"Tumbo","C-GI",48.79461338,-123.0587804,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA
+196,8,"Yucky","C-GI",48.82920928,-123.2132786,"Garry oak meadow",NA,NA,NA,NA,NA,NA,NA

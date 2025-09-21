@@ -1,0 +1,507 @@
+---
+title: "TEST Global-Restore-Project GOE DataViz"
+author: "Wendy Anthony"
+date: "2025/09/18"
+output:
+  html_document:
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load Libraries
+```{r load_libraries}
+library(shiny)
+library(tidyverse)
+library(plotly)
+library(htmlwidgets)
+```
+
+# Load Data
+- data from Nancy Shackelford at Global Restore Project https://globalrestoreproject.com/open_science/
+```{r load-data}
+OM_veg_1 <- read.csv("data/OM_vegResults1.csv", header = TRUE, sep = ",")
+OM_veg_2 <- read.csv("data/OM_vegResults2.csv", header = TRUE, sep = ",")
+OM_veg_3 <- read.csv("data/OM_vegResults3.csv", header = TRUE, sep = ",")
+OM_veg_4 <- read.csv("data/OM_vegResults4.csv", header = TRUE, sep = ",")
+OM_veg_5 <- read.csv("data/OM_vegResults5.csv", header = TRUE, sep = ",")
+OM_site_data <- read.csv("data/OM_projectdata-site.csv", header = TRUE, sep = ",")
+OM_treatments_data <- read.csv("data/OM_projectdata-treatments.csv", header = TRUE, sep = ",")
+```
+
+# Data Structure
+## OM_veg_1
+```{r structure-1}
+str(OM_veg_1)
+```
+
+## OM_veg_2
+```{r structure-2}
+str(OM_veg_2)
+```
+
+## OM_veg_3
+```{r structure-3}
+str(OM_veg_3)
+```
+
+## OM_veg_4
+```{r structure-4}
+str(OM_veg_4)
+```
+
+## OM_veg_5
+```{r structure-5}
+str(OM_veg_5)
+```
+## OM_veg_1_5 cbind()
+```{r cbind}
+OM_veg_1_5 <- rbind(OM_veg_1, OM_veg_2, OM_veg_3, OM_veg_4, OM_veg_5)
+```
+
+## Filter OM_veg_1_5
+```{r filter-OM_veg_1_5}
+OM_veg_1_5_t_1_19 <- OM_veg_1_5[OM_veg_1_5$treatmentid == "1_19", ] #131 ibs
+# OM_veg_1_5_t_1_19 <- OM_veg_1_5[OM_veg_1_5$treatmentid == "1_19" & OM_veg_1_5$tsr !=0, ] #131 ibs
+```
+
+
+### str OM_veg_1_5
+<details><summary><b><i>Click open to see `structure of OM_veg_1_5`</i></b></summary><p>
+```{r str-OM-veg-1-5}
+str(OM_veg_1_5)
+```
+</p></details>
+
+
+# sort unique species to df 
+```{r OM_veg_1_5-unique-species}
+library(dplyr)
+
+colnames(OM_veg_1_5)
+OM_veg_1_5_sp_or <- subset(OM_veg_1_5, select = c("speciesid", "speciesorigin"))
+OM_veg_1_5_sp_or_sort <- OM_veg_1_5_sp_or %>%
+                          arrange(speciesid)
+# str(OM_veg_1_5_sp_or_sort)
+
+# list of unique species values
+OM_veg_1_5_sp_or_sort_unique <- unique(OM_veg_1_5_sp_or_sort$speciesid)
+```
+
+## OM_veg_1_5_sp_or_sort_unique
+<details><summary><b><i>Click open to see results for structure of `OM_veg_1_5_sp_or_sort_unique`</i></b></summary><p>
+
+```{r OM_veg_1_5-unique-species_str}
+OM_veg_1_5_sp_or_sort_unique
+```
+</p></details>
+
+
+
+## OM_treatments_data
+```{r structure-OM-treatments-data}
+str(OM_treatments_data)
+colnames(OM_treatments_data)
+```
+
+
+## OM_site_data
+```{r structure-OM_site_data}
+str(OM_site_data)
+```
+
+## Round Temp values to 1 decimal OM_site_data
+```{r round-temp}
+OM_site_data$temp
+OM_site_data$temp <- round(OM_site_data$temp, digits = 1)
+OM_site_data$temp
+```
+
+### Sites: Choose Columns for Site `OM_site_data`
+Note: `OM_projectdata-site.csv` was showing 1709 of empty rows at end of df that shows as NA    
+- deleted empty rows from bottom of `OM_projectdata-2025-Ago-25.xlsx` before saving to csv file
+
+```{r site-columns-table}
+# OM_site_data <- read.csv("data/OM_projectdata-site.csv", header = TRUE, sep = ",")
+str(OM_site_data)
+colnames(OM_site_data)
+# Removes to leave chosen ones to make new dataframe
+# keep [2] "siteid" [3] "projectid" [4]"sitename" [5] "Subregion" [6] "latitude" [7] "longitude" [8] "refecosystem" [11] "landcover" [19] "elevation" [20] "aspect" [21]  "slope" [25] "tempc"  [36] "precip" 
+GRP_Site_data <- OM_site_data[-c(1,9:11,13:19,23:25,27:36,38:49)]
+```
+### GRP_Site_data
+<details><summary><b><i>Click open to see `GRP_Site_data`</i></b></summary><p>
+```{r}
+GRP_Site_data
+```
+</p></details>
+
+
+
+
+### Sites: Save chosen columns as csv to input into Shiny drop down list of Sites
+```{r save-sites-csv}
+write.csv(GRP_Site_data, "data/GRP_Site_data.csv", row.names = FALSE)
+```
+
+
+
+
+# SQL Create Database
+```{r libraries-created-db}
+# https://www.youtube.com/watch?v=c3e8m3K0eC4
+# 
+# install.packages("RSQL")
+# install.packages("RSQLite")
+# install.packages("tidyverse") # v.1.3.2 to 2.0.0
+library(RSQL)
+library(RSQLite)
+library(tidyverse)
+# tidyverse_packages(include_self = TRUE)
+```
+
+
+```{r tidyverse-db-ex}
+# ## Tidyverse db ex
+# data("population")
+# population
+# 
+# data("who")
+# who
+```
+
+
+```{r create-database-connection-ex}
+# ### create database and connection
+# # builds empty db in R memory
+# con <- dbConnect(drv = RSQLite::SQLite(),
+#                  dbname = ":memory:")
+# dbListTables(con)
+```
+
+```{r dbWriteTable-ex}
+### Populate tables
+# - dbWriteTable
+# 
+# # Load population table
+# dbWriteTable(conn = con,
+#              name = "population",
+#              value = population)
+# str(population)
+# 
+# # Load population table
+# dbWriteTable(conn = con,
+#              name = "who",
+#              value = who)
+# str(who)
+# 
+# #remove the local data from the environment
+# rm(who, population)
+# dbListTables(con)
+```
+
+
+```{r query-db-ex}
+# ### Query for db
+# res <- DBI::dbGetQuery(conn = con,
+#          statement = "
+#          SELECT who.country, who.year, who.new_sp_m014, population.population
+#          FROM population, who
+#          WHERE who.country = 'Afghanistan' AND 
+#          who.year > 1995 AND
+#          who.country = population.country AND
+#          who.year = population.year
+#          ")
+# res
+
+```
+
+## GRP Database
+### create GRP database and connection
+```{r create-database-connection-grp}
+# builds empty db in R memory
+con <- dbConnect(drv = RSQLite::SQLite(),
+                 dbname = ":memory:")
+dbListTables(con)
+```
+
+### Populate GRP tables
+- dbWriteTable
+```{r dbWriteTable}
+# Load OM_veg_1_5 table
+dbWriteTable(conn = con,
+             name = "OM_veg_1_5",
+             value = OM_veg_1_5)
+str(OM_veg_1_5)
+
+# Load OM_site_data table
+dbWriteTable(conn = con,
+             name = "OM_site_data",
+             value = OM_site_data)
+str(OM_site_data)
+
+# Load OM_treatments_data table
+dbWriteTable(conn = con,
+             name = "OM_treatments_data",
+             value = OM_treatments_data)
+str(OM_treatments_data)
+
+dbListTables(con)
+```
+
+## Preview tables
+```{r preview-tables}
+tbl(src = con, "OM_site_data")
+tbl(src = con, "OM_treatments_data")
+tbl(src = con, "OM_veg_1_5")
+```
+
+
+## Query for db
+
+
+### 1-Results query one tables
+```{sql connection = con, output.var = "results_projid"}
+SELECT *
+FROM OM_site_data
+WHERE projectid = 1
+```
+
+#### View query results
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid}
+results_projid
+```
+</p></details>
+
+### 2-Results query two tables
+```{sql connection = con, output.var = "results_projid_2"}
+SELECT s.siteid, t.treatmentid, s.Site
+FROM OM_site_data AS s 
+INNER JOIN OM_treatments_data AS t ON s.siteid = t.siteid
+WHERE projectid = 1
+```
+
+#### View query results
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_2}
+results_projid_2
+```
+</p></details>
+
+```{r}
+# OM_veg_1_5: treatmentid  
+# OM_site_data: siteid   sitename  
+# OM_treatments_data: treatmentid   siteid  
+# <!-- 
+# # SELECT who.country, who.year, who.new_sp_m014, population.population -->
+# <!-- #          FROM population, who -->
+# <!-- #          WHERE who.country = 'Afghanistan' AND  -->
+# <!-- #          who.year > 1995 AND -->
+# <!-- #          who.country = population.country AND -->
+# <!-- #          who.year = population.year -->
+# 
+# SELECT OM_site_data.siteid, OM_site_data.sitename, OM_treatments_data.treatmentid, OM_treatments_data.siteid, OM_veg_1_5.treatmentid, OM_treatments_data.restorationtype, OM_veg_1_5.year
+# FROM OM_veg_1_5, OM_site_data, OM_treatments_data
+# LEFT JOIN OM_site_data ON OM_site_data.siteid = OM_treatments_data.siteid AND OM_veg_1_5.treatmentid = OM_veg_1_5.treatmentid
+# WHERE OM_treatments_data.restorationtype = 'seeding' AND OM_veg_1_5.year = 2005
+```
+
+
+### 3-Results query three tables - one species & 1 year
+- SELECT DISTINCT for no duplicates
+```{sql connection = con, output.var = "results_projid_3"}
+SELECT DISTINCT s.siteid, t.treatmentid, s.Site, v.year, v.speciesid
+FROM OM_site_data AS s 
+INNER JOIN OM_treatments_data AS t ON s.siteid = t.siteid
+INNER JOIN OM_veg_1_5 AS v ON t.treatmentid = v.treatmentid
+WHERE speciesid = "Ant_odo" AND year = 2008
+```
+
+#### View query results
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_3}
+results_projid_3
+```
+</p></details>
+
+### 3-Results query three tables - one Site
+- SELECT DISTINCT for no duplicates
+```{sql connection = con, output.var = "results_projid_4"}
+SELECT DISTINCT s.siteid, s.Site, s.Subregion, t.treatmentid, v.year, v.speciesid, v.tsr, v.replicate, v.response
+FROM OM_site_data AS s 
+INNER JOIN OM_treatments_data AS t ON s.siteid = t.siteid
+INNER JOIN OM_veg_1_5 AS v ON t.treatmentid = v.treatmentid
+WHERE Site = "Christmas Hill"
+```
+
+#### View query results
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_4}
+results_projid_4
+```
+</p></details>
+
+### 3-Results query three tables - all Sites
+- SELECT DISTINCT for no duplicates
+- should be 196 sites - not showing ones with same Sitename but different siteid
+- include t.siteid to see that the correspondence works
+- should be 196 sites (query results 149)
+- WHERE s.DB = "OM"
+```{sql connection = con, output.var = "results_projid_5"}
+SELECT DISTINCT s.siteid, s.projectid, s.Site, s.Subregion, s.temp, s.precip, s.latitude, s.longitude, s.refecosystem, s.landcover, s.elevation, s.aspect
+FROM OM_site_data AS s 
+INNER JOIN OM_treatments_data AS t ON s.siteid = t.siteid
+INNER JOIN OM_veg_1_5 AS v ON t.treatmentid = v.treatmentid
+WHERE s.siteid BETWEEN 1 AND 196
+```
+
+#### View query results
+- this doesn't have all sites, and some duplicate siteid  
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_5}
+results_projid_5
+```
+</p></details>
+
+### Save query as csv file with all Site inof
+```{r create-csv-results_projid_5}
+write.csv(results_projid_5, "data/GRP_all_site_data.csv", row.names = FALSE)
+```
+
+
+### ?? 3-Results query three tables - all Sites - still not showing all
+```{sql connection = con, output.var = "results_projid_6"}
+SELECT s.siteid, s.projectid, s.Site, s.Subregion, s.latitude, s.longitude, s.refecosystem, s.landcover, s.elevation, s.aspect, s.slope, s.temp, s.precip, s.disturbance
+FROM OM_site_data AS s 
+WHERE s.DB = "OM"
+```
+
+#### View query results
+- this doesn't have all sites, and some duplicate siteid  
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_6}
+results_projid_6
+length(unique(results_projid_6$Site))
+```
+</p></details>
+
+### Save query as csv file with all 206 Sites
+```{r create-csv-results_projid_6}
+write.csv(results_projid_6, "data/GRP_all_site_data_sql.csv", row.names = FALSE)
+```
+
+
+
+# Plots
+## Temp & Precip
+```{r GRP-temp-precip-all}
+
+GRP_all_site_temp_prec <- ggplot(results_projid_6, 
+                      # text = paste("Site:", Site), 
+                    aes(x = precip, y = temp, colour = Subregion)) +
+                    geom_point(shape = 18, size = 2) +
+    scale_x_continuous(limits = c(500, 2000)) +
+    scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    scale_fill_brewer(palette = "Dark2") +
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="bottom") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "GRP Precipitation & Temperature",
+                       subtitle = "By Subregion",
+                      caption = "Chart by Wendy Anthony \n 2025-09-21",
+                      x = "Precipitation", y = "Temperature")
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_temp_prec) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "GRP Annual Precipitation & Temperature by Subregion<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Precipitation (mm)'),
+        yaxis = list(title = 'Temperature (°C)'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-21",
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey"))
+        )
+```
+
+
+# Leaflet Maps
+
+## Leaflet Site Map
+```{r leaflet-grp-sites}
+colnames(GRP_Site_data)
+
+GRP_Site_data <- read.csv("data/GRP_Site_data.csv", header = TRUE, sep = ",")
+
+# library(dplyr)
+library(leaflet)
+
+# Title control
+# (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
+ title <- '<p style="text-align: center; height: 18px; ">
+<span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>Global Restore Project GOE Monitoring Sites</span><br>
+<span style="font-size:6px;font-style:italic; background-color: rgba(255, 255, 255, 0.9;">(Data from Shackelford, et al., 2005-2022)</span></p>'
+
+    # https://rstudio.github.io/leaflet/articles/markers.html
+    # Create a palette that maps factor levels to colors
+    #####
+    # pal <- colorFactor(c("#d7191c", "#2c7bb6"), domain = c("Saanich Peninsula", "Gulf Islands"))
+#     pal <- colorFactor(c("#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17"), domain = c("C-SP", "C-GI", "C-EVII", "C-EVI", "US-GI", "US-Wash", "US-Oreg"
+# ))
+ # #d95f02 orange; #7570b3 purple; #1b9e77 green
+    pal <- colorFactor(c("#1b9e77", "#7570b3", "#7570b3", "#1b9e77", "#d95f02", "#d95f02", "#d95f02"), domain = c("C-SP", "C-GI", "C-EVII", "C-EVI", "US-GI", "US-Wash", "US-Oreg"))
+GRP_site_map  <-  leaflet(GRP_Site_data) %>%
+      addProviderTiles("Esri.WorldImagery") %>%
+      addCircleMarkers(
+        ~ longitude, ~ latitude,
+        #
+        color = ~pal(Subregion),
+        # color = "yellow",
+        weight = 1, # size of circle border
+        stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
+        radius = 2,
+        # OM_site_data$
+        # "<b>Global Restore Project GOE Monitoring Sites</b>", "<br>", "<i>(Shackelford, et. al., 2005-2022)</i>", "<br><br>",
+        popup = paste0(
+          "<b>Site:</b> ", "<b>", OM_site_data$Site, "</b>",  "<br>",
+          "<b>Subregion:</b> ", "<b>", OM_site_data$Subregion, "</b>",  "<br>",
+          "<b>Project id:</b> ", "<b>", OM_site_data$projectid, "</b>",  "<br>",
+          "<b>Landcover:</b> ", "<b>", OM_site_data$landcover, "</b>",  "<br>",
+          "<b>Elevation:</b> ", "<b>", OM_site_data$elevation, "</b>",  "<br>",
+          "<b>Aspect:</b> ", "<b>", OM_site_data$aspect, "</b>")
+      ) %>%
+
+      setView(-123.44799, 48.64919, 10) %>%
+      # add controls
+      #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
+      addControl(title, position = "topright")
+
+# Display map
+GRP_site_map
+
+# Save map
+saveWidget(GRP_site_map, "output/_site_map.html")
+```
+
+
+
+
+
+
