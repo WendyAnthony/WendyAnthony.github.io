@@ -77,11 +77,11 @@ ui <- fluidPage(
                  tags$div(HTML("<b>Take Screenshots<br></b>")),
                  tags$div(HTML("<p style='font-size:10px;font-style:italic;'>(Note: Screenshots are saved to Image folder in same location as Shiny app)</p>")), # server_dir="." - same location; or server_dir="AppImages"
                  # Works
-                 screenshotButton(label = "Entire page", filename = paste0("GRP-Screenshot-entirePage-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = FALSE, server_dir="."),
-                 screenshotButton(label = "Input panel", id = "input_panel", filename = paste0("GRP-Screenshot-entirePage-inputPanel-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = FALSE, server_dir="."),
+                 screenshotButton(label = "Entire page", filename = paste0("GRP-Screenshot-entirePage-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                 screenshotButton(label = "Input panel", id = "input_panel", filename = paste0("GRP-Screenshot-entirePage-inputPanel-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
                  # Footer
                  br(),br(),
-                 span(style = "font-size:10px; font-style:italic;", "Shiny App GRP Showcase Example created by Wendy Anthony, modified 2025-09-20"),
+                 span(style = "font-size:10px; font-style:italic;", "Shiny App GRP Showcase Example created by Wendy Anthony, modified 2025-09-22"),
 
     ),
     # mainPanel
@@ -89,28 +89,41 @@ ui <- fluidPage(
       # tabsetPanel
       tabsetPanel(
         id = "tabset",
-        selected = "Data Table",
-        #tabPanel("About Proposed App",  htmlOutput("text")),
+        selected = "GRP Data Table",
+        tabPanel("About App",  htmlOutput("about_text")),
         tabPanel("GRP Data Table",
-                 screenshotButton(label = "GRP Table", id = "data_table", filename = paste0("GRP-Screenshot-table-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                 screenshotButton(label = "GRP Table", id = "GRP_data_table", filename = paste0("GRP-Screenshot-table-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
                  downloadButton("downloadGRPData", label = "Download GRP table"),
                  tableOutput("GRP_data_table")),
-        tabPanel("Data Table", p(style = "font-size:11px;", "GRP GOE Data"),
-                 screenshotButton(label = "Table", id = "table1", filename = paste0("GRP-Screenshot-table-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = FALSE, server_dir="."),
-                 downloadButton("downloadData", label = "Download table"),
-                 tableOutput("table1")),
+        # tabPanel("Data Table", p(style = "font-size:11px;", "GRP GOE Data"),
+        #          screenshotButton(label = "Table", id = "table1", filename = paste0("GRP-Screenshot-table-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+        #          downloadButton("downloadData", label = "Download table"),
+        #          tableOutput("table1")),
         tabPanel("Compare Subregions",
                  p(style = "font-size:11px;", "GRP GOE Data"),
                  p(style = "font-size:11px;", "Hover over points to view tooltip ... if chart changes double-click within chart to return to original state"),
-                 screenshotButton(label = "Plot 2", id = "plot2", filename = paste0("GRP-Screenshot-plot2-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = FALSE, server_dir="."),
-                 screenshotButton(label = "Plot 4", id = "plot4", filename = paste0("GRP-Screenshot-plot2-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = FALSE, server_dir="."),
+                 screenshotButton(label = "Temperature Plot 4", id = "plot4", filename = paste0("GRP-Screenshot-Temperature-plot4-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                 screenshotButton(label = "Precipitation Plot 12", id = "plot12", filename = paste0("GRP-Screenshot-Precipitation-plot12-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                 screenshotButton(label = "Elevation Plot 2", id = "plot2", filename = paste0("GRP-Screenshot-Elevation-plot2-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
                  #screenshotButton(label = "Plot 9", id = "plot9", filename = paste0("GRP-Screenshot-plot9-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = FALSE, server_dir="."),
-                 fluidRow(
-                    column(6, plotOutput("plot2")),
-                   column(6,  plotlyOutput("plot4")),
-                   #column(6, plotOutput("plot8")),
-                   #column(6, plotOutput("plot9"))
-                 )),
+                 plotlyOutput("plot4", width = "800px"),
+                 br(),hr(),br(),
+                 plotlyOutput("plot12", width = "800px"),
+                 br(),hr(),br(),
+                 plotOutput("plot2", width = "800px"),
+#
+#                  fluidRow(
+#                    column(6,  plotlyOutput("plot4")),
+#                    column(6, plotOutput("plot12"))
+#                    #column(6, plotOutput("plot8")),
+#                    #column(6, plotOutput("plot9"))
+#                  ),
+#                  fluidRow(
+#                    column(6, plotOutput("plot2")),
+#                    #column(6, plotOutput("plot8")),
+#                    #column(6, plotOutput("plot9"))
+#                  )
+                 ),
 ##########################################
 # remove until code gets done for GRP
 ##########################################
@@ -289,6 +302,21 @@ server <- function(input, output, session){
     }
   })
 
+  output$about_text <- renderUI({
+    str1 <- paste("Interactive Data Viz Tool for GRP")
+    str2 <- paste("<a href='https://globalrestoreproject.com/'>Global Restore Project</a>")
+    str3 <- paste("<b>Subregions:</b> <br/>
+                  - <b>US-GI:</b> USA Gulf Islands; <br/>
+                  - <b>US-Wash:</b> USA Washington State; <br/>- <b>US-Oreg:</b> USA Oregon State; <br/>
+                  - <b>C-GI:</b> Canada Gulf Islands; <br/>- <b>C-EVI:</b> Canada East Vancouver Island; <br/>
+                  - <b>C-EVII:</b> Canada East Vancouver Island Islands; <br/>- <b>C-SP:</b> Canada: Saanich Peninsula")
+    str4 <- paste("<i>(Shiny App created by Wendy Anthony 2025-09-21)</i>")
+    HTML(paste0('<H2>', str1, '</H2>','<br/>',
+                str2, '<br/>','<br/>',
+                str3, '<br/>','<br/>',
+                str4, '<br/>'
+    ))
+    })
 
   # text output
   # https://stackoverflow.com/questions/23233497/outputting-multiple-lines-of-text-with-rendertext-in-r-shiny
@@ -376,29 +404,33 @@ server <- function(input, output, session){
   output$plot2 <- renderPlot({
     d <- data3()
 
-
-    ggplot(d,
+#GRP_all_site_elev <-
+  ggplot(d,
            aes(x = Subregion, y = elevation)) +
       #geom_line() +
        geom_violin(fill = "seagreen2") +
        geom_boxplot(width = 0.1, fill = "sandybrown") +
+      # scale_y_continuous(limits = c(-40, 310)) +
       theme_minimal() + #get rid of grey background and tick marks
       theme(legend.position="none") + #remove legend
       theme(axis.text.x = element_text(vjust = 1, size = 9)) +
       labs(title='Plotting Subregion by Elevation',
            subtitle='GRP (Shackelford, 2025)',
-           caption = "Chart by Wendy Anthony \n 2025-09-20")
-#
-#     ggplot(d,
-#            aes(x = Subregion, y = Exotic_species)) +
-#       geom_violin(fill = "seagreen2") +
-#       geom_boxplot(width = 0.1, fill = "sandybrown") +
-#       theme_minimal() + #get rid of grey background and tick marks
-#       theme(legend.position="none") + #remove legend
-#       theme(axis.text.x = element_text(vjust = 1, size = 9)) +
-#       labs(title='Plotting Subregion by Exotic Species',
-#            subtitle='GRP (Malloff & Shackelford, 2024)',
-#            caption = "Chart by Wendy Anthony \n 2025-08-27")
+           caption = "Chart by Wendy Anthony \n 2025-09-20") +
+    theme(plot.title = element_text(face = "bold", size = 20))
+
+    # ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_elev) %>%
+    #   config(displayModeBar = FALSE) %>% # This line disables the modebar
+    #   layout(title = list(
+    #     text = "GRP Annual Elevation by Subregion<br><sup>Data Source: GRP</sup>",
+    #     y = 0.95), # Adjust vertical position if needed
+    #     yaxis = list(title = 'Elevation (m)'),
+    #     annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-22",
+    #                        showarrow = F, xref='paper', yref='paper',
+    #                        xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+    #                        font = list(size=8, color="grey"))
+    #   )
+
   })
 
 #
@@ -422,11 +454,11 @@ server <- function(input, output, session){
   output$plot4 <- renderPlotly({
     d <- data3()
 
-    ggplot(d,
+    GRP_all_site_temp <- ggplot(d,
        # text = paste("Site:", Site),
-      aes(x = precip, y = temp, colour = Subregion)) +
-      geom_point(shape = 18, size = 2) +
-      scale_x_continuous(limits = c(500, 2000)) +
+       aes(x = Subregion, y = temp)) +
+      geom_violin(fill = "seagreen2") +
+      geom_boxplot(width = 0.1, fill = "sandybrown") +
       scale_y_continuous(limits = c(8, 12)) +
       # Replace default palette of pink & blue
       scale_fill_brewer(palette = "Dark2") +
@@ -434,22 +466,53 @@ server <- function(input, output, session){
       theme(legend.position="bottom") +
       # theme(legend.position="none") + #remove legend
       theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-      labs(title = "GRP Precipitation & Temperature",
-           subtitle = "By Subregion",
-           caption = "Chart by Wendy Anthony \n 2025-09-21",
-           x = "Annual Precipitation (mm)", y = "Annual Temperature (°C)")
-    ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_temp_prec) %>%
+      scale_y_continuous(limits = c(8, 12)) +
+      labs(title='Plotting Subregion by Temperature Range',
+           subtitle='Data: GRP',
+           caption = "Chart by Wendy Anthony \n 2025-09-22")
+    ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_temp) %>%
       config(displayModeBar = FALSE) %>% # This line disables the modebar
       layout(title = list(
-        text = "GRP Annual Precipitation & Temperature by Subregion<br><sup>Data Source: GRP</sup>",
+        text = "GRP Annual Temperature by Subregion<br><sup>Data Source: GRP</sup>",
         y = 0.95), # Adjust vertical position if needed
-        xaxis = list(title = 'Precipitation (mm)'),
         yaxis = list(title = 'Temperature (°C)'),
-        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-21",
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-22",
              showarrow = F, xref='paper', yref='paper',
              xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
              font = list(size=8, color="grey"))
         )
+  })
+
+  # Plot works
+  output$plot12 <- renderPlotly({
+    d <- data3()
+
+    GRP_all_site_prec <- ggplot(d,
+                                # text = paste("Site:", Site),
+                                aes(x = Subregion, y = precip)) +
+      geom_violin(fill = "seagreen2") +
+      geom_boxplot(width = 0.1, fill = "sandybrown") +
+      scale_y_continuous(limits = c(500, 2000)) +
+      # Replace default palette of pink & blue
+      scale_fill_brewer(palette = "Dark2") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(legend.position="bottom") +
+      # theme(legend.position="none") + #remove legend
+      # theme(axis.text.y = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+      labs(title='Plotting Subregion by Precipitation Range',
+           subtitle='Data: GRP',
+           caption = "Chart by Wendy Anthony \n 2025-09-22")
+    ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_prec) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "GRP Annual Precipitation by Subregion<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Precipitation (mm)'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-22",
+                           showarrow = F, xref='paper', yref='paper',
+                           xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+                           font = list(size=8, color="grey"))
+      )
   })
 
 
@@ -516,7 +579,7 @@ server <- function(input, output, session){
 # ))
 #    pal <- colorFactor(c("#d95f02", "#7570b3", "#d95f02", "#1b9e77", "#7570b3", "#7570b3", "#1b9e77"), domain = c("C-SP", "C-GI", "C-EVII", "C-EVI", "US-GI", "US-Wash", "US-Oreg"))
     pal <- colorFactor(c("#1b9e77", "#7570b3", "#7570b3", "#1b9e77", "#d95f02", "#d95f02", "#d95f02"), domain = c("C-SP", "C-GI", "C-EVII", "C-EVI", "US-GI", "US-Wash", "US-Oreg"))
-    leaflet(GRP_Site_data) %>%
+    leaflet(grp_site_data) %>%
       addProviderTiles("Esri.WorldImagery") %>%
       addCircleMarkers(
         ~ longitude, ~ latitude,
@@ -530,13 +593,15 @@ server <- function(input, output, session){
         # OM_site_data$
         # "<b>Global Restore Project GOE Monitoring Sites</b>", "<br>", "<i>(Shackelford, et. al., 2005-2022)</i>", "<br><br>",
         popup = paste0(
-          "<b>Site:</b> ", "<b>", OM_site_data$Site, "</b>",  "<br>",
-          "<b>Subregion:</b> ", "<b>", OM_site_data$Subregion, "</b>",  "<br>",
-          "<b>Project id:</b> ", "<b>", OM_site_data$projectid, "</b>",  "<br>",
-          "<b>Landcover:</b> ", "<b>", OM_site_data$landcover, "</b>",  "<br>",
-          "<b>Elevation:</b> ", "<b>", OM_site_data$elevation, "</b>",  "<br>",
-          "<b>Aspect:</b> ", "<b>", OM_site_data$aspect, "</b>")
-      ) %>%
+          "<b>Site:</b> ", "<b>", grp_site_data$Site, "</b>",  "<br>",
+          "<b>Subregion:</b> ", "<b>", grp_site_data$Subregion, "</b>",  "<br>",
+          "<b>Project id:</b> ", "<b>", grp_site_data$projectid, "</b>",  "<br>",
+          "<b>Landcover:</b> ", "<b>", grp_site_data$landcover, "</b>",  "<br>",
+          "<b>Elevation:</b> ", "<b>", grp_site_data$elevation, "</b>",  "<br>",
+          "<b>Aspect:</b> ", "<b>", grp_site_data$aspect, "</b>",  "<br>",
+          "<b>Precipitation (mm):</b> ", "<b>", grp_site_data$precip, "</b>",  "<br>",
+          "<b>Temperature (°C):</b> ", "<b>", grp_site_data$temp, "</b>"
+          )) %>%
 
       setView(-121.799377, 47.801487, 6) %>%
       # add controls
@@ -576,8 +641,10 @@ server <- function(input, output, session){
            "<b>Project id:</b> ", "<b>", d$projectid, "</b>",  "<br>",
            "<b>Landcover:</b> ", "<b>", d$landcover, "</b>",  "<br>",
            "<b>Elevation:</b> ", "<b>", d$elevation, "</b>",  "<br>",
-           "<b>Aspect:</b> ", "<b>", d$aspect, "</b>")
-       )
+           "<b>Aspect:</b> ", "<b>", d$aspect, "</b>",  "<br>",
+           "<b>Precipitation (mm):</b> ", "<b>", d$precip, "</b>",  "<br>",
+           "<b>Temperature (°C):</b> ", "<b>", d$temp, "</b>"
+           ))
    })
 
 
