@@ -727,6 +727,16 @@ assign(paste("site_species_C_SP_df", desired_name_value, sep = "_"), site_specie
 
 </p></details>
 
+### Rename dataframes
+?? how can I do a for loop to rename all these
+```{r rename-df}
+
+# site_species_C_SP_df1_ <- assign(paste("site_species_C_SP_df1_", site_species_C_SP_df1_$Site, sep = ""), site_species_C_SP_df1_)
+# 
+# site_species_C_SP_df2_ <- assign(paste("site_species_C_SP_df2_", site_species_C_SP_df2_$Site, sep = ""), site_species_C_SP_df2_)
+# 
+# site_species_C_SP_df10_ <- assign(paste("site_species_C_SP_df10_", site_species_C_SP_df10_$Site, sep = ""), site_species_C_SP_df10_)
+```
 
 
 
