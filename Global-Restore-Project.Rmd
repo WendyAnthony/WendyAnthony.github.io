@@ -45,9 +45,19 @@ str(OM_veg_1)
 ```
 
 ## OM_veg_2
+
+### Structure OM_veg_2
 ```{r structure-2}
 str(OM_veg_2)
 ```
+### Unique species OM_veg_2
+<details><summary><b><i>Click open to see `structure of OM_veg_2`</i></b></summary><p>
+```{r unique-species-2}
+str(OM_veg_2)
+unique(OM_veg_2$speciesid) # 315 unique species
+```
+</p></details>
+
 
 ## OM_veg_3
 ```{r structure-3}
@@ -67,6 +77,9 @@ str(OM_veg_5)
 ```{r cbind}
 OM_veg_1_5 <- rbind(OM_veg_1, OM_veg_2, OM_veg_3, OM_veg_4, OM_veg_5)
 ```
+
+
+
 
 ## Filter OM_veg_1_5
 ```{r filter-OM_veg_1_5}
@@ -88,6 +101,12 @@ str(OM_veg_1_5)
 library(dplyr)
 
 colnames(OM_veg_1_5)
+OM_veg_1_5_sp_all_or <- subset(OM_veg_1_5, select = c("id", "DB", "treatmentid", "year", "tsr", "block", "replicate", "speciesid", "speciesorigin", "response", "responselevel", "responsemetric", "measurementscale", "measurementmetric"))
+OM_veg_1_5_sp_all_or_sort <- OM_veg_1_5_sp_all_or %>%
+                          arrange(speciesid)
+
+
+
 OM_veg_1_5_sp_or <- subset(OM_veg_1_5, select = c("speciesid", "speciesorigin"))
 OM_veg_1_5_sp_or_sort <- OM_veg_1_5_sp_or %>%
                           arrange(speciesid)
@@ -96,6 +115,37 @@ OM_veg_1_5_sp_or_sort <- OM_veg_1_5_sp_or %>%
 # list of unique species values
 OM_veg_1_5_sp_or_sort_unique <- unique(OM_veg_1_5_sp_or_sort$speciesid)
 ```
+
+
+```{r save-OM_veg_1_5_sp_or_sort-csv}
+write.csv(OM_veg_1_5_sp_all_or_sort, "data/OM_veg_1_5_sp_all_or_sort.csv", row.names = FALSE)
+```
+
+
+
+## add speciesorigin to speciesid for OM_veg_2
+<details><summary><b><i>Click open to see `list of species and origin OM_veg_2`</i></b></summary><p>
+```{r}
+OM_veg_2
+```
+</p></details>
+
+### Order and sort OM_veg_2
+<details><summary><b><i>Click open to see `sort order of OM_veg_2`</i></b></summary><p>
+```{r order-sort-OM_veg_2}
+OM_veg_1_5_sp_or_sort
+```
+</p></details>
+
+### OM_veg_2 percent species changed from total species
+```{r percent-OM_veg_2}
+length(unique(OM_veg_2$speciesid)) # 316
+length(OM_veg_2$speciesid) #15,230 records
+length(OM_veg_1_5_sp_or_sort$speciesid) # 136364 records
+
+length(OM_veg_2$speciesid) / length(OM_veg_1_5_sp_or_sort$speciesid) # 11.17%
+```
+
 
 ## OM_veg_1_5_sp_or_sort_unique
 <details><summary><b><i>Click open to see results for structure of `OM_veg_1_5_sp_or_sort_unique`</i></b></summary><p>
@@ -123,14 +173,14 @@ str(OM_site_data)
 ```{r round-temp}
 OM_site_data$temp
 OM_site_data$temp <- round(OM_site_data$temp, digits = 1)
-OM_site_data$temp
+# OM_site_data$temp
 ```
 
 ## Round Aspect values to 2 decimal OM_site_data
 ```{r round-aspect}
 OM_site_data$aspect
 OM_site_data$aspect <- round(OM_site_data$aspect, digits = 2)
-OM_site_data$aspect
+# OM_site_data$aspect
 ```
 
 ### Sites: Choose Columns for Site `OM_site_data`
@@ -176,62 +226,6 @@ library(tidyverse)
 # tidyverse_packages(include_self = TRUE)
 ```
 
-
-```{r tidyverse-db-ex}
-# ## Tidyverse db ex
-# data("population")
-# population
-# 
-# data("who")
-# who
-```
-
-
-```{r create-database-connection-ex}
-# ### create database and connection
-# # builds empty db in R memory
-# con <- dbConnect(drv = RSQLite::SQLite(),
-#                  dbname = ":memory:")
-# dbListTables(con)
-```
-
-```{r dbWriteTable-ex}
-### Populate tables
-# - dbWriteTable
-# 
-# # Load population table
-# dbWriteTable(conn = con,
-#              name = "population",
-#              value = population)
-# str(population)
-# 
-# # Load population table
-# dbWriteTable(conn = con,
-#              name = "who",
-#              value = who)
-# str(who)
-# 
-# #remove the local data from the environment
-# rm(who, population)
-# dbListTables(con)
-```
-
-
-```{r query-db-ex}
-# ### Query for db
-# res <- DBI::dbGetQuery(conn = con,
-#          statement = "
-#          SELECT who.country, who.year, who.new_sp_m014, population.population
-#          FROM population, who
-#          WHERE who.country = 'Afghanistan' AND 
-#          who.year > 1995 AND
-#          who.country = population.country AND
-#          who.year = population.year
-#          ")
-# res
-
-```
-
 ## GRP Database
 ### create GRP database and connection
 ```{r create-database-connection-grp}
@@ -273,7 +267,7 @@ tbl(src = con, "OM_veg_1_5")
 ```
 
 
-## Query for db
+## SQL Query for db
 
 
 ### 1-Results query one tables
@@ -305,25 +299,6 @@ WHERE projectid = 1
 results_projid_2
 ```
 </p></details>
-
-```{r}
-# OM_veg_1_5: treatmentid  
-# OM_site_data: siteid   sitename  
-# OM_treatments_data: treatmentid   siteid  
-# <!-- 
-# # SELECT who.country, who.year, who.new_sp_m014, population.population -->
-# <!-- #          FROM population, who -->
-# <!-- #          WHERE who.country = 'Afghanistan' AND  -->
-# <!-- #          who.year > 1995 AND -->
-# <!-- #          who.country = population.country AND -->
-# <!-- #          who.year = population.year -->
-# 
-# SELECT OM_site_data.siteid, OM_site_data.sitename, OM_treatments_data.treatmentid, OM_treatments_data.siteid, OM_veg_1_5.treatmentid, OM_treatments_data.restorationtype, OM_veg_1_5.year
-# FROM OM_veg_1_5, OM_site_data, OM_treatments_data
-# LEFT JOIN OM_site_data ON OM_site_data.siteid = OM_treatments_data.siteid AND OM_veg_1_5.treatmentid = OM_veg_1_5.treatmentid
-# WHERE OM_treatments_data.restorationtype = 'seeding' AND OM_veg_1_5.year = 2005
-```
-
 
 ### 3-Results query three tables - one species & 1 year
 - SELECT DISTINCT for no duplicates
@@ -503,8 +478,6 @@ results_projid_9
 write.csv(results_projid_9, "data/GRP-Site-SpeciesCover-SQL-US-Wash.csv", row.names = FALSE)
 ```
 
-
-
 ### 10 Query Results Species + Sites 
 - dataframe *add Site & Subregion* to *treatment and species df* 
 - `results_projid_7` R observation rows: 1,961,307  
@@ -660,6 +633,8 @@ write.csv(species_site_62_exotic_cov, "data/GRP-Site-SpeciesCover-SQL-species-si
 ```
 
 
+
+
 # For Loop
 ## for loop prep
 - create a for loop for separate Site df  
@@ -728,7 +703,8 @@ assign(paste("site_species_C_SP_df", desired_name_value, sep = "_"), site_specie
 </p></details>
 
 ### Rename dataframes
-?? how can I do a for loop to rename all these
+?? how can I do a for loop to rename all these  
+??? Take care ... I crashed and corrupted this files predecessor after t
 ```{r rename-df}
 
 # site_species_C_SP_df1_ <- assign(paste("site_species_C_SP_df1_", site_species_C_SP_df1_$Site, sep = ""), site_species_C_SP_df1_)
@@ -753,9 +729,46 @@ ss_cover_62 <- species_site_62[, -c(2,3,4)]
 ```
 
 
-## point plot - Temp & Precip
+## 1-point plot - Temp & Precip
 - I think this needs to be first use average of subregion temp and precip - showing too many here ???
 ```{r GRP-temp-precip-all-point}
+
+GRP_all_site_temp_prec <- ggplot(results_projid_6, 
+                      # text = paste("Site:", Site), 
+                    aes(x = precip, y = temp, colour = Subregion)) +
+                    geom_point(shape = 18, size = 2) +
+    scale_x_continuous(limits = c(500, 2000)) +
+    scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    scale_fill_brewer(palette = "Dark2") +
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="bottom") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "GRP Precipitation & Temperature",
+                       subtitle = "By Subregion",
+                      caption = "Chart by Wendy Anthony \n 2025-09-21",
+                      x = "Precipitation", y = "Temperature")
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_temp_prec) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "GRP Annual Precipitation & Temperature by Subregion<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Precipitation (mm)'),
+        yaxis = list(title = 'Temperature (°C)'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-21",
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey"))
+        )
+```
+
+## 2-point plot - Temp & Precip
+- I think this needs to be first use mean of subregion temp and precip - showing too many here ???
+
+```{r GRP-temp-precip-all-point-mean}
 
 GRP_all_site_temp_prec <- ggplot(results_projid_6, 
                       # text = paste("Site:", Site), 
