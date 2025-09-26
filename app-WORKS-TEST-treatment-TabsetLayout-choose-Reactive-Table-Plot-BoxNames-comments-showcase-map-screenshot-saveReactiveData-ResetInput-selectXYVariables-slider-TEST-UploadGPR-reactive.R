@@ -393,31 +393,39 @@ server <- function(input, output, session){
                 '° ', '<i>', str7d, '<i>'
     ))
   })
+
+  #############################################################################
+  #############################################################################
 # Reset button
   observeEvent(input$resetBtn, {
     updateSelectInput(session, "Menu1", selected = "All") # Reset to "B"
     updateSelectInput(session, "Menu2", selected = "All") # Reset to "B"
   })
 
+  #############################################################################
+  #############################################################################
   # Render the data table
   output$GRP_data_table <- renderTable({
     # req(app_data()) # Require data to be available before rendering
     data3()
   })
-
+  #############################################################################
+  #############################################################################
   # table output
   output$table1 <- renderTable({
     data3()
   })
 
-
+  #############################################################################
+  #############################################################################
   # Download Button for reactive table data
   output$downloadGRPData <- downloadHandler(
     filename = paste0("ReactiveGRPData-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S"), ".csv"),
     content = function(file){
       write.csv(data3(), file)
     })
-
+  #############################################################################
+  #############################################################################
 
   # Plot works
   output$plot2 <- renderPlot({
@@ -452,6 +460,8 @@ server <- function(input, output, session){
 
   })
 
+  #############################################################################
+  #############################################################################
 #
 #   # Plot works
 #   output$plot9 <- renderPlot({
@@ -469,6 +479,8 @@ server <- function(input, output, session){
 #            caption = "Chart by Wendy Anthony \n 2025-08-27")
 #   })
 
+  #############################################################################
+  #############################################################################
   # Plot works
   output$plot4 <- renderPlotly({
     d <- data3()
@@ -502,6 +514,8 @@ server <- function(input, output, session){
         )
   })
 
+  #############################################################################
+  #############################################################################
   # Plot works
   output$plot12 <- renderPlotly({
     d <- data3()
@@ -533,6 +547,8 @@ server <- function(input, output, session){
       )
   })
 
+  #############################################################################
+  #############################################################################
   # fire Plot
   output$plot_t_fire <- renderPlotly({
 
@@ -565,14 +581,14 @@ server <- function(input, output, session){
         )
       )
   })
-
+#############################################################################
+#############################################################################
   # mowing Plot
   output$plot_t_mowing <- renderPlotly({
 
     grp_mowing_data_seed <- grp_mowing_data[grp_mowing_data$restorationtype == "seeding", ]
-    unique(OM_treatments_data_mowing_seed$siteid) #10 129:138
 
-    grp_mowing_data_seed <- ggplot(OM_treatments_data_mowing_seed,
+    grp_mowing_data_seed <- ggplot(grp_mowing_data_seed,
                                                   # text = paste("Site:", Site),
       aes(x = factor(siteid), y = factor(trt_year), color = treatmentid)) +
       geom_point(shape = 20, size = 1) +
@@ -599,6 +615,8 @@ server <- function(input, output, session){
 
   })
 
+#############################################################################
+#############################################################################
   # herbicide Plot
   output$plot_t_herbicide <- renderPlotly({
 
@@ -631,9 +649,8 @@ server <- function(input, output, session){
 
   })
 
-
-
-
+  #############################################################################
+  #############################################################################
 
   # Plot works
   output$plot5 <- renderPlotly({
@@ -718,7 +735,7 @@ server <- function(input, output, session){
           "<b>Landcover:</b> ", "<b>", grp_site_data$landcover, "</b>",  "<br>",
           "<b>Elevation:</b> ", "<b>", grp_site_data$elevation, " m</b>",  "<br>",
           "<b>Aspect:</b> ", "<b>", grp_site_data$aspect, " °</b>",  "<br>",
-          "<b>Precipitation:</b> ", "<b>", grp_site_data$precip, " m</b>",  "<br>",
+          "<b>Precipitation:</b> ", "<b>", grp_site_data$precip, " mm</b>",  "<br>",
           "<b>Temperature:</b> ", "<b>", grp_site_data$temp, " °C</b>"
           )) %>%
 
@@ -761,7 +778,7 @@ server <- function(input, output, session){
            "<b>Landcover:</b> ", "<b>", d$landcover, "</b>",  "<br>",
            "<b>Elevation:</b> ", "<b>", grp_site_data$elevation, " m</b>",  "<br>",
            "<b>Aspect:</b> ", "<b>", grp_site_data$aspect, " °</b>",  "<br>",
-           "<b>Precipitation:</b> ", "<b>", grp_site_data$precip, " m</b>",  "<br>",
+           "<b>Precipitation:</b> ", "<b>", grp_site_data$precip, " mm</b>",  "<br>",
            "<b>Temperature:</b> ", "<b>", grp_site_data$temp, " °C</b>"
            ))
    })
