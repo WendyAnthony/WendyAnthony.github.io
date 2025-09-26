@@ -13,7 +13,7 @@ output:
     toc: yes
     toc_depth: '3'
 ---
-
+Modified 2025-09-25 15:30
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -96,7 +96,7 @@ str(OM_veg_1_5)
 </p></details>
 
 
-### sort unique species to df 
+# sort unique species to df 
 ```{r OM_veg_1_5-unique-species}
 library(dplyr)
 
@@ -123,7 +123,7 @@ write.csv(OM_veg_1_5_sp_all_or_sort, "data/OM_veg_1_5_sp_all_or_sort.csv", row.n
 
 
 
-### add speciesorigin to speciesid for OM_veg_2
+## add speciesorigin to speciesid for OM_veg_2
 <details><summary><b><i>Click open to see `list of species and origin OM_veg_2`</i></b></summary><p>
 ```{r}
 OM_veg_2
@@ -167,29 +167,36 @@ unique(OM_treatments_data$treatment_category)
 ```
 
 ### Treatments fire
-```{r treatments-fire}
-colnames(OM_treatments_data_fire)
-OM_treatments_data_fire <- OM_treatments_data[OM_treatments_data$treatment_category == "fire", ]
+<details><summary><b><i>Click open to see `fire treatment data`</i></b></summary><p>
 
+```{r treatments-fire}
+
+OM_treatments_data_fire <- OM_treatments_data[OM_treatments_data$treatment_category == "fire", ]
+colnames(OM_treatments_data_fire)
 OM_treatments_data_fire <- OM_treatments_data_fire[c(-1,-8, -10, -11, -12, -15, -16, -17)]
 
 OM_treatments_data_fire
 ```
+</p></details>
 
 ### Treatments mowing
+<details><summary><b><i>Click open to see `mowing treatment data`</i></b></summary><p>
 ```{r treatments-mowing}
 OM_treatments_data_mowing <- OM_treatments_data[OM_treatments_data$treatment_type == "mowing", ]
 OM_treatments_data_mowing <- OM_treatments_data_mowing[c(-1,-8, -10, -11, -12, -15, -16, -17)]
 OM_treatments_data_mowing
 ```
+</p></details>
 
 ### Treatments herbicide
+<details><summary><b><i>Click open to see `herbicide treatment data`</i></b></summary><p>
 ```{r treatments-herbicide}
 OM_treatments_data_herbicide <- OM_treatments_data[OM_treatments_data$treatment_category == "herbicide", ]
 OM_treatments_data_herbicide <- OM_treatments_data_herbicide[c(-1,-8, -10, -11, -12, -15, -16, -17)]
 
 OM_treatments_data_herbicide
 ```
+</p></details>
 ### Write Treatment csv
 ```{r write-treatment-csv}
 write.csv(OM_treatments_data_fire, "data/OM_treatments_data_fire.csv", row.names = FALSE)
@@ -205,14 +212,14 @@ write.csv(OM_treatments_data_herbicide, "data/OM_treatments_data_herbicide.csv",
 str(OM_site_data)
 ```
 
-### Round Temp values to 1 decimal OM_site_data
+## Round Temp values to 1 decimal OM_site_data
 ```{r round-temp}
 OM_site_data$temp
 OM_site_data$temp <- round(OM_site_data$temp, digits = 1)
 # OM_site_data$temp
 ```
 
-### Round Aspect values to 2 decimal OM_site_data
+## Round Aspect values to 2 decimal OM_site_data
 ```{r round-aspect}
 OM_site_data$aspect
 OM_site_data$aspect <- round(OM_site_data$aspect, digits = 2)
@@ -249,7 +256,7 @@ write.csv(GRP_Site_data, "data/GRP_Site_data.csv", row.names = FALSE)
 
 
 
-# SQL Create Database
+  # SQL Create Database
 ```{r libraries-created-db}
 # https://www.youtube.com/watch?v=c3e8m3K0eC4
 # 
@@ -262,7 +269,7 @@ library(tidyverse)
 # tidyverse_packages(include_self = TRUE)
 ```
 
-## SQL  GRP Database
+## GRP Database
 ### create GRP database and connection
 ```{r create-database-connection-grp}
 # builds empty db in R memory
@@ -303,7 +310,7 @@ tbl(src = con, "OM_veg_1_5")
 ```
 
 
-  ## SQL Query for db
+## SQL Query for db
 
 
 ### 1-Results query one tables
@@ -399,7 +406,7 @@ write.csv(results_projid_5, "data/GRP_all_site_data.csv", row.names = FALSE)
 ```
 
 
-### 3-Results query three tables - all Sites - 
+### 3-Results query three tables - all Sites 
 ```{sql connection = con, output.var = "results_projid_6"}
 SELECT s.siteid, s.projectid, s.Site, s.Subregion, s.latitude, s.longitude, s.refecosystem, s.landcover, s.elevation, s.aspect, s.slope, s.temp, s.precip, s.disturbance
 FROM OM_site_data AS s 
@@ -411,7 +418,7 @@ WHERE s.DB = "OM"
 <details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
 ```{r preview-results-projid_6}
 results_projid_6
-length(unique(results_projid_6$Site)) # 201 with 5 duplicates
+length(unique(results_projid_6$Site))
 ```
 </p></details>
 
@@ -725,7 +732,7 @@ write.csv(species_site_62_exotic_cov, "data/GRP-Site-SpeciesCover-SQL-species-si
 #              value = OM_treatments_data)
 # 
 # # Call the function to get sales data for 2022
-#   site_MtTolmie <- get_sales_by_year(con, "	
+#   site_MtTolmie <- get_sales_by_year(con, " 
 # Mt. Tolmie")
 #   print(site_MtTolmie)
 
@@ -1054,6 +1061,14 @@ ss_cover_62_cover_native_response_order <- ss_cover_62_cover_native[order(ss_cov
 ss_cover_62_cover_exotic_response_order <- ss_cover_62_cover_exotic[order(ss_cover_62_cover_exotic$response), ]
 ```
 
+### Write Mt. T0lmie cover csv
+```{r write-cover-MtTolmie-csv}
+write.csv(ss_cover_62_cover_native_response_order, "data/62_cover_native.csv", row.names = FALSE)
+write.csv(ss_cover_62_cover_exotic_response_order, "data/62_cover_exotic.csv", row.names = FALSE)
+```
+
+
+
 
 ### plot Mt. Tolmie
 - not showing all species - includes multiple replicates/species
@@ -1183,10 +1198,14 @@ subregion_mean_temp # no results for C-GI, C-SP, US-GI
 ```
 
 ### mean precip-subregion
-- results_projid_6  all 206 site data
+- results_projid_6  all 206 site data  
+
+<details><summary><b><i>Click open to see `subregion precip data`</i></b></summary><p>
+
 ```{r GRP-precip-subregion-mean}
 results_projid_6
 ```
+</p></details>
 
 ### 2-point plot - Temp & Precip
 - results_projid_6  all 206 site data
