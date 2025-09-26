@@ -12,6 +12,11 @@
 
 # Download site data
 grp_site_data <- read.csv("data/GRP_all_site_data_sql.csv", header = TRUE, sep = ",")
+
+# Download Mt TOlmie cover data
+grp_62_cover_native_data <- read.csv("data/62_cover_native.csv", header = TRUE, sep = ",")
+grp_62_cover_exotic_data <- read.csv("data/62_cover_exotic.csv", header = TRUE, sep = ",")
+
 # Download treatment data
 grp_fire_data <- read.csv("data/OM_treatments_data_fire.csv", header = TRUE, sep = ",")
 grp_mowing_data <- read.csv("data/OM_treatments_data_mowing.csv", header = TRUE, sep = ",")
@@ -129,6 +134,17 @@ ui <- fluidPage(
 #                    #column(6, plotOutput("plot9"))
 #                  )
                  ),
+
+tabPanel("GRP Site Cover",
+         p(style = "font-size:11px;", "GRP GOE Data"),
+         p(style = "font-size:11px; font-weight:bold;font-style:italic;", "Note: plots in this tab do NOT respond to drop-down input choices"),
+         p(style = "font-size:11px;", "Hover over points to view tooltip ... if chart changes double-click within chart to return to original state"),
+         screenshotButton(label = "GRP Native Site Cover", id = "GRP_native_site_cover", filename = paste0("GRP-Screenshot-native-site-cover-plot", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+         screenshotButton(label = "GRP Exotic Site Cover", id = "GRP_exotic_site_cover", filename = paste0("GRP-Screenshot-native-site-cover-plot", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+         plotlyOutput("plot_n_mttolmie", width = "800px"),
+         br(),hr(),br(),
+         plotlyOutput("plot_e_mttolmie", width = "800px"),
+),
 
 tabPanel("GRP Treatments",
          p(style = "font-size:11px;", "GRP GOE Data"),
@@ -546,6 +562,80 @@ server <- function(input, output, session){
                            font = list(size=8, color="grey"))
       )
   })
+  #############################################################################
+  #############################################################################
+  # Mt Tolmie native species Plot
+  output$plot_n_mttolmie <- renderPlotly({
+    grp_62_cover_native_data_plot <- ggplot(grp_62_cover_native_data,
+                                                           # text = paste("Site:", Site),
+                                                           aes(y = speciesid, x = response, color = replicate)) +
+      geom_point(shape = 20, size = 1) +
+      geom_jitter() +
+      #scale_x_continuous(limits = c(500, 2000)) +
+      #scale_y_continuous(limits = c(8, 12)) +
+      # Replace default palette of pink & blue
+      #scale_fill_brewer(palette = "Dark2") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(legend.position="bottom") +
+      # theme(legend.position="none") + #remove legend
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+      labs(title = "Mt. Tolmie Native Species Cover %",
+           caption = "Chart by Wendy Anthony \n 2025-09-25",
+           y = "Species", x = "% Cover")
+
+    ## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), grp_62_cover_native_data_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Mt. Tolmie Native Plant % Cover<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Cover (%)'),
+        yaxis = list(title = 'Species'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25",
+                           showarrow = F, xref='paper', yref='paper',
+                           xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+                           font = list(size=8, color="grey"))
+      )
+  })
+
+
+  #############################################################################
+  #############################################################################
+  # Mt Tolmie exotic species Plot
+  output$plot_e_mttolmie <- renderPlotly({
+    grp_62_cover_exotic_data_plot <- ggplot(grp_62_cover_exotic_data,
+                                                           # text = paste("Site:", Site),
+                                                           aes(y = speciesid, x = response, color = replicate)) +
+      geom_point(shape = 20, size = 1) +
+      geom_jitter() +
+      #scale_x_continuous(limits = c(500, 2000)) +
+      #scale_y_continuous(limits = c(8, 12)) +
+      # Replace default palette of pink & blue
+      #scale_fill_brewer(palette = "Dark2") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(legend.position="bottom") +
+      # theme(legend.position="none") + #remove legend
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+      labs(title = "Mt. Tolmie Exotic Species Cover %",
+           caption = "Chart by Wendy Anthony \n 2025-09-25",
+           y = "Species", x = "% Cover")
+
+    ## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), grp_62_cover_exotic_data_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Mt. Tolmie Exotic Plant % Cover<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Cover (%)'),
+        yaxis = list(title = 'Species'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25",
+                           showarrow = F, xref='paper', yref='paper',
+                           xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+                           font = list(size=8, color="grey"))
+      )
+  })
+
+
 
   #############################################################################
   #############################################################################
