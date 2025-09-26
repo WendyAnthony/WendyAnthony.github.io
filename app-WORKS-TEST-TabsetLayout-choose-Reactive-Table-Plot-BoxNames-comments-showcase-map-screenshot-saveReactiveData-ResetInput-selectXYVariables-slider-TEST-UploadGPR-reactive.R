@@ -8,6 +8,7 @@
 ## 2025-09-17 got slider to work reactively
 ## 2025-09-19 add upload file and separate GRP data table
 ## 2025-09-10 make all separate for GRP data
+# uploaded GRP Shiny App 2025-09-22 with table, map and violin plots of Subregion range
 
 # Download data
 grp_site_data <- read.csv("data/GRP_all_site_data_sql.csv", header = TRUE, sep = ",")
@@ -414,7 +415,7 @@ server <- function(input, output, session){
       theme_minimal() + #get rid of grey background and tick marks
       theme(legend.position="none") + #remove legend
       theme(axis.text.x = element_text(vjust = 1, size = 9)) +
-      labs(title='Plotting Subregion by Elevation',
+      labs(title='Plotting Subregion by Elevation (m)',
            subtitle='GRP (Shackelford, 2025)',
            caption = "Chart by Wendy Anthony \n 2025-09-20") +
     theme(plot.title = element_text(face = "bold", size = 20))
@@ -467,13 +468,13 @@ server <- function(input, output, session){
       # theme(legend.position="none") + #remove legend
       theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
       scale_y_continuous(limits = c(8, 12)) +
-      labs(title='Plotting Subregion by Temperature Range',
+      labs(title='Plotting Subregion by Annual Average Temperature Range',
            subtitle='Data: GRP',
            caption = "Chart by Wendy Anthony \n 2025-09-22")
     ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_temp) %>%
       config(displayModeBar = FALSE) %>% # This line disables the modebar
       layout(title = list(
-        text = "GRP Annual Temperature by Subregion<br><sup>Data Source: GRP</sup>",
+        text = "GRP Annual Average Temperature by Subregion<br><sup>Data Source: GRP</sup>",
         y = 0.95), # Adjust vertical position if needed
         yaxis = list(title = 'Temperature (°C)'),
         annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-22",
@@ -499,15 +500,16 @@ server <- function(input, output, session){
       theme(legend.position="bottom") +
       # theme(legend.position="none") + #remove legend
       # theme(axis.text.y = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-      labs(title='Plotting Subregion by Precipitation Range',
+      labs(title='Plotting Subregion by Average Annual Precipitation Range',
            subtitle='Data: GRP',
            caption = "Chart by Wendy Anthony \n 2025-09-22")
     ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_prec) %>%
       config(displayModeBar = FALSE) %>% # This line disables the modebar
       layout(title = list(
-        text = "GRP Annual Precipitation by Subregion<br><sup>Data Source: GRP</sup>",
+        text = "GRP Annual Average Precipitation by Subregion<br><sup>Data Source: GRP</sup>",
         y = 0.95), # Adjust vertical position if needed
-        xaxis = list(title = 'Precipitation (mm)'),
+        yaxis = list(title = 'Precipitation (mm)'),
+        xaxis = list(title = 'Subregion'),
         annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-22",
                            showarrow = F, xref='paper', yref='paper',
                            xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
@@ -597,10 +599,10 @@ server <- function(input, output, session){
           "<b>Subregion:</b> ", "<b>", grp_site_data$Subregion, "</b>",  "<br>",
           "<b>Project id:</b> ", "<b>", grp_site_data$projectid, "</b>",  "<br>",
           "<b>Landcover:</b> ", "<b>", grp_site_data$landcover, "</b>",  "<br>",
-          "<b>Elevation:</b> ", "<b>", grp_site_data$elevation, "</b>",  "<br>",
-          "<b>Aspect:</b> ", "<b>", grp_site_data$aspect, "</b>",  "<br>",
-          "<b>Precipitation (mm):</b> ", "<b>", grp_site_data$precip, "</b>",  "<br>",
-          "<b>Temperature (°C):</b> ", "<b>", grp_site_data$temp, "</b>"
+          "<b>Elevation:</b> ", "<b>", grp_site_data$elevation, " m</b>",  "<br>",
+          "<b>Aspect:</b> ", "<b>", grp_site_data$aspect, " °</b>",  "<br>",
+          "<b>Precipitation:</b> ", "<b>", grp_site_data$precip, " m</b>",  "<br>",
+          "<b>Temperature:</b> ", "<b>", grp_site_data$temp, " °C</b>"
           )) %>%
 
       setView(-121.799377, 47.801487, 6) %>%
@@ -640,10 +642,10 @@ server <- function(input, output, session){
            "<b>Subregion:</b> ", "<b>", d$Subregion, "</b>",  "<br>",
            "<b>Project id:</b> ", "<b>", d$projectid, "</b>",  "<br>",
            "<b>Landcover:</b> ", "<b>", d$landcover, "</b>",  "<br>",
-           "<b>Elevation:</b> ", "<b>", d$elevation, "</b>",  "<br>",
-           "<b>Aspect:</b> ", "<b>", d$aspect, "</b>",  "<br>",
-           "<b>Precipitation (mm):</b> ", "<b>", d$precip, "</b>",  "<br>",
-           "<b>Temperature (°C):</b> ", "<b>", d$temp, "</b>"
+           "<b>Elevation:</b> ", "<b>", grp_site_data$elevation, " m</b>",  "<br>",
+           "<b>Aspect:</b> ", "<b>", grp_site_data$aspect, " °</b>",  "<br>",
+           "<b>Precipitation:</b> ", "<b>", grp_site_data$precip, " m</b>",  "<br>",
+           "<b>Temperature:</b> ", "<b>", grp_site_data$temp, " °C</b>"
            ))
    })
 

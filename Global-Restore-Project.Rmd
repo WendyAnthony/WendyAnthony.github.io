@@ -96,7 +96,7 @@ str(OM_veg_1_5)
 </p></details>
 
 
-# sort unique species to df 
+### sort unique species to df 
 ```{r OM_veg_1_5-unique-species}
 library(dplyr)
 
@@ -123,7 +123,7 @@ write.csv(OM_veg_1_5_sp_all_or_sort, "data/OM_veg_1_5_sp_all_or_sort.csv", row.n
 
 
 
-## add speciesorigin to speciesid for OM_veg_2
+### add speciesorigin to speciesid for OM_veg_2
 <details><summary><b><i>Click open to see `list of species and origin OM_veg_2`</i></b></summary><p>
 ```{r}
 OM_veg_2
@@ -161,7 +161,28 @@ OM_veg_1_5_sp_or_sort_unique
 ```{r structure-OM-treatments-data}
 str(OM_treatments_data)
 colnames(OM_treatments_data)
+unique(OM_treatments_data$restorationtype)
+unique(OM_treatments_data$treatment_type)
+unique(OM_treatments_data$treatment_category)
 ```
+### Treatments fire
+```{r treatments-fire}
+OM_treatments_data_fire <- OM_treatments_data[OM_treatments_data$treatment_category == "fire", ]
+OM_treatments_data_fire
+```
+
+### Treatments mowing
+```{r treatments-mowing}
+OM_treatments_data_mowing <- OM_treatments_data[OM_treatments_data$treatment_type == "mowing", ]
+OM_treatments_data_mowing
+```
+
+### Treatments herbicide
+```{r treatments-herbicide}
+OM_treatments_data_herbicide <- OM_treatments_data[OM_treatments_data$treatment_category == "herbicide", ]
+OM_treatments_data_herbicide
+```
+
 
 
 ## OM_site_data
@@ -169,14 +190,14 @@ colnames(OM_treatments_data)
 str(OM_site_data)
 ```
 
-## Round Temp values to 1 decimal OM_site_data
+### Round Temp values to 1 decimal OM_site_data
 ```{r round-temp}
 OM_site_data$temp
 OM_site_data$temp <- round(OM_site_data$temp, digits = 1)
 # OM_site_data$temp
 ```
 
-## Round Aspect values to 2 decimal OM_site_data
+### Round Aspect values to 2 decimal OM_site_data
 ```{r round-aspect}
 OM_site_data$aspect
 OM_site_data$aspect <- round(OM_site_data$aspect, digits = 2)
@@ -213,7 +234,7 @@ write.csv(GRP_Site_data, "data/GRP_Site_data.csv", row.names = FALSE)
 
 
 
-  # SQL Create Database
+# SQL Create Database
 ```{r libraries-created-db}
 # https://www.youtube.com/watch?v=c3e8m3K0eC4
 # 
@@ -226,7 +247,7 @@ library(tidyverse)
 # tidyverse_packages(include_self = TRUE)
 ```
 
-## GRP Database
+## SQL  GRP Database
 ### create GRP database and connection
 ```{r create-database-connection-grp}
 # builds empty db in R memory
@@ -267,7 +288,7 @@ tbl(src = con, "OM_veg_1_5")
 ```
 
 
-## SQL Query for db
+  ## SQL Query for db
 
 
 ### 1-Results query one tables
@@ -363,7 +384,7 @@ write.csv(results_projid_5, "data/GRP_all_site_data.csv", row.names = FALSE)
 ```
 
 
-### ?? 3-Results query three tables - all Sites - still not showing all
+### 3-Results query three tables - all Sites - 
 ```{sql connection = con, output.var = "results_projid_6"}
 SELECT s.siteid, s.projectid, s.Site, s.Subregion, s.latitude, s.longitude, s.refecosystem, s.landcover, s.elevation, s.aspect, s.slope, s.temp, s.precip, s.disturbance
 FROM OM_site_data AS s 
@@ -371,12 +392,11 @@ WHERE s.DB = "OM"
 ```
 
 #### View query results
-- this doesn't have all sites, and some duplicate siteid  
 
 <details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
 ```{r preview-results-projid_6}
 results_projid_6
-length(unique(results_projid_6$Site))
+length(unique(results_projid_6$Site)) # 201 with 5 duplicates
 ```
 </p></details>
 
@@ -633,7 +653,69 @@ write.csv(species_site_62_exotic_cov, "data/GRP-Site-SpeciesCover-SQL-species-si
 ```
 
 
+## SQL query function
+```{r SQL-query-function}
+# Load some sample data (optional, for demonstration)
+  # In a real scenario, you would connect to an existing database with your data
 
+# Error: Table OM_veg_1_5 exists in database, and both overwrite and append are FALSE
+  # Load OM_veg_1_5 table
+# dbWriteTable(conn = con,
+#              name = "OM_veg_1_5",
+#              value = OM_veg_1_5)
+# 
+# 
+# # Load OM_site_data table
+# dbWriteTable(conn = con,
+#              name = "OM_site_data",
+#              value = OM_site_data)
+# 
+# 
+# # Load OM_treatments_data table
+# dbWriteTable(conn = con,
+#              name = "OM_treatments_data",
+#              value = OM_treatments_data)
+# get_data_by_site <- function(con, Site) {
+#   
+#   sql_query_site <- paste0('SELECT s.siteid, s.projectid, s.Site, s.Subregion, v.treatmentid, v.year AS "v_year_measure", v.replicate, v.speciesid, v.speciesorigin, v.response, v.responselevel, v.responsemetric, v.measurementscale, v.measurementmetric
+# FROM OM_veg_1_5 AS v
+# INNER JOIN OM_site_data AS s ON t.siteid = s.siteid
+# INNER JOIN OM_treatments_data AS t  ON v.treatmentid = t.treatmentid
+# WHERE s.siteid = "target_site"')
+# 
+#   # Execute the query and return the result as a data frame
+#   dbGetQuery(con, sql_query_site)
+# }
+# 
+#   # Establish a database connection.
+#   # Example: Connect to an in-memory SQLite database
+#   con <- dbConnect(RSQLite::SQLite(), ":memory:")
+# 
+#   # Error: Table OM_veg_1_5 exists in database, and both overwrite and append are FALSE
+#   # Load OM_veg_1_5 table
+# dbWriteTable(conn = con,
+#              name = "OM_veg_1_5",
+#              value = OM_veg_1_5)
+# 
+# 
+# # Load OM_site_data table
+# dbWriteTable(conn = con,
+#              name = "OM_site_data",
+#              value = OM_site_data)
+# 
+# 
+# # Load OM_treatments_data table
+# dbWriteTable(conn = con,
+#              name = "OM_treatments_data",
+#              value = OM_treatments_data)
+# 
+# # Call the function to get sales data for 2022
+#   site_MtTolmie <- get_sales_by_year(con, "	
+# Mt. Tolmie")
+#   print(site_MtTolmie)
+
+
+```
 
 # For Loop
 ## for loop prep
@@ -718,7 +800,225 @@ assign(paste("site_species_C_SP_df", desired_name_value, sep = "_"), site_specie
 
 # Plots
 
-## Single Site Species Cover & Presence
+
+
+
+## Treatments 
+### Treatments Fire & Seeding
+
+```{r treatments-fire-seed-plot}
+colnames(OM_treatments_data_fire)
+OM_treatments_data_fire_seed <- OM_treatments_data_fire[OM_treatments_data_fire$restorationtype == "seeding", ] 
+unique(OM_treatments_data_fire_seed$siteid) #10 129:138
+
+# display.brewer.all(n=10, exact.n=FALSE)
+
+OM_treatments_data_fire_seed_plot <- ggplot(OM_treatments_data_fire_seed, 
+                      # text = paste("Site:", Site), 
+                    aes(x = factor(siteid), y = trt_year, color = treatmentid)) +
+                    geom_point(shape = 20, size = 1) +
+                    scale_y_continuous(breaks = c(2006, 2008)) +
+                    geom_jitter() +
+    #scale_x_continuous(limits = c(500, 2000)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_color_brewer(palette = "Accent") +
+  
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="none") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Treatments with Fire and Seeding",
+                         subtitle = "(First Treatment 2005)",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      x = "Site", y = "Treatment Year")
+
+OM_treatments_data_fire_seed_plot
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), OM_treatments_data_fire_seed_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Treatments with Fire and Seeding (First Treatment 2005)<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Site'),
+        yaxis = list(title = 'Treatment Year'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25"
+              # no legend
+             #               ,
+             # showarrow = F, xref='paper', yref='paper',
+             # xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             # font = list(size=8, color="grey")
+             )
+        )
+
+```
+
+
+### Treatments Mowing & Seeding
+
+```{r treatments-mowing-seed-plot}
+#colnames(OM_treatments_data_mowing)
+#unique(OM_treatments_data_mowing$trt_year) 
+# 2005 2006 2007 2008 2010 2011 2012 2013 2014 2015 2016 2009 2017 2018 2019 2020 2021 2022
+#unique(OM_treatments_data_mowing$tsr_start_year) # 2005 2010 2009
+
+OM_treatments_data_mowing_seed <- OM_treatments_data_mowing[OM_treatments_data_mowing$restorationtype == "seeding", ] 
+unique(OM_treatments_data_mowing_seed$siteid) #10 129:138
+
+# display.brewer.all(n=10, exact.n=FALSE)
+
+OM_treatments_data_mowing_seed_plot <- ggplot(OM_treatments_data_mowing_seed, 
+                      # text = paste("Site:", Site), 
+                      
+                    aes(x = factor(siteid), y = trt_year, color = treatmentid)) +
+                    geom_point(shape = 20, size = 1) +
+                    geom_jitter() +
+#    scale_x_continuous(limits = c(129, 138)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_color_brewer(palette = "Accent") +
+  
+                    theme_minimal() + #get rid of grey background and tick marks
+                    #theme(legend.position="bottom") +
+                     theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Treatments with Mowing and Seeding",
+                         subtitle = "(First Treatment 2005)",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      x = "Site", y = "Treatment Year")
+
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), OM_treatments_data_mowing_seed_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Treatments with Mowing and Seeding (First Treatment 2005)<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Site'),
+        yaxis = list(title = 'Treatment Year'),
+        
+        
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25"              # no legend
+             #               ,
+             # showarrow = F, xref='paper', yref='paper',
+             # xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             # font = list(size=8, color="grey")
+             )
+        ) 
+
+```
+
+
+### Treatments Herbicide
+
+```{r treatments-herbicide-plot}
+#colnames(OM_treatments_data_mowing)
+#unique(OM_treatments_data_mowing$trt_year) 
+# 2005 2006 2007 2008 2010 2011 2012 2013 2014 2015 2016 2009 2017 2018 2019 2020 2021 2022
+#unique(OM_treatments_data_mowing$tsr_start_year) # 2005 2010 2009
+
+OM_treatments_data_herbicide_seed <- OM_treatments_data_herbicide[OM_treatments_data_herbicide$restorationtype == "seeding", ] 
+unique(OM_treatments_data_herbicide_seed$siteid) #10 129:138
+
+OM_treatments_data_herbicide_seed_plot <- ggplot(OM_treatments_data_herbicide_seed, 
+                      # text = paste("Site:", Site), 
+                      
+                    aes(x = factor(siteid), y = trt_year, color = treatmentid)) +
+                    geom_point(shape = 20, size = 1) +
+                    geom_jitter() +
+#    scale_x_continuous(limits = c(129, 138)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_color_brewer(palette = "Accent") +
+  
+                    theme_minimal() + #get rid of grey background and tick marks
+                    #theme(legend.position="bottom") +
+                     theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Treatments with Herbicide and Seeding",
+                         subtitle = "(First Treatment 2005)",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      x = "Site", y = "Treatment Year")
+
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), OM_treatments_data_mowing_seed_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Treatments with Herbicide and Seeding (First Treatment 2005)<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Site'),
+        yaxis = list(title = 'Treatment Year'),
+        
+        
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25"              # no legend
+             #               ,
+             # showarrow = F, xref='paper', yref='paper',
+             # xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             # font = list(size=8, color="grey")
+             )
+        ) 
+
+```
+
+## Template ggplot geom_point with plotly
+```{r template-ggplot-geom_point-plotly}
+OM_treatments_data_fire_seed_plot <- ggplot(OM_treatments_data_fire_seed, 
+                      # text = paste("Site:", Site), 
+                    aes(x = factor(siteid), y = trt_year, color = treatmentid)) +
+                    geom_point(shape = 20, size = 1) +
+                    scale_y_continuous(breaks = c(2006, 2008)) +
+                    geom_jitter() +
+    #scale_x_continuous(limits = c(500, 2000)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_color_brewer(palette = "Accent") +
+  
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="none") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Treatments with Fire and Seeding",
+                         subtitle = "(First Treatment 2005)",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      x = "Site", y = "Treatment Year")
+
+# OM_treatments_data_fire_seed_plot
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), OM_treatments_data_fire_seed_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Treatments with Fire and Seeding (First Treatment 2005)<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Site'),
+        yaxis = list(title = 'Treatment Year'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25"
+              # no legend
+             #               ,
+             # showarrow = F, xref='paper', yref='paper',
+             # xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             # font = list(size=8, color="grey")
+             )
+        )
+
+```
+
+## Sites 129-138
+- these sites had treatment done  
+
+<details><summary><b><i>Click open to see `species data for sites 129-138`</i></b></summary><p>
+```{r sites-species-129-138}
+# [1] 128 129 134 135 136 137 138 130 131 132 133
+# https://stackoverflow.com/questions/25647470/filter-multiple-values-on-a-string-column-in-dplyr
+target_sites <- c("129", "130", "131", "132", "133", "134", "135", "136", "137", "138")
+# filter
+sites_species_129_138 <- dplyr::filter(results_projid_9, siteid %in% target_sites)
+sites_species_129_138
+```
+</p></details>
+
+
+## Filter Single Site Species Cover & Presence
 - Mt Tolmie siteid = 62  
 - can't use pivot longer
 ```{r plot-site-species-cover-presence-MtTolmie}
@@ -726,7 +1026,94 @@ colnames(species_site_62)
 # remove columns for Site 
 ss_cover_62 <- species_site_62[, -c(2,3,4)]
 
+# filter
+ss_cover_62_presence <- ss_cover_62[ss_cover_62$responsemetric == "presence", ]
+ss_cover_62_cover <- ss_cover_62[ss_cover_62$responsemetric == "cover", ]
+
+ss_cover_62_cover_native <- ss_cover_62_cover[ss_cover_62_cover$speciesorigin == "native", ]
+
+ss_cover_62_cover_exotic <- ss_cover_62_cover[ss_cover_62_cover$speciesorigin == "exotic", ]
+
+ss_cover_62_cover_native_response_order <- ss_cover_62_cover_native[order(ss_cover_62_cover_native$response), ]
+
+ss_cover_62_cover_exotic_response_order <- ss_cover_62_cover_exotic[order(ss_cover_62_cover_exotic$response), ]
 ```
+
+
+### plot Mt. Tolmie
+- not showing all species - includes multiple replicates/species
+
+
+### plot Mt. Tolmie native vs exotic species
+- not showing all species
+### Mt Tolmie Native 
+```{r ggplot-ss_cover_62_cover_native_response_order}
+ss_cover_62_cover_native_response_order_plot <- ggplot(ss_cover_62_cover_native_response_order, 
+                      # text = paste("Site:", Site), 
+                    aes(y = speciesid, x = response, color = replicate)) +
+                    geom_point(shape = 20, size = 1) +
+                    geom_jitter() +
+    #scale_x_continuous(limits = c(500, 2000)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_fill_brewer(palette = "Dark2") +
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="bottom") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Mt. Tolmie Native Species Cover %",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      y = "Species", x = "% Cover")
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), ss_cover_62_cover_native_response_order_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Mt. Tolmie Native Plant % Cover<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Cover (%)'),
+        yaxis = list(title = 'Species'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25",
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey"))
+        )
+```
+
+### Mt Tolmie Exotic 
+```{r ggplot-ss_cover_62_cover_exotic_response_order}
+ss_cover_62_cover_exotic_response_order_plot <- ggplot(ss_cover_62_cover_exotic_response_order, 
+                      # text = paste("Site:", Site), 
+                    aes(y = speciesid, x = response, color = replicate)) +
+                    geom_point(shape = 20, size = 1) +
+                    geom_jitter() +
+    #scale_x_continuous(limits = c(500, 2000)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_fill_brewer(palette = "Dark2") +
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="bottom") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Mt. Tolmie Exotic Species Cover %",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      y = "Species", x = "% Cover")
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), ss_cover_62_cover_exotic_response_order_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Mt. Tolmie Exotic Plant % Cover<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Cover (%)'),
+        yaxis = list(title = 'Species'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25",
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey"))
+        )
+```
+
 
 
 ## 1-point plot - Temp & Precip
@@ -768,8 +1155,28 @@ GRP_all_site_temp_prec <- ggplot(results_projid_6,
 ## 2-point plot - Temp & Precip
 - I think this needs to be first use mean of subregion temp and precip - showing too many here ???
 
-```{r GRP-temp-precip-all-point-mean}
+### mean temp-subregion
+```{r GRP-temp-subregion-mean}
+results_projid_6_test <- results_projid_6
+colnames(results_projid_6_test)
 
+subregion_mean_temp <- aggregate(results_projid_6_test[, 12], list(results_projid_6_test$Subregion), mean)
+subregion_mean_temp # no results for C-GI, C-SP, US-GI
+
+# doesn't work
+#results_projid_6 %>% group_by(Subregion) %>% mutate(mean_temp=mean(temp))
+```
+
+### mean precip-subregion
+- results_projid_6  all 206 site data
+```{r GRP-precip-subregion-mean}
+results_projid_6
+```
+
+### 2-point plot - Temp & Precip
+- results_projid_6  all 206 site data
+```{r GRP-temp-precip-all-point-plot-mean}
+# results_projid_6  all 206 site data
 GRP_all_site_temp_prec <- ggplot(results_projid_6, 
                       # text = paste("Site:", Site), 
                     aes(x = precip, y = temp, colour = Subregion)) +
@@ -893,10 +1300,10 @@ GRP_site_map  <-  leaflet(grp_site_data) %>%
           "<b>Subregion:</b> ", "<b>", grp_site_data$Subregion, "</b>",  "<br>",
           "<b>Project id:</b> ", "<b>", grp_site_data$projectid, "</b>",  "<br>",
           "<b>Landcover:</b> ", "<b>", grp_site_data$landcover, "</b>",  "<br>",
-          "<b>Elevation:</b> ", "<b>", grp_site_data$elevation, "</b>",  "<br>",
-          "<b>Aspect:</b> ", "<b>", grp_site_data$aspect, "</b>",  "<br>",
-          "<b>Precipitation (mm):</b> ", "<b>", grp_site_data$precip, "</b>",  "<br>",
-          "<b>Temperature (°C):</b> ", "<b>", grp_site_data$temp, "</b>"
+          "<b>Elevation:</b> ", "<b>", grp_site_data$elevation, " m</b>",  "<br>",
+          "<b>Aspect:</b> ", "<b>", grp_site_data$aspect, " °</b>",  "<br>",
+          "<b>Precipitation:</b> ", "<b>", grp_site_data$precip, " mm</b>",  "<br>",
+          "<b>Temperature:</b> ", "<b>", grp_site_data$temp, " °C</b>"
           )) %>%
 
       setView(-123.44799, 48.64919, 10) %>%
