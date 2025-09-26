@@ -165,23 +165,38 @@ unique(OM_treatments_data$restorationtype)
 unique(OM_treatments_data$treatment_type)
 unique(OM_treatments_data$treatment_category)
 ```
+
 ### Treatments fire
 ```{r treatments-fire}
+colnames(OM_treatments_data_fire)
 OM_treatments_data_fire <- OM_treatments_data[OM_treatments_data$treatment_category == "fire", ]
+
+OM_treatments_data_fire <- OM_treatments_data_fire[c(-1,-8, -10, -11, -12, -15, -16, -17)]
+
 OM_treatments_data_fire
 ```
 
 ### Treatments mowing
 ```{r treatments-mowing}
 OM_treatments_data_mowing <- OM_treatments_data[OM_treatments_data$treatment_type == "mowing", ]
+OM_treatments_data_mowing <- OM_treatments_data_mowing[c(-1,-8, -10, -11, -12, -15, -16, -17)]
 OM_treatments_data_mowing
 ```
 
 ### Treatments herbicide
 ```{r treatments-herbicide}
 OM_treatments_data_herbicide <- OM_treatments_data[OM_treatments_data$treatment_category == "herbicide", ]
+OM_treatments_data_herbicide <- OM_treatments_data_herbicide[c(-1,-8, -10, -11, -12, -15, -16, -17)]
+
 OM_treatments_data_herbicide
 ```
+### Write Treatment csv
+```{r write-treatment-csv}
+write.csv(OM_treatments_data_fire, "data/OM_treatments_data_fire.csv", row.names = FALSE)
+write.csv(OM_treatments_data_mowing, "data/OM_treatments_data_mowing.csv", row.names = FALSE)
+write.csv(OM_treatments_data_herbicide, "data/OM_treatments_data_herbicide.csv", row.names = FALSE)
+```
+
 
 
 
