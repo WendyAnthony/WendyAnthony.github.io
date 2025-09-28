@@ -828,6 +828,7 @@ server <- function(input, output, session){
           "<b>Precipitation:</b> ", "<b>", grp_site_data$precip, " mm</b>",  "<br>",
           "<b>Temperature:</b> ", "<b>", grp_site_data$temp, " °C</b>"
           )) %>%
+      addLegend("bottomright", pal = pal, values = grp_site_data$Subregion, title = "Subregion") %>%
 
       setView(-121.799377, 47.801487, 6) %>%
       # add controls

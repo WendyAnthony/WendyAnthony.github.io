@@ -1454,7 +1454,6 @@ GRP_all_site_prec_violin
 
 ## Leaflet Site Map
 ```{r leaflet-grp-sites}
-colnames(GRP_Site_data)
 
 grp_site_data <- read.csv("data/GRP_all_site_data_sql.csv", header = TRUE, sep = ",")
 
@@ -1496,9 +1495,10 @@ GRP_site_map  <-  leaflet(grp_site_data) %>%
           "<b>Aspect:</b> ", "<b>", grp_site_data$aspect, " °</b>",  "<br>",
           "<b>Precipitation:</b> ", "<b>", grp_site_data$precip, " mm</b>",  "<br>",
           "<b>Temperature:</b> ", "<b>", grp_site_data$temp, " °C</b>"
-          )) %>%
+          ))  %>%
+      addLegend("bottomright", pal = pal, values = grp_site_data$Subregion, title = "Subregion") %>%
 
-      setView(-123.44799, 48.64919, 10) %>%
+      setView(-123.44799, 48.64919, 8) %>%
       # add controls
       #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
       addControl(title, position = "topright")
