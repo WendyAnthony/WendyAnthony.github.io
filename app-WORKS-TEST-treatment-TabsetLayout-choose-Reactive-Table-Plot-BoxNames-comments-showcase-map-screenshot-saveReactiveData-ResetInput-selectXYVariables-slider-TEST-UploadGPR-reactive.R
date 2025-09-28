@@ -91,7 +91,7 @@ ui <- fluidPage(
                  screenshotButton(label = "Input panel", id = "input_panel", filename = paste0("GRP-Screenshot-entirePage-inputPanel-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
                  # Footer
                  br(),br(),
-                 span(style = "font-size:10px; font-style:italic;", "Shiny App GRP Showcase Example created by Wendy Anthony, modified 2025-09-25"),
+                 span(style = "font-size:10px; font-style:italic;", "Shiny App GRP Showcase Example created by Wendy Anthony, modified 2025-09-28"),
 
     ),
     # mainPanel
@@ -873,13 +873,6 @@ server <- function(input, output, session){
            "<b>Temperature:</b> ", "<b>", grp_site_data$temp, " °C</b>"
            ))
    })
-
-
-  # Basic Plot works
-  # output$plot_xy <- renderPlot({
-  #   d <- data3()
-  #   plot(d$Exotic_species, d$Composite_Index)
-  # })
 
 
 # from app4-SelectAxisVariables-WORKS.R
