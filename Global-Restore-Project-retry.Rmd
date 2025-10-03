@@ -1,0 +1,1656 @@
+---
+title: "TEST Global-Restore-Project GOE DataViz"
+author: "Wendy Anthony"
+date: "2025/09/18"
+output:
+  html_document:
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+Modified 2025-09-28 09:39  
+Modified 2025-10-01 07:52  
+Modified 2025-10-02 17:00  
+Working 2025-10-02 18:50   
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load Libraries
+```{r load_libraries}
+library(shiny)
+library(tidyverse)
+library(plotly)
+library(htmlwidgets)
+```
+
+# Load Data
+- data from Nancy Shackelford at Global Restore Project https://globalrestoreproject.com/open_science/
+```{r load-data}
+OM_veg_1 <- read.csv("data/OM_vegResults1.csv", header = TRUE, sep = ",")
+OM_veg_2 <- read.csv("data/OM_vegResults2.csv", header = TRUE, sep = ",")
+OM_veg_3 <- read.csv("data/OM_vegResults3.csv", header = TRUE, sep = ",")
+OM_veg_4 <- read.csv("data/OM_vegResults4.csv", header = TRUE, sep = ",")
+OM_veg_5 <- read.csv("data/OM_vegResults5.csv", header = TRUE, sep = ",")
+OM_species_data <- read.csv("data/species_names-2024-Feb-28.csv", header = TRUE, sep = ",")
+OM_site_data <- read.csv("data/OM_projectdata-site.csv", header = TRUE, sep = ",")
+OM_treatments_data <- read.csv("data/OM_projectdata-treatments.csv", header = TRUE, sep = ",")
+```
+
+# Data Structure
+## OM_veg_1
+```{r structure-1}
+str(OM_veg_1)
+```
+
+## OM_veg_2
+
+### Structure OM_veg_2
+```{r structure-2}
+str(OM_veg_2)
+```
+### Unique species OM_veg_2
+<details><summary><b><i>Click open to see `structure of OM_veg_2`</i></b></summary><p>
+```{r unique-species-2}
+str(OM_veg_2)
+# unique(OM_veg_2$speciesid) # 315 unique species
+```
+</p></details>
+
+
+## OM_veg_3
+```{r structure-3}
+str(OM_veg_3)
+```
+
+## OM_veg_4
+```{r structure-4}
+str(OM_veg_4)
+```
+
+## OM_veg_5
+```{r structure-5}
+str(OM_veg_5)
+```
+## OM_veg_1_5 cbind()
+```{r cbind}
+OM_veg_1_5 <- rbind(OM_veg_1, OM_veg_2, OM_veg_3, OM_veg_4, OM_veg_5)
+```
+
+### convert OM_veg_1_5$speciesorigin to lower case
+```{r convert-lower-case-speciesorigin}
+colnames(OM_veg_1_5)
+unique(OM_veg_1_5$speciesorigin) #7 to #4
+# [1] "exotic"  "native"  "unknown" NA        "Native"  "Exotic" [7] "Unknown"
+OM_veg_1_5$speciesorigin <- tolower(OM_veg_1_5$speciesorigin)
+
+unique(OM_veg_1_5$speciesorigin) #7 to #4
+#  rename column
+colnames(OM_veg_1_5)
+
+str(OM_veg_1_5)
+```
+
+
+
+## Filter OM_veg_1_5
+```{r filter-OM_veg_1_5}
+OM_veg_1_5_t_1_19 <- OM_veg_1_5[OM_veg_1_5$treatmentid == "1_19", ] #131 ibs
+# OM_veg_1_5_t_1_19 <- OM_veg_1_5[OM_veg_1_5$treatmentid == "1_19" & OM_veg_1_5$tsr !=0, ] #131 ibs
+```
+
+
+### str OM_veg_1_5
+<details><summary><b><i>Click open to see `structure of OM_veg_1_5`</i></b></summary><p>
+```{r str-OM-veg-1-5}
+str(OM_veg_1_5)
+```
+</p></details>
+
+
+# sort unique species to df 
+```{r OM_veg_1_5-unique-species}
+
+colnames(OM_veg_1_5)
+OM_veg_1_5_sp_all_or <- subset(OM_veg_1_5, select = c("id", "DB", "treatmentid", "year", "tsr", "block", "replicate", "speciesid", "speciesorigin", "response", "responselevel", "responsemetric", "measurementscale", "measurementmetric"))
+OM_veg_1_5_sp_all_or_sort <- OM_veg_1_5_sp_all_or %>%
+                          arrange(speciesid)
+OM_veg_1_5_sp_or <- subset(OM_veg_1_5, select = c("speciesid", "speciesorigin"))
+OM_veg_1_5_sp_or_sort <- OM_veg_1_5_sp_or %>%
+                          arrange(speciesid)
+# str(OM_veg_1_5_sp_or_sort)
+
+# list of unique species values
+OM_veg_1_5_sp_or_sort_unique <- unique(OM_veg_1_5_sp_or_sort$speciesid)
+```
+
+## save csv
+```{r save-OM_veg_1_5_sp_or_sort-csv}
+# write.csv(OM_veg_1_5_sp_all_or_sort, "data/OM_veg_1_5_sp_all_or_sort.csv", row.names = FALSE)
+```
+
+
+
+## add speciesorigin to speciesid for OM_veg_2
+<details><summary><b><i>Click open to see `list of species and origin OM_veg_2`</i></b></summary><p>
+```{r}
+OM_veg_2
+```
+</p></details>
+
+### Order and sort OM_veg_2
+<details><summary><b><i>Click open to see `sort order of OM_veg_2`</i></b></summary><p>
+```{r order-sort-OM_veg_2}
+OM_veg_1_5_sp_or_sort
+```
+</p></details>
+
+### OM_veg_2 percent species changed from total species
+```{r percent-OM_veg_2}
+length(unique(OM_veg_2$speciesid)) # 316
+length(OM_veg_2$speciesid) #15,230 records
+length(OM_veg_1_5_sp_or_sort$speciesid) # 136364 records
+
+length(OM_veg_2$speciesid) / length(OM_veg_1_5_sp_or_sort$speciesid) # 11.17%
+```
+
+
+## OM_veg_1_5_sp_or_sort_unique
+<details><summary><b><i>Click open to see results for structure of `OM_veg_1_5_sp_or_sort_unique`</i></b></summary><p>
+- use `, echo=T, results='hide'` to hide long results output
+```{r OM_veg_1_5-unique-species_str}
+# OM_veg_1_5_sp_or_sort_unique
+```
+</p></details>
+
+
+## Add Species genus species & Form
+- Add new columns to OM_veg_1_5 from OM_species_data
+```{r species-genus-species-forms}
+str(OM_veg_1_5)
+str(OM_species_data)
+
+OM_species_data_subset <- OM_species_data[, c("speciesid", "genus", "species", "lifeform")]
+# OM_species_data_subset # 7310 observations
+
+merged_OM_veg_1_5_species_form_df <- merge(OM_veg_1_5, OM_species_data_subset, by = "speciesid", all.x = TRUE)
+#  merged_OM_veg_1_5_species_form_df
+```
+
+
+
+## OM_treatments_data
+```{r structure-OM-treatments-data}
+str(OM_treatments_data)
+colnames(OM_treatments_data)
+unique(OM_treatments_data$restorationtype)
+unique(OM_treatments_data$treatment_type)
+unique(OM_treatments_data$treatment_category)
+```
+
+### Treatments fire
+<details><summary><b><i>Click open to see `fire treatment data`</i></b></summary><p>
+
+```{r treatments-fire}
+
+OM_treatments_data_fire <- OM_treatments_data[OM_treatments_data$treatment_category == "fire", ]
+colnames(OM_treatments_data_fire)
+OM_treatments_data_fire <- OM_treatments_data_fire[c(-1,-8, -10, -11, -12, -15, -16, -17)]
+
+OM_treatments_data_fire
+```
+</p></details>
+
+### Treatments mowing
+<details><summary><b><i>Click open to see `mowing treatment data`</i></b></summary><p>
+```{r treatments-mowing}
+OM_treatments_data_mowing <- OM_treatments_data[OM_treatments_data$treatment_type == "mowing", ]
+OM_treatments_data_mowing <- OM_treatments_data_mowing[c(-1,-8, -10, -11, -12, -15, -16, -17)]
+OM_treatments_data_mowing
+```
+</p></details>
+
+### Treatments herbicide
+<details><summary><b><i>Click open to see `herbicide treatment data`</i></b></summary><p>
+```{r treatments-herbicide}
+OM_treatments_data_herbicide <- OM_treatments_data[OM_treatments_data$treatment_category == "herbicide", ]
+OM_treatments_data_herbicide <- OM_treatments_data_herbicide[c(-1,-8, -10, -11, -12, -15, -16, -17)]
+
+OM_treatments_data_herbicide
+```
+</p></details>
+### Write Treatment csv
+```{r write-treatment-csv}
+# write.csv(OM_treatments_data_fire, "data/OM_treatments_data_fire.csv", row.names = FALSE)
+# write.csv(OM_treatments_data_mowing, "data/OM_treatments_data_mowing.csv", row.names = FALSE)
+# write.csv(OM_treatments_data_herbicide, "data/OM_treatments_data_herbicide.csv", row.names = FALSE)
+```
+
+
+
+
+## OM_site_data
+```{r structure-OM_site_data}
+str(OM_site_data)
+```
+
+# Temp
+## Round Temp values to 1 decimal OM_site_data
+```{r round-temp}
+OM_site_data$temp
+OM_site_data$temp <- round(OM_site_data$temp, digits = 1)
+# OM_site_data$temp
+```
+
+## Mean Temp per site
+```{r temp-mean-site}
+site_temp_mean <- dplyr::distinct(OM_site_data) %>% group_by(Site) %>% summarise(temp = toString(temp))
+site_temp_mean
+```
+
+## Mean Temp per Subregion
+- this is listing all temp for each subregion
+```{r temp-mean-Subregion}
+subregion_temp <- dplyr::distinct(OM_site_data) %>% group_by(Subregion) %>% summarise(temp = toString(temp))
+subregion_temp
+str(subregion_temp) # temp is character thus can't take mean
+
+
+
+# DOESN"T WORK
+# mean(subregion_temp$temp)
+
+# subregion_temp$temp <- as.numeric(as.character(subregion_temp$temp))
+# subregion_temp$temp <- as.numeric(subregion_temp$temp)
+
+# subregion_temp_mean <- aggregate(Subregion~temp, subregion_temp, FUN=mean)
+
+# DOESN"T WORK
+# subregion_temp_mean <- aggregate(subregion_temp, by=list(subregion_temp$temp), FUN=mean)
+# subregion_temp_mean
+```
+
+
+# Precip
+## Round Precip values to 1 decimal OM_site_data
+```{r round-precip}
+OM_site_data$precip
+OM_site_data$precip <- round(OM_site_data$precip, digits = 1)
+# OM_site_data$temp
+```
+
+## Mean precip per site
+```{r precip-mean-site}
+site_precip_mean <- dplyr::distinct(OM_site_data) %>% group_by(Site) %>% summarise(precip = toString(precip))
+site_precip_mean
+```
+
+## Mean precip per Subregion
+- this is listing all temp for each subregion
+```{r precip-mean-Subregion}
+subregion_precip_mean <- dplyr::distinct(OM_site_data) %>% group_by(Subregion) %>% summarise(precip = toString(precip))
+subregion_precip_mean
+```
+
+
+
+# Aspect
+## Round Aspect values to 2 decimal OM_site_data
+```{r round-aspect}
+OM_site_data$aspect
+OM_site_data$aspect <- round(OM_site_data$aspect, digits = 2)
+# OM_site_data$aspect
+```
+
+# Sites: 
+## Choose Columns for Site `OM_site_data`
+Note: `OM_projectdata-site.csv` was showing 1709 of empty rows at end of df that shows as NA    
+- deleted empty rows from bottom of `OM_projectdata-2025-Ago-25.xlsx` before saving to csv file
+
+```{r site-columns-table}
+# OM_site_data <- read.csv("data/OM_projectdata-site.csv", header = TRUE, sep = ",")
+str(OM_site_data)
+colnames(OM_site_data)
+# [1] "DB"                 "siteid"             "projectid"         
+#  [4] "Site"               "Subregion"          "Subregion.an"      
+#  [7] "latitude"           "longitude"          "refecosystem"      
+# [10] "USDA.class"         "USDA.subclass"      "USDA.subsubclass"  
+# [13] "landcover"          "growingseasonstart" "growingseasonend"  
+# [16] "sand"               "silt"               "clay"              
+# [19] "soildescription"    "soildepth"          "elevation"         
+# [22] "aspect"             "slope"              "precipc"           
+# [25] "tempc"              "aridity"            "temp"              
+# [28] "drange"             "iso"                "tseason"           
+# [31] "mtwarm"             "mtcold"             "trange"            
+# [34] "twetq"              "tdryq"              "twarmq"            
+# [37] "tcoldq"             "precip"             "pwet"              
+# [40] "pdry"               "pseason"            "pwetq"             
+# [43] "pdryq"              "pwarmq"             "pcoldq"            
+# [46] "disturbance"        "minetype"           "ogtype"            
+# [49] "invasivespe"        "invasiveform" 
+# Removes to leave chosen ones to make new dataframe
+# keep [2] "siteid" [3] "projectid" [4]"sitename" [5] "Subregion" [6] "latitude" [7] "longitude" [8] "refecosystem" [11] "landcover" [19] "elevation" [20] "aspect" [21]  "slope" [25] "tempc"  [36] "precip" 
+GRP_Site_data <- OM_site_data[-c(6,12,14:21,24:26,28:37,39:50)]
+```
+## GRP_Site_data
+<details><summary><b><i>Click open to see `GRP_Site_data`</i></b></summary><p>
+```{r}
+GRP_Site_data
+```
+</p></details>
+
+
+
+
+### Sites: Save chosen columns as csv to input into Shiny drop down list of Sites
+```{r save-sites-csv}
+write.csv(GRP_Site_data, "data/GRP_Site_data.csv", row.names = FALSE)
+```
+
+
+
+
+# SQL Create Database
+```{r libraries-created-db}
+# https://www.youtube.com/watch?v=c3e8m3K0eC4
+# 
+# install.packages("RSQL")
+# install.packages("RSQLite")
+# install.packages("tidyverse") # v.1.3.2 to 2.0.0
+library(RSQL)
+library(RSQLite)
+library(tidyverse)
+# tidyverse_packages(include_self = TRUE)
+```
+
+# Sql GRP Database
+## create GRP database and connection
+- builds empty db in R memory  
+- ## ## Warning message: call dbDisconnect() when finished working with a connection to avoid R memory overload and crash `dbDisconnect(con) `
+```{r create-database-connection-grp}
+# builds empty db in R memory
+con <- dbConnect(drv = RSQLite::SQLite(),
+                 dbname = ":memory:")
+dbListTables(con)
+
+## Warning message: call dbDisconnect() when finished working with a connection to avoid R memory overload and crashes e.g. after last query
+# dbDisconnect(con) 
+```
+
+## Populate GRP tables
+- dbWriteTable
+```{r dbWriteTable}
+# Load OM_veg_1_5 table
+dbWriteTable(conn = con,
+             name = "OM_veg_1_5",
+             value = OM_veg_1_5)
+str(OM_veg_1_5)
+
+dbWriteTable(conn = con,
+             name = "OM_species_data",
+             value = OM_species_data)
+str(OM_species_data)
+
+# Load OM_site_data table
+dbWriteTable(conn = con,
+             name = "OM_site_data",
+             value = OM_site_data)
+str(OM_site_data)
+
+
+# Load OM_treatments_data table
+dbWriteTable(conn = con,
+             name = "OM_treatments_data",
+             value = OM_treatments_data)
+str(OM_treatments_data)
+
+dbListTables(con)
+```
+
+### Preview tables
+```{r preview-tables}
+tbl(src = con, "OM_site_data")
+tbl(src = con, "OM_treatments_data")
+tbl(src = con, "OM_species_data")
+tbl(src = con, "OM_veg_1_5")
+```
+
+
+## SQL Query for db
+
+
+### 1-Results query one tables
+```{sql connection = con, output.var = "results_projid"}
+SELECT *
+FROM OM_site_data
+WHERE projectid = 1
+```
+
+#### View query results
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid}
+results_projid
+```
+</p></details>
+
+### 2-Results query two tables
+```{sql connection = con, output.var = "results_projid_2"}
+SELECT s.siteid, t.treatmentid, s.Site
+FROM OM_site_data AS s 
+INNER JOIN OM_treatments_data AS t ON s.siteid = t.siteid
+WHERE projectid = 1
+```
+
+#### View query results
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_2}
+results_projid_2
+```
+</p></details>
+
+### 3-Results query three tables - one species & 1 year
+- SELECT DISTINCT for no duplicates
+```{sql connection = con, output.var = "results_projid_3"}
+SELECT DISTINCT s.siteid, t.treatmentid, s.Site, v.year, v.speciesid
+FROM OM_site_data AS s 
+INNER JOIN OM_treatments_data AS t ON s.siteid = t.siteid
+INNER JOIN OM_veg_1_5 AS v ON t.treatmentid = v.treatmentid
+WHERE speciesid = "Ant_odo" AND year = 2008
+```
+
+#### View query results
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_3}
+results_projid_3
+```
+</p></details>
+
+### 3-Results query three tables - one Site
+- SELECT DISTINCT for no duplicates
+```{sql connection = con, output.var = "results_projid_4"}
+SELECT DISTINCT s.siteid, s.Site, s.Subregion, t.treatmentid, v.year, v.speciesid, v.tsr, v.replicate, v.response
+FROM OM_site_data AS s 
+INNER JOIN OM_treatments_data AS t ON s.siteid = t.siteid
+INNER JOIN OM_veg_1_5 AS v ON t.treatmentid = v.treatmentid
+WHERE Site = "Christmas Hill"
+```
+
+#### View query results
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_4}
+results_projid_4
+```
+</p></details>
+
+### 3-Results query three tables - all Sites
+- SELECT DISTINCT for no duplicates
+- should be 196 sites - not showing ones with same Sitename but different siteid
+- include t.siteid to see that the correspondence works
+- should be 196 sites (query results 149)
+- WHERE s.DB = "OM"
+```{sql connection = con, output.var = "results_projid_5"}
+SELECT DISTINCT s.siteid, s.projectid, s.Site, s.Subregion, s.temp, s.precip, s.latitude, s.longitude, s.refecosystem, s.landcover, s.elevation, s.aspect
+FROM OM_site_data AS s 
+INNER JOIN OM_treatments_data AS t ON s.siteid = t.siteid
+INNER JOIN OM_veg_1_5 AS v ON t.treatmentid = v.treatmentid
+WHERE s.siteid BETWEEN 1 AND 196
+```
+
+#### View query results
+- this doesn't have all sites, and some duplicate siteid  
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_5}
+results_projid_5
+```
+</p></details>
+
+#### Save query as csv file with all Site inof
+```{r create-csv-results_projid_5}
+# write.csv(results_projid_5, "data/GRP_all_site_data.csv", row.names = FALSE)
+```
+
+
+### 3-Results query three tables - all Sites 
+```{sql connection = con, output.var = "OM_all_sites"}
+SELECT s.siteid, s.projectid, s.Site, s.Subregion, s.latitude, s.longitude, s.refecosystem, s.landcover, s.elevation, s.aspect, s.slope, s.temp, s.precip, s.disturbance
+FROM OM_site_data AS s 
+WHERE s.DB = "OM"
+```
+
+#### View query results
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_6}
+OM_all_sites
+length(unique(OM_all_sites$Site))
+```
+</p></details>
+
+#### Save query as csv file with all 206 Sites
+```{r create-csv-OM_all_sites}
+# write.csv(OM_all_sites, "data/GRP_all_site_data_sql.csv", row.names = FALSE)
+```
+
+
+
+### 7 Query Results Treatment + Sites
+- dataframe *add Site & Subregion* to *treatment and species df* 
+- `results_projid_7` R observation rows: 1,961,307  
+- Excel maximum rows 1,048,576  
+```{sql connection = con, output.var = "results_projid_7"}
+SELECT s.siteid, s.projectid, s.Site, s.Subregion, t.treatmentid, t.restorationtype, t.tsr_start_year, t.trt_year, t.treatmentmonth, t.treatment_category, t.treatment_type
+FROM OM_treatments_data AS t 
+INNER JOIN OM_site_data AS s ON t.siteid = s.siteid
+INNER JOIN OM_veg_1_5 AS v ON t.treatmentid = v.treatmentid
+WHERE s.DB = "OM"
+```
+
+#### View query results
+- Query Results Treatment + Sites
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_7}
+results_projid_7
+```
+</p></details>
+
+#### Save query as csv file 
+- Query Results Treatment + Sites
+- `results_projid_7` R observation rows: 1,961,307  
+- Excel maximum rows 1,048,576   ... too large to view in Excel
+```{r create-csv-results_projid_7}
+# write.csv(results_projid_7, "data/GRP-Site-Treatment-SQL.csv", row.names = FALSE)
+```
+
+### 8 Query Results Treatment + Sites
+- dataframe *add Site & Subregion* to *treatment and species df* 
+- `results_projid_7` R observation rows: 1,961,307  
+- Excel maximum rows 1,048,576 
+- WHERE s.Subregion = "US-GI" >>> change Subregion and save csv for each  
+- US-GI, US-Oreg, US-Wash, C-GI, C-EVI, C-EVII, C-SP
+- add year from v.year as some treatments done include year start end  
+
+```{sql connection = con, output.var = "results_projid_8"}
+SELECT s.siteid, s.projectid, s.Site, s.Subregion, t.treatmentid, t.restorationtype, t.tsr_start_year, t.trt_year, t.treatmentmonth, t.treatment_category, t.treatment_type
+FROM OM_treatments_data AS t 
+INNER JOIN OM_site_data AS s ON t.siteid = s.siteid
+INNER JOIN OM_veg_1_5 AS v ON t.treatmentid = v.treatmentid
+WHERE s.Subregion = "C-SP"
+```
+
+#### View query results
+- Query Results Treatment + Sites
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_8}
+results_projid_8
+```
+</p></details>
+
+#### Save query as csv file 
+- Query Results Treatment + Sites
+```{r create-csv-results_projid_8}
+# write.csv(results_projid_8, "data/GRP-Site-Treatment-SQL-C-SP.csv", row.names = FALSE)
+```
+
+
+### 9 Query Results Species + Sites 
+- dataframe *add Site & Subregion* to *treatment and species df* 
+- `results_projid_7` R observation rows: 1,961,307  
+- Excel maximum rows 1,048,576 
+- WHERE s.Subregion = "US-GI" >>> change Subregion and save csv for each  
+- US-GI, US-Oreg, US-Wash, C-GI, C-EVI, C-EVII, C-SP
+
+```{sql connection = con, output.var = "results_projid_9"}
+SELECT s.siteid, s.projectid, s.Site, s.Subregion, v.treatmentid, v.year AS "v_year_measure", v.replicate, v.speciesid, v.speciesorigin, v.response, v.responselevel, v.responsemetric, v.measurementscale, v.measurementmetric
+FROM OM_veg_1_5 AS v
+INNER JOIN OM_site_data AS s ON t.siteid = s.siteid
+INNER JOIN OM_treatments_data AS t  ON v.treatmentid = t.treatmentid
+WHERE s.Subregion = "US-Wash"
+```
+
+#### View query results
+- Query Results Treatment + Sites
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-projid_9}
+results_projid_9
+```
+</p></details>
+
+#### Save query as csv file 
+- Query Results Treatment + Sites
+```{r create-csv-results_projid_9}
+# write.csv(results_projid_9, "data/GRP-Site-SpeciesCover-SQL-US-Wash.csv", row.names = FALSE)
+```
+
+### 10 Query Results Species + Sites 
+- dataframe *add Site & Subregion* to *treatment and species df* 
+- `results_projid_7` R observation rows: 1,961,307  
+- Excel maximum rows 1,048,576 
+- WHERE s.Subregion = "US-GI" >>> change Subregion and save csv for each  
+- US-GI, US-Oreg, US-Wash, C-GI, C-EVI, C-EVII, C-SP
+
+```{sql connection = con, output.var = "site_species_C_GI"}
+SELECT s.siteid, s.projectid, s.Site, s.Subregion, v.treatmentid, v.year AS "v_year_measure", v.replicate, v.speciesid, v.speciesorigin, v.response, v.responselevel, v.responsemetric, v.measurementscale, v.measurementmetric
+FROM OM_veg_1_5 AS v
+INNER JOIN OM_site_data AS s ON t.siteid = s.siteid
+INNER JOIN OM_treatments_data AS t  ON v.treatmentid = t.treatmentid
+WHERE s.Subregion = "C-GI"
+```
+
+#### View query results
+- Query Results Treatment + Sites
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-site-species-C-GI}
+site_species_C_GI
+```
+</p></details>
+
+#### Save query as csv file 
+- Query Results Treatment + Sites
+```{r create-csv-results-site-species-C-GI}
+# write.csv(site_species_C_GI, "data/GRP-Site-SpeciesCover-SQL-C-GI.csv", row.names = FALSE)
+```
+
+
+### 11 Query Results Species + Sites 
+- dataframe *add Site & Subregion* to *treatment and species df* 
+- `results_projid_7` R observation rows: 1,961,307  
+- Excel maximum rows 1,048,576 
+- WHERE s.Subregion = "US-GI" >>> change Subregion and save csv for each  
+- US-GI, US-Oreg, US-Wash, C-GI, C-EVI, C-EVII, C-SP
+
+```{sql connection = con, output.var = "site_species_C_SP"}
+SELECT s.siteid, s.projectid, s.Site, s.Subregion, v.treatmentid, v.year AS "v_year_measure", v.replicate, v.speciesid, v.speciesorigin, v.response, v.responselevel, v.responsemetric, v.measurementscale, v.measurementmetric
+FROM OM_veg_1_5 AS v
+INNER JOIN OM_site_data AS s ON t.siteid = s.siteid
+INNER JOIN OM_treatments_data AS t  ON v.treatmentid = t.treatmentid
+WHERE s.Subregion = "C-SP"
+```
+
+#### View query results
+- Query Results Treatment + Sites
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-site-species-C-SP}
+site_species_C_SP
+```
+</p></details>
+
+#### Save query as csv file 
+- Query Results Treatment + Sites
+```{r create-csv-results-site-species-C-SP}
+# write.csv(site_species_C_SP, "data/GRP-Site-SpeciesCover-SQL-C-SP.csv", row.names = FALSE)
+```
+
+
+
+### 12a Query Add to `OM_veg_1_5` Results All Species + Sites  not all sites???
+- dataframe *add Site & Subregion* to *treatment and species df* 
+- `results_projid_7` R observation rows: 1,961,307  
+- Excel maximum rows 1,048,576 
+- WHERE s.Subregion = "US-GI" >>> change Subregion and save csv for each  
+- US-GI, US-Oreg, US-Wash, C-GI, C-EVI, C-EVII, C-SP
+
+
+```{sql connection = con, output.var = "site_species_all"}
+SELECT s.siteid, s.projectid, s.Site, s.Subregion, v.treatmentid, t.tsr_start_year, t.trt_year, v.year AS "v_year_measure", v.replicate, v.speciesid, v.speciesorigin, v.response, v.responselevel, v.responsemetric, v.measurementscale, v.measurementmetric, f.genus, f.species, f.lifeform
+FROM OM_veg_1_5 AS v
+INNER JOIN OM_site_data AS s ON t.siteid = s.siteid
+INNER JOIN OM_treatments_data AS t  ON v.treatmentid = t.treatmentid
+INNER JOIN OM_species_data AS f ON v.speciesid = f.speciesid
+WHERE v.DB = "OM"
+```
+
+#### View query results
+- Query Results Treatment + Sites
+- NOT ALL SITES !!
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-site-species-all}
+site_species_all
+length(unique(site_species_all$siteid)) #139 s/b 206
+```
+</p></details>
+
+#### Save query as csv file 
+- Query Results Treatment + Sites >> 177MB filesize!!
+- NOT ALL SITES !!
+```{r create-csv-results-site-species-all}
+# write.csv(site_species_all, "data/GRP-Site-SpeciesCover-SQL-all.csv", row.names = FALSE)
+```
+
+
+
+### 13 Query Results Species Specific Sites Mt. Tolmie
+- dataframe *add Site & Subregion* to *treatment and species df* 
+- `results_projid_7` R observation rows: 1,961,307  
+- Excel maximum rows 1,048,576 
+- WHERE s.Subregion = "US-GI" >>> change Subregion and save csv for each  
+- US-GI, US-Oreg, US-Wash, C-GI, C-EVI, C-EVII, C-SP
+
+```{sql connection = con, output.var = "species_site_62"}
+SELECT s.siteid, s.projectid, s.Site, s.Subregion, v.treatmentid, v.year AS "v_year_measure", v.replicate, v.speciesid, v.speciesorigin, v.response, v.responselevel, v.responsemetric, v.measurementscale, v.measurementmetric
+FROM OM_veg_1_5 AS v
+INNER JOIN OM_site_data AS s ON t.siteid = s.siteid
+INNER JOIN OM_treatments_data AS t  ON v.treatmentid = t.treatmentid
+WHERE s.siteid = 62
+```
+
+#### View query results
+- Query Results Treatment + Sites
+
+<details><summary><b><i>Click open to see R code for `query results`</i></b></summary><p>
+```{r preview-results-species-siteid-62}
+species_site_62
+```
+</p></details>
+
+#### Save query as csv file 
+- Query Results Treatment + Sites
+```{r create-csv-results-species-siteid-62}
+# write.csv(species_site_62, "data/GRP-Site-SpeciesCover-SQL-species-site-62.csv", row.names = FALSE)
+```
+
+
+# dbDisconnect(con)
+## Warning message:
+```call dbDisconnect() when finished working with a connection``` 
+
+```{r}
+#con <- dbConnect(RSQLite::SQLite(), ":memory:")
+dbDisconnect(con)
+```
+
+
+
+
+# Mt Tolmie 
+#### Mt Tolmie Species Data
+```{r mt-tolmie-species-data}
+colnames(species_site_62)
+str(species_site_62)
+species_site_62_native <- species_site_62[species_site_62$speciesorigin == "native", ]
+species_site_62_exotic <- species_site_62[species_site_62$speciesorigin == "exotic", ]
+
+species_site_62_native_pres <- subset(species_site_62, (speciesorigin == 'native' & responsemetric == "presence"))
+
+species_site_62_native_cov <- subset(species_site_62, (speciesorigin == 'native' & responsemetric == "cover"))
+
+species_site_62_exotic_pres <- subset(species_site_62, (speciesorigin == 'exotic' & responsemetric == "presence"))
+
+species_site_62_exotic_cov <- subset(species_site_62, (speciesorigin == 'exotic' & responsemetric == "cover"))
+
+```
+
+#### Mt Tolmie Cover Data
+```{r mt-tolmie-cover-data}
+species_site_62_by_replicate <- species_site_62 %>% group_by(replicate)
+```
+
+#### Mt Tolmie number Native & Exotic Species
+```{r mt-tolmie-native}
+nat_num_62 <- length(species_site_62_native_pres$speciesid) #45
+nat_num_62
+exo_num_62 <- length(species_site_62_exotic_pres$speciesid) #71
+exo_num_62
+
+tot_sp_62 <- nat_num_62 + exo_num_62
+tot_sp_62
+
+# percentage native species to total 
+nat_num_62/tot_sp_62 * 100 # 38.7931
+
+# percentage exotic species to total 
+exo_num_62/tot_sp_62 * 100 # 61.2069
+
+```
+#### Mt Tolmie Exotic Species
+```{r mt-tolmie-exotic}
+species_site_62_by_replicate <- species_site_62 %>% group_by(replicate)
+```
+
+#### Save queried as csv file 
+- Query Mt Tolmie species cover data
+```{r create-csv-results-mt-tolmie-cover-data}
+# write.csv(species_site_62_by_replicate, "data/GRP-Site-SpeciesCover-SQL-species-site-62-cover-data.csv", row.names = FALSE)
+
+# write.csv(species_site_62_native_pres, "data/GRP-Site-SpeciesCover-SQL-species-site-62-cover-data-native-pres.csv", row.names = FALSE)
+# write.csv(species_site_62_native_cov, "data/GRP-Site-SpeciesCover-SQL-species-site-62-cover-data-native-cov.csv", row.names = FALSE)
+# write.csv(species_site_62_exotic_pres, "data/GRP-Site-SpeciesCover-SQL-species-site-62-cover-data-exotic-pres.csv", row.names = FALSE)
+# write.csv(species_site_62_exotic_cov, "data/GRP-Site-SpeciesCover-SQL-species-site-62-cover-data-exotic-cov.csv", row.names = FALSE)
+```
+
+
+# Species Richness Calculation
+- total number of species per Site
+
+## Unique Sites
+```{r unique}
+length(unique(site_species_all$siteid))
+```
+
+## Calculate Species Richness 
+```{r calculate-species-richness}
+length(unique(site_species_all$speciesid)) # 626 unique species
+
+site_species_all_native <- subset(site_species_all, speciesorigin == 'native')
+site_species_all_native
+
+site_species_all_exotic <- subset(site_species_all, speciesorigin == 'exotic')
+site_species_all_exotic
+ 
+
+# not enough sites
+species_unique_site <- aggregate(speciesid ~ Site, data = site_species_all, FUN = function(x) length(unique(x)))
+species_unique_site
+
+# this would be better with Subregion added for better plotting
+## Logic to add Subregion
+# if site_species_all$Site  == species_unique_site$Site 
+# then site_species_all$Subregion == species_unique_site$Subregion
+
+# change column name to species richness
+colnames(species_unique_site)
+colnames(species_unique_site)[2] <- 'species_richness_all'
+
+species_unique_site_exotic <- aggregate(speciesid ~ Site, data = site_species_all_exotic, FUN = function(x) length(unique(x)))
+species_unique_site_exotic
+
+colnames(species_unique_site_exotic)
+colnames(species_unique_site_exotic)[2] <- 'species_richness_ex'
+
+species_unique_site_native <- aggregate(speciesid ~ Site, data = site_species_all_native, FUN = function(x) length(unique(x)))
+species_unique_site_native
+
+colnames(species_unique_site_native)
+colnames(species_unique_site_native)[2] <- 'species_richness_nat'
+
+
+## should this be merge or cbind
+# rounds2_final <- cbind(rounds2,rounds2_lower)
+# rename columns
+# Merge
+species_unique_site_sp_rich <- merge(species_unique_site, species_unique_site_exotic, by = "Site")
+
+species_unique_site_sp_rich <- merge(species_unique_site_sp_rich, species_unique_site_native, by = "Site")
+
+
+# Merge with GRP_Site_data
+# merged_df <- merge(df1, df2, by = "common_column_name") 
+#GRP_Site_data_sp_rich <- merge(species_unique_site_sp_rich, GRP_Site_data, by = "Site")
+GRP_Site_data <- merge(species_unique_site_sp_rich, GRP_Site_data, by = "Site")
+
+```
+
+# Functions
+## Function Site All Species
+`fun_site_species()`
+```{r function-site-all-species}
+fun_site_species <- function (fSite) {
+subset(site_species_all, Site == fSite)  
+}
+length(unique(site_species_all$Site)) #148
+```
+
+## Function Subregion All Species
+`fun_subreg_species()`
+```{r function-site-all-species-subregion}
+fun_subreg_species <- function (fSubregion) {
+subset(site_species_all, Subregion == fSubregion)  
+}
+```
+
+### Individual Site Species
+#### Albert Head Individual Site Species
+```{r one-site-species-fun}
+species_AlbertHead <- fun_site_species("Albert Head")
+```
+
+##### Data explore
+```{r species-AlbertHead-explore}
+str(species_AlbertHead)
+```
+
+#### Plot Albert Head
+```{r plot-albert-head}
+str(species_AlbertHead)
+colnames(species_AlbertHead)
+
+length(unique(species_AlbertHead$speciesid)) # 74 unique species 
+
+species_AlbertHead_native <- subset(species_AlbertHead, speciesorigin == 'native')
+species_AlbertHead_native
+
+species_AlbertHead_exotic <- subset(species_AlbertHead, speciesorigin == 'exotic')
+species_AlbertHead_exotic
+ 
+
+species_AlbertHead_plot <- ggplot(species_AlbertHead, 
+                      # text = paste("Site:", Site), 
+                    aes(x = v_year_measure, y = speciesid)) +
+  # , color = speciesorigin
+                    geom_point(shape = 20, size = 1) +
+                    scale_x_continuous(breaks = c(2006, 2008)) +
+                    geom_jitter() +
+    #scale_x_continuous(limits = c(500, 2000)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_color_brewer(palette = "Accent") +
+  
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="none") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Albert Head Species Data",
+                         subtitle = "GRP",
+                      caption = "Chart by Wendy Anthony \n 2025-09-28",
+                      x = "Year", y = "Species")
+
+ species_AlbertHead_plot
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), species_AlbertHead_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Albert Head Species Data<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Year'),
+        yaxis = list(title = 'Species'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-28"
+              # no legend
+             #               ,
+             # showarrow = F, xref='paper', yref='paper',
+             # xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             # font = list(size=8, color="grey")
+             )
+        )
+
+```
+
+
+### Individual Subregion Species
+`fun_subreg_species()`
+```{r one-subregion-species-fun}
+species_C_GI <- fun_subreg_species("C-GI")
+```
+
+
+
+
+
+# Species Richness Plot 
+- only 153 
+```{r template-ggplot-geom_point-plotly-species-richness}
+colnames(GRP_Site_data)
+GRP_Site_data_plot <- ggplot(GRP_Site_data, 
+                      # text = paste("Site:", Site), 
+                    aes(x = factor(Site), y = species_richness_all, color = Subregion)) +
+                    geom_point(shape = 20, size = 1) +
+                    #scale_y_continuous(breaks = c(2006, 2008)) +
+                    geom_jitter() +
+    #scale_x_continuous(limits = c(500, 2000)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_color_brewer(palette = "Accent") +
+  
+                    theme_minimal() + #get rid of grey background and tick marks
+#                    theme(legend.position="none") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Species Richness",
+#                         subtitle = "(First Treatment 2005)",
+                      caption = "Chart by Wendy Anthony \n 2025-10-02",
+                      x = "Site", y = "Treatment Year")
+
+# OM_treatments_data_fire_seed_plot
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "color"), GRP_Site_data_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Species Richness by Site<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Site'),
+        yaxis = list(title = 'Species Richness'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-02"
+              # no legend
+                           ,
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey")
+             )
+        )
+
+```
+
+
+
+
+# For Loop
+## for loop prep
+- create a for loop for separate Site df  
+
+<details><summary><b><i>Click open to see `data prep`</i></b></summary><p>
+```{r for-loop-prep}
+site_species_C_SP
+length(site_species_C_SP$Site)
+length(OM_all_sites$Site) # 206
+length(unique(OM_all_sites$Subregion)) # 7
+
+colnames(OM_all_sites)
+sites_C_SP <- subset(OM_all_sites, Subregion == "C-SP")
+# same as 
+sites_C_SP <- OM_all_sites[OM_all_sites$Subregion == "C-SP", ]
+sites_C_SP
+sites_C_SP$Site
+
+unique(sites_C_SP$Site) # 86 s/b 88
+
+# sort alphabelticaly
+sites_C_SP_sorted <- sites_C_SP[order(sites_C_SP$Site), ]
+sites_C_SP_sorted
+
+site_species_C_SP_sorted <- site_species_C_SP[order(site_species_C_SP$Site), ]
+site_species_C_SP_sorted
+```
+</p></details>
+
+##  Separate df for each Site of C_SP
+<details><summary><b><i>Click open to see `for loop for separate sites`</i></b></summary><p>
+```{r site-df-C_SP}
+
+# sites_C_SP_sorted
+site_species_C_SP_sorted
+
+# create list of data frames for each C_SP Site
+site_species_C_SP_df <- split( site_species_C_SP_sorted, site_species_C_SP_sorted$Site )
+site_species_C_SP_MtTolmie <- site_species_C_SP_df$`Mt. Tolmie`
+
+str(site_species_C_SP_df)
+
+### WORKS !!!
+# for (i in 1:length(sites_df)) {
+#   assign(paste0("sites_df", i), as.data.frame(sites_df[[i]]))
+# }
+for (i in 1:length(site_species_C_SP_df)) {
+  assign(paste0("site_species_C_SP_df", i, sep="_"), as.data.frame(site_species_C_SP_df[[i]]))
+}
+
+# sites_df[["Albert Head"]][["Site"]]
+
+# EXTRACT LIST OF names of list dataframes
+sites_df_namelist <- names(site_species_C_SP_df) # 76 
+sites_df_namelist
+
+
+# desired name derived from first 
+desired_name_value <- site_species_C_SP_df$Site[1] # Taking the first value as an example
+# this works to rename 1 df
+site_species_C_SP_df_test <- site_species_C_SP_df
+assign(paste("site_species_C_SP_df", desired_name_value, sep = "_"), site_species_C_SP_df_test)
+
+```
+
+</p></details>
+
+### Rename dataframes
+?? how can I do a for loop to rename all these  
+??? Take care ... I crashed and corrupted this files predecessor after t
+```{r rename-df}
+
+# site_species_C_SP_df1_ <- assign(paste("site_species_C_SP_df1_", site_species_C_SP_df1_$Site, sep = ""), site_species_C_SP_df1_)
+# 
+# site_species_C_SP_df2_ <- assign(paste("site_species_C_SP_df2_", site_species_C_SP_df2_$Site, sep = ""), site_species_C_SP_df2_)
+# 
+# site_species_C_SP_df10_ <- assign(paste("site_species_C_SP_df10_", site_species_C_SP_df10_$Site, sep = ""), site_species_C_SP_df10_)
+```
+
+
+
+# Plots
+
+
+
+
+## Treatments 
+### Treatments Fire & Seeding
+
+```{r treatments-fire-seed-plot}
+colnames(OM_treatments_data_fire)
+OM_treatments_data_fire_seed <- OM_treatments_data_fire[OM_treatments_data_fire$restorationtype == "seeding", ] 
+unique(OM_treatments_data_fire_seed$siteid) #10 129:138
+
+# display.brewer.all(n=10, exact.n=FALSE)
+
+OM_treatments_data_fire_seed_plot <- ggplot(OM_treatments_data_fire_seed, 
+                      # text = paste("Site:", Site), 
+                    aes(x = factor(siteid), y = trt_year, color = treatmentid)) +
+                    geom_point(shape = 20, size = 1) +
+                    scale_y_continuous(breaks = c(2006, 2008)) +
+                    geom_jitter() +
+    #scale_x_continuous(limits = c(500, 2000)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_color_brewer(palette = "Accent") +
+  
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="none") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Treatments with Fire and Seeding",
+                         subtitle = "(First Treatment 2005)",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      x = "Site", y = "Treatment Year")
+
+OM_treatments_data_fire_seed_plot
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), OM_treatments_data_fire_seed_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Treatments with Fire and Seeding (First Treatment 2005)<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Site'),
+        yaxis = list(title = 'Treatment Year'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25"
+              # no legend
+             #               ,
+             # showarrow = F, xref='paper', yref='paper',
+             # xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             # font = list(size=8, color="grey")
+             )
+        )
+
+```
+
+
+### Treatments Mowing & Seeding
+
+```{r treatments-mowing-seed-plot}
+#colnames(OM_treatments_data_mowing)
+#unique(OM_treatments_data_mowing$trt_year) 
+# 2005 2006 2007 2008 2010 2011 2012 2013 2014 2015 2016 2009 2017 2018 2019 2020 2021 2022
+#unique(OM_treatments_data_mowing$tsr_start_year) # 2005 2010 2009
+
+OM_treatments_data_mowing_seed <- OM_treatments_data_mowing[OM_treatments_data_mowing$restorationtype == "seeding", ] 
+unique(OM_treatments_data_mowing_seed$siteid) #10 129:138
+
+# display.brewer.all(n=10, exact.n=FALSE)
+
+OM_treatments_data_mowing_seed_plot <- ggplot(OM_treatments_data_mowing_seed, 
+                      # text = paste("Site:", Site), 
+                      
+                    aes(x = factor(siteid), y = trt_year, color = treatmentid)) +
+                    geom_point(shape = 20, size = 1) +
+                    geom_jitter() +
+#    scale_x_continuous(limits = c(129, 138)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_color_brewer(palette = "Accent") +
+  
+                    theme_minimal() + #get rid of grey background and tick marks
+                    #theme(legend.position="bottom") +
+                     theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Treatments with Mowing and Seeding",
+                         subtitle = "(First Treatment 2005)",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      x = "Site", y = "Treatment Year")
+
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), OM_treatments_data_mowing_seed_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Treatments with Mowing and Seeding (First Treatment 2005)<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Site'),
+        yaxis = list(title = 'Treatment Year'),
+        
+        
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25"              # no legend
+             #               ,
+             # showarrow = F, xref='paper', yref='paper',
+             # xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             # font = list(size=8, color="grey")
+             )
+        ) 
+
+```
+
+
+### Treatments Herbicide
+
+```{r treatments-herbicide-plot}
+#colnames(OM_treatments_data_mowing)
+#unique(OM_treatments_data_mowing$trt_year) 
+# 2005 2006 2007 2008 2010 2011 2012 2013 2014 2015 2016 2009 2017 2018 2019 2020 2021 2022
+#unique(OM_treatments_data_mowing$tsr_start_year) # 2005 2010 2009
+
+OM_treatments_data_herbicide_seed <- OM_treatments_data_herbicide[OM_treatments_data_herbicide$restorationtype == "seeding", ] 
+unique(OM_treatments_data_herbicide_seed$siteid) #10 129:138
+
+OM_treatments_data_herbicide_seed_plot <- ggplot(OM_treatments_data_herbicide_seed, 
+                      # text = paste("Site:", Site), 
+                      
+                    aes(x = factor(siteid), y = trt_year, color = treatmentid)) +
+                    geom_point(shape = 20, size = 1) +
+                    geom_jitter() +
+#    scale_x_continuous(limits = c(129, 138)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_color_brewer(palette = "Accent") +
+  
+                    theme_minimal() + #get rid of grey background and tick marks
+                    #theme(legend.position="bottom") +
+                     theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Treatments with Herbicide and Seeding",
+                         subtitle = "(First Treatment 2005)",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      x = "Site", y = "Treatment Year")
+
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), OM_treatments_data_mowing_seed_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Treatments with Herbicide and Seeding (First Treatment 2005)<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Site'),
+        yaxis = list(title = 'Treatment Year'),
+        
+        
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25"              # no legend
+             #               ,
+             # showarrow = F, xref='paper', yref='paper',
+             # xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             # font = list(size=8, color="grey")
+             )
+        ) 
+
+```
+
+## Template ggplot geom_point with plotly
+```{r template-ggplot-geom_point-plotly}
+OM_treatments_data_fire_seed_plot <- ggplot(OM_treatments_data_fire_seed, 
+                      # text = paste("Site:", Site), 
+                    aes(x = factor(siteid), y = trt_year, color = treatmentid)) +
+                    geom_point(shape = 20, size = 1) +
+                    scale_y_continuous(breaks = c(2006, 2008)) +
+                    geom_jitter() +
+    #scale_x_continuous(limits = c(500, 2000)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_color_brewer(palette = "Accent") +
+  
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="none") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Treatments with Fire and Seeding",
+                         subtitle = "(First Treatment 2005)",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      x = "Site", y = "Treatment Year")
+
+# OM_treatments_data_fire_seed_plot
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), OM_treatments_data_fire_seed_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Treatments with Fire and Seeding (First Treatment 2005)<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Site'),
+        yaxis = list(title = 'Treatment Year'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25"
+              # no legend
+             #               ,
+             # showarrow = F, xref='paper', yref='paper',
+             # xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             # font = list(size=8, color="grey")
+             )
+        )
+
+```
+
+# Sites
+## Sites 129-138
+- these sites had treatment done  
+
+<details><summary><b><i>Click open to see `species data for sites 129-138`</i></b></summary><p>
+```{r sites-species-129-138}
+# [1] 128 129 134 135 136 137 138 130 131 132 133
+# https://stackoverflow.com/questions/25647470/filter-multiple-values-on-a-string-column-in-dplyr
+target_sites <- c("129", "130", "131", "132", "133", "134", "135", "136", "137", "138")
+# filter
+sites_species_129_138 <- dplyr::filter(results_projid_9, siteid %in% target_sites)
+sites_species_129_138
+```
+</p></details>
+
+
+## Filter Single Site Species Cover & Presence
+- Mt Tolmie siteid = 62  
+- can't use pivot longer
+```{r plot-site-species-cover-presence-MtTolmie}
+colnames(species_site_62)
+# remove columns for Site 
+ss_cover_62 <- species_site_62[, -c(2,3,4)]
+
+# filter
+ss_cover_62_presence <- ss_cover_62[ss_cover_62$responsemetric == "presence", ]
+ss_cover_62_cover <- ss_cover_62[ss_cover_62$responsemetric == "cover", ]
+
+ss_cover_62_cover_native <- ss_cover_62_cover[ss_cover_62_cover$speciesorigin == "native", ]
+
+ss_cover_62_cover_exotic <- ss_cover_62_cover[ss_cover_62_cover$speciesorigin == "exotic", ]
+
+ss_cover_62_cover_native_response_order <- ss_cover_62_cover_native[order(ss_cover_62_cover_native$response), ]
+
+ss_cover_62_cover_exotic_response_order <- ss_cover_62_cover_exotic[order(ss_cover_62_cover_exotic$response), ]
+```
+
+### Write Mt. T0lmie cover csv
+```{r write-cover-MtTolmie-csv}
+# write.csv(ss_cover_62_cover_native_response_order, "data/62_cover_native.csv", row.names = FALSE)
+# write.csv(ss_cover_62_cover_exotic_response_order, "data/62_cover_exotic.csv", row.names = FALSE)
+```
+
+
+## plot Mt. Tolmie native vs exotic species
+- not showing all species  
+- not showing all species - includes multiple replicates/species
+
+### Mt Tolmie Native 
+```{r ggplot-ss_cover_62_cover_native_response_order}
+ss_cover_62_cover_native_response_order_plot <- ggplot(ss_cover_62_cover_native_response_order, 
+                      # text = paste("Site:", Site), 
+                    aes(y = speciesid, x = response, color = replicate)) +
+                    geom_point(shape = 20, size = 1) +
+                    geom_jitter() +
+    #scale_x_continuous(limits = c(500, 2000)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_fill_brewer(palette = "Dark2") +
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="bottom") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Mt. Tolmie Native Species Cover %",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      y = "Species", x = "% Cover")
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), ss_cover_62_cover_native_response_order_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Mt. Tolmie Native Plant % Cover<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Cover (%)'),
+        yaxis = list(title = 'Species'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25",
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey"))
+        )
+```
+
+### Mt Tolmie Exotic 
+```{r ggplot-ss_cover_62_cover_exotic_response_order}
+ss_cover_62_cover_exotic_response_order_plot <- ggplot(ss_cover_62_cover_exotic_response_order, 
+                      # text = paste("Site:", Site), 
+                    aes(y = speciesid, x = response, color = replicate)) +
+                    geom_point(shape = 20, size = 1) +
+                    geom_jitter() +
+    #scale_x_continuous(limits = c(500, 2000)) +
+    #scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    #scale_fill_brewer(palette = "Dark2") +
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="bottom") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "Mt. Tolmie Exotic Species Cover %",
+                      caption = "Chart by Wendy Anthony \n 2025-09-25",
+                      y = "Species", x = "% Cover")
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), ss_cover_62_cover_exotic_response_order_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Mt. Tolmie Exotic Plant % Cover<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Cover (%)'),
+        yaxis = list(title = 'Species'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-25",
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey"))
+        )
+```
+
+
+
+## 1-point plot - Temp & Precip
+- I think this needs to be first use average of subregion temp and precip - showing too many here ???
+```{r GRP-temp-precip-all-point}
+
+GRP_all_site_temp_prec <- ggplot(OM_all_sites, 
+                      # text = paste("Site:", Site), 
+                    aes(x = precip, y = temp, colour = Subregion)) +
+                    geom_point(shape = 18, size = 2) +
+    scale_x_continuous(limits = c(500, 2000)) +
+    scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    scale_fill_brewer(palette = "Dark2") +
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="bottom") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "GRP Precipitation & Temperature",
+                       subtitle = "By Subregion",
+                      caption = "Chart by Wendy Anthony \n 2025-09-21",
+                      x = "Precipitation", y = "Temperature")
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_temp_prec) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "GRP Annual Precipitation & Temperature by Subregion<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Precipitation (mm)'),
+        yaxis = list(title = 'Temperature (°C)'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-21",
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey"))
+        )
+```
+
+## 2-point plot - Temp & Precip
+- I think this needs to be first use mean of subregion temp and precip - showing too many here ???
+
+### mean temp-subregion
+```{r GRP-temp-subregion-mean}
+OM_all_sites_test <- OM_all_sites
+colnames(OM_all_sites_test)
+
+subregion_mean_temp <- aggregate(OM_all_sites_test[, 12], list(OM_all_sites_test$Subregion), mean)
+subregion_mean_temp # no results for C-GI, C-SP, US-GI
+
+# doesn't work
+#OM_all_sites %>% group_by(Subregion) %>% mutate(mean_temp=mean(temp))
+```
+
+### mean precip-subregion
+- OM_all_sites  all 206 site data  
+
+<details><summary><b><i>Click open to see `subregion precip data`</i></b></summary><p>
+
+```{r GRP-precip-subregion-mean}
+OM_all_sites
+```
+</p></details>
+
+### 2-point plot - Temp & Precip
+- OM_all_sites  all 206 site data
+```{r GRP-temp-precip-all-point-plot-mean}
+# OM_all_sites  all 206 site data
+GRP_all_site_temp_prec <- ggplot(OM_all_sites, 
+                      # text = paste("Site:", Site), 
+                    aes(x = precip, y = temp, colour = Subregion)) +
+                    geom_point(shape = 18, size = 2) +
+    scale_x_continuous(limits = c(500, 2000)) +
+    scale_y_continuous(limits = c(8, 12)) +
+    # Replace default palette of pink & blue
+    scale_fill_brewer(palette = "Dark2") +
+                    theme_minimal() + #get rid of grey background and tick marks
+                    theme(legend.position="bottom") +
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+                    labs(title = "GRP Precipitation & Temperature",
+                       subtitle = "By Subregion",
+                      caption = "Chart by Wendy Anthony \n 2025-09-21",
+                      x = "Precipitation", y = "Temperature")
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_temp_prec) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "GRP Annual Precipitation & Temperature by Subregion<br><sup>Data Source: GRP</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Precipitation (mm)'),
+        yaxis = list(title = 'Temperature (°C)'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-21",
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey"))
+        )
+```
+
+## violin plot - Temp 
+- Warning: Removed 67 rows containing non-finite values (`stat_ydensity()`).  
+- Warning: Removed 67 rows containing non-finite values (`stat_boxplot()`). 
+```{r GRP-temp-sub-violin}
+
+GRP_all_site_temp_violin <- ggplot(OM_all_sites,
+      aes(x = Subregion, y = temp)) +
+      geom_violin(fill = "seagreen2") +
+      geom_boxplot(width = 0.1, fill = "sandybrown") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(legend.position="none") + #remove legend
+      theme(axis.text.x = element_text(vjust = 1, size = 9)) +
+      labs(title='Plotting Subregion by Temperature Range',
+           subtitle='Data: GRP',
+           caption = "Chart by Wendy Anthony \n 2025-09-22")
+      
+GRP_all_site_temp_violin
+
+## ggplotly doesn't seem to work with violin plot??
+    # ggplotly(tooltip = c("x", "y", "colour"), GRP_all_site_temp_violin) %>%
+    #   config(displayModeBar = FALSE) %>% # This line disables the modebar
+    #   layout(title = list(
+    #     text = "GRP Annual Temperature by Subregion<br><sup>Data Source: GRP</sup>",
+    #     y = 0.95), # Adjust vertical position if needed
+    #     yaxis = list(title = 'Temperature (°C)'),
+    #     annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-09-22",
+    #          showarrow = F, xref='paper', yref='paper',
+    #          xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+    #          font = list(size=8, color="grey"))
+    #     )
+```
+
+
+## violin plot - Precip
+- Warning: Removed 67 rows containing non-finite values (`stat_ydensity()`).  
+- Warning: Removed 67 rows containing non-finite values (`stat_boxplot()`). 
+```{r GRP-precip-subreg-violin}
+
+GRP_all_site_prec_violin <- ggplot(OM_all_sites,
+      aes(x = Subregion, y = precip)) +
+      geom_violin(fill = "seagreen2") +
+      geom_boxplot(width = 0.1, fill = "sandybrown") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(legend.position="none") + #remove legend
+      theme(axis.text.x = element_text(vjust = 1, size = 9)) +
+      labs(title='Plotting Subregion by Precipitation Range',
+           subtitle='Data: GRP',
+           caption = "Chart by Wendy Anthony \n 2025-09-22")
+      
+GRP_all_site_prec_violin
+```
+
+
+# Leaflet Maps
+
+## Leaflet Site Map
+```{r leaflet-grp-sites}
+
+# library(dplyr)
+library(leaflet)
+
+# Title control
+# (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
+ title <- '<p style="text-align: center; height: 18px; ">
+<span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>Global Restore Project GOE Monitoring Sites</span><br>
+<span style="font-size:6px;font-style:italic; background-color: rgba(255, 255, 255, 0.9;">(Data from Shackelford, et al., 2005-2022)</span></p>'
+
+    # https://rstudio.github.io/leaflet/articles/markers.html
+    # Create a palette that maps factor levels to colors
+    #####
+    # pal <- colorFactor(c("#d7191c", "#2c7bb6"), domain = c("Saanich Peninsula", "Gulf Islands"))
+#     pal <- colorFactor(c("#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17"), domain = c("C-SP", "C-GI", "C-EVII", "C-EVI", "US-GI", "US-Wash", "US-Oreg"
+# ))
+ # #d95f02 orange; #7570b3 purple; #1b9e77 green
+    pal <- colorFactor(c("#1b9e77", "#7570b3", "#7570b3", "#1b9e77", "#d95f02", "#d95f02", "#d95f02"), domain = c("C-SP", "C-GI", "C-EVII", "C-EVI", "US-GI", "US-Wash", "US-Oreg"))
+GRP_site_map  <-  leaflet(GRP_Site_data) %>%
+      addProviderTiles("Esri.WorldImagery") %>%
+      addCircleMarkers(
+        ~ longitude, ~ latitude,
+        #
+        color = ~pal(Subregion),
+        # color = "yellow",
+        weight = 1, # size of circle border
+        stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
+        radius = 2,
+        # OM_site_data$
+        # "<b>Global Restore Project GOE Monitoring Sites</b>", "<br>", "<i>(Shackelford, et. al., 2005-2022)</i>", "<br><br>",
+        popup = paste0(
+          "<b>Site:</b> ", "<b>", GRP_Site_data$Site, "</b>",  "<br>",
+          "<b>Subregion:</b> ", "<b>", GRP_Site_data$Subregion, "</b>",  "<br>",
+          "<b>Project id:</b> ", "<b>", GRP_Site_data$projectid, "</b>",  "<br>",
+          "<b>Landcover:</b> ", "<b>", GRP_Site_data$landcover, "</b>",  "<br>",
+          "<b>Elevation:</b> ", "<b>", GRP_Site_data$elevation, " m</b>",  "<br>",
+          "<b>Aspect:</b> ", "<b>", GRP_Site_data$aspect, " °</b>",  "<br>",
+          "<b>Precipitation:</b> ", "<b>", GRP_Site_data$precip, " mm</b>",  "<br>",
+          "<b>Temperature:</b> ", "<b>", GRP_Site_data$temp, " °C</b>",  "<br>",
+          "<b>Species Richness (All):</b> ", "<b>", GRP_Site_data$species_richness_all, "</b>",  "<br>",
+          "<b>Species Richness (Native):</b> ", "<b>", GRP_Site_data$species_richness_nat, "</b>",  "<br>",
+          "<b>Species Richness (Exotic):</b> ", "<b>", GRP_Site_data$species_richness_ex, "</b>"
+          
+          ))  %>%
+      addLegend("bottomright", pal = pal, values = GRP_Site_data$Subregion, title = "Subregion") %>%
+
+      setView(-123.44799, 48.64919, 8) %>%
+      # add controls
+      #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
+      addControl(title, position = "topright")
+
+# Display map
+GRP_site_map
+
+# Save map
+saveWidget(GRP_site_map, "output/GRP_site_map.html")
+```
+
+
+
+
+
+
