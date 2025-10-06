@@ -1,0 +1,624 @@
+---
+title: "HAT-GOE-Monitor-Code"
+author: "Wendy Anthony"
+date: "2025/10/03"
+output:
+  html_document:
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# HAT Logos
+<details><summary><b><i>Click open to see `HAT Logo Examples`</i></b></summary><p>
+
+![HAT Logo](images/HAT-logo-ss.png)
+![HAT White Logo](images/HAT-logo-white-ss.png)
+
+![HAT Email Logo](images/HAT-logo-email.png)
+
+
+</p></details>
+
+# Load Libraries
+```{r load-libraries}
+library(tidyverse)
+library(plotly)
+library(htmlwidgets)
+```
+
+
+# Data Import
+```{r data-import-1}
+# 3 Sites from HAT Covenants website
+HAT_sites <- read.csv("data/HAT-Sites.csv")
+HAT_sites
+# Warning in read.table(file = file, header = header, sep = sep, quote = quote,  : incomplete final line found by readTableHeader on 'data/HAT-Sites.csv'
+## creating a dataframe all columns need to be of equal length - gave the empty columns NA value >> still get this message???
+
+# Oak Haven Meta Data
+oakhaven_2025_metadata <- read.csv("data/HAT-OH-MetaData.csv")
+oakhaven_2025_metadata
+# Warning in read.table(file = file, header = header, sep = sep, quote = quote,  :  incomplete final line found by readTableHeader on 'data/HAT-OH-MetaData.csv'
+  
+# Oak Haven Cover data 2025
+oakhaven_2025_cover <- read.csv("data/HAT-MeadowMonitoring-2025-OakHaven.csv")
+oakhaven_2025_cover
+
+# Oak Haven Timeline
+OH_timeline <- read.csv("data/Timeline-OH.csv")
+OH_timeline
+# Warning in read.table(file = file, header = header, sep = sep, quote = quote,  :  incomplete final line found by readTableHeader on 'data/Timeline-OH.csv'
+```
+
+# Data info `str()`
+```{r data-info-str}
+str(oakhaven_2025_cover)
+```
+
+## Data Transformation
+### Date
+```{r data-transform-date}
+oakhaven_2025_cover$Date <- as.Date(oakhaven_2025_cover$Date)
+str(oakhaven_2025_cover)
+
+str(OH_timeline)
+OH_timeline$When <- as.Date(OH_timeline$When)
+str(OH_timeline)
+```
+
+# Filter Subset
+## Native vs Invasive
+```{r subset-native-inv}
+oakhaven_2025_cover_nat <- oakhaven_2025_cover[oakhaven_2025_cover$Native_or_Invasive == "N",]
+
+oakhaven_2025_cover_inv <- oakhaven_2025_cover[oakhaven_2025_cover$Native_or_Invasive == "I",]
+
+oakhaven_2025_cover_mix <- oakhaven_2025_cover[oakhaven_2025_cover$Native_or_Invasive == "mix",]
+
+oakhaven_2025_cover_unkn <- oakhaven_2025_cover[oakhaven_2025_cover$Native_or_Invasive == "unkown",]
+
+oakhaven_2025_cover_mixgrass <- oakhaven_2025_cover[oakhaven_2025_cover$Species == "mixed invasive grasses",]
+
+# merge unknown and mix
+# Merge mean and native invasive
+colnames(oakhaven_2025_cover_unkn)
+colnames(oakhaven_2025_cover_mix)
+
+oakhaven_2025_cover_unkn_mix <- rbind(oakhaven_2025_cover_unkn, oakhaven_2025_cover_mix,oakhaven_2025_cover_mixgrass)
+
+```
+
+
+# Cover Percentage
+## Group Quadrats
+- how to identify each quadrat as a separate group ... with a unique identifier e.g. gave each of four monitoring sessions a unique ID (treated / untreated + initials of 2 different teams)
+- concatenate unique monitoring session ID + 
+
+```{r concatenate-unique-quadrat}
+colnames(oakhaven_2025_cover)
+oakhaven_2025_cover$QUniqueID <- paste(oakhaven_2025_cover$MonitorID, oakhaven_2025_cover$Quadrat, oakhaven_2025_cover$QuadratLocation_m, sep = "_")
+oakhaven_2025_cover$QUniqueID
+```
+
+### Save csv with new column `QUniqueID`
+```{r save-csv-new-col-QUniqueID}
+write.csv(oakhaven_2025_cover, "data/oakhaven_2025_cover.csv", row.names = FALSE)
+```
+
+
+### Unique Quadrat IDs 
+```{r group-by-quadrat-unique}
+unique(oakhaven_2025_cover$QUniqueID)
+length(unique(oakhaven_2025_cover$QUniqueID)) # S/B 12
+```
+
+### Group by Quadrats
+```{r group-by-quadrats}
+oakhaven_group_quadrats <- oakhaven_2025_cover %>% dplyr::group_by(QUniqueID)
+```
+
+#### Species in each Quadrat
+- e.g. logic for each unique quadrat list species
+```{r unique-quadrats}
+str(oakhaven_group_quadrats)
+unique(oakhaven_group_quadrats$QUniqueID)
+```
+
+```{r for-loop, include = FALSE}
+### For loops
+# for (i in 1:length(unique(oakhaven_group_quadrats$QUniqueID))) {
+# print(oakhaven_group_quadrats$Species)
+# }
+```
+
+
+
+
+## Group Species
+
+### Unique Species
+```{r group-by-species-unique}
+colnames(oakhaven_2025_cover)
+oakhaven_2025_cover_sp_unique <- unique(oakhaven_2025_cover$Species)
+oakhaven_2025_cover_sp_unique
+length(unique(oakhaven_2025_cover$Species)) #25 > 20 after removing empty trailing spaces from 5
+```
+
+### Group by Species
+```{r group-by-species}
+oakhaven_group_species <- oakhaven_2025_cover %>% dplyr::group_by(Species)
+```
+
+### Mean Cover of Grouped Species
+```{r group-species-mean-cover}
+
+# Mean percent cover of each species
+oakhaven_group_species_cover_mean <- oakhaven_group_species %>% dplyr::summarise(mean(PercentCover))
+oakhaven_group_species_cover_mean  # this is now a tibble, not a datafrae
+
+str(oakhaven_group_species_cover_mean)
+
+# Rename mean column
+names(oakhaven_group_species_cover_mean)[names(oakhaven_group_species_cover_mean) == 'mean(PercentCover)'] <- 'mean_percent_cover'
+oakhaven_group_species_cover_mean
+
+# Round to 2 Decimals
+# round numbers to 2 digits
+library(dplyr)
+
+str(oakhaven_group_species_cover_mean)
+
+oakhaven_group_species_cover_mean <- oakhaven_group_species_cover_mean %>% mutate(across(c('mean_percent_cover'), round, 2))
+oakhaven_group_species_cover_mean
+
+# Merge mean and native invasive
+colnames(oakhaven_2025_cover)
+oakhaven_group_species_cover_mean_merge <- merge(oakhaven_group_species_cover_mean, oakhaven_2025_cover[, c("Species", "Native_or_Invasive")], by="Species")
+```
+
+## Species Richness
+- total number of species per Site
+
+## Unique Species
+```{r unique-species-total}
+length(unique(oakhaven_2025_cover$Species)) #20
+length(unique(oakhaven_2025_cover_nat$Species)) #12
+length(unique(oakhaven_2025_cover_inv$Species)) #5
+length(unique(oakhaven_2025_cover_unkn_mix$Species)) #4
+```
+
+
+
+# Plots
+## Timelines
+`OH_timeline`
+```{r gdgplot-timeline-OH}
+# https://www.r4photobiology.info/galleries/plot-timeline.html
+colnames(OH_timeline)
+
+OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = Where)) +
+#OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = What)) +
+  
+  geom_line() +
+  geom_point(data = . %>% filter(Where != "")) +
+  # geom_point(data = . %>% filter(What != "")) +
+  geom_text(aes(colour = EventType), hjust = -0.3, angle = 45) +
+  scale_x_date(name = "When", date_breaks = "6 months",
+               expand = expansion(mult = c(0.05, 0.9))) +
+  # scale_x_continuous(limits = c(2024-01-01, 2026-01-01)) +
+  scale_y_discrete(name = "",
+                   expand = expansion(mult = c(0.2, 0.95))) +
+  scale_colour_manual(values = c(Cover_Monitor = "seagreen", Treatment_Event = "purple"), guide = "none") +
+  theme_minimal() +
+    labs(title='Timeline',
+    subtitle='HAT GOE Monitoring',
+    # subtitl='Oak Haven Park',
+    caption = "Chart by Wendy Anthony \n 2025-10-06")
+
+OH_timeline_plot
+```
+
+
+## ggplot2 Chart
+
+### ??? Species Richness Plot
+```{r species-richness-plot}
+# 
+# colnames(oakhaven_group_quadrats)
+# 
+# oakhaven_2025_cover_nat_richness_plot  <-  ggplot(unique(oakhaven_2025_cover_nat), 
+#                     aes(x = unique(oakhaven_2025_cover_nat$Species))) +
+#                       ylim(0, 100) +
+#                     #geom_bar(stat = "identity", fill = "seagreen") +
+#                     geom_bar(stat = "identity") +
+#                     theme_minimal() + #get rid of grey background and tick marks 
+#                     # theme(legend.position="none") + #remove legend 
+#                     theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+#                     labs(title='Species Richness',
+#                       subtitle='Oak Haven Park',
+#                       caption = "Chart by Wendy Anthony \n 2025-10-06")
+# oakhaven_2025_cover_nat_richness_plot
+# 
+# ## ggplotly
+#     ggplotly(tooltip = c("x", "y", "fill"), oakhaven_2025_cover_nat_richness_plot) %>%
+#       config(displayModeBar = FALSE) %>% # This line disables the modebar
+#       layout(title = list(
+#         text = "Species Richness<br><sup>Oak Haven Park</sup>",
+#         y = 0.95), # Adjust vertical position if needed
+#         xaxis = list(title = 'Unique Quadrat'),
+#         yaxis = list(title = 'Percentage Cover'),
+#         annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-06"
+#               # no legend
+#                            ,
+#              showarrow = F, xref='paper', yref='paper',
+#              xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+#              font = list(size=8, color="grey")
+#              ))
+```
+
+### Quadrat per Species 
+```{r ggplot-quadrat-per-species}
+
+colnames(oakhaven_group_quadrats)
+
+oakhaven_group_quadrats_species_plot  <-  ggplot(oakhaven_group_quadrats, 
+                    aes(x = Species, y = PercentCover, fill = QUniqueID)) +
+                      ylim(0, 100) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Quadrats Percentage Species Coverage',
+                      subtitle='Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-10-05")
+oakhaven_group_quadrats_species_plot
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "color", "fill"), oakhaven_group_quadrats_species_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Comparing Quadrats Percentage Species Coverage<br><sup>Oak Haven Park</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Unique Quadrat'),
+        yaxis = list(title = 'Percentage Cover'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-05"
+              # no legend
+                           ,
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey")
+             )
+        )
+```
+
+
+### Species per Quadrat
+```{r ggplot-species-per-quadrat}
+
+colnames(oakhaven_group_quadrats)
+
+oakhaven_group_quadrats_species_plot  <-  ggplot(oakhaven_group_quadrats, 
+                    aes(x = QUniqueID, y = PercentCover, fill = Species)) +
+                      ylim(0, 100) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Quadrats Percentage Species Coverage',
+                      subtitle='Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-10-05")
+oakhaven_group_quadrats_species_plot
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "color", "fill"), oakhaven_group_quadrats_species_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Comparing Quadrats Percentage Species Coverage<br><sup>Oak Haven Park</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Unique Quadrat'),
+        yaxis = list(title = 'Percentage Cover'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-05"
+              # no legend
+                           ,
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey")
+             )
+        )
+
+```
+
+### Native vs Invasive per Quadrat
+```{r ggplot-nat-inv-species-per-quadrat}
+
+colnames(oakhaven_group_quadrats)
+
+oakhaven_group_quadrats_species_plot  <-  ggplot(oakhaven_group_quadrats, 
+                    aes(x = QUniqueID, y = PercentCover, fill = Native_or_Invasive)) +
+                      ylim(0, 100) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Quadrats Percentage Species Coverage',
+                      subtitle='Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-10-05")
+oakhaven_group_quadrats_species_plot
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "color", "fill"), oakhaven_group_quadrats_species_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Comparing Quadrats Percentage Species Coverage<br><sup>Oak Haven Park</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Unique Quadrat'),
+        yaxis = list(title = 'Percentage Cover'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-05"
+              # no legend
+                           ,
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey")
+             ))
+```
+
+### Native Species per Quadrat
+```{r ggplot-nat-secies-per-quadrat}
+
+colnames(oakhaven_group_quadrats)
+
+oakhaven_2025_cover_nat_plot  <-  ggplot(oakhaven_2025_cover_nat, 
+                    aes(x = QUniqueID, y = PercentCover, fill = Species)) +
+                      ylim(0, 100) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Quadrats Percentage Native Species Coverage',
+                      subtitle='Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-10-05")
+
+oakhaven_2025_cover_nat_plot
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "color", "fill"), oakhaven_2025_cover_nat_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Comparing Quadrats Percentage Native Species Coverage<br><sup>Oak Haven Park</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Unique Quadrat'),
+        yaxis = list(title = 'Percentage Cover'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-05"
+              # no legend
+                           ,
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey")
+             ))
+```
+
+### Invasive Species per Quadrat
+```{r ggplot-inv-secies-per-quadrat}
+colnames(oakhaven_2025_cover_inv)
+
+oakhaven_2025_cover_inv_plot  <-  ggplot(oakhaven_2025_cover_inv, 
+                    aes(x = QUniqueID, y = PercentCover, fill = Species)) +
+                      ylim(0, 100) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Quadrats Percentage Invasive Species Coverage',
+                      subtitle='Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-10-05")
+
+oakhaven_2025_cover_inv_plot
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "color", "fill"), oakhaven_2025_cover_inv_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Comparing Quadrats Percentage Invasive Species Coverage<br><sup>Oak Haven Park</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Unique Quadrat'),
+        yaxis = list(title = 'Percentage Cover'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-05"
+              # no legend
+                           ,
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey")
+             ))
+```
+
+
+### Mixed Grass and Moss per Quadrat
+```{r ggplot-grass-moss-secies-per-quadrat}
+colnames(oakhaven_2025_cover_unkn_mix)
+
+oakhaven_2025_cover_unkn_mix_plot  <-  ggplot(oakhaven_2025_cover_unkn_mix, 
+                    aes(x = QUniqueID, y = PercentCover, fill = Species)) +
+                      ylim(0, 100) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Quadrats Percentage Invasive Species Coverage',
+                      subtitle='Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-10-05")
+
+oakhaven_2025_cover_unkn_mix_plot
+
+## ggplotly
+    ggplotly(tooltip = c("x", "y", "color", "fill"), oakhaven_2025_cover_unkn_mix_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Comparing Quadrats Percent Cover Mixed Grass & Moss <br><sup>Oak Haven Park</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = 'Unique Quadrat'),
+        yaxis = list(title = 'Percentage Cover'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-05"
+              # no legend
+                           ,
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey")
+             ))
+```
+
+### ??? Native Species cover per quadrat
+- Warning to knit `("Must request at least one colour from a hue palette."`
+```{r ggplot-native}
+# # colnames(oakhaven_2025_cover_nat)
+# 
+# oakhaven_2025_cover_nat_plot  <-  ggplot(oakhaven_2025_cover_nat, 
+#                     aes(x = Species, y = PercentCover, fill = QUniqueID)) +
+#                       ylim(0, 100) +
+#                     #geom_bar(stat = "identity", fill = "seagreen") +
+#                     geom_bar(stat = "identity") +
+#                     theme_minimal() + #get rid of grey background and tick marks 
+#                     # theme(legend.position="none") + #remove legend 
+#                     theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+#                     labs(title='Comparing Quadrats Percentage Native Species Coverage',
+#                       subtitle='Oak Haven Park',
+#                       caption = "Chart by Wendy Anthony \n 2025-10-05")
+# oakhaven_2025_cover_nat_plot
+# 
+# ## ggplotly
+#     ggplotly(tooltip = c("x", "y", "fill"), oakhaven_2025_cover_nat_plot) %>%
+#       config(displayModeBar = FALSE) %>% # This line disables the modebar
+#       layout(title = list(
+#         text = "Comparing Quadrats Percentage Species Coverage<br><sup>Oak Haven Park</sup>",
+#         y = 0.95), # Adjust vertical position if needed
+#         xaxis = list(title = 'Unique Quadrat'),
+#         yaxis = list(title = 'Percentage Cover'),
+#         annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-05"
+#               # no legend
+#                            ,
+#              showarrow = F, xref='paper', yref='paper',
+#              xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+#              font = list(size=8, color="grey")
+#              )
+#         )
+```
+
+
+
+### Mean species Cover
+```{r ggplot-cover}
+
+oakhaven_group_species_cover_mean_merge_plot  <-  ggplot(oakhaven_group_species_cover_mean_merge, 
+                    aes(x = Species, y = mean_percent_cover, fill = Native_or_Invasive)) +
+                      ylim(0, 100) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Average Percentage Species Coverage',
+                      subtitle='Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-10-05")
+oakhaven_group_species_cover_mean_merge_plot
+
+# Warning: Removed 9 rows containing missing values (`geom_bar()`).
+```
+
+
+
+```{r pie-chart-function, include = FALSE}
+## Pie Charts
+# - Data Cleaning Note: Species need the same spelling (and case - upper / lower)
+
+# piechart <- function(data, mapping) {
+#   ggplot(data, mapping) +
+#     geom_bar(width = 1) + 
+#     coord_polar(theta = "y") + 
+#     xlab(NULL) + 
+#     ylab(NULL)
+# }
+# 
+# str(oakhaven_2025_cover)
+# #oakhaven_2025_cover_species_unique <- unique(oakhaven_2025_cover$Species)
+# 
+# piechart(oakhaven_group_species_cover_mean, aes(x=oakhaven_group_species_cover_mean, fill = Species))
+
+```
+
+
+# Leaflet Maps
+## 3-Site Map
+```{r leaflet-3-sites}
+# library(dplyr)
+library(leaflet)
+
+# Title control
+# (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
+ title <- '<p style="text-align: center; height: 18px; ">
+<span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT Covenant GOE Monitoring Sites Map</span></p>'
+
+    # https://rstudio.github.io/leaflet/articles/markers.html
+    # Create a palette that maps factor levels to colors
+    #####
+    # pal <- colorFactor(c("#d7191c", "#2c7bb6"), domain = c("Saanich Peninsula", "Gulf Islands"))
+#     pal <- colorFactor(c("#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17"), domain = c("C-SP", "C-GI", "C-EVII", "C-EVI", "US-GI", "US-Wash", "US-Oreg"
+# ))
+ # #d95f02 orange; #7570b3 purple; #1b9e77 green
+    pal <- colorFactor(c("#1b9e77", "#7570b3", "#d95f02"), domain = c("Central Saanich", "Colwood", "Esquimalt"))
+HAT_sites_map  <-  leaflet(HAT_sites) %>%
+      addProviderTiles("Esri.WorldImagery") %>%
+      addCircleMarkers(
+        ~ Lng, ~ Lat,
+        #
+        color = ~pal(Municipality),
+        # color = "yellow",
+        weight = 1, # size of circle border
+        stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
+        radius = 4,
+        # OM_site_data$
+        # "<b>Global Restore Project GOE Monitoring Sites</b>", "<br>", "<i>(Shackelford, et. al., 2005-2022)</i>", "<br><br>",
+        popup = paste0(
+          "<b>Site:</b> ", "<b>", HAT_sites$Site, "</b>",  "<br>",
+          "<b>Municipality:</b> ", HAT_sites$Municipality, "<br>",
+          "<b>Size:</b> ", HAT_sites$Size_ha, " (ha)", "<br>",
+          "<b>First Nations:</b> ", HAT_sites$FirstNations, "<br>",
+          # "<b>Project id:</b> ", HAT_sites$ID, "<br>",
+          "<b>HAT Status:</b> ", HAT_sites$HAT_Status, "<br>",
+          "<b>Co-Covenant:</b> ", HAT_sites$Co_Covenant, " (", HAT_sites$Date, ")", "<br>",
+          "<b>Ecosystems:</b> ", HAT_sites$Ecosystems, "<br>",
+          "<b>Volunteer Stewardship:</b> ", HAT_sites$Volunteer_Stewardship, "<br>"
+          ))  %>%
+      addLegend("bottomright", pal = pal, values = HAT_sites$Municipality, title = "Municipality") %>%
+
+      setView(-123.44799, 48.52919, 10) %>%
+      # add controls
+      #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
+      addControl(title, position = "topright")
+
+# Display map
+HAT_sites_map
+
+# Save map
+saveWidget(HAT_sites_map, "output/HAT_site_map.html")
+```
+
+
+
+
+
+
