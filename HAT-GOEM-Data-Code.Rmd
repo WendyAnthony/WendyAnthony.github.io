@@ -20,13 +20,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # HAT Logos
 <details><summary><b><i>Click open to see `HAT Logo Examples`</i></b></summary><p>
+Change size format in URL
+https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w
+![HAT White Logo](images/HAT-logo-white-ss.png)  
 
-![HAT Logo](images/HAT-logo-ss.png)
-![HAT White Logo](images/HAT-logo-white-ss.png)
-
-![HAT Email Logo](images/HAT-logo-email.png)
+![HAT Email Logo](images/HAT-logo-email.png)  
+- poor resolution  
 
 
+![HAT Logo](images/HAT-logo-ss.png)  
+- poor resolution
 </p></details>
 
 # Load Libraries
@@ -74,6 +77,7 @@ str(oakhaven_2025_cover)
 str(OH_timeline)
 OH_timeline$When <- as.Date(OH_timeline$When)
 str(OH_timeline)
+write.csv(OH_timeline, "data/OH_timeline_date.csv", row.names = FALSE)
 ```
 
 # Filter Subset
@@ -111,6 +115,7 @@ oakhaven_2025_cover$QUniqueID
 ```
 
 ### Save csv with new column `QUniqueID`
+- use for Shiny app
 ```{r save-csv-new-col-QUniqueID}
 write.csv(oakhaven_2025_cover, "data/oakhaven_2025_cover.csv", row.names = FALSE)
 ```
@@ -292,14 +297,11 @@ oakhaven_group_quadrats_species_plot
         y = 0.95), # Adjust vertical position if needed
         xaxis = list(title = 'Unique Quadrat'),
         yaxis = list(title = 'Percentage Cover'),
-        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-05"
-              # no legend
-                           ,
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-05",
              showarrow = F, xref='paper', yref='paper',
              xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
              font = list(size=8, color="grey")
-             )
-        )
+             ))
 ```
 
 
@@ -343,9 +345,9 @@ oakhaven_group_quadrats_species_plot
 ### Native vs Invasive per Quadrat
 ```{r ggplot-nat-inv-species-per-quadrat}
 
-colnames(oakhaven_group_quadrats)
+colnames(oakhaven_2025_cover)
 
-oakhaven_group_quadrats_species_plot  <-  ggplot(oakhaven_group_quadrats, 
+oakhaven_group_quadrats_species_plot  <-  ggplot(oakhaven_2025_cover, 
                     aes(x = QUniqueID, y = PercentCover, fill = Native_or_Invasive)) +
                       ylim(0, 100) +
                     #geom_bar(stat = "identity", fill = "seagreen") +
@@ -353,7 +355,7 @@ oakhaven_group_quadrats_species_plot  <-  ggplot(oakhaven_group_quadrats,
                     theme_minimal() + #get rid of grey background and tick marks 
                     # theme(legend.position="none") + #remove legend 
                     theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-                    labs(title='Comparing Quadrats Percentage Species Coverage',
+                    labs(title='Comparing Quadrats Percentage Native and Invasive Species Coverage',
                       subtitle='Oak Haven Park',
                       caption = "Chart by Wendy Anthony \n 2025-10-05")
 oakhaven_group_quadrats_species_plot
@@ -375,7 +377,8 @@ oakhaven_group_quadrats_species_plot
              ))
 ```
 
-### Native Species per Quadrat
+### ??? Native Species per Quadrat
+- doesn't have `QUniqueID` column
 ```{r ggplot-nat-secies-per-quadrat}
 
 colnames(oakhaven_group_quadrats)
@@ -411,7 +414,8 @@ oakhaven_2025_cover_nat_plot
              ))
 ```
 
-### Invasive Species per Quadrat
+### ?? Invasive Species per Quadrat
+- doesn't have `QUniqueID` column
 ```{r ggplot-inv-secies-per-quadrat}
 colnames(oakhaven_2025_cover_inv)
 
@@ -569,15 +573,11 @@ library(leaflet)
 
 # Title control
 # (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
- title <- '<p style="text-align: center; height: 18px; ">
-<span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT Covenant GOE Monitoring Sites Map</span></p>'
-
+     title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+     
     # https://rstudio.github.io/leaflet/articles/markers.html
     # Create a palette that maps factor levels to colors
     #####
-    # pal <- colorFactor(c("#d7191c", "#2c7bb6"), domain = c("Saanich Peninsula", "Gulf Islands"))
-#     pal <- colorFactor(c("#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17"), domain = c("C-SP", "C-GI", "C-EVII", "C-EVI", "US-GI", "US-Wash", "US-Oreg"
-# ))
  # #d95f02 orange; #7570b3 purple; #1b9e77 green
     pal <- colorFactor(c("#1b9e77", "#7570b3", "#d95f02"), domain = c("Central Saanich", "Colwood", "Esquimalt"))
 HAT_sites_map  <-  leaflet(HAT_sites) %>%
@@ -605,7 +605,7 @@ HAT_sites_map  <-  leaflet(HAT_sites) %>%
           ))  %>%
       addLegend("bottomright", pal = pal, values = HAT_sites$Municipality, title = "Municipality") %>%
 
-      setView(-123.44799, 48.52919, 10) %>%
+      setView(-123.44799, 48.52919, 11) %>%
       # add controls
       #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
       addControl(title, position = "topright")
