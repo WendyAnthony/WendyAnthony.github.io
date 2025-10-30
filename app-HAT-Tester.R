@@ -7,12 +7,15 @@
 ## 2025-09-15 got XY variables reactive to ggplot
 ## 2025-09-17 got slider to work reactively
 ## Start HAT app 2025-10-06
+# Modified 2025-10-07 09:43 >>> 2025-10-19-29 @ 11:05
 
 # Download data
 oakhaven_2025_cover <- read.csv("data/oakhaven_2025_cover.csv", header = TRUE, sep = ",")
 HAT_sites <- read.csv("data/HAT-Sites.csv", header = TRUE, sep = ",")
 OH_metadata <- read.csv("data/HAT-OH-MetaData.csv", header = TRUE, sep = ",")
-Timeline_OH <- read.csv("data/OH_timeline_date.csv", header = TRUE, sep = ",")
+# Timeline_OH <- read.csv("data/OH_timeline_date.csv", header = TRUE, sep = ",")
+Timeline_OH_vis <- read.csv("data/OH_timeline_date_timevis.csv", header = TRUE, sep = ",")
+OH_Datasheet_orig <- read.csv("data/HAT-Meadow Monitoring Spreadsheet 2025 - Oak Haven Park example.csv", header = TRUE, sep = ",")
 
 # Package Libraries
 library(shiny)
@@ -21,16 +24,18 @@ library(shinyscreenshot)
 library(leaflet)
 library(ggplot2)
 library(plotly)
+library(ggrepel)
+library(timevis)
 
 #ui
 ui <- fluidPage(
   # app Title
   # titlePanel("Exploring HAT GOE Monitoring Dataviz"),
-  titlePanel(
-    fluidRow(
-      column(9, "Exploring HAT GOE Monitoring Dataviz"),
-      column(3, img(height = 50, src = "HAT-logo-ss.png"))
-    )
+  titlePanel(windowTitle = "HAT GOEM Dataviz",
+             fluidRow(
+               column(9, "Exploring HAT GOE Monitoring Dataviz"),
+               column(3, img(height = 50, src = "HAT-logo-ss.png"))
+             )
   ),
   # https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w
   # titlePanel( div(column(width = 3, tags$img(src = "HAT-logo-white-ss.png", height="1-%", width="10%", align="left")), column(width = 9, h2("Exploring HAT GOE Monitoring Dataviz")))),
@@ -73,9 +78,9 @@ ui <- fluidPage(
                  screenshotButton(label = "Entire page", filename = paste0("HAT-Screenshot-entirePage-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
                  screenshotButton(label = "Input panel", id = "input_panel", filename = paste0("HAT-Screenshot-entirePage-inputPanel-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
                  # Footer
-                 img(src = "HAT-logo-white-ss.png", height = "15%", width = "15%", align = "right"),
+#                 img(src = "HAT-logo-white-ss.png", height = "15%", width = "15%", align = "right"),
                  br(),br(),
-                 span(style = "font-size:10px; font-style:italic;", "HAT Shiny App Showcase Example created by Wendy Anthony, modified 2025-10-06"),
+                 span(style = "font-size:10px; font-style:italic;", "HAT Shiny App Showcase Example created by Wendy Anthony, modified 2025-10-29"),
                  br(),br()
     ),
 
@@ -90,35 +95,67 @@ ui <- fluidPage(
       # tabsetPanel
       tabsetPanel(
         id = "tabset",
-        selected = "Reactive Map",
+        selected = "Reactive Site Map",
         tabPanel(id = "about", "About Proposed App",  htmlOutput("text")),
         tabPanel(id = "tables", "Data Tables",
-                 p(style = "font-size:11px;", "HAT GOE Data"),
-                 p(style = "font-size:11px;", "Note: The table is reactive to user-choice variable"),
-                 # screenshotButton(label = "Table", id = "table1", filename = paste0("HAT-Screenshot-table-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
-                 # downloadButton("downloadData", label = "Download Site Data"),
-                 hr(),
-                 h3("3 HAT Monitoring Sites"),
-                 p("This data is used for the Interactive Site Map"),
-                 DTOutput("sites"),
-                 hr(),
-                 hr(),
-                 h3("HAT Monitoring Timeline"),
-                 p("This data is used for the HAT Timeline"),
-                 DTOutput("time"),
-                 hr(),
-                 hr(),
-                 h3("Oak Haven Park Monitoring Metadata"),
-                 DTOutput("meta"),
-                 hr(),
-                 hr(),
-                 h3("Oak Haven Park Cover Data 2025"),
-                 p("This data is used for the Interactive Oak Haven Cover Dataviz Plots"),
-                 DTOutput("coverOH")),
+                 ## -----------------------------------------
+                 # Nested tabsetPanel for tables
+                 tabsetPanel(
+                   # this H3 will show at top of each sub tabPanel
+                   #                   h3("HAT GOE Data"),
+                   #                   p(style = "font-size:11px;", "Note: The table is reactive to user-choice variable"),
+                   # screenshotButton(label = "Table", id = "table1", filename = paste0("HAT-Screenshot-table-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                   # downloadButton("downloadData", label = "Download Site Data"),
+
+
+                   ## -----------------------------------------
+                   # Nested tabPanel
+                   tabPanel("Sites Table",
+                            h3("3 HAT Monitoring Sites"),
+                            p(style = "font-size:11px;", "Note: The table is reactive to user-choice variable; Data is also used for the Reactive Site Map"),
+                            DTOutput("sites"),
+                   ),
+                   # end of tabPanel
+                   ## -----------------------------------------
+                   # Nested tabPanel
+                   tabPanel("Timeline Table",
+                            h3("HAT Monitoring Timeline"),
+                            p(style = "font-size:11px;", "Note: This data is used for the HAT Timeline"),
+                            DTOutput("time"),
+                   ),
+                   # end of tabPanel
+                   ## -----------------------------------------
+                   # Nested tabPanel
+                   tabPanel("OH Metadata",
+                            h3("Oak Haven Park Monitoring Metadata"),
+                            p(style = "font-size:11px;", "Note: Data from April 2025 quadrat cover data assessment"),
+                            DTOutput("meta"),
+                   ),
+                   # end of tabPanel
+                   ## -----------------------------------------
+                   # Nested tabPanel
+                   tabPanel("OH Cover DataTable",
+                            h3("Oak Haven Park Cover Data 2025"),
+                            p(style = "font-size:11px;", "Note: This data is used for the Interactive Oak Haven Cover Dataviz Plots"),
+                            DTOutput("coverOH"),
+                   ),
+                   # end of tabPanel
+                   ## -----------------------------------------
+                   # Nested tabPanel
+                   tabPanel("OH Original Datasheet",
+                            h3("Oak Haven Park Original Data 2025"),
+                            p(style = "font-size:11px;", "Note: This data needed to be totally reformatted to create Oak Haven Park Cover Data 2025"),
+                            DTOutput("DataOHorig")),
+                 ),
+                 # end of tabPanel
+        ),
+        ## end of nested tabPanels
+        ## -----------------------------------------
+
         tabPanel(id = "HAT_time", "HAT Timeline",
                  p(style = "font-size:11px;", "Note: Timeline is NOT reactive to user choice"),
-                 screenshotButton(label = "Timeline", id = "timeline", filename = paste0("HAT-Screenshot-timeline-plot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
-                 plotOutput("timeline")),
+                 screenshotButton(label = "Timevis", id = "timevis", filename = paste0("HAT-Screenshot-timeline-plot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                 timevisOutput("timevis")),
         tabPanel(id = "OH_dv", "Oak Haven Park Dataviz",
                  p(style = "font-size:11px;", "Note: Charts are interactive by hovering or clicking the data; Plots are NOT reactive to sidebar user choice"),
                  screenshotButton(label = "Species", id = "OH_plot_species_quadrat", filename = paste0("HAT-Screenshot-species-plot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
@@ -129,7 +166,7 @@ ui <- fluidPage(
                  plotlyOutput("OH_plot_quadrat_species"),
                  hr(),
                  plotlyOutput("OH_plot_nat_inv_species")),
-        tabPanel(id = "map", "Reactive Map",
+        tabPanel(id = "map", "Reactive Site Map",
                  p(style = "font-size:11px;", "HAT GOE Data from HAT Website, and Oak Haven Park Cover Monitoring"),
                  p(style = "font-size:11px;", "Note: Click markers to open popup data. Site markers are coloured by Municipality."),
                  p(style = "font-size:11px;", "The interactive leaflet map is reactive to user-choice variable!!"),
@@ -139,7 +176,7 @@ ui <- fluidPage(
                  # screenshot doesn't include background map
                  #        screenshotButton(label = "Reactive Map", id = "reactiveMap", filename = "ECCC-Screenshot-map", download = TRUE, server_dir="."),
                  fluidRow(
-                    leafletOutput("reactiveMap", width = "100%")
+                   leafletOutput("reactiveMap", width = "100%")
                    #leafletOutput("reactiveMap", height = "600px")
                    # end leaflet
                  ))
@@ -208,7 +245,18 @@ server <- function(input, output, session){
   })
 
   time_HAT <- reactive({
-    Timeline_OH
+    Timeline_OH_vis
+  })
+
+  # when I try this I get an Shiny error
+  # time_HAT_vis <- reactive({
+  #   Timeline_OH_vis
+  # })
+
+
+
+  OH_Data_orig <- reactive({
+    OH_Datasheet_orig
   })
 
 
@@ -297,6 +345,10 @@ server <- function(input, output, session){
     datatable(time_HAT(), options = list(dom = 'frtip'))
   })
 
+  output$DataOHorig <- renderDT({
+    datatable(OH_Data_orig(), options = list(dom = 'frtip'))
+  })
+
   ########################################################################
 
   # Download Button for reactive table data
@@ -305,6 +357,10 @@ server <- function(input, output, session){
     content = function(file){
       write.csv(data3(), file)
     })
+
+  ########################################################################
+  # Go to button
+
 
   ########################################################################
 
@@ -352,17 +408,27 @@ server <- function(input, output, session){
 
   ########################################################################
 
+  output$timevis <-
+    renderTimevis(timevis(Timeline_OH_vis))
+
   # Timeline Plot
   output$timeline <- renderPlot({
     Timeline_OH$When <- as.Date(Timeline_OH$When)
-    ggplot(Timeline_OH, aes(x = When, y = EventType, label = Where)) +
+    ggplot(Timeline_OH, aes(x = When, y = EventType, label = paste(Where, When, sep = "-"))) +
       #OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = What)) +
 
       geom_line() +
       geom_point(data = . %>% filter(Where != "")) +
       # geom_point(data = . %>% filter(What != "")) +
-      geom_text(aes(colour = EventType), hjust = -0.3, angle = 45) +
-      scale_x_date(name = "When", date_breaks = "6 months",
+      #      geom_text(aes(colour = EventType), hjust = -0.3, angle = 45) +
+      geom_text_repel(aes(colour = EventType),
+                      direction = "y",
+                      size = 3.5,
+                      point.padding = 0.5,
+                      hjust = 0,
+                      box.padding = 1,
+                      seed = 123) +
+      scale_x_date(name = "When", date_breaks = "4 months",
                    expand = expansion(mult = c(0.05, 0.9))) +
       # scale_x_continuous(limits = c(2024-01-01, 2026-01-01)) +
       scale_y_discrete(name = "",
@@ -371,7 +437,7 @@ server <- function(input, output, session){
       theme_minimal() +
       labs(title='Timeline',
            subtitle='HAT GOE Monitoring',
-           caption = "Chart by Wendy Anthony \n 2025-10-06")
+           caption = "Chart by Wendy Anthony \n 2025-10-07")
   })
 
   ########################################################################
@@ -437,7 +503,7 @@ server <- function(input, output, session){
           "<b>Volunteer Stewardship:</b> ", HAT_sites$Volunteer_Stewardship, "<br>"
         ))
   })
-########################################################################
+  ########################################################################
 
   # end of server
 }

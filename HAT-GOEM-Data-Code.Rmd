@@ -37,6 +37,7 @@ https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-
 library(tidyverse)
 library(plotly)
 library(htmlwidgets)
+library(stats) # for aggregate function mean
 ```
 
 
@@ -54,16 +55,24 @@ oakhaven_2025_metadata
 # Warning in read.table(file = file, header = header, sep = sep, quote = quote,  :  incomplete final line found by readTableHeader on 'data/HAT-OH-MetaData.csv'
   
 # Oak Haven Cover data 2025
+## cleaned and wrangled from file
+## HAT-Meadow Monitoring Spreadsheet 2025 - Oak Haven Park example.xlsx
 oakhaven_2025_cover <- read.csv("data/HAT-MeadowMonitoring-2025-OakHaven.csv")
-oakhaven_2025_cover
+# oakhaven_2025_cover
+
 
 # Oak Haven Timeline
 OH_timeline <- read.csv("data/Timeline-OH.csv")
 OH_timeline
+
+
+# Oak Haven Timeline for timevix
+Timeline_OH_vis <- read.csv("data/OH_timeline_date_timevis.csv", header = TRUE, sep = ",")
 # Warning in read.table(file = file, header = header, sep = sep, quote = quote,  :  incomplete final line found by readTableHeader on 'data/Timeline-OH.csv'
 ```
 
-# Data info `str()`
+# Data Exploration
+- info `str()`
 ```{r data-info-str}
 str(oakhaven_2025_cover)
 ```
@@ -79,9 +88,22 @@ OH_timeline$When <- as.Date(OH_timeline$When)
 str(OH_timeline)
 write.csv(OH_timeline, "data/OH_timeline_date.csv", row.names = FALSE)
 ```
+# Data Wrangling
+## Concatenate QUniqiueID
+```{r concatenate-unique-quadrat}
+colnames(oakhaven_2025_cover)
+oakhaven_2025_cover$QUniqueID <- paste(oakhaven_2025_cover$MonitorID, oakhaven_2025_cover$Quadrat, oakhaven_2025_cover$QuadratLocation_m, sep = "_")
+oakhaven_2025_cover$QUniqueID
+```
 
-# Filter Subset
-## Native vs Invasive
+### Save csv with new column `QUniqueID`
+- use for Shiny app
+```{r save-csv-new-col-QUniqueID}
+write.csv(oakhaven_2025_cover, "data/oakhaven_2025_cover.csv", row.names = FALSE)
+```
+
+## Filter Subset
+### Native vs Invasive
 ```{r subset-native-inv}
 oakhaven_2025_cover_nat <- oakhaven_2025_cover[oakhaven_2025_cover$Native_or_Invasive == "N",]
 
@@ -102,24 +124,128 @@ oakhaven_2025_cover_unkn_mix <- rbind(oakhaven_2025_cover_unkn, oakhaven_2025_co
 
 ```
 
+### Treated / Untreated
+```{r subset-treated-untreated}
+colnames(oakhaven_2025_cover)
+oakhaven_2025_cover_untreat <- oakhaven_2025_cover[oakhaven_2025_cover$Treated == "Untreated",]
+
+oakhaven_2025_cover_treat <- oakhaven_2025_cover[oakhaven_2025_cover$Treated == "Treated",]
+```
+
+## Reduce Columns
+
+```{r reduce-col}
+colnames(oakhaven_2025_cover_treat)
+oakhaven_2025_cover_treat_sub <-oakhaven_2025_cover_treat[-c(1,2,6,7,9,10,11,12)]
+# oakhaven_2025_cover_treat_sub
+str(oakhaven_2025_cover_treat_sub)
+
+colnames(oakhaven_2025_cover_untreat)
+oakhaven_2025_cover_untreat_sub <-oakhaven_2025_cover_untreat[-c(1,2,6,7,9,10,11,12)]
+# oakhaven_2025_cover_untreat_sub
+str(oakhaven_2025_cover_untreat_sub)
+```
+
+## Summary Stats
+```{r summary-stats}
+summary(oakhaven_2025_cover_treat_sub)
+summary(oakhaven_2025_cover_untreat_sub)
+```
 
 # Cover Percentage
+
+## sort by species
+```{r sort-species}
+# Treated
+oakhaven_2025_cover_treat_sub_srt_sp <- oakhaven_2025_cover_treat_sub[rev(order(oakhaven_2025_cover_treat_sub$Species)), ]
+# oakhaven_2025_cover_treat_sub_srt_sp
+
+# untreated
+oakhaven_2025_cover_untreat_sub_srt_sp <- oakhaven_2025_cover_untreat_sub[rev(order(oakhaven_2025_cover_untreat_sub$Species)), ]
+# oakhaven_2025_cover_untreat_sub_srt_sp
+```
+
+## sort by native/inv
+```{r sort-nat-inv}
+# Treated
+oakhaven_2025_cover_treat_sub_srt_nat <- oakhaven_2025_cover_treat_sub[rev(order(oakhaven_2025_cover_treat_sub$Native_or_Invasive)), ]
+# oakhaven_2025_cover_treat_sub_srt_nat
+
+# untreated
+oakhaven_2025_cover_untreat_sub_srt_nat <- oakhaven_2025_cover_untreat_sub[rev(order(oakhaven_2025_cover_untreat_sub$Native_or_Invasive)), ]
+# oakhaven_2025_cover_untreat_sub_srt_nat
+```
+
+## ** Mean Percent Cover group_by Species
+NOTE: *** these are the correct mean values
+- not divided by natives
+- using `dplyr`
+```{r group-species-mean-cover}
+
+oakhaven_2025_cover_treat_sp_mean <- oakhaven_2025_cover_treat %>%
+  group_by(Species) %>%
+  summarise(meanPercentCover = mean(PercentCover))
+
+# colnames(oakhaven_2025_cover_treat_mean_by_sp)
+# Round treated
+oakhaven_2025_cover_treat_sp_mean$meanPercentCover <- round(oakhaven_2025_cover_treat_sp_mean$meanPercentCover, digits = 2)
+# oakhaven_2025_cover_treat_sp_mean$meanPercentCover
+
+# Untreated
+oakhaven_2025_cover_untreat_sp_mean <- oakhaven_2025_cover_untreat %>%
+  group_by(Species) %>%
+  summarise(meanPercentCover = mean(PercentCover))
+
+# Round untreated
+oakhaven_2025_cover_untreat_sp_mean$meanPercentCover <- round(oakhaven_2025_cover_untreat_sp_mean$meanPercentCover, digits = 2)
+# oakhaven_2025_cover_untreat_sp_mean
+```
+
+
+
+
+
+### Add column Native/Inv matching
+```{r add-match-nat-column}
+# https://stackoverflow.com/questions/37034242/add-a-new-column-to-a-dataframe-using-matching-values-of-another-dataframe
+
+# add new column
+oakhaven_2025_cover_treat_sp_mean$Native_or_Invasive <- NA
+oakhaven_2025_cover_untreat_sp_mean$Native_or_Invasive <- NA
+
+# table1$val2 <- table2$val2[match(table1$pid, table2$pid)]
+
+
+# match values
+# table1$val2 <- table2$val2[match(table1$pid, table2$pid)]
+oakhaven_2025_cover_treat_sp_mean$Native_or_Invasive <- oakhaven_2025_cover$Native_or_Invasive[match(oakhaven_2025_cover_treat_sp_mean$Species, oakhaven_2025_cover$Species)]
+# oakhaven_2025_cover_treat_sp_mean
+
+# match values
+# table1$val2 <- table2$val2[match(table1$pid, table2$pid)]
+oakhaven_2025_cover_untreat_sp_mean$Native_or_Invasive <- oakhaven_2025_cover$Native_or_Invasive[match(oakhaven_2025_cover_untreat_sp_mean$Species, oakhaven_2025_cover$Species)]
+# oakhaven_2025_cover_untreat_sp_mean
+```
+
+
+## ?? Mean Cover Group by Species Treated
+```{r mean-cover-group-species-treat}
+
+
+```
+
+
+## ?? Mean Cover Group by Species Untreated
+```{r mean-cover-group-species-untreat}
+
+
+```
+
+
+
 ## Group Quadrats
 - how to identify each quadrat as a separate group ... with a unique identifier e.g. gave each of four monitoring sessions a unique ID (treated / untreated + initials of 2 different teams)
 - concatenate unique monitoring session ID + 
-
-```{r concatenate-unique-quadrat}
-colnames(oakhaven_2025_cover)
-oakhaven_2025_cover$QUniqueID <- paste(oakhaven_2025_cover$MonitorID, oakhaven_2025_cover$Quadrat, oakhaven_2025_cover$QuadratLocation_m, sep = "_")
-oakhaven_2025_cover$QUniqueID
-```
-
-### Save csv with new column `QUniqueID`
-- use for Shiny app
-```{r save-csv-new-col-QUniqueID}
-write.csv(oakhaven_2025_cover, "data/oakhaven_2025_cover.csv", row.names = FALSE)
-```
-
 
 ### Unique Quadrat IDs 
 ```{r group-by-quadrat-unique}
@@ -162,34 +288,10 @@ length(unique(oakhaven_2025_cover$Species)) #25 > 20 after removing empty traili
 ### Group by Species
 ```{r group-by-species}
 oakhaven_group_species <- oakhaven_2025_cover %>% dplyr::group_by(Species)
+oakhaven_group_species
 ```
 
-### Mean Cover of Grouped Species
-```{r group-species-mean-cover}
 
-# Mean percent cover of each species
-oakhaven_group_species_cover_mean <- oakhaven_group_species %>% dplyr::summarise(mean(PercentCover))
-oakhaven_group_species_cover_mean  # this is now a tibble, not a datafrae
-
-str(oakhaven_group_species_cover_mean)
-
-# Rename mean column
-names(oakhaven_group_species_cover_mean)[names(oakhaven_group_species_cover_mean) == 'mean(PercentCover)'] <- 'mean_percent_cover'
-oakhaven_group_species_cover_mean
-
-# Round to 2 Decimals
-# round numbers to 2 digits
-library(dplyr)
-
-str(oakhaven_group_species_cover_mean)
-
-oakhaven_group_species_cover_mean <- oakhaven_group_species_cover_mean %>% mutate(across(c('mean_percent_cover'), round, 2))
-oakhaven_group_species_cover_mean
-
-# Merge mean and native invasive
-colnames(oakhaven_2025_cover)
-oakhaven_group_species_cover_mean_merge <- merge(oakhaven_group_species_cover_mean, oakhaven_2025_cover[, c("Species", "Native_or_Invasive")], by="Species")
-```
 
 ## Species Richness
 - total number of species per Site
@@ -205,28 +307,103 @@ length(unique(oakhaven_2025_cover_unkn_mix$Species)) #4
 
 
 # Plots
-## Timelines
+
+## Time Plots
+### Timevis
+- each event needs a start and end time
+```{r timevis}
+# https://github.com/daattali/timevis
+library(timevis)
+# view minimal timeline
+# timevis()
+
+# create new vile with changed column names for timevix
+# change When to start
+# names(OH_timeline)[names(OH_timeline) == "When"] <- "start"
+# names(OH_timeline)[names(OH_timeline) == "What"] <- "content"
+# add new column and duplicate When
+# if an end date
+# OH_timeline$end <- NA 
+# OH_timeline$end <- OH_timeline$start
+
+OH_timeline
+timevis(Timeline_OH_vis)
+
+```
+
+
+### Timelines 1
 `OH_timeline`
 ```{r gdgplot-timeline-OH}
 # https://www.r4photobiology.info/galleries/plot-timeline.html
 colnames(OH_timeline)
-
-OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = Where)) +
+library(ggrepel)
+OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = paste(Where, When, sep = "-"))) +
+  # label = paste(wt, "^(", cyl, ")", sep = "")),
 #OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = What)) +
   
   geom_line() +
   geom_point(data = . %>% filter(Where != "")) +
   # geom_point(data = . %>% filter(What != "")) +
-  geom_text(aes(colour = EventType), hjust = -0.3, angle = 45) +
-  scale_x_date(name = "When", date_breaks = "6 months",
-               expand = expansion(mult = c(0.05, 0.9))) +
+  # geom_text(aes(colour = EventType), hjust = -0.3, angle = 45) +
+   # geom_text(size = 1.0) +
+  #geom_text(aes(colour = EventType), hjust = -0.3, angle = 45, size = 3.0) +
+   geom_text_repel(aes(colour = EventType), 
+     direction = "y",
+                   size = 2.5,
+                    point.padding = 0.5,
+                    hjust = 0,
+                    box.padding = 1,
+                    seed = 123) +
+  scale_x_date(name = "When", date_breaks = "4 months",
+               expand = expansion(mult = c(0.0, 0.9))) +
+              # expand = expansion(mult = c(0.05, 0.9))) +
+  # coord_cartesian(xlim = c("2024-01-01", "2026-01-01")) +
   # scale_x_continuous(limits = c(2024-01-01, 2026-01-01)) +
   scale_y_discrete(name = "",
                    expand = expansion(mult = c(0.2, 0.95))) +
   scale_colour_manual(values = c(Cover_Monitor = "seagreen", Treatment_Event = "purple"), guide = "none") +
   theme_minimal() +
-    labs(title='Timeline',
-    subtitle='HAT GOE Monitoring',
+    labs(title='Timeline of HAT GOE Monitoring',
+    # subtitle='HAT GOE Monitoring',
+    # subtitl='Oak Haven Park',
+    caption = "Chart by Wendy Anthony \n 2025-10-06")
+
+OH_timeline_plot
+```
+
+### Timelines 2
+`OH_timeline`
+```{r gdgplot-timeline-OH-2}
+# https://www.r4photobiology.info/galleries/plot-timeline.html
+colnames(OH_timeline)
+library(ggrepel)
+OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = paste(Where, When, sep = "-"))) +
+  # label = paste(wt, "^(", cyl, ")", sep = "")),
+#OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = What)) +
+  
+  geom_line() +
+  geom_point(data = . %>% filter(Where != "")) +
+  # geom_point(data = . %>% filter(What != "")) +
+  # geom_text(aes(colour = EventType), hjust = -0.3, angle = 45) +
+   # geom_text(size = 1.0) +
+   geom_text_repel(direction = "y",
+                   size = 2.5,
+                    point.padding = 0.5,
+                    hjust = 0,
+                    box.padding = 1,
+                    seed = 123) +
+  scale_x_date(name = "When", date_breaks = "4 months",
+               expand = expansion(mult = c(0.0, 0.9))) +
+              # expand = expansion(mult = c(0.05, 0.9))) +
+  # coord_cartesian(xlim = c("2024-01-01", "2026-01-01")) +
+  # scale_x_continuous(limits = c(2024-01-01, 2026-01-01)) +
+  scale_y_discrete(name = "",
+                   expand = expansion(mult = c(0.2, 0.95))) +
+  scale_colour_manual(values = c(Cover_Monitor = "seagreen", Treatment_Event = "purple"), guide = "none") +
+  theme_minimal() +
+    labs(title='Timeline of HAT GOE Monitoring',
+    # subtitle='HAT GOE Monitoring',
     # subtitl='Oak Haven Park',
     caption = "Chart by Wendy Anthony \n 2025-10-06")
 
@@ -523,25 +700,127 @@ oakhaven_2025_cover_unkn_mix_plot
 ```
 
 
+## ** Violin Plot Mean Percentage Cover Native / Invasive Untreated
 
-### Mean species Cover
-```{r ggplot-cover}
+```{r plot-mean-percent-cover-nat-inv-untreat}
 
-oakhaven_group_species_cover_mean_merge_plot  <-  ggplot(oakhaven_group_species_cover_mean_merge, 
-                    aes(x = Species, y = mean_percent_cover, fill = Native_or_Invasive)) +
+oakhaven_2025_cover_untreat_sp_mean
+colnames(oakhaven_2025_cover_untreat_sp_mean)
+
+    oakhaven_2025_cover_untreat_sp_mean_violinPlot <- ggplot(oakhaven_2025_cover_untreat_sp_mean,
+       # text = paste("Site:", Site),
+      aes(x = Native_or_Invasive, y = meanPercentCover)) +
+      geom_violin(fill = "seagreen2") +
+      geom_boxplot(width = 0.05, fill = "sandybrown") +
+#      scale_y_continuous(limits = c(8, 12)) +
+      # Replace default palette of pink & blue
+      scale_fill_brewer(palette = "Dark2") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(legend.position="bottom") +
+      # theme(legend.position="none") + #remove legend
+      theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#      scale_y_continuous(limits = c(8, 12)) +
+      labs(title='Plotting Untreated Mean Percentage Cover by Native/Invasive',
+           subtitle='Data: HAT Oak Haven Park',
+           caption = "Chart by Wendy Anthony \n 2025-10-29")
+    
+    oakhaven_2025_cover_untreat_sp_mean_violinPlot
+```
+
+## ** Violin Plot Mean Percentage Cover Native / Invasive Treated
+
+```{r plot-mean-percent-cover-nat-inv-treat}
+
+oakhaven_2025_cover_treat_sp_mean
+colnames(oakhaven_2025_cover_treat_sp_mean)
+
+    oakhaven_2025_cover_treat_sp_mean_violinPlot <- ggplot(oakhaven_2025_cover_treat_sp_mean,
+       # text = paste("Site:", Site),
+      aes(x = Native_or_Invasive, y = meanPercentCover)) +
+      geom_violin(fill = "seagreen2") +
+      geom_boxplot(width = 0.05, fill = "sandybrown") +
+#      scale_y_continuous(limits = c(8, 12)) +
+      # Replace default palette of pink & blue
+      scale_fill_brewer(palette = "Dark2") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(legend.position="bottom") +
+      # theme(legend.position="none") + #remove legend
+      theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#      scale_y_continuous(limits = c(8, 12)) +
+      labs(title='Plotting Treated Mean Percentage Cover by Native/Invasive',
+           subtitle='Data: HAT Oak Haven Park',
+           caption = "Chart by Wendy Anthony \n 2025-10-29")
+    
+    oakhaven_2025_cover_treat_sp_mean_violinPlot
+```
+
+## ??? Violin Plot Mean Percentage Cover Treat/Untreat
+- ??? can this be done
+```{r plot-mean-percent-cover-treat-untreat}
+
+```
+
+## Mean Cover Treated plot
+```{r mean-cover-treated}
+oakhaven_2025_cover_treat_sp_mean_plot  <- ggplot(oakhaven_2025_cover_treat_sp_mean,
+      aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
+      ylim(0, 100) +
+      geom_bar(stat = "identity") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+      labs(title='Comparing Mean Percentage Species Coverage Treated',
+           subtitle='Oak Haven Park',
+           caption = "Chart by Wendy Anthony \n 2025-10-29") +
+      scale_fill_discrete(name = "Native/Invasive")
+oakhaven_2025_cover_treat_sp_mean_plot
+```
+
+## Mean Cover Untreated plot
+```{r mean-cover-untreated}
+oakhaven_2025_cover_untreat_sp_mean_plot  <- ggplot(oakhaven_2025_cover_untreat_sp_mean,
+      aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
+      ylim(0, 100) +
+      geom_bar(stat = "identity") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+      labs(title='Comparing Mean Percentage Species Coverage Untreated',
+           subtitle='Oak Haven Park',
+           caption = "Chart by Wendy Anthony \n 2025-10-29") +
+      scale_fill_discrete(name = "Native/Invasive")
+oakhaven_2025_cover_untreat_sp_mean_plot
+```
+
+
+## ?? Sort Mean species Cover by Untreated
+- can these be sorted by native / inv on x axis??
+```{r ggplot-mean-cover-untreat}
+
+# colnames(oakhaven_2025_cover_untreat_sp_mean)
+# oakhaven_2025_cover_treat_sp_mean
+
+
+# sort by native
+oakhaven_2025_cover_untreat_sp_mean_srt <- oakhaven_2025_cover_untreat_sp_mean[rev(order(oakhaven_2025_cover_untreat_sp_mean$Native_or_Invasive)), ]
+
+
+oakhaven_2025_cover_untreat_sp_mean_srt_plot  <-  ggplot(oakhaven_2025_cover_untreat_sp_mean_srt, 
+                    aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
                       ylim(0, 100) +
                     #geom_bar(stat = "identity", fill = "seagreen") +
                     geom_bar(stat = "identity") +
                     theme_minimal() + #get rid of grey background and tick marks 
                     # theme(legend.position="none") + #remove legend 
                     theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-                    labs(title='Comparing Average Percentage Species Coverage',
-                      subtitle='Oak Haven Park',
-                      caption = "Chart by Wendy Anthony \n 2025-10-05")
-oakhaven_group_species_cover_mean_merge_plot
+                    labs(title='Comparing Mean Species Coverage in Untreated Plots',
+                      subtitle='HAT 2025 Cover Data Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-10-29")
+oakhaven_2025_cover_untreat_sp_mean_srt_plot
 
 # Warning: Removed 9 rows containing missing values (`geom_bar()`).
 ```
+
+
+
 
 
 
@@ -593,6 +872,7 @@ HAT_sites_map  <-  leaflet(HAT_sites) %>%
         # OM_site_data$
         # "<b>Global Restore Project GOE Monitoring Sites</b>", "<br>", "<i>(Shackelford, et. al., 2005-2022)</i>", "<br><br>",
         popup = paste0(
+        "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
           "<b>Site:</b> ", "<b>", HAT_sites$Site, "</b>",  "<br>",
           "<b>Municipality:</b> ", HAT_sites$Municipality, "<br>",
           "<b>Size:</b> ", HAT_sites$Size_ha, " (ha)", "<br>",
