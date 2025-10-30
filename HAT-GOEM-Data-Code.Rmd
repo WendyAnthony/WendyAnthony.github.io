@@ -13,7 +13,7 @@ output:
     toc: yes
     toc_depth: '3'
 ---
-Modified 2025-10-29 @ 17:57
+Modified 2025-10-29 @ 18:29
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -713,6 +713,7 @@ colnames(oakhaven_2025_cover_untreat_sp_mean)
       aes(x = Native_or_Invasive, y = meanPercentCover)) +
       geom_violin(fill = "seagreen2") +
       geom_boxplot(width = 0.05, fill = "sandybrown") +
+
 #      scale_y_continuous(limits = c(8, 12)) +
       # Replace default palette of pink & blue
       scale_fill_brewer(palette = "Dark2") +
@@ -720,12 +721,17 @@ colnames(oakhaven_2025_cover_untreat_sp_mean)
       theme(legend.position="bottom") +
       # theme(legend.position="none") + #remove legend
       theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-#      scale_y_continuous(limits = c(8, 12)) +
-      labs(title='Plotting Untreated Mean Percentage Cover by Native/Invasive',
+      scale_y_continuous(limits = c(0, 100)) +
+      labs(title='Untreated Mean Percentage Cover',
            subtitle='Data: HAT Oak Haven Park',
            caption = "Chart by Wendy Anthony \n 2025-10-29")
     
-    oakhaven_2025_cover_untreat_sp_mean_violinPlot
+    
+oakhaven_2025_cover_untreat_sp_mean_violinPlot
+    
+  # plotly
+# ggplotly(oakhaven_2025_cover_untreat_sp_mean_violinPlot)
+    
 ```
 
 ## ** Violin Plot Mean Percentage Cover Native / Invasive Treated
@@ -747,13 +753,22 @@ colnames(oakhaven_2025_cover_treat_sp_mean)
       theme(legend.position="bottom") +
       # theme(legend.position="none") + #remove legend
       theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-#      scale_y_continuous(limits = c(8, 12)) +
-      labs(title='Plotting Treated Mean Percentage Cover by Native/Invasive',
+      scale_y_continuous(limits = c(0, 100)) +
+      labs(title='Treated Mean Percentage Cover',
            subtitle='Data: HAT Oak Haven Park',
            caption = "Chart by Wendy Anthony \n 2025-10-29")
     
     oakhaven_2025_cover_treat_sp_mean_violinPlot
 ```
+
+### Combine 2 Violin plots
+```{r combine-violinp-plots}
+
+library("gridExtra")
+grid.arrange(arrangeGrob(oakhaven_2025_cover_treat_sp_mean_violinPlot, oakhaven_2025_cover_untreat_sp_mean_violinPlot, ncol = 2))     
+```
+
+
 
 ## ??? Violin Plot Mean Percentage Cover Treat/Untreat
 - ??? can this be done
