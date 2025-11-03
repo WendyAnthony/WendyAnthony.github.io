@@ -16,6 +16,8 @@ OH_metadata <- read.csv("data/HAT-OH-MetaData.csv", header = TRUE, sep = ",")
 # Timeline_OH <- read.csv("data/OH_timeline_date.csv", header = TRUE, sep = ",")
 Timeline_OH_vis <- read.csv("data/OH_timeline_date_timevis.csv", header = TRUE, sep = ",")
 OH_Datasheet_orig <- read.csv("data/HAT-Meadow Monitoring Spreadsheet 2025 - Oak Haven Park example.csv", header = TRUE, sep = ",")
+oakhaven_2025_cover_mean_by_group_species <- read.csv("data/oakhaven_2025_cover_mean_by_group_species.csv", header = TRUE, sep = ",")
+oakhaven_2025_cover_mean_by_group_treat <- read.csv("data/oakhaven_2025_cover_mean_by_group_treat.csv", header = TRUE, sep = ",")
 
 # Package Libraries
 library(shiny)
@@ -74,13 +76,13 @@ ui <- fluidPage(
                  tags$div(HTML("<hr style='height:2px;border-width:0;color:gray;background-color:gray'>")),
                  ## Screenshot buttons
                  tags$div(HTML("<b>Take Screenshots<br></b>")),
-                 tags$div(HTML("<p style='font-size:10px;font-style:italic;'>(Note: Screenshots are saved to Image folder in same location as Shiny app)</p>")), # server_dir="." - same location; or server_dir="AppImages"
+                 tags$div(HTML("<p style='font-size:10px;font-style:italic;'>(Note: Screenshots are saved to Download folder)</p>")), # server_dir="." - same location; or server_dir="AppImages"
                  screenshotButton(label = "Entire page", filename = paste0("HAT-Screenshot-entirePage-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
                  screenshotButton(label = "Input panel", id = "input_panel", filename = paste0("HAT-Screenshot-entirePage-inputPanel-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
                  # Footer
-#                 img(src = "HAT-logo-white-ss.png", height = "15%", width = "15%", align = "right"),
+                 #                 img(src = "HAT-logo-white-ss.png", height = "15%", width = "15%", align = "right"),
                  br(),br(),
-                 span(style = "font-size:10px; font-style:italic;", "HAT Shiny App Showcase Example created by Wendy Anthony, modified 2025-10-29"),
+                 span(style = "font-size:10px; font-style:italic;", "HAT Shiny App Showcase Example created by Wendy Anthony, modified 2025-11-03"),
                  br(),br()
     ),
 
@@ -95,8 +97,19 @@ ui <- fluidPage(
       # tabsetPanel
       tabsetPanel(
         id = "tabset",
-        selected = "Reactive Site Map",
-        tabPanel(id = "about", "About Proposed App",  htmlOutput("text")),
+        selected = "Sites Map",
+        tabPanel(id = "About", "About",
+                 ## -----------------------------------------
+                 # Nested tabsetPanel for tables
+                 tabsetPanel(
+                   tabPanel(
+                     id = "new", "What's New",  htmlOutput("text_new"),
+                   ),
+                   tabPanel(
+                     id = "about_app", "About Proposed App",  htmlOutput("text")),
+                 ),
+        ),
+
         tabPanel(id = "tables", "Data Tables",
                  ## -----------------------------------------
                  # Nested tabsetPanel for tables
@@ -107,6 +120,12 @@ ui <- fluidPage(
                    # screenshotButton(label = "Table", id = "table1", filename = paste0("HAT-Screenshot-table-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
                    # downloadButton("downloadData", label = "Download Site Data"),
 
+                   # Nested tabPanel
+                   tabPanel("Cover Table",
+                            h3("Oak Haven Park Mean Cover Data "),
+                            p(style = "font-size:11px;", "Note: The table is NOT reactive to user-choice variable"),
+                            DTOutput("cover"),
+                   ),
 
                    ## -----------------------------------------
                    # Nested tabPanel
@@ -156,17 +175,37 @@ ui <- fluidPage(
                  p(style = "font-size:11px;", "Note: Timeline is NOT reactive to user choice"),
                  screenshotButton(label = "Timevis", id = "timevis", filename = paste0("HAT-Screenshot-timeline-plot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
                  timevisOutput("timevis")),
-        tabPanel(id = "OH_dv", "Oak Haven Park Dataviz",
-                 p(style = "font-size:11px;", "Note: Charts are interactive by hovering or clicking the data; Plots are NOT reactive to sidebar user choice"),
-                 screenshotButton(label = "Species", id = "OH_plot_species_quadrat", filename = paste0("HAT-Screenshot-species-plot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
-                 screenshotButton(label = "Quadrats", id = "OH_plot_quadrat_species", filename = paste0("HAT-Screenshot-quadrat-plot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
-                 screenshotButton(label = "Nat/Inv", id = "OH_plot_nat_inv_species", filename = paste0("HAT-Screenshot-nat-invplot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
-                 plotlyOutput("OH_plot_species_quadrat"),
-                 hr(),
-                 plotlyOutput("OH_plot_quadrat_species"),
-                 hr(),
-                 plotlyOutput("OH_plot_nat_inv_species")),
-        tabPanel(id = "map", "Reactive Site Map",
+        tabPanel(id = "Data_Viz", "Data Viz",
+                 ## -----------------------------------------
+                 # Nested tabsetPanel for tables
+                 tabsetPanel(
+                   tabPanel(id = "OH_mean_cover", "Oak Haven Park Mean Cover Dataviz",
+                            p(style = "font-size:11px;", "Note: Cover Data 2025-04-02 to 2025-04-03"),
+                            screenshotButton(label = "Nat Cover", id = "mean_nat", filename = paste0("OH-Screenshot-mean-nat-plot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                            screenshotButton(label = "Inv Cover", id = "mean_inv", filename = paste0("OH-Screenshot--mean-inv-plot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                            screenshotButton(label = "Treat Cover", id = "mean_comp_treat", filename = paste0("OH-Screenshot-mean-comp-treat-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                            plotOutput("mean_nat"),
+                            plotOutput("mean_inv"),
+                            plotOutput("mean_comp_treat")
+                   ),
+                   tabPanel(id = "OH_dv", "Oak Haven Park Cover by Quadrat Dataviz",
+
+                            p(style = "font-size:11px;", "Note: Charts are interactive by hovering or clicking the data; Plots are NOT reactive to sidebar user choice"),
+                            screenshotButton(label = "Species", id = "OH_plot_species_quadrat", filename = paste0("HAT-Screenshot-species-plot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                            screenshotButton(label = "Quadrats", id = "OH_plot_quadrat_species", filename = paste0("HAT-Screenshot-quadrat-plot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                            screenshotButton(label = "Nat/Inv", id = "OH_plot_nat_inv_species", filename = paste0("HAT-Screenshot-nat-invplot-", format(Sys.time(), "%Y-%m-%d_%H.%M.%S")), download = TRUE, server_dir="."),
+                            plotlyOutput("OH_plot_species_quadrat"),
+                            hr(),
+                            plotlyOutput("OH_plot_quadrat_species"),
+                            hr(),
+                            plotlyOutput("OH_plot_nat_inv_species")),
+                   # end of tabPanel
+                 ),
+
+                 ## end of nested tabPanels
+        ),
+
+        tabPanel(id = "map", "Sites Map",
                  p(style = "font-size:11px;", "HAT GOE Data from HAT Website, and Oak Haven Park Cover Monitoring"),
                  p(style = "font-size:11px;", "Note: Click markers to open popup data. Site markers are coloured by Municipality."),
                  p(style = "font-size:11px;", "The interactive leaflet map is reactive to user-choice variable!!"),
@@ -236,6 +275,14 @@ server <- function(input, output, session){
     }
   })
 
+  OH_mean_cover <- reactive({
+    oakhaven_2025_cover_mean_by_group_species
+  })
+
+  OH_mean_cover_treat <- reactive({
+    oakhaven_2025_cover_mean_by_group_treat
+  })
+
   data_OH_cover <- reactive({
     oakhaven_2025_cover
   })
@@ -265,6 +312,31 @@ server <- function(input, output, session){
   # text output
   # https://stackoverflow.com/questions/23233497/outputting-multiple-lines-of-text-with-rendertext-in-r-shiny
   # https://stackoverflow.com/questions/33392784/make-bold-text-in-html-output-r-shiny
+
+  output$text_new <- renderUI({
+    str101 <- paste("What's New in this App?")
+    str1101 <- paste("Interactive Timeline")
+    str1102 <- paste("Oak Haven Park data")
+    str1103 <- paste("- See DataViz tab ...")
+    str102 <- paste("New Data Visualizations")
+    str103 <- paste("Oak Haven Park Mean Cover Dataviz")
+    str104 <- paste("- Comparing percentage mean cover of native and invasive plant species by Treatment")
+    str1201 <- paste("New Table Data")
+    str1202 <- paste("- Oak Haven Park cover data table")
+    str1301 <- paste("What's New modified 2025-11-03")
+    HTML(paste0('<H2>', str101, '</H2>',
+                '<H3>', str1101, '</H3>',
+                '<b>', str1102, '</b>', '<br/>',
+                str1103, '<br/>',
+                '<H3>', str102, '</H3>',
+                '<b>', str103, '</b>', '<br/>',
+                str104, '<br/>',
+                '<H3>', str1201, '</H3>',
+                str1202, '<br/>', '<br/>',
+                '<i>', str1301, '</i>'
+    ))
+  })
+
   output$text <- renderUI({
     str1 <- paste("Proposed Interactive Data Viz Tool")
     str2 <- paste("Here is what I propose to offer ...")
@@ -325,6 +397,11 @@ server <- function(input, output, session){
   })
 
   ########################################################################
+  # HAT_cover table output
+  output$cover <- renderDT({
+    datatable(oakhaven_2025_cover_mean_by_group_species, options = list(dom = 'frtip')) # hides show entries dropdown for small tables
+  })
+
   # HAT_sites table output
   output$sites <- renderDT({
     datatable(data3(), options = list(dom = 'frtip')) # hides show entries dropdown for small tables
@@ -363,6 +440,74 @@ server <- function(input, output, session){
 
 
   ########################################################################
+
+
+  # % Cover Native
+  output$mean_nat <- renderPlot({
+    oakhaven_2025_cover_mean_by_group_species_nat <- oakhaven_2025_cover_mean_by_group_species[oakhaven_2025_cover_mean_by_group_species$Native_or_Invasive == "Native",]
+
+    # create custom colour-blind-friendly palette
+    custom_colours_2 <- c("Treated" = "#b2df8a",
+                          "Untreated" = "#1f78b4")
+
+    ggplot(oakhaven_2025_cover_mean_by_group_species_nat, aes(Species, mean_value, fill = Treated)) +
+      geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+      geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02, position = position_dodge(0.5)) +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(legend.position ="bottom") +
+      theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+      scale_fill_manual(values = custom_colours_2) +
+      labs(title='Comparing Native Species Mean % Cover (and Standard Deviation) by Treatment',
+           subtitle='Oak Haven Park',
+           caption = "Chart by Wendy Anthony \n 2025-11-02",
+           x = "", y = "Mean % Cover", fill = "")
+  })
+
+  # % Cover Invasive
+  output$mean_inv <- renderPlot({
+    oakhaven_2025_cover_mean_by_group_species_inv <- oakhaven_2025_cover_mean_by_group_species[oakhaven_2025_cover_mean_by_group_species$Native_or_Invasive == "Invasive",]
+
+    # create custom colour-blind-friendly palette
+    custom_colours_2 <- c("Treated" = "#b2df8a",
+                          "Untreated" = "#1f78b4")
+
+    ggplot(oakhaven_2025_cover_mean_by_group_species_inv, aes(Species, mean_value, fill = Treated)) +
+      geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+      geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02, position = position_dodge(0.5)) +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(legend.position ="bottom") +
+      theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+      scale_fill_manual(values = custom_colours_2) +
+      labs(title='Comparing Invasive Mean % Cover (and Standard Deviation) by Treatment',
+           subtitle='Oak Haven Park',
+           caption = "Chart by Wendy Anthony \n 2025-11-02",
+           x = "", y = "Mean % Cover", fill = "")
+  })
+
+  # % Cover Mean Compare by Treatment
+  output$mean_comp_treat <- renderPlot({
+    # create custom colour-blind-friendly palette
+    custom_colours <- c("Invasive" = "#fc8d62",
+                        "Native" = "#66c2a5",
+                        "Mixed" = "#8da0cb")
+
+    # https://www.geeksforgeeks.org/r-language/plot-mean-and-standard-deviation-using-ggplot2-in-r/
+    ggplot(oakhaven_2025_cover_mean_by_group_treat, aes(Treated, mean_value, fill = Native_or_Invasive)) +
+      geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+      geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02, position = position_dodge(0.5)) +
+      # scale_fill_brewer(palette = "Dark2") +
+      theme_minimal() + #get rid of grey background and tick marks
+      scale_fill_manual(values = custom_colours) +
+      labs(title='Comparing Mean % Cover by Treatment',
+           subtitle='Oak Haven Parkm - with standard deviation error bars',
+           caption = "Chart by Wendy Anthony \n 2025-11-02",
+           x = "", y = "Mean % Cover",
+           # Legend Title
+           fill = "Native or Invasive"
+      )
+  })
+
+
 
   # Quadrat per Species Plot
   output$OH_plot_species_quadrat <- renderPlotly({
