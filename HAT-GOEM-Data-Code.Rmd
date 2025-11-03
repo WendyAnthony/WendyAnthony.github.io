@@ -806,22 +806,16 @@ colnames(oakhaven_2025_cover_untreat_sp_mean)
     oakhaven_2025_cover_untreat_sp_mean_violinPlot <- ggplot(oakhaven_2025_cover_untreat_sp_mean,
        # text = paste("Site:", Site),
       aes(x = Native_or_Invasive, y = meanPercentCover)) +
-      geom_violin(fill = "seagreen2") +
-      geom_boxplot(width = 0.05, fill = "sandybrown") +
-
-#      scale_y_continuous(limits = c(8, 12)) +
-      # Replace default palette of pink & blue
-      scale_fill_brewer(palette = "Dark2") +
+      geom_violin(fill = "#66c2a5") +
+      geom_boxplot(width = 0.05, fill = "#fc8d62") +
       theme_minimal() + #get rid of grey background and tick marks
       theme(legend.position="bottom") +
-      # theme(legend.position="none") + #remove legend
       theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
       scale_y_continuous(limits = c(0, 100)) +
       labs(title='Untreated Mean Percentage Cover',
            subtitle='Data: HAT Oak Haven Park',
            caption = "Chart by Wendy Anthony \n 2025-10-29")
-    
-    
+  
 oakhaven_2025_cover_untreat_sp_mean_violinPlot
     
   # plotly
@@ -837,16 +831,11 @@ oakhaven_2025_cover_treat_sp_mean
 colnames(oakhaven_2025_cover_treat_sp_mean)
 
     oakhaven_2025_cover_treat_sp_mean_violinPlot <- ggplot(oakhaven_2025_cover_treat_sp_mean,
-       # text = paste("Site:", Site),
       aes(x = Native_or_Invasive, y = meanPercentCover)) +
-      geom_violin(fill = "seagreen2") +
-      geom_boxplot(width = 0.05, fill = "sandybrown") +
-#      scale_y_continuous(limits = c(8, 12)) +
-      # Replace default palette of pink & blue
-      scale_fill_brewer(palette = "Dark2") +
+      geom_violin(fill = "#66c2a5") +
+      geom_boxplot(width = 0.05, fill = "#fc8d62") +
       theme_minimal() + #get rid of grey background and tick marks
       theme(legend.position="bottom") +
-      # theme(legend.position="none") + #remove legend
       theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
       scale_y_continuous(limits = c(0, 100)) +
       labs(title='Treated Mean Percentage Cover',
@@ -856,7 +845,7 @@ colnames(oakhaven_2025_cover_treat_sp_mean)
     oakhaven_2025_cover_treat_sp_mean_violinPlot
 ```
 
-### Combine 2 Violin plots
+### ** Combine 2 Violin plots
 ```{r combine-violin-plots}
 
 library("gridExtra")
@@ -866,18 +855,19 @@ grid.arrange(arrangeGrob(oakhaven_2025_cover_treat_sp_mean_violinPlot, oakhaven_
 ## Compare Treat to Untreat
 
 ### Mean Cover Species plot all
+- using colour-blind-friendly palette
 ```{r mean-cover-species-all}
 colnames(oakhaven_2025_cover_mean_by_group_species)
-# create custom colour palette
-custom_colours <- c("Treated" = "#7fc97f", 
-                    "Untreated" = "#386cb0")
+# create custom colour-blind-friendly palette
+custom_colours_2 <- c("Treated" = "#b2df8a", 
+                    "Untreated" = "#1f78b4")
 
 oakhaven_2025_cover_mean_by_group_species_plot <- ggplot(oakhaven_2025_cover_mean_by_group_species, aes(Species, mean_value, fill = Treated)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-    scale_fill_manual(values = custom_colours) +
+    scale_fill_manual(values = custom_colours_2) +
         labs(title='Comparing All Species Percent Cover by Treatment',
           subtitle='Oak Haven Park',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
@@ -890,16 +880,16 @@ colnames(oakhaven_2025_cover_mean_by_group_species)
 
 oakhaven_2025_cover_mean_by_group_species_nat <- oakhaven_2025_cover_mean_by_group_species[oakhaven_2025_cover_mean_by_group_species$Native_or_Invasive == "Native",]
 
-# create custom colour palette
-custom_colours <- c("Treated" = "#7fc97f", 
-                    "Untreated" = "#386cb0")
+# create custom colour-blind-friendly palette
+custom_colours_2 <- c("Treated" = "#b2df8a", 
+                    "Untreated" = "#1f78b4")
 
 oakhaven_2025_cover_mean_by_group_species_nat_plot <- ggplot(oakhaven_2025_cover_mean_by_group_species_nat, aes(Species, mean_value, fill = Treated)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-    scale_fill_manual(values = custom_colours) +
+    scale_fill_manual(values = custom_colours_2) +
         labs(title='Comparing Native Species Percent Cover by Treatment',
           subtitle='Oak Haven Park',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
@@ -913,16 +903,16 @@ colnames(oakhaven_2025_cover_mean_by_group_species)
 
 oakhaven_2025_cover_mean_by_group_species_inv <- oakhaven_2025_cover_mean_by_group_species[oakhaven_2025_cover_mean_by_group_species$Native_or_Invasive == "Invasive",]
 
-# create custom colour palette
-custom_colours <- c("Treated" = "#7fc97f", 
-                    "Untreated" = "#386cb0")
+# create custom colour-blind-friendly palette
+custom_colours_2 <- c("Treated" = "#b2df8a", 
+                    "Untreated" = "#1f78b4")
 
 oakhaven_2025_cover_mean_by_group_species_inv_plot <- ggplot(oakhaven_2025_cover_mean_by_group_species_inv, aes(Species, mean_value, fill = Treated)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-    scale_fill_manual(values = custom_colours) +
+    scale_fill_manual(values = custom_colours_2) +
         labs(title='Comparing Invasive Species Percent Cover by Treatment',
           subtitle='Oak Haven Park',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
@@ -934,7 +924,7 @@ oakhaven_2025_cover_mean_by_group_species_inv_plot
 
 ### Mean Cover Treated plot
 ```{r mean-cover-treated}
-# create custom colour palette
+# create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
                     "Mixed" = "#8da0cb")
@@ -954,6 +944,7 @@ oakhaven_2025_cover_treat_sp_mean_plot
 
 ### Mean Cover Untreated plot
 ```{r mean-cover-untreated}
+# create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
                     "Mixed" = "#8da0cb")
@@ -976,7 +967,7 @@ oakhaven_2025_cover_treat_sp_mean_plot
 - ?? can these be sorted by native/inv
 ```{r compare-treat-untreat}
 colnames(OH_2025_perc_cover_treat_mean_merge)
-# create custom colour palette
+# create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
                     "Mixed" = "#8da0cb")
@@ -1003,7 +994,7 @@ OH_2025_perc_cover_untreat_mean_merge_plot
 - ?? can these be sorted by native/inv
 ```{r compare-treat-treat}
 colnames(OH_2025_perc_cover_treat_mean_merge)
-# create custom colour palette
+# create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
                     "Mixed" = "#8da0cb")
@@ -1050,7 +1041,7 @@ OH_2025_perc_cover_treat_mean_merge_plot
 colnames(oakhaven_2025_cover_mean_by_group_treat)
 str(oakhaven_2025_cover_mean_by_group_treat)
 
-# create custom colour palette
+# create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
                     "Mixed" = "#8da0cb")
@@ -1076,7 +1067,7 @@ compare_treat_untreat_bar
 colnames(oakhaven_2025_cover_mean_by_group_treat)
 str(oakhaven_2025_cover_mean_by_group_treat)
 
-# create custom colour palette
+# create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
                     "Mixed" = "#8da0cb")
@@ -1110,9 +1101,9 @@ colnames(oakhaven_2025_cover_mean_by_group_treat)
 oakhaven_2025_cover_mean_by_group_treat_violin <- ggplot(oakhaven_2025_cover_mean_by_group_treat,
        # text = paste("Site:", Site),
       aes(x = Treated, y = mean_value)) +
-      geom_violin(fill = "seagreen2") +
-      geom_boxplot(width = 0.05, fill = "sandybrown") +
-geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02) +
+      geom_violin(fill = "#66c2a5") +
+      geom_boxplot(width = 0.05, fill = "#fc8d62") +
+      geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02) +
       scale_fill_brewer(palette = "Dark2") +
       theme_minimal() + #get rid of grey background and tick marks
       scale_y_continuous(limits = c(0, 100)) +
