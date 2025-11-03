@@ -13,7 +13,7 @@ output:
     toc: yes
     toc_depth: '3'
 ---
-Modified 2025-11-02 @ 19:09
+Modified 2025-11-03 @ 05:35
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -878,6 +878,7 @@ oakhaven_2025_cover_mean_by_group_species_plot <- ggplot(oakhaven_2025_cover_mea
           x = "", y = "Mean % Cover", fill = "")
 oakhaven_2025_cover_mean_by_group_species_plot
 ```
+
 ### ** Mean Cover Species plot native
 ```{r mean-cover-species-nat}
 colnames(oakhaven_2025_cover_mean_by_group_species)
