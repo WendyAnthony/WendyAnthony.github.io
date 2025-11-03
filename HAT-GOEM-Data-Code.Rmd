@@ -812,7 +812,7 @@ colnames(oakhaven_2025_cover_untreat_sp_mean)
       theme(legend.position="bottom") +
       theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
       scale_y_continuous(limits = c(0, 100)) +
-      labs(title='Untreated Mean Percentage Cover',
+      labs(title='Untreated Total Mean % Cover',
            subtitle='Data: HAT Oak Haven Park',
            caption = "Chart by Wendy Anthony \n 2025-10-29")
   
@@ -838,7 +838,7 @@ colnames(oakhaven_2025_cover_treat_sp_mean)
       theme(legend.position="bottom") +
       theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
       scale_y_continuous(limits = c(0, 100)) +
-      labs(title='Treated Mean Percentage Cover',
+      labs(title='Treated Total Mean % Cover',
            subtitle='Data: HAT Oak Haven Park',
            caption = "Chart by Wendy Anthony \n 2025-10-29")
     
@@ -849,8 +849,11 @@ colnames(oakhaven_2025_cover_treat_sp_mean)
 ```{r combine-violin-plots}
 
 library("gridExtra")
-grid.arrange(arrangeGrob(oakhaven_2025_cover_treat_sp_mean_violinPlot, oakhaven_2025_cover_untreat_sp_mean_violinPlot, ncol = 2))     
+oakhaven_2025_cover_tr_untr_mean_violinPlot <- grid.arrange(arrangeGrob(oakhaven_2025_cover_treat_sp_mean_violinPlot, oakhaven_2025_cover_untreat_sp_mean_violinPlot, ncol = 2))    
+
+ggsave("images/compare_mean_sd_treat_untreat_violin.png", oakhaven_2025_cover_tr_untr_mean_violinPlot)
 ```
+
 
 ## Compare Treat to Untreat
 
@@ -864,11 +867,12 @@ custom_colours_2 <- c("Treated" = "#b2df8a",
 
 oakhaven_2025_cover_mean_by_group_species_plot <- ggplot(oakhaven_2025_cover_mean_by_group_species, aes(Species, mean_value, fill = Treated)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02, position = position_dodge(0.5)) +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
     scale_fill_manual(values = custom_colours_2) +
-        labs(title='Comparing All Species Percent Cover by Treatment',
+        labs(title='Comparing All Species Mean Percent Cover (and Standard Deviation) by Treatment',
           subtitle='Oak Haven Park',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
           x = "", y = "Mean % Cover", fill = "")
@@ -886,15 +890,18 @@ custom_colours_2 <- c("Treated" = "#b2df8a",
 
 oakhaven_2025_cover_mean_by_group_species_nat_plot <- ggplot(oakhaven_2025_cover_mean_by_group_species_nat, aes(Species, mean_value, fill = Treated)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02, position = position_dodge(0.5)) +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
     scale_fill_manual(values = custom_colours_2) +
-        labs(title='Comparing Native Species Percent Cover by Treatment',
+        labs(title='Comparing Native Species Mean % Cover (and Standard Deviation) by Treatment',
           subtitle='Oak Haven Park',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
           x = "", y = "Mean % Cover", fill = "")
 oakhaven_2025_cover_mean_by_group_species_nat_plot
+
+ggsave("images/oakhaven_2025_cover_mean_by_group_species_nat_barplot.png", oakhaven_2025_cover_mean_by_group_species_nat_plot)
 ```
 
 ### ** Mean Cover Species plot invasive
@@ -909,15 +916,18 @@ custom_colours_2 <- c("Treated" = "#b2df8a",
 
 oakhaven_2025_cover_mean_by_group_species_inv_plot <- ggplot(oakhaven_2025_cover_mean_by_group_species_inv, aes(Species, mean_value, fill = Treated)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+    geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02, position = position_dodge(0.5)) +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
     scale_fill_manual(values = custom_colours_2) +
-        labs(title='Comparing Invasive Species Percent Cover by Treatment',
+        labs(title='Comparing Invasive Mean % Cover (and Standard Deviation) by Treatment',
           subtitle='Oak Haven Park',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
           x = "", y = "Mean % Cover", fill = "")
 oakhaven_2025_cover_mean_by_group_species_inv_plot
+
+ggsave("images/oakhaven_2025_cover_mean_by_group_species_inv_barplot.png", oakhaven_2025_cover_mean_by_group_species_inv_plot)
 ```
 
 
@@ -1018,7 +1028,7 @@ OH_2025_perc_cover_treat_mean_merge_plot
 ```
 
 
-#### Sort Native / Invasive
+#### ?? Sort Native / Invasive
 - as per `file:///Users/wanthony/Documents/R/Test-Shiny-GOE-Monitor/TEST-GOE-Monitor.html#48_Violin_Subregion_by_Exotic_species`
 
 ```{r sort-order}
@@ -1059,6 +1069,8 @@ compare_treat_untreat_bar <- ggplot(oakhaven_2025_cover_mean_by_group_treat, aes
           fill = "Native or Invasive")
   
 compare_treat_untreat_bar
+
+
 ```
 
 ### Compare Means and SD Bar Chart Dodge
@@ -1079,7 +1091,7 @@ compare_mean_sd_treat_untreat_bar <- ggplot(oakhaven_2025_cover_mean_by_group_tr
   # scale_fill_brewer(palette = "Dark2") +
   theme_minimal() + #get rid of grey background and tick marks
     scale_fill_manual(values = custom_colours) +
-        labs(title='Comparing Mean Percent Cover by Treatment',
+        labs(title='Comparing Mean % Cover by Treatment',
           subtitle='Oak Haven Parkm - with standard deviation error bars',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
           x = "", y = "Mean % Cover",
@@ -1088,7 +1100,9 @@ compare_mean_sd_treat_untreat_bar <- ggplot(oakhaven_2025_cover_mean_by_group_tr
           )
   
 compare_mean_sd_treat_untreat_bar
+ggsave("images/compare_mean_sd_treat_untreat_bar.png", compare_mean_sd_treat_untreat_bar)
 ```
+
 
 
 
