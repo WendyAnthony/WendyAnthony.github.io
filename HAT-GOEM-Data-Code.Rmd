@@ -13,7 +13,7 @@ output:
     toc: yes
     toc_depth: '3'
 ---
-Modified 2025-11-03 @ 05:35
+Modified 2025-11-03 @ 05:43
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -872,7 +872,7 @@ oakhaven_2025_cover_mean_by_group_species_plot <- ggplot(oakhaven_2025_cover_mea
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
     scale_fill_manual(values = custom_colours_2) +
-        labs(title='Comparing All Species Mean Percent Cover (and Standard Deviation) by Treatment',
+        labs(title='Comparing All Species Mean % Cover (and Standard Deviation) by Treatment',
           subtitle='Oak Haven Park',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
           x = "", y = "Mean % Cover", fill = "")
