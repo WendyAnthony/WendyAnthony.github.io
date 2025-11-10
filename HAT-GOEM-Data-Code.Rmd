@@ -13,7 +13,7 @@ output:
     toc: yes
     toc_depth: '3'
 ---
-Modified 2025-11-03 @ 05:43
+Modified 2025-11-10 @ 08:06
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -67,8 +67,9 @@ OH_timeline <- read.csv("data/Timeline-OH.csv")
 OH_timeline
 
 
-# Oak Haven Timeline for timevix
+# Oak Haven Timeline for timevis
 Timeline_OH_vis <- read.csv("data/OH_timeline_date_timevis.csv", header = TRUE, sep = ",")
+Timeline_OH_vis
 # Warning in read.table(file = file, header = header, sep = sep, quote = quote,  :  incomplete final line found by readTableHeader on 'data/Timeline-OH.csv'
 ```
 
@@ -86,6 +87,7 @@ str(oakhaven_2025_cover)
 
 str(OH_timeline)
 OH_timeline$When <- as.Date(OH_timeline$When)
+OH_timeline$end <- as.Date(OH_timeline$end)
 str(OH_timeline)
 write.csv(OH_timeline, "data/OH_timeline_date.csv", row.names = FALSE)
 ```
@@ -151,6 +153,8 @@ oakhaven_2025_cover_mean_by_group_treat <- oakhaven_2025_cover %>%
   summarise(mean_value = mean(PercentCover), 
             sd_value = sd(PercentCover))
 oakhaven_2025_cover_mean_by_group_treat
+
+write.csv(oakhaven_2025_cover_mean_by_group_treat, "data/oakhaven_2025_cover_mean_by_group_treat.csv", row.names = FALSE)
 ```
 
 
@@ -163,6 +167,7 @@ oakhaven_2025_cover_mean_by_group_species <- oakhaven_2025_cover %>%
             sd_value = sd(PercentCover))
 oakhaven_2025_cover_mean_by_group_species
 
+write.csv(oakhaven_2025_cover_mean_by_group_species, "data/oakhaven_2025_cover_mean_by_group_species.csv", row.names = FALSE)
 ```
 
 
@@ -406,17 +411,21 @@ unique(oakhaven_2025_cover_sub_inv_untr$Species)
 
 ## Time Plots
 ### Timevis
+#### OH Timevis
 - each event needs a start and end time
 ```{r timevis}
 # https://github.com/daattali/timevis
 library(timevis)
+
+
+#   ?timevis()
 # view minimal timeline
 # timevis()
 
-# create new vile with changed column names for timevix
+# create new file with changed column names for timevis
 # change When to start
-# names(OH_timeline)[names(OH_timeline) == "When"] <- "start"
-# names(OH_timeline)[names(OH_timeline) == "What"] <- "content"
+names(OH_timeline)[names(OH_timeline) == "When"] <- "start"
+names(OH_timeline)[names(OH_timeline) == "What"] <- "content"
 # add new column and duplicate When
 # if an end date
 # OH_timeline$end <- NA 
@@ -425,7 +434,78 @@ library(timevis)
 OH_timeline
 timevis(Timeline_OH_vis)
 
+
 ```
+
+
+#### Create df for Timevis 
+```{r timevis-df}
+today <- as.character(Sys.Date())
+hat_timedata <- data.frame(
+      id = 1:5, 
+      start = c("2024-04-02", "2025-04-02", "2002-01-01", "1997-01-01", "2004-01-01"),     
+      end = c("2024-04-03", "2025-04-03", NA, NA, NA),      
+#      end = c("2024-04-03", "2025-04-03", today, today, today),
+      # start = Sys.Date() + c(1, - 10, 4, 20, -10, 10),
+      # end = c(rep(as.Date(NA), 4), Sys.Date(), Sys.Date() + 20),
+      group = c(1,1,2,3,1),
+      content = c("OHP Treatment", "OHP Monitoring Cover", "HP Park Creation", "MCA Park Creation", "OHP Covenant Creation")
+      #,
+      #subgroup = c("1.1", "1.2", "1.2", "2.1", "2.2", "2.2")
+    )
+    
+timevis(hat_timedata)
+# HAT_timevisDataGroups_what <- data.frame(
+#   id = c("treat", "monitor", "park_creation", "covenant_creation"),
+#   content = c("Treatment", "Monitoring", "Park Creation", "Covenant Creation")
+# )
+HAT_timevisDataGroups_where <- data.frame(
+  id = 1:3,
+  content = c("Oak Haven Park", "Havenwood Park", "Matson Conservation Area"),
+  style = "font-weight: bold"
+)
+
+# timevis::timevis(data = hat_timedata, groups = HAT_timevisDataGroups_what, options = list(stack = TRUE))
+
+timevis::timevis(data = hat_timedata, groups = HAT_timevisDataGroups_where, options = list(orientation = 'bottom'), showZoom = TRUE, zoomFactor = 0.5, fit = TRUE)
+# horizontalScroll = TRUE, verticalScroll = TRUE not working
+# zoomFactor = 0.5,
+
+
+```
+#### test
+```{r test}
+
+```
+
+
+
+#### Group Timevis
+- groups need ID and separate df  
+- each event needs a start and end time  
+```{r timevis-group}
+# https://github.com/daattali/timevis
+library(timevis)
+str(HAT_sites)
+colnames(HAT_sites)
+str(Timeline_OH_vis)
+colnames(Timeline_OH_vis)
+
+?timevis
+
+HAT_timevisDataGroups <- data.frame(
+  id = c("treat", "monitor", "park_creation", "covenant_creation"),
+  content = c("Treatment", "Monitoring", "Park Creation", "Covenant Creation")
+)
+HAT_timevisDataGroups
+
+OH_timeline
+timevis(Timeline_OH_vis)
+timevis(OH_timeline)
+
+```
+
+
 
 
 ### Timelines 1
@@ -434,7 +514,7 @@ timevis(Timeline_OH_vis)
 # https://www.r4photobiology.info/galleries/plot-timeline.html
 colnames(OH_timeline)
 library(ggrepel)
-OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = paste(Where, When, sep = "-"))) +
+OH_timeline_plot <- ggplot(OH_timeline, aes(x = start, y = EventType, label = paste(Where, start, sep = "-"))) +
   # label = paste(wt, "^(", cyl, ")", sep = "")),
 #OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = What)) +
   
@@ -474,7 +554,7 @@ OH_timeline_plot
 # https://www.r4photobiology.info/galleries/plot-timeline.html
 colnames(OH_timeline)
 library(ggrepel)
-OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = paste(Where, When, sep = "-"))) +
+OH_timeline_plot <- ggplot(OH_timeline, aes(x = start, y = EventType, label = paste(Where, start, sep = "-"))) +
   # label = paste(wt, "^(", cyl, ")", sep = "")),
 #OH_timeline_plot <- ggplot(OH_timeline, aes(x = When, y = EventType, label = What)) +
   
@@ -905,6 +985,8 @@ oakhaven_2025_cover_mean_by_group_species_nat_plot
 ggsave("images/oakhaven_2025_cover_mean_by_group_species_nat_barplot.png", oakhaven_2025_cover_mean_by_group_species_nat_plot)
 ```
 
+
+
 ### ** Mean Cover Species plot invasive
 ```{r mean-cover-species-inv}
 colnames(oakhaven_2025_cover_mean_by_group_species)
@@ -922,7 +1004,7 @@ oakhaven_2025_cover_mean_by_group_species_inv_plot <- ggplot(oakhaven_2025_cover
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
     scale_fill_manual(values = custom_colours_2) +
-        labs(title='Comparing Invasive Mean % Cover (and Standard Deviation) by Treatment',
+        labs(title='Comparing Invasive Species Mean % Cover (and Standard Deviation) by Treatment',
           subtitle='Oak Haven Park',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
           x = "", y = "Mean % Cover", fill = "")
@@ -947,10 +1029,37 @@ oakhaven_2025_cover_treat_sp_mean_plot  <- ggplot(oakhaven_2025_cover_treat_sp_m
       scale_fill_manual(values = custom_colours, name = "Native/Invasive") +
       theme_minimal() + #get rid of grey background and tick marks
       theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-      labs(title='Comparing Mean Percentage Species Coverage Treated',
+      labs(title='Comparing Mean Percentage Species Coverage in Treated Plots',
            subtitle='Oak Haven Park',
            caption = "Chart by Wendy Anthony \n 2025-10-29")
 oakhaven_2025_cover_treat_sp_mean_plot
+```
+
+#### *** Sort Mean Cover Treated plot
+```{r mean-cover-treated-sort}
+colnames(oakhaven_2025_cover_treat_sp_mean)
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "Mixed" = "#8da0cb")
+
+oakhaven_2025_cover_treat_sp_mean_plot_sort  <- oakhaven_2025_cover_treat_sp_mean %>% arrange(desc(meanPercentCover)) %>%
+  # updates Site with new arrangement
+   mutate(Species = factor(Species, levels = Species)) %>% 
+      
+  ggplot(
+      aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
+      ylim(0, 100) +
+      geom_bar(stat = "identity") +
+      scale_fill_manual(values = custom_colours, name = "Native/Invasive") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+      labs(title='Comparing Mean Percentage Species Coverage in Treated Plots',
+           subtitle='Oak Haven Park',
+           caption = "Chart by Wendy Anthony \n 2025-11-03")
+oakhaven_2025_cover_treat_sp_mean_plot_sort
+
+ggsave("images/oakhaven_2025_cover_treat_sp_mean_plot_sort_barplot.png", oakhaven_2025_cover_treat_sp_mean_plot_sort)
 ```
 
 ### Mean Cover Untreated plot
@@ -967,23 +1076,30 @@ oakhaven_2025_cover_treat_sp_mean_plot  <- ggplot(oakhaven_2025_cover_untreat_sp
       scale_fill_manual(values = custom_colours, name = "Native/Invasive") +
       theme_minimal() + #get rid of grey background and tick marks
       theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-      labs(title='Comparing Mean Percentage Species Coverage Untreated',
+      labs(title='Comparing Mean Percentage Species Coverage in Untreated Plots',
            subtitle='Oak Haven Park',
            caption = "Chart by Wendy Anthony \n 2025-10-29")
 oakhaven_2025_cover_treat_sp_mean_plot
 ```
 
 
+
+
 ### ** Untreated
-- ?? can these be sorted by native/inv
-```{r compare-treat-untreat}
+- sorted by highest mean % cover
+- see next chart for grouped by native/inv
+```{r compare-treat-untreat-sort-high-mean-cover}
 colnames(OH_2025_perc_cover_treat_mean_merge)
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
                     "Mixed" = "#8da0cb")
 
-OH_2025_perc_cover_untreat_mean_merge_plot <- ggplot(OH_2025_perc_cover_treat_mean_merge, 
+OH_2025_perc_cover_untreat_mean_merge_plot_sort <- OH_2025_perc_cover_treat_mean_merge %>% arrange(desc(u_meanPercentCover)) %>%
+  # updates Site with new arrangement
+   mutate(Species = factor(Species, levels = Species)) %>% 
+    
+  ggplot( 
                     aes(x = Species, y = u_meanPercentCover, fill = Native_or_Invasive)) +
                       ylim(0, 100) +
                     #geom_bar(stat = "identity", fill = "seagreen") +
@@ -998,20 +1114,29 @@ OH_2025_perc_cover_untreat_mean_merge_plot <- ggplot(OH_2025_perc_cover_treat_me
                       y = "Mean % Cover (umtreated)",
                       # Legend Title
           fill = "Native or Invasive")
-OH_2025_perc_cover_untreat_mean_merge_plot
+OH_2025_perc_cover_untreat_mean_merge_plot_sort
+
+ggsave("images/OH_2025_perc_cover_untreat_mean_merge_plot_sort_barplot.png", OH_2025_perc_cover_untreat_mean_merge_plot_sort)
 ```
 
-### ** Treated
-- ?? can these be sorted by native/inv
-```{r compare-treat-treat}
+
+### ** Grouped Sorted Untreated
+- grouped by native/inv
+```{r compare-treat-untreat-sort-group-1}
 colnames(OH_2025_perc_cover_treat_mean_merge)
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
                     "Mixed" = "#8da0cb")
 
-OH_2025_perc_cover_treat_mean_merge_plot <- ggplot(OH_2025_perc_cover_treat_mean_merge, 
-                    aes(x = Species, y = t_meanPercentCover, fill = Native_or_Invasive)) +
+OH_2025_perc_cover_untreat_mean_merge_plot_sort_group <- OH_2025_perc_cover_treat_mean_merge %>% 
+  group_by(Native_or_Invasive) %>%
+  arrange(desc(u_meanPercentCover)) %>%
+  # updates Site with new arrangement
+   mutate(Species = factor(Species, levels = Species)) %>% 
+    
+  ggplot( 
+                    aes(x = Species, y = u_meanPercentCover, fill = Native_or_Invasive)) +
                       ylim(0, 100) +
                     #geom_bar(stat = "identity", fill = "seagreen") +
                     geom_bar(stat = "identity") +
@@ -1019,28 +1144,83 @@ OH_2025_perc_cover_treat_mean_merge_plot <- ggplot(OH_2025_perc_cover_treat_mean
                     theme_minimal() + #get rid of grey background and tick marks 
                     # theme(legend.position="none") + #remove legend 
                     theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-                    labs(title='Comparing Mean Species Coverage in Treated Plots',
+                    labs(title='Comparing Mean Species Coverage in Untreated Plots',
                       subtitle='HAT 2025 Cover Data Oak Haven Park',
-                      caption = "Chart by Wendy Anthony \n 2025-10-29",
-                      y = "Mean % Cover (treated)",
+                      caption = "Chart by Wendy Anthony \n 2025-11-03",
+                      y = "Mean % Cover (umtreated)",
                       # Legend Title
           fill = "Native or Invasive")
-OH_2025_perc_cover_treat_mean_merge_plot
+OH_2025_perc_cover_untreat_mean_merge_plot_sort_group
+
+ggsave("images/OH_2025_perc_cover_untreat_mean_merge_plot_sort_group_barplot.png", OH_2025_perc_cover_untreat_mean_merge_plot_sort_group)
 ```
 
 
-#### ?? Sort Native / Invasive
-- as per `file:///Users/wanthony/Documents/R/Test-Shiny-GOE-Monitor/TEST-GOE-Monitor.html#48_Violin_Subregion_by_Exotic_species`
 
-```{r sort-order}
-# Reorder following a precise order
-# https://r-graph-gallery.com/267-reorder-a-variable-in-ggplot2.html
-# https://stackoverflow.com/questions/18413756/re-ordering-factor-levels-in-data-frame
+#### *** Grouped Sort Mean Cover Treated plot 
+\- as per `file:///Users/wanthony/Documents/R/Test-Shiny-GOE-Monitor/TEST-GOE-Monitor.html#48_Violin_Subregion_by_Exotic_species`
+- e.g. group_by(Native_or_Invasive) %>%
 
-# Step 1 change character to factor
+```{r mean-cover-treated-sort-group}
+colnames(oakhaven_2025_cover_treat_sp_mean)
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "Mixed" = "#8da0cb")
+
+oakhaven_2025_cover_treat_sp_mean_plot_sort_group  <- oakhaven_2025_cover_treat_sp_mean %>% 
+  group_by(Native_or_Invasive) %>%
+  arrange(desc(meanPercentCover)) %>%
+  # updates Site with new arrangement
+   mutate(Species = factor(Species, levels = Species)) %>% 
+      
+  ggplot(
+      aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
+      ylim(0, 100) +
+      geom_bar(stat = "identity") +
+      scale_fill_manual(values = custom_colours, name = "Native/Invasive") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+      labs(title='Comparing Mean Percentage Species Coverage in Treated Plots',
+           subtitle='Oak Haven Park',
+           caption = "Chart by Wendy Anthony \n 2025-11-03")
+oakhaven_2025_cover_treat_sp_mean_plot_sort_group
+
+ggsave("images/oakhaven_2025_cover_treat_sp_mean_plot_sort_group_barplot.png", oakhaven_2025_cover_treat_sp_mean_plot_sort_group)
+```
 
 
+### ** Untreated
+- ?? can these be sorted by native/inv
+```{r compare-treat-untreat-sort-group}
+colnames(OH_2025_perc_cover_treat_mean_merge)
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "Mixed" = "#8da0cb")
 
+OH_2025_perc_cover_untreat_mean_merge_plot_sort <- OH_2025_perc_cover_treat_mean_merge %>% arrange(desc(u_meanPercentCover)) %>%
+  # updates Site with new arrangement
+   mutate(Species = factor(Species, levels = Species)) %>% 
+    
+  ggplot( 
+                    aes(x = Species, y = u_meanPercentCover, fill = Native_or_Invasive)) +
+                      ylim(0, 100) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    scale_fill_manual(values = custom_colours) +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Mean Species Coverage in Untreated Plots',
+                      subtitle='HAT 2025 Cover Data Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-10-29",
+                      y = "Mean % Cover (umtreated)",
+                      # Legend Title
+          fill = "Native or Invasive")
+OH_2025_perc_cover_untreat_mean_merge_plot_sort
+
+ggsave("images/OH_2025_perc_cover_untreat_mean_merge_plot_sort_barplot.png", OH_2025_perc_cover_untreat_mean_merge_plot_sort)
 ```
 
 
@@ -1079,6 +1259,7 @@ compare_treat_untreat_bar
 ```{r compare-mean-sd-tr-untr-bar-dodge}
 colnames(oakhaven_2025_cover_mean_by_group_treat)
 str(oakhaven_2025_cover_mean_by_group_treat)
+colnames(oakhaven_2025_cover_mean_by_group_species)
 
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
@@ -1093,7 +1274,7 @@ compare_mean_sd_treat_untreat_bar <- ggplot(oakhaven_2025_cover_mean_by_group_tr
   theme_minimal() + #get rid of grey background and tick marks
     scale_fill_manual(values = custom_colours) +
         labs(title='Comparing Mean % Cover by Treatment',
-          subtitle='Oak Haven Parkm - with standard deviation error bars',
+          subtitle='Oak Haven Park - with standard deviation error bars',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
           x = "", y = "Mean % Cover",
           # Legend Title
