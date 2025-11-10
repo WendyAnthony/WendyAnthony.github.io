@@ -955,7 +955,7 @@ oakhaven_2025_cover_mean_by_group_species_plot <- ggplot(oakhaven_2025_cover_mea
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
     scale_fill_manual(values = custom_colours_2) +
-        labs(title='Comparing All Species Mean % Cover (and Standard Deviation) by Treatment',
+        labs(title='Comparing All Species Mean % Cover (& SD) by Treatment',
           subtitle='Oak Haven Park',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
           x = "", y = "Mean % Cover", fill = "")
@@ -979,11 +979,23 @@ oakhaven_2025_cover_mean_by_group_species_nograss_plot <- oakhaven_2025_cover_me
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
     scale_fill_manual(values = custom_colours_2) +
-        labs(title='Comparing All Species Mean % Cover (and Standard Deviation) by Treatment',
+        labs(title='Comparing All Species Mean % Cover (& SD) by Treatment',
           subtitle='Oak Haven Park (no grass)',
           caption = "Chart by Wendy Anthony \n 2025-11-10",
           x = "", y = "Mean % Cover", fill = "")
 oakhaven_2025_cover_mean_by_group_species_nograss_plot
+```
+
+
+### ** Combine 2 Bar Dodge plots
+Comparing All Species Mean % Cover (and Standard Deviation) by Treatment
+```{r combine-bar-dodge-plots}
+
+library("gridExtra")
+
+combine_oakhaven_2025_cover_tr_untr_mean_bar_dodge_Plot <- grid.arrange(arrangeGrob(oakhaven_2025_cover_mean_by_group_species_plot, oakhaven_2025_cover_mean_by_group_species_nograss_plot, ncol = 2))    
+
+ggsave("images/combine_oakhaven_2025_cover_tr_untr_mean_bar_dodge_Plot.png", combine_oakhaven_2025_cover_tr_untr_mean_bar_dodge_Plot)
 ```
 
 ### ** Mean Cover Species plot native
@@ -1175,7 +1187,7 @@ ggplot(
       theme_minimal() + #get rid of grey background and tick marks
       theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
       labs(title='Comparing Mean Percentage Species Coverage in Untreated Plots',
-           subtitle='Oak Haven Park',
+           subtitle='Oak Haven Park (no grass)',
            caption = "Chart by Wendy Anthony \n 2025-11-10")
 oakhaven_2025_cover_treat_sp_mean_nograss_plot
 ```
@@ -1250,6 +1262,21 @@ OH_2025_perc_cover_untreat_mean_merge_plot_nograss_sort
 
 ggsave("images/OH_2025_perc_cover_untreat_mean_merge_plot_nograss_sort_barplot.png", OH_2025_perc_cover_untreat_mean_merge_plot_nograss_sort)
 ```
+
+
+### ** Combine 2 Bar Treatment plots
+
+```{r combine-bar-treatment-plots}
+
+library("gridExtra")
+
+combine_oakhaven_2025_cover_tr_untr_mean_bar_nograss_Plot <- grid.arrange(oakhaven_2025_cover_treat_sp_mean_plot_nograss_sort, OH_2025_perc_cover_untreat_mean_merge_plot_nograss_sort, ncol = 2)    
+
+ggsave("images/combine_oakhaven_2025_cover_tr_untr_mean_bar_dodge_Plot.png", combine_oakhaven_2025_cover_tr_untr_mean_bar_dodge_Plot)
+```
+
+
+
 
 
 ### ** Grouped Sorted Untreated
@@ -1387,6 +1414,18 @@ oakhaven_2025_cover_treat_sp_mean_plot_sort_group_nograss  <- oakhaven_2025_cove
 oakhaven_2025_cover_treat_sp_mean_plot_sort_group_nograss
 
 ggsave("images/oakhaven_2025_cover_treat_sp_mean_plot_sort_group_nograss_barplot.png", oakhaven_2025_cover_treat_sp_mean_plot_sort_group_nograss)
+```
+
+
+### ** Combine 2 Bar sorted Treatment plots
+
+```{r combine-bar-sorted-treatment-plots}
+
+library("gridExtra")
+
+combine_oakhaven_2025_cover_tr_untr_mean_bar_nograss_sorted_Plot <- grid.arrange(OH_2025_perc_cover_untreat_mean_merge_plot_sort_group_nograss, oakhaven_2025_cover_treat_sp_mean_plot_sort_group_nograss, ncol = 2)    
+
+ggsave("images/combine_oakhaven_2025_cover_tr_untr_mean_bar_nograss_sorted_Plot.png", combine_oakhaven_2025_cover_tr_untr_mean_bar_nograss_sorted_Plot)
 ```
 
 
