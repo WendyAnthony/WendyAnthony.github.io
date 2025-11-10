@@ -13,7 +13,7 @@ output:
     toc: yes
     toc_depth: '3'
 ---
-Modified 2025-11-10 @ 08:06
+Modified 2025-11-10 @ 10:05
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -58,6 +58,8 @@ oakhaven_2025_metadata
 # Oak Haven Cover data 2025
 ## cleaned and wrangled from file
 ## HAT-Meadow Monitoring Spreadsheet 2025 - Oak Haven Park example.xlsx
+# HAT-MeadowMonitoring-2025-OakHaven.xlsx
+## change invasive grass to mixed grass
 oakhaven_2025_cover <- read.csv("data/HAT-MeadowMonitoring-2025-OakHaven.csv")
 # oakhaven_2025_cover
 
@@ -108,11 +110,12 @@ write.csv(oakhaven_2025_cover, "data/oakhaven_2025_cover.csv", row.names = FALSE
 ## Filter Subset
 ### Native vs Invasive
 ```{r subset-native-inv}
+unique(oakhaven_2025_cover$Native_or_Invasive)
 oakhaven_2025_cover_nat <- oakhaven_2025_cover[oakhaven_2025_cover$Native_or_Invasive == "Native",]
 
 oakhaven_2025_cover_inv <- oakhaven_2025_cover[oakhaven_2025_cover$Native_or_Invasive == "Invasive",]
 
-oakhaven_2025_cover_mix <- oakhaven_2025_cover[oakhaven_2025_cover$Native_or_Invasive == "Mixed",]
+oakhaven_2025_cover_mix <- oakhaven_2025_cover[oakhaven_2025_cover$Native_or_Invasive == "MixedGrass",]
 ```
 
 ### Treated / Untreated
@@ -127,12 +130,12 @@ oakhaven_2025_cover_treat <- oakhaven_2025_cover[oakhaven_2025_cover$Treated == 
 
 ```{r reduce-col}
 colnames(oakhaven_2025_cover_treat)
-oakhaven_2025_cover_treat_sub <-oakhaven_2025_cover_treat[-c(1,2,6,7,9,10,11,12)]
+oakhaven_2025_cover_treat_sub <-oakhaven_2025_cover_treat[-c(1,2,6,7,9,10,11,12,16)]
 # oakhaven_2025_cover_treat_sub
 str(oakhaven_2025_cover_treat_sub)
 
 colnames(oakhaven_2025_cover_untreat)
-oakhaven_2025_cover_untreat_sub <-oakhaven_2025_cover_untreat[-c(1,2,6,7,9,10,11,12)]
+oakhaven_2025_cover_untreat_sub <-oakhaven_2025_cover_untreat[-c(1,2,6,7,9,10,11,12,16)]
 # oakhaven_2025_cover_untreat_sub
 str(oakhaven_2025_cover_untreat_sub)
 ```
@@ -768,7 +771,7 @@ oakhaven_2025_cover_nat_plot
 ```
 
 ### ?? Invasive Species per Quadrat
-- doesn't have `QUniqueID` column
+- without Mixed Grasses
 ```{r ggplot-inv-secies-per-quadrat}
 colnames(oakhaven_2025_cover_inv)
 
@@ -781,7 +784,7 @@ oakhaven_2025_cover_inv_plot  <-  ggplot(oakhaven_2025_cover_inv,
                     # theme(legend.position="none") + #remove legend 
                     theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
                     labs(title='Comparing Quadrats Percentage Invasive Species Coverage',
-                      subtitle='Oak Haven Park',
+                      subtitle='Oak Haven Park (mithout mixed grasses)',
                       caption = "Chart by Wendy Anthony \n 2025-10-05")
 
 oakhaven_2025_cover_inv_plot
@@ -790,7 +793,7 @@ oakhaven_2025_cover_inv_plot
     ggplotly(tooltip = c("x", "y", "color", "fill"), oakhaven_2025_cover_inv_plot) %>%
       config(displayModeBar = FALSE) %>% # This line disables the modebar
       layout(title = list(
-        text = "Comparing Quadrats Percentage Invasive Species Coverage<br><sup>Oak Haven Park</sup>",
+        text = "Comparing Quadrats Percentage Invasive Species Coverage<br><sup>Oak Haven Park (without mixed grasses)</sup>",
         y = 0.95), # Adjust vertical position if needed
         xaxis = list(title = 'Unique Quadrat'),
         yaxis = list(title = 'Percentage Cover'),
@@ -959,6 +962,30 @@ oakhaven_2025_cover_mean_by_group_species_plot <- ggplot(oakhaven_2025_cover_mea
 oakhaven_2025_cover_mean_by_group_species_plot
 ```
 
+### Mean Cover Species plot all - no grass
+- using colour-blind-friendly palette
+```{r mean-cover-species-all-nograss}
+colnames(oakhaven_2025_cover_mean_by_group_species)
+# create custom colour-blind-friendly palette
+custom_colours_2 <- c("Treated" = "#b2df8a", 
+                    "Untreated" = "#1f78b4")
+
+oakhaven_2025_cover_mean_by_group_species_nograss_plot <- oakhaven_2025_cover_mean_by_group_species %>%
+  filter(Native_or_Invasive != "MixedGrass") %>%
+  ggplot(aes(Species, mean_value, fill = Treated)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02, position = position_dodge(0.5)) +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+    scale_fill_manual(values = custom_colours_2) +
+        labs(title='Comparing All Species Mean % Cover (and Standard Deviation) by Treatment',
+          subtitle='Oak Haven Park (no grass)',
+          caption = "Chart by Wendy Anthony \n 2025-11-10",
+          x = "", y = "Mean % Cover", fill = "")
+oakhaven_2025_cover_mean_by_group_species_nograss_plot
+```
+
 ### ** Mean Cover Species plot native
 ```{r mean-cover-species-nat}
 colnames(oakhaven_2025_cover_mean_by_group_species)
@@ -1005,7 +1032,7 @@ oakhaven_2025_cover_mean_by_group_species_inv_plot <- ggplot(oakhaven_2025_cover
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
     scale_fill_manual(values = custom_colours_2) +
         labs(title='Comparing Invasive Species Mean % Cover (and Standard Deviation) by Treatment',
-          subtitle='Oak Haven Park',
+          subtitle='Oak Haven Park (not including mixed grass)',
           caption = "Chart by Wendy Anthony \n 2025-11-02",
           x = "", y = "Mean % Cover", fill = "")
 oakhaven_2025_cover_mean_by_group_species_inv_plot
@@ -1020,7 +1047,7 @@ ggsave("images/oakhaven_2025_cover_mean_by_group_species_inv_barplot.png", oakha
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
-                    "Mixed" = "#8da0cb")
+                    "MixedGrass" = "#8da0cb")
 
 oakhaven_2025_cover_treat_sp_mean_plot  <- ggplot(oakhaven_2025_cover_treat_sp_mean,
       aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
@@ -1035,13 +1062,35 @@ oakhaven_2025_cover_treat_sp_mean_plot  <- ggplot(oakhaven_2025_cover_treat_sp_m
 oakhaven_2025_cover_treat_sp_mean_plot
 ```
 
+### Mean Cover Treated plot no grass
+```{r mean-cover-treated-nograss}
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+oakhaven_2025_cover_treat_sp_mean_nograss_plot <- oakhaven_2025_cover_treat_sp_mean %>%
+  filter(Native_or_Invasive != "MixedGrass") %>%
+ggplot(
+      aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
+      ylim(0, 30) +
+      geom_bar(stat = "identity") +
+      scale_fill_manual(values = custom_colours, name = "Native/Invasive") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+      labs(title='Comparing Mean Percentage Species Coverage in Treated Plots',
+           subtitle='Oak Haven Park (no grass)',
+           caption = "Chart by Wendy Anthony \n 2025-11-10")
+oakhaven_2025_cover_treat_sp_mean_nograss_plot
+```
+
 #### *** Sort Mean Cover Treated plot
 ```{r mean-cover-treated-sort}
 colnames(oakhaven_2025_cover_treat_sp_mean)
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
-                    "Mixed" = "#8da0cb")
+                    "MixedGrass" = "#8da0cb")
 
 oakhaven_2025_cover_treat_sp_mean_plot_sort  <- oakhaven_2025_cover_treat_sp_mean %>% arrange(desc(meanPercentCover)) %>%
   # updates Site with new arrangement
@@ -1062,12 +1111,40 @@ oakhaven_2025_cover_treat_sp_mean_plot_sort
 ggsave("images/oakhaven_2025_cover_treat_sp_mean_plot_sort_barplot.png", oakhaven_2025_cover_treat_sp_mean_plot_sort)
 ```
 
+#### *** Sort Mean Cover Treated plot no grass
+```{r mean-cover-treated-sort-nograss}
+colnames(oakhaven_2025_cover_treat_sp_mean)
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+oakhaven_2025_cover_treat_sp_mean_plot_nograss_sort  <- oakhaven_2025_cover_treat_sp_mean %>% arrange(desc(meanPercentCover))  %>%
+  filter(Native_or_Invasive != "MixedGrass") %>%
+  # updates Site with new arrangement
+   mutate(Species = factor(Species, levels = Species)) %>% 
+      
+  ggplot(
+      aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
+      ylim(0, 30) +
+      geom_bar(stat = "identity") +
+      scale_fill_manual(values = custom_colours, name = "Native/Invasive") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+      labs(title='Comparing Mean Percentage Species Coverage in Treated Plots',
+           subtitle='Oak Haven Park (no grass)',
+           caption = "Chart by Wendy Anthony \n 2025-11-10")
+oakhaven_2025_cover_treat_sp_mean_plot_nograss_sort
+
+ggsave("images/oakhaven_2025_cover_treat_sp_mean_plot_nograss_sort_barplot.png", oakhaven_2025_cover_treat_sp_mean_plot_nograss_sort)
+```
+
 ### Mean Cover Untreated plot
 ```{r mean-cover-untreated}
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
-                    "Mixed" = "#8da0cb")
+                    "MixedGrass" = "#8da0cb")
 
 oakhaven_2025_cover_treat_sp_mean_plot  <- ggplot(oakhaven_2025_cover_untreat_sp_mean,
       aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
@@ -1082,6 +1159,27 @@ oakhaven_2025_cover_treat_sp_mean_plot  <- ggplot(oakhaven_2025_cover_untreat_sp
 oakhaven_2025_cover_treat_sp_mean_plot
 ```
 
+### Mean Cover Untreated plot no grass
+```{r mean-cover-untreated-nograss}
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+oakhaven_2025_cover_treat_sp_mean_nograss_plot  <- oakhaven_2025_cover_untreat_sp_mean %>% filter(Native_or_Invasive != "MixedGrass") %>%
+ggplot(
+      aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
+      ylim(0, 30) +
+      geom_bar(stat = "identity") +
+      scale_fill_manual(values = custom_colours, name = "Native/Invasive") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+      labs(title='Comparing Mean Percentage Species Coverage in Untreated Plots',
+           subtitle='Oak Haven Park',
+           caption = "Chart by Wendy Anthony \n 2025-11-10")
+oakhaven_2025_cover_treat_sp_mean_nograss_plot
+```
+
 
 
 
@@ -1093,7 +1191,7 @@ colnames(OH_2025_perc_cover_treat_mean_merge)
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
-                    "Mixed" = "#8da0cb")
+                    "MixedGrass" = "#8da0cb")
 
 OH_2025_perc_cover_untreat_mean_merge_plot_sort <- OH_2025_perc_cover_treat_mean_merge %>% arrange(desc(u_meanPercentCover)) %>%
   # updates Site with new arrangement
@@ -1111,12 +1209,46 @@ OH_2025_perc_cover_untreat_mean_merge_plot_sort <- OH_2025_perc_cover_treat_mean
                     labs(title='Comparing Mean Species Coverage in Untreated Plots',
                       subtitle='HAT 2025 Cover Data Oak Haven Park',
                       caption = "Chart by Wendy Anthony \n 2025-10-29",
-                      y = "Mean % Cover (umtreated)",
+                      y = "Mean % Cover (untreated)",
                       # Legend Title
           fill = "Native or Invasive")
 OH_2025_perc_cover_untreat_mean_merge_plot_sort
 
 ggsave("images/OH_2025_perc_cover_untreat_mean_merge_plot_sort_barplot.png", OH_2025_perc_cover_untreat_mean_merge_plot_sort)
+```
+
+### ** Untreated no grass
+- sorted by highest mean % cover
+- see next chart for grouped by native/inv
+```{r compare-treat-untreat-sort-high-mean-cover-nograss}
+colnames(OH_2025_perc_cover_treat_mean_merge)
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+OH_2025_perc_cover_untreat_mean_merge_plot_nograss_sort <- OH_2025_perc_cover_treat_mean_merge %>% arrange(desc(u_meanPercentCover)) %>% filter(Native_or_Invasive != "MixedGrass") %>%
+  # updates Site with new arrangement
+   mutate(Species = factor(Species, levels = Species)) %>% 
+    
+  ggplot( 
+                    aes(x = Species, y = u_meanPercentCover, fill = Native_or_Invasive)) +
+                      ylim(0, 30) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    scale_fill_manual(values = custom_colours) +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Mean Species Coverage in Untreated Plots (no grass)',
+                      subtitle='HAT 2025 Cover Data Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-11-10",
+                      y = "Mean % Cover (untreated)",
+                      # Legend Title
+          fill = "Native or Invasive")
+OH_2025_perc_cover_untreat_mean_merge_plot_nograss_sort
+
+ggsave("images/OH_2025_perc_cover_untreat_mean_merge_plot_nograss_sort_barplot.png", OH_2025_perc_cover_untreat_mean_merge_plot_nograss_sort)
 ```
 
 
@@ -1127,7 +1259,7 @@ colnames(OH_2025_perc_cover_treat_mean_merge)
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
-                    "Mixed" = "#8da0cb")
+                    "MixedGrass" = "#8da0cb")
 
 OH_2025_perc_cover_untreat_mean_merge_plot_sort_group <- OH_2025_perc_cover_treat_mean_merge %>% 
   group_by(Native_or_Invasive) %>%
@@ -1147,12 +1279,48 @@ OH_2025_perc_cover_untreat_mean_merge_plot_sort_group <- OH_2025_perc_cover_trea
                     labs(title='Comparing Mean Species Coverage in Untreated Plots',
                       subtitle='HAT 2025 Cover Data Oak Haven Park',
                       caption = "Chart by Wendy Anthony \n 2025-11-03",
-                      y = "Mean % Cover (umtreated)",
+                      y = "Mean % Cover (untreated)",
                       # Legend Title
           fill = "Native or Invasive")
 OH_2025_perc_cover_untreat_mean_merge_plot_sort_group
 
 ggsave("images/OH_2025_perc_cover_untreat_mean_merge_plot_sort_group_barplot.png", OH_2025_perc_cover_untreat_mean_merge_plot_sort_group)
+```
+
+### ** Grouped Sorted Untreated no grass
+- grouped by native/inv
+```{r compare-treat-untreat-sort-group-1-nograss}
+colnames(OH_2025_perc_cover_treat_mean_merge)
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+OH_2025_perc_cover_untreat_mean_merge_plot_sort_group_nograss <- OH_2025_perc_cover_treat_mean_merge %>% 
+  filter(Native_or_Invasive != "MixedGrass") %>%
+  group_by(Native_or_Invasive) %>%
+  arrange(desc(u_meanPercentCover)) %>%
+  # updates Site with new arrangement
+   mutate(Species = factor(Species, levels = Species)) %>% 
+    
+  ggplot( 
+                    aes(x = Species, y = u_meanPercentCover, fill = Native_or_Invasive)) +
+                      ylim(0, 30) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    scale_fill_manual(values = custom_colours) +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Mean Species Coverage in Untreated Plots (no grass)',
+                      subtitle='HAT 2025 Cover Data Oak Haven Park',
+                      caption = "Chart by Wendy Anthony \n 2025-11-10",
+                      y = "Mean % Cover (untreated)",
+                      # Legend Title
+          fill = "Native or Invasive")
+OH_2025_perc_cover_untreat_mean_merge_plot_sort_group_nograss
+
+ggsave("images/OH_2025_perc_cover_untreat_mean_merge_plot_sort_group_nograss_barplot.png", OH_2025_perc_cover_untreat_mean_merge_plot_sort_group_nograss)
 ```
 
 
@@ -1166,7 +1334,7 @@ colnames(oakhaven_2025_cover_treat_sp_mean)
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
-                    "Mixed" = "#8da0cb")
+                    "MixedGrass" = "#8da0cb")
 
 oakhaven_2025_cover_treat_sp_mean_plot_sort_group  <- oakhaven_2025_cover_treat_sp_mean %>% 
   group_by(Native_or_Invasive) %>%
@@ -1189,6 +1357,38 @@ oakhaven_2025_cover_treat_sp_mean_plot_sort_group
 ggsave("images/oakhaven_2025_cover_treat_sp_mean_plot_sort_group_barplot.png", oakhaven_2025_cover_treat_sp_mean_plot_sort_group)
 ```
 
+#### *** Grouped Sort Mean Cover Treated plot no grass
+\- as per `file:///Users/wanthony/Documents/R/Test-Shiny-GOE-Monitor/TEST-GOE-Monitor.html#48_Violin_Subregion_by_Exotic_species`
+- e.g. group_by(Native_or_Invasive) %>%
+
+```{r mean-cover-treated-sort-group-nograss}
+colnames(oakhaven_2025_cover_treat_sp_mean)
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+oakhaven_2025_cover_treat_sp_mean_plot_sort_group_nograss  <- oakhaven_2025_cover_treat_sp_mean %>% filter(Native_or_Invasive != "MixedGrass") %>%
+  group_by(Native_or_Invasive) %>%
+  arrange(desc(meanPercentCover)) %>%
+  # updates Site with new arrangement
+   mutate(Species = factor(Species, levels = Species)) %>% 
+      
+  ggplot(
+      aes(x = Species, y = meanPercentCover, fill = Native_or_Invasive)) +
+      ylim(0, 30) +
+      geom_bar(stat = "identity") +
+      scale_fill_manual(values = custom_colours, name = "Native/Invasive") +
+      theme_minimal() + #get rid of grey background and tick marks
+      theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+      labs(title='Comparing Mean Percentage Species Coverage in Treated Plots',
+           subtitle='Oak Haven Park (no grass)',
+           caption = "Chart by Wendy Anthony \n 2025-11-10")
+oakhaven_2025_cover_treat_sp_mean_plot_sort_group_nograss
+
+ggsave("images/oakhaven_2025_cover_treat_sp_mean_plot_sort_group_nograss_barplot.png", oakhaven_2025_cover_treat_sp_mean_plot_sort_group_nograss)
+```
+
 
 ### ** Untreated
 - ?? can these be sorted by native/inv
@@ -1197,7 +1397,7 @@ colnames(OH_2025_perc_cover_treat_mean_merge)
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
-                    "Mixed" = "#8da0cb")
+                    "MixedGrass" = "#8da0cb")
 
 OH_2025_perc_cover_untreat_mean_merge_plot_sort <- OH_2025_perc_cover_treat_mean_merge %>% arrange(desc(u_meanPercentCover)) %>%
   # updates Site with new arrangement
@@ -1215,12 +1415,45 @@ OH_2025_perc_cover_untreat_mean_merge_plot_sort <- OH_2025_perc_cover_treat_mean
                     labs(title='Comparing Mean Species Coverage in Untreated Plots',
                       subtitle='HAT 2025 Cover Data Oak Haven Park',
                       caption = "Chart by Wendy Anthony \n 2025-10-29",
-                      y = "Mean % Cover (umtreated)",
+                      y = "Mean % Cover (untreated)",
                       # Legend Title
           fill = "Native or Invasive")
 OH_2025_perc_cover_untreat_mean_merge_plot_sort
 
 ggsave("images/OH_2025_perc_cover_untreat_mean_merge_plot_sort_barplot.png", OH_2025_perc_cover_untreat_mean_merge_plot_sort)
+```
+
+### ** Untreated no grass
+- ?? can these be sorted by native/inv
+```{r compare-treat-untreat-sort-group-nograss}
+colnames(OH_2025_perc_cover_treat_mean_merge)
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+OH_2025_perc_cover_untreat_mean_merge_plot_sort_nograss <- OH_2025_perc_cover_treat_mean_merge %>% filter(Native_or_Invasive != "MixedGrass") %>% arrange(desc(u_meanPercentCover)) %>%
+  # updates Site with new arrangement
+   mutate(Species = factor(Species, levels = Species)) %>% 
+    
+  ggplot( 
+                    aes(x = Species, y = u_meanPercentCover, fill = Native_or_Invasive)) +
+                      ylim(0, 30) +
+                    #geom_bar(stat = "identity", fill = "seagreen") +
+                    geom_bar(stat = "identity") +
+                    scale_fill_manual(values = custom_colours) +
+                    theme_minimal() + #get rid of grey background and tick marks 
+                    # theme(legend.position="none") + #remove legend 
+                    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+                    labs(title='Comparing Mean Species Coverage in Untreated Plots',
+                      subtitle='HAT 2025 Cover Data Oak Haven Park (no grass)',
+                      caption = "Chart by Wendy Anthony \n 2025-11-10",
+                      y = "Mean % Cover (untreated)",
+                      # Legend Title
+          fill = "Native or Invasive")
+OH_2025_perc_cover_untreat_mean_merge_plot_sort_nograss
+
+ggsave("images/OH_2025_perc_cover_untreat_mean_merge_plot_sort_nograss_barplot.png", OH_2025_perc_cover_untreat_mean_merge_plot_sort_nograss)
 ```
 
 
@@ -1235,7 +1468,7 @@ str(oakhaven_2025_cover_mean_by_group_treat)
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
-                    "Mixed" = "#8da0cb")
+                    "MixedGrass" = "#8da0cb")
 
 compare_treat_untreat_bar <- ggplot(oakhaven_2025_cover_mean_by_group_treat, aes(Treated, mean_value, fill = Native_or_Invasive)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
@@ -1251,6 +1484,34 @@ compare_treat_untreat_bar <- ggplot(oakhaven_2025_cover_mean_by_group_treat, aes
   
 compare_treat_untreat_bar
 
+```
+
+### ** Compare Means Bar Chart Dodge no grass
+
+```{r compare-mean-tr-untr-bar-dodge-nograss}
+colnames(oakhaven_2025_cover_mean_by_group_treat)
+str(oakhaven_2025_cover_mean_by_group_treat)
+
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+compare_treat_untreat_nograss_bar <- oakhaven_2025_cover_mean_by_group_treat %>% filter(Native_or_Invasive != "MixedGrass") %>%
+ggplot(aes(Treated, mean_value, fill = Native_or_Invasive)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  ylim(0, 30) +
+  # scale_fill_brewer(palette = "Dark2") +
+  theme_minimal() + #get rid of grey background and tick marks
+    scale_fill_manual(values = custom_colours) +
+        labs(title='Comparing Percent Cover by Treatment',
+          subtitle='Oak Haven Park (no grass)',
+          caption = "Chart by Wendy Anthony \n 2025-11-10",
+          x = "", y = "Mean % Cover (Untreated)",
+          # Legend Title
+          fill = "Native or Invasive")
+  
+compare_treat_untreat_nograss_bar
 
 ```
 
@@ -1264,7 +1525,7 @@ colnames(oakhaven_2025_cover_mean_by_group_species)
 # create custom colour-blind-friendly palette
 custom_colours <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
-                    "Mixed" = "#8da0cb")
+                    "MixedGrass" = "#8da0cb")
 
 # https://www.geeksforgeeks.org/r-language/plot-mean-and-standard-deviation-using-ggplot2-in-r/
 compare_mean_sd_treat_untreat_bar <- ggplot(oakhaven_2025_cover_mean_by_group_treat, aes(Treated, mean_value, fill = Native_or_Invasive)) + 
@@ -1283,6 +1544,39 @@ compare_mean_sd_treat_untreat_bar <- ggplot(oakhaven_2025_cover_mean_by_group_tr
   
 compare_mean_sd_treat_untreat_bar
 ggsave("images/compare_mean_sd_treat_untreat_bar.png", compare_mean_sd_treat_untreat_bar)
+```
+
+### Compare Means and SD Bar Chart Dodge no grass
+
+```{r compare-mean-sd-tr-untr-bar-dodge-nograss}
+colnames(oakhaven_2025_cover_mean_by_group_treat)
+str(oakhaven_2025_cover_mean_by_group_treat)
+colnames(oakhaven_2025_cover_mean_by_group_species)
+
+# create custom colour-blind-friendly palette
+custom_colours <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+# https://www.geeksforgeeks.org/r-language/plot-mean-and-standard-deviation-using-ggplot2-in-r/
+compare_mean_sd_treat_untreat_nograss_bar <- oakhaven_2025_cover_mean_by_group_treat  %>% filter(Native_or_Invasive != "MixedGrass") %>%
+ggplot(aes(Treated, mean_value, fill = Native_or_Invasive)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02, position = position_dodge(0.5)) +
+  ylim(0, 30) +
+  # scale_fill_brewer(palette = "Dark2") +
+  theme_minimal() + #get rid of grey background and tick marks
+    scale_fill_manual(values = custom_colours) +
+        labs(title='Comparing Mean % Cover by Treatment (no grass)',
+          subtitle='Oak Haven Park - with standard deviation error bars',
+          caption = "Chart by Wendy Anthony \n 2025-11-10",
+          x = "", y = "Mean % Cover",
+          # Legend Title
+          fill = "Native or Invasive"
+          )
+  
+compare_mean_sd_treat_untreat_nograss_bar
+ggsave("images/compare_mean_sd_treat_untreat_nograss_bar.png", compare_mean_sd_treat_untreat_nograss_bar)
 ```
 
 
@@ -1310,6 +1604,32 @@ oakhaven_2025_cover_mean_by_group_treat_violin <- ggplot(oakhaven_2025_cover_mea
            y = "Mean Percent Cover")
 
 oakhaven_2025_cover_mean_by_group_treat_violin
+```
+
+
+### ?? Violin Compare all  - no grass
+- this doesn't show any difference between native/invasive/mixed though error bars do???
+```{r compare-tr-untr-violin-nograss}
+
+colnames(oakhaven_2025_cover_mean_by_group_treat)
+
+oakhaven_2025_cover_mean_by_group_treat_nograss_violin <- oakhaven_2025_cover_mean_by_group_treat %>% filter(Native_or_Invasive != "MixedGrass") %>%
+ggplot(
+       # text = paste("Site:", Site),
+      aes(x = Treated, y = mean_value)) +
+      geom_violin(fill = "#66c2a5") +
+      geom_boxplot(width = 0.05, fill = "#fc8d62") +
+      geom_errorbar(aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value), width =.02) +
+      scale_fill_brewer(palette = "Dark2") +
+      theme_minimal() + #get rid of grey background and tick marks
+      scale_y_continuous(limits = c(0, 30)) +
+      labs(title='Compare Mean Percentage Cover by Treatment (no grass)',
+           subtitle='Data: HAT Oak Haven Park',
+           caption = "Chart by Wendy Anthony \n 2025-11-10",
+           x = "Treatment",
+           y = "Mean Percent Cover")
+
+oakhaven_2025_cover_mean_by_group_treat_nograss_violin
 ```
 
 
@@ -1390,4 +1710,11 @@ saveWidget(HAT_sites_map, "output/HAT_site_map.html")
 
 
 
+# Session Info
+- to document specific packages used to run script
+```{r session-info}
+sessionInfo()
+```
+
+sessionInfo()
 
