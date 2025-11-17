@@ -14,7 +14,7 @@ output:
     toc: yes
     toc_depth: '3'
 ---
-Modified 2025-11-10 @ 19:34
+Modified 2025-11-17 @ 14:53
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -66,6 +66,10 @@ oakhaven_2025_cover <- read.csv("data/HAT-MeadowMonitoring-2025-OakHaven.csv")
 # oakhaven_2025_cover
 
 
+# OH Presence Data from GRP Project Site #71 
+# species presence reference
+OH_GRP_Sp_Presence <- read.csv("data/GRP-Site-SpeciesCover-Presence-SQL-OHP-72.csv")
+
 # Oak Haven Timeline
 OH_timeline <- read.csv("data/Timeline-OH.csv")
 OH_timeline
@@ -74,14 +78,105 @@ OH_timeline
 # Oak Haven Timeline for timevis
 Timeline_OH_vis <- read.csv("data/OH_timeline_date_timevis.csv", header = TRUE, sep = ",")
 Timeline_OH_vis
+
 # Warning in read.table(file = file, header = header, sep = sep, quote = quote,  :  incomplete final line found by readTableHeader on 'data/Timeline-OH.csv'
+
+
+### HAT data 2025-11-17
+# Volunteer Events
+HAT_data_Volevents <- read.csv("data/2024-HabitatRestorationWorkbook-VolEvents.csv", header = TRUE, sep = ",")
+HAT_data_Volevents
+
+### SAR
+HAT_data_SAR <- read.csv("data/2024-HabitatRestorationWorkbook-SAR.csv", header = TRUE, sep = ",")
+# Error in type.convert.default(data[[i]], as.is = as.is[i], dec = dec, : invalid multibyte string at '<ca>San<69>cula bipinnatifida'
+# had space in front ?
+HAT_data_SAR
+
+### FOHP
+HAT_data_FOHP <- read.csv("data/2024-HabitatRestorationWorkbook-FOHP.csv", header = TRUE, sep = ",")
+HAT_data_FOHP
+
+
+### SITES SAR
+library(readr)
+HAT_data_Sites_SAR <- readr::read_csv("data/2024-HabitatRestorationWorkbook-Sites-SAR.csv")
+# Error in type.convert.default(data[[i]], as.is = as.is[i], dec = dec, : invalid multibyte string at '<ca>'
+# Nature Conservancy of Canada Cowichan Garry Oak Preserve
+	# - **only the Haida Gwaii subspecies of stellar jays (carlottae) is listed -HH
+	# don't know what to do with this?
+HAT_data_Sites_SAR
+
+HAT_data_sched <- read.csv("data/2024-HabitatRestorationWorkbook-Schedule.csv", header = TRUE, sep = ",")
+HAT_data_sched
+
+HAT_data_2024_review <- read.csv("data/2024-HabitatRestorationWorkbook-2024-InReview.csv", header = TRUE, sep = ",")
+HAT_data_2024_review
+
+
+HAT_data_inv_site_metrics <- read.csv("data/2024-Cummulative-Site-Metrics.csv", header = TRUE, sep = ",")
+HAT_data_inv_site_metrics
+
+
+### NEEDS MAJOR CLEANUP
+# HAT_data_inv_biomass <- read.csv("data/2024-HabitatRestorationWorkbook-Data-Tracker.csv", header = TRUE, sep = ",")
+# HAT_data_inv_biomass
+
+
 ```
 
 # Data Exploration
+
+## HAT Data
+```{r HAT-data-explore}
+
+HAT_data_Sites_SAR
+str(HAT_data_Sites_SAR)
+#  $ Area of Invasive Weed Control (ha): chr s/b num
+
+# Friends of Oak Haven Park
+HAT_data_FOHP
+str(HAT_data_FOHP)
+# Date needs changing
+
+# Species at RIsk
+HAT_data_SAR
+str(HAT_data_SAR)
+# change Date to date format
+# add year
+unique(HAT_data_SAR$Site) # 16 sites
+unique(HAT_data_SAR$Common.Name) #11
+
+HAT_data_Volevents
+str(HAT_data_Volevents)
+# change Date to date format
+unique(HAT_data_Volevents$Event) #4
+# [1] "W_S\xea\xfc_EM Ivy Project"              "l_k_____n Community Toolshed: Maplebank"
+# [3] "S_ID_E_ Resiliency Project"              "Earth Day Restoration at Oak Haven Park"
+length(unique(HAT_data_Volevents$Event))
+
+
+HAT_data_inv_site_metrics
+str(HAT_data_inv_site_metrics)
+
+```
+
+
+
+## OHP Cover
 - info `str()`
 ```{r data-info-str}
 str(oakhaven_2025_cover)
 ```
+
+### GRP OH Species Presence Reference Data 2006
+```{r OH-GRP-Sp-Pr}
+str(OH_GRP_Sp_Presence)
+OH_GRP_Sp_Presence
+```
+
+
+
 
 ## Data Transformation
 ### Date
@@ -96,12 +191,78 @@ str(OH_timeline)
 write.csv(OH_timeline, "data/OH_timeline_date.csv", row.names = FALSE)
 ```
 # Data Wrangling
+
+## HAT Data Cleaning
+### HAT_data_inv_site_metrics
+#### Rename and new columns
+- Ended up using EXcel to split columns
+```{r new-coloumn-inv-site-metrics}
+str(HAT_data_inv_site_metrics)
+colnames(HAT_data_inv_site_metrics)
+
+names(HAT_data_inv_site_metrics)[names(HAT_data_inv_site_metrics) == "Work.Site"] <- "Work_Site"
+names(HAT_data_inv_site_metrics)[names(HAT_data_inv_site_metrics) == "Site.."] <- "Site_Num"
+colnames(HAT_data_inv_site_metrics)
+
+
+## have to use escape character to use ( bracket as separator - doensnt' work with separate() also not with extract()
+
+## First Create 2 new columns
+# HAT_data_inv_site_metrics$Site <- NA
+# HAT_data_inv_site_metrics$Partner_Code <- NA
+# colnames(HAT_data_inv_site_metrics)
+
+# Ended up using EXcel to split columns
+## try again with separate()
+# HAT_data_inv_site_metrics_update_split <- HAT_data_inv_site_metrics %>% separate(col = HAT_data_inv_site_metrics$Work_Site, into = c("Site", "Partner_Code"), sep = "\\(|,\\s*|\\)", remove = FALSE, extra = "merge")
+# 
+# library(reshape2)
+# ## This splits columns
+# # and creates a new data frame of only these 2 new columns
+# HAT_data_inv_site_metrics_split <- colsplit(string = gsub(pattern = "\\(|\\)", replacement = "", x = HAT_data_inv_site_metrics$Work_Site), pattern = " ",names = c("Site","Partner_Code"))
+# 
+# str(HAT_data_inv_site_metrics_split)
+# colnames(HAT_data_inv_site_metrics_split)
+
+```
+
+#### HAT_data_Volevents
+```{r rename-col-volevents}
+colnames(HAT_data_Volevents)
+
+names(HAT_data_Volevents)[names(HAT_data_Volevents) == "Volunteer.Hours"] <- "Volunteer_Hours"
+colnames(HAT_data_Volevents)
+```
+
+
+### HAT Date
+```{r as-date-HAT-volevents}
+colnames(HAT_data_Volevents)
+HAT_data_Volevents$Date <- as.Date(HAT_data_Volevents$Date)
+str(HAT_data_Volevents)
+
+## add column for year
+HAT_data_Volevents[, "Year"] <- format(HAT_data_Volevents[,"Date"], "%Y")
+
+```
+
+
+
 ## Concatenate QUniqiueID
 ```{r concatenate-unique-quadrat}
 colnames(oakhaven_2025_cover)
 oakhaven_2025_cover$QUniqueID <- paste(oakhaven_2025_cover$MonitorID, oakhaven_2025_cover$Quadrat, oakhaven_2025_cover$QuadratLocation_m, sep = "_")
 oakhaven_2025_cover$QUniqueID
 ```
+
+## Concatenate GRP Genus Species
+```{r concatenate-grp-g-sp}
+colnames(OH_GRP_Sp_Presence)
+OH_GRP_Sp_Presence$GenusSpecies <- paste(OH_GRP_Sp_Presence$genus, OH_GRP_Sp_Presence$species, sep = " ")
+unique(OH_GRP_Sp_Presence$GenusSpecies)
+colnames(OH_GRP_Sp_Presence)
+```
+
 
 ### Save csv with new column `QUniqueID`
 - use for Shiny app
@@ -129,8 +290,8 @@ oakhaven_2025_cover_treat <- oakhaven_2025_cover[oakhaven_2025_cover$Treated == 
 ```
 
 ## Reduce Columns
-
-```{r reduce-col}
+### OH 2025
+```{r reduce-col-OH-2025}
 colnames(oakhaven_2025_cover_treat)
 oakhaven_2025_cover_treat_sub <-oakhaven_2025_cover_treat[-c(1,2,6,7,9,10,11,12,16)]
 # oakhaven_2025_cover_treat_sub
@@ -141,12 +302,43 @@ oakhaven_2025_cover_untreat_sub <-oakhaven_2025_cover_untreat[-c(1,2,6,7,9,10,11
 # oakhaven_2025_cover_untreat_sub
 str(oakhaven_2025_cover_untreat_sub)
 ```
+### OH GRP 2006 Reduce Columns
+```{r OH-GRP-Sp-Pr-red-col}
+### GRP OH Species Presence Reference Data 2006
+colnames(OH_GRP_Sp_Presence)
+length(unique(OH_GRP_Sp_Presence$GenusSpecies)) #92
+OH_GRP_Sp_Presence_sub <-OH_GRP_Sp_Presence[-c(1:5,7,10:11,13:14)]
+length(unique(OH_GRP_Sp_Presence_sub$GenusSpecies)) #92
+unique(OH_GRP_Sp_Presence_sub$GenusSpecies)
+```
+
+## OH GRP Filter Subset Native vs Exotic
+```{r oh-grp-filtersubset-native-exotic}
+colnames(OH_GRP_Sp_Presence_sub)
+unique(OH_GRP_Sp_Presence_sub$speciesorigin)
+OH_GRP_Sp_Presence_sub_nat <- OH_GRP_Sp_Presence_sub[OH_GRP_Sp_Presence_sub$speciesorigin == "native",]
+unique(OH_GRP_Sp_Presence_sub_nat$GenusSpecies)
+length(unique(OH_GRP_Sp_Presence_sub_nat$GenusSpecies))
+OH_GRP_Sp_Presence_sub_exot <- OH_GRP_Sp_Presence_sub[OH_GRP_Sp_Presence_sub$speciesorigin == "exotic",]
+unique(OH_GRP_Sp_Presence_sub_exot$GenusSpecies)
+length(unique(OH_GRP_Sp_Presence_sub_exot$GenusSpecies)) #46
+OH_GRP_Sp_Presence_sub_unkown <- OH_GRP_Sp_Presence_sub[OH_GRP_Sp_Presence_sub$speciesorigin == "unknown",]
+unique(OH_GRP_Sp_Presence_sub_unkown$GenusSpecies)
+length(unique(OH_GRP_Sp_Presence_sub_unkown$GenusSpecies)) #1
+```
+
+```
+
+
+```
+
 
 ## Summary Stats
 ```{r summary-stats}
 summary(oakhaven_2025_cover_treat_sub)
 summary(oakhaven_2025_cover_untreat_sub)
 ```
+
 ## Wrangling with Dplyr
 ### Percent Cover By Treatment Group  
 ```{r data-wrangle-dplyr-group-mean-cover-treat}
@@ -351,7 +543,7 @@ unique(oakhaven_group_quadrats$QUniqueID)
 colnames(oakhaven_2025_cover)
 oakhaven_2025_cover_sp_unique <- unique(oakhaven_2025_cover$Species)
 oakhaven_2025_cover_sp_unique
-length(unique(oakhaven_2025_cover$Species)) #25 > 20 after removing empty trailing spaces from 5
+length(unique(oakhaven_2025_cover$Species)) #18 > 20 after removing empty trailing spaces from 5
 ```
 
 ### Group by Species
@@ -363,14 +555,17 @@ oakhaven_group_species
 
 
 # Species Richness
-- total number of species per Site
+- total number of species per Site  
+- There are 11 unique native plant species, and 3 invasive Plant species found in both the Treated and Untreated monitoring locations at Oak Haven Park
+The native plant species are: camas, delphinium, fawn lily, field chickweed, Menzies larkspur, moss, Oregon grape, Pacific sanicle, saxifrage species, shooting star, snowberry
+The invasive plant species are: herb robert geranium, Scotch broom, shiny geranium
 
 ## Unique Species
 ```{r unique-species-total}
-length(unique(oakhaven_2025_cover$Species)) #20
-length(unique(oakhaven_2025_cover_nat$Species)) #12
-length(unique(oakhaven_2025_cover_inv$Species)) #5
-# length(unique(oakhaven_2025_cover_unkn_mix$Species)) #4
+length(unique(oakhaven_2025_cover$Species)) #18
+length(unique(oakhaven_2025_cover_nat$Species)) #13
+length(unique(oakhaven_2025_cover_inv$Species)) #4
+length(unique(oakhaven_2025_cover_mix$Species)) #1
 ```
 
 ## Filter by Treatment
@@ -413,6 +608,100 @@ unique(oakhaven_2025_cover_sub_inv_untr$Species)
 ---
 
 # Plots
+
+## HAT Data
+HAT_data_Sites_SAR  
+HAT_data_FOHP  
+HAT_data_SAR  
+HAT_data_Volevents  
+
+
+### *** Staff Hours Metric
+
+```{r staff-hr-metric}
+colnames(HAT_data_inv_site_metrics)
+
+# drop row with data not shared
+HAT_data_inv_site_metrics <- HAT_data_inv_site_metrics[!(HAT_data_inv_site_metrics$Site %in% "NOT-SHARED"),]
+
+HAT_data_inv_site_metrics_staffhrs <- ggplot(HAT_data_inv_site_metrics, 
+   aes(x = Site, y = Hours, fill = Partner_Code)) + 
+#  aes(x = Site, y = Hours)) +   
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="right") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+    # scale_fill_manual(values = custom_colours_4) +
+        labs(title='HAT Staff Site Hours',
+          subtitle='2024 HAT_data_inv_site_metrics',
+          caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "Partner",          
+#         caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "",
+          x = "Site", y = "Staff Hours")
+
+HAT_data_inv_site_metrics_staffhrs
+
+# ggsave(filename = paste0("images/HAT_data_inv_site_metrics_staffhrs_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), HAT_data_inv_site_metrics_staffhrs)
+```
+
+
+### Volunteer Hours
+```{r vol-hr-metric}
+colnames(HAT_data_Volevents)
+
+HAT_data_Volevents_2024 <- HAT_data_Volevents[!(HAT_data_Volevents$Year %in% "2023"),]
+
+HAT_data_Volevents_2024 <- ggplot(HAT_data_Volevents_2024, 
+   aes(x = Date, y = Volunteer_Hours, fill = Event)) + 
+#  aes(x = Site, y = Hours)) +   
+  geom_bar(stat = "identity", width = 2, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="right") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+    # scale_fill_manual(values = custom_colours_4) +
+        labs(title='HAT Volunteer Event Hours',
+          subtitle='2024-HabitatRestorationWorkbook-VolEvents.csv',
+          caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "Event",          
+#         caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "",
+          x = "Date", y = "Volunteer Hours")
+
+HAT_data_Volevents_2024
+# Warning
+# `position_dodge()` requires non-overlapping x intervals
+
+# ggsave(filename = paste0("images/HAT_data_Volevents_2024_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), HAT_data_Volevents_2024)
+```
+
+
+
+
+### ??? Volunteer Events
+```{r HAT-vol-events}
+colnames(HAT_data_Volevents)
+str(HAT_data_Volevents)
+HAT_data_Volevents$Date <- as.Date(HAT_data_Volevents$Date)
+str(HAT_data_Volevents)
+
+unique(HAT_data_Volevents$Event)
+
+custom_colours_4 <- c("WSI,KEM Ivy Project" = "#a6cee3", 
+                    "lekwungen Community Toolshed Maplebank" = "#1f78b4", 
+                    "SNIDCEL Resiliency Project" = "#b2df8a",
+                    "Earth Day Restoration at Oak Haven Park" = "#33a02c")
+
+HAT_data_Volevents_plot <- 
+  ggplot(HAT_data_Volevents, aes(x = Date, y = Volunteer_Hours, fill = Event)) + 
+  geom_bar(stat = "identity", width = 5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="right") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    scale_fill_manual(values = custom_colours_4) +
+        labs(title='HAT Volunteer events',
+          subtitle='2023-2024',
+          caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "Event",
+          x = "Date", y = "Volunteer Hours")
+HAT_data_Volevents_plot
+```
+
 
 ## Time Plots
 ### Timevis
@@ -592,41 +881,119 @@ OH_timeline_plot
 ```
 
 
-## ggplot2 Chart
+## ggplot2 Charts
 
-### ??? Species Richness Plot
-```{r species-richness-plot}
 
-# colnames(oakhaven_group_quadrats)
-# 
-# oakhaven_2025_cover_nat_richness_plot  <-  ggplot(unique(oakhaven_2025_cover_nat),
-#                     aes(x = unique(oakhaven_2025_cover_nat$Species))) +
-#                       ylim(0, 100) +
-#                     #geom_bar(stat = "identity", fill = "seagreen") +
-#                     geom_bar(stat = "identity") +
-#                     theme_minimal() + #get rid of grey background and tick marks
-#                     # theme(legend.position="none") + #remove legend
-#                     theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-#                     labs(title='Species Richness',
-#                       subtitle='2025 Oak Haven Park',
-#                       caption = "Chart by Wendy Anthony \n 2025-10-06")
-# oakhaven_2025_cover_nat_richness_plot
+### Species Richness
+```{r species-richness}
+length(unique(oakhaven_2025_cover_sub_nat_tr$Species)) #11
+length(unique(oakhaven_2025_cover_sub_inv_tr$Species)) #3
+length(unique(oakhaven_2025_cover$Species)) #18
 
-# ## ggplotly
-#     ggplotly(tooltip = c("x", "y", "fill"), oakhaven_2025_cover_nat_richness_plot) %>%
-#       config(displayModeBar = FALSE) %>% # This line disables the modebar
-#       layout(title = list(
-#         text = "Species Richness<br><sup>Oak Haven Park</sup>",
-#         y = 0.95), # Adjust vertical position if needed
-#         xaxis = list(title = 'Unique Quadrat'),
-#         yaxis = list(title = 'Percentage Cover'),
-#         annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-10-06"
-#               # no legend
-#                            ,
-#              showarrow = F, xref='paper', yref='paper',
-#              xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
-#              font = list(size=8, color="grey")
-#              ))
+colnames(oakhaven_2025_cover)
+
+oakhaven_2025_cover_sub <- oakhaven_2025_cover[-c(1:6,8:12,16)]
+colnames(oakhaven_2025_cover_sub)
+
+library(ggplot2)
+library(magrittr) # required for %>%
+library(plotly)
+
+# https://ourcodingclub.github.io/tutorials/data-vis-2/
+species_counts <- oakhaven_2025_cover_sub %>%
+  dplyr::group_by(Treated, Native_or_Invasive) %>%
+  dplyr::summarise(Species_number = length(unique(Species)))
+colnames(species_counts) # [1] "Treated" "Native_or_Invasive" "Species_number" 
+
+# create custom colour-blind-friendly palette
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+# custom_colours_3 <- c("Native" = "#1b9e77", 
+#                     "Invasive" = "#d95f02",
+#                     "MixedGrass" = "#7570b3")
+
+oakhaven_2025_sp_rich_treat_plot <- 
+  ggplot(species_counts, aes(x = Treated, y = Species_number, fill = Native_or_Invasive)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    scale_fill_manual(values = custom_colours_3) +
+        labs(title='Species Richness by Treatment',
+          subtitle='2025 Oak Haven Park',
+          caption = "Chart by Wendy Anthony \n 2025-11-10", fill = "",
+          x = "Treatment", y = "Species Count")
+
+oakhaven_2025_sp_rich_treat_plot
+
+# ggplotly
+  ggplotly(oakhaven_2025_sp_rich_treat_plot)
+
+# ggsave(filename = paste0("images/oakhaven_2025_sp_rich_treat_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), oakhaven_2025_sp_rich_treat_plot)
+```
+
+#### Species Richness by Native/Invasive
+```{r species-richness-nat-inv}
+length(unique(oakhaven_2025_cover_sub_nat_tr$Species)) #11
+length(unique(oakhaven_2025_cover_sub_inv_tr$Species)) #3
+length(unique(oakhaven_2025_cover$Species)) #18
+
+colnames(oakhaven_2025_cover)
+
+oakhaven_2025_cover_sub <- oakhaven_2025_cover[-c(1:6,8:12,16)]
+colnames(oakhaven_2025_cover_sub)
+
+library(ggplot2)
+library(magrittr) # required for %>%
+library(plotly)
+
+species_counts <- oakhaven_2025_cover_sub %>%
+  dplyr::group_by(Treated, Native_or_Invasive) %>%
+  dplyr::summarise(Species_number = length(unique(Species)))
+colnames(species_counts) # [1] "Treated" "Native_or_Invasive" "Species_number" 
+
+# create custom colour-blind-friendly palette
+custom_colours_4 <- c("Treated" = "#b2df8a", 
+                    "Untreated" = "#1f78b4")
+
+oakhaven_2025_sp_rich_nat_inv_plot <- 
+  ggplot(species_counts, aes(x = Native_or_Invasive, y = Species_number, fill = Treated)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    scale_fill_manual(values = custom_colours_4) +
+        labs(title='Species Richness by Treatment',
+          subtitle='2025 Oak Haven Park',
+          caption = "Chart by Wendy Anthony \n 2025-11-10", fill = "",
+          #x = "Native / Invasive", 
+          y = "Species Count")
+
+oakhaven_2025_sp_rich_nat_inv_plot
+
+# ggplotly
+  # ggplotly(oakhaven_2025_sp_rich_nat_inv_plot)
+    ggplotly(tooltip = c("x", "y", "fill"), oakhaven_2025_sp_rich_nat_inv_plot) %>%
+      config(displayModeBar = FALSE) %>% # This line disables the modebar
+      layout(title = list(
+        text = "Comparing Species Richness<br><sup>2025 Oak Haven Park</sup>",
+        y = 0.95), # Adjust vertical position if needed
+        xaxis = list(title = NA),
+        yaxis = list(title = 'Species Count'),
+        legend = list(x=0.4, 
+                                 xanchor='left',
+                                 yanchor='bottom',
+                                 orientation='h'),
+        annotations = list(x = 1, y = -0.1, text = "Chart by Wendy Anthony\n2025-11-10",
+             showarrow = F, xref='paper', yref='paper',
+             xanchor='right', yanchor= 'auto', xshift=0, yshift=0,
+             font = list(size=8, color="grey")
+             ))
+  
+
+
+# ggsave(filename = paste0("images/oakhaven_2025_sp_rich_nat_inv_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), oakhaven_2025_sp_rich_nat_inv_plot)
 ```
 
 ### Quadrat per Species 
