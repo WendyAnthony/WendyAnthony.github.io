@@ -1,0 +1,547 @@
+---
+title: "HAT GOEM DataViz"
+author: "Wendy Anthony"
+date: "2025/11/30"
+output:
+  html_document:
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: yes
+    # highlight: textmate
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+
+Modified 2025-12-01
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load Libraries
+```{r load-libraries}
+library(tidyverse)
+library(plotly)
+library(htmlwidgets)
+library(stats) # for aggregate function mean
+library(gridExtra) # combine plots
+```
+
+# Data Import
+```{r data-import-HAT}
+
+#################################
+# Crew Hours and Amount Removed Data
+
+# To read and display Indigenous Languages save as CSV UTF-8
+# and use fileEncoding="UTF-8" to keep Aboriginal characters
+crew_data <- read.csv("data/HATRestorationCrewData-2022-2025.csv", fileEncoding="UTF-8")
+#################################
+
+#################################
+
+# Sites from HAT Covenants website
+HAT_sites <- read.csv("data/HAT-Sites.csv")
+HAT_sites
+#################################
+
+#################################
+######  Cover Data ###### 
+# Oak Haven Meta Data from cover data worksheets
+oakhaven_2025_metadata <- read.csv("data/HAT-OH-MetaData.csv")
+oakhaven_2025_metadata
+
+# Oak Haven Cover data 2025
+## cleaned and wrangled from file
+## HAT-Meadow Monitoring Spreadsheet 2025 - Oak Haven Park example.xlsx
+# HAT-MeadowMonitoring-2025-OakHaven.xlsx
+## change invasive grass to mixed grass
+oakhaven_2025_cover <- read.csv("data/HAT-MeadowMonitoring-2025-OakHaven.csv")
+oakhaven_2025_cover
+#################################
+
+#################################
+###### Presence Datat GRP ###### 
+# OH Presence Data from GRP Project Site #71 
+# species presence reference
+OH_GRP_Sp_Presence <- read.csv("data/GRP-Site-SpeciesCover-Presence-SQL-OHP-72.csv")
+OH_GRP_Sp_Presence
+#################################
+
+#################################
+###### Oak Haven Timeline ######
+# Oak Haven Timeline
+OH_timeline <- read.csv("data/Timeline-OH.csv")
+OH_timeline
+
+# Oak Haven Timeline for timevis
+Timeline_OH_vis <- read.csv("data/OH_timeline_date_timevis.csv", header = TRUE, sep = ",")
+Timeline_OH_vis
+#################################
+
+```
+
+
+# Data Exploration
+## HAT Crew Data
+```{r explore-data-crew-data}
+str(crew_data)
+colnames(crew_data)
+unique(crew_data$Work_Site)
+
+```
+
+# Data Wrangling
+## Dates HAT Crew Data
+```{r data-wrangling-crew-data-dates}
+# separate values
+crew_data_sep <- crew_data %>% separate(Date, into = c("Day", "Month"), sep = "-")
+
+# convert month name to number
+crew_data_sep$Month <- match(crew_data_sep$Month, month.abb)
+
+# create new column for Date
+crew_data_sep$Date <- NA
+
+crew_data_sep$Date <- paste(crew_data_sep$Year, crew_data_sep$Month,crew_data_sep$Day,sep =  "-")
+str(crew_data_sep)
+
+
+crew_data_sep$Date <- as.Date(crew_data_sep$Date)
+str(crew_data_sep)
+
+```
+## Columns Change Names and Select
+```{r rename-cols-crew-data}
+colnames(crew_data_sep)
+# Rename columns
+# names(crew_data_sep)[names(crew_data_sep) == "Work.Site"] <- "Work_Site"
+names(crew_data_sep)[names(crew_data_sep) == "Biomass.Removed..m3."] <- "Biomass_Removed_m3"
+names(crew_data_sep)[names(crew_data_sep) == "Area.Cleared..m2."] <- "Area_Cleared_m2"
+# names(crew_data_sep)[names(crew_data_sep) == "Invasive.Species.Cleared"] <- "Invasive_Species_Cleared"
+# names(crew_data_sep)[names(crew_data_sep) == "Crew.Hours"] <- "Crew_Hours"
+
+# Remove unneeded columns
+colnames(crew_data_sep)
+crew_data_sep_sub <- subset(crew_data_sep, select = -c(2,3))
+colnames(crew_data_sep_sub)
+str(crew_data_sep_sub)
+
+```
+
+## Change Format Numeric 
+```{r change-numeric-format}
+# change to number format
+crew_data_sep_sub$Area_Cleared_m2 <- as.numeric(as.character(crew_data_sep_sub$Area_Cleared_m2))
+crew_data_sep_sub$Biomass_Removed_m3 <- as.numeric(as.character(crew_data_sep_sub$Biomass_Removed_m3))
+# Warning: NAs introduced by coercion May 6 2025 was a blank cell with no value
+str(crew_data_sep_sub)
+
+```
+
+
+
+
+
+
+
+
+### HAT Crew Filtered Data by Site
+```{r crew-filter-site}
+colnames(crew_data_sep_sub)
+unique(crew_data_sep_sub$Work_Site)
+
+crew_data_sep_sub_matson <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Matson Conservation Area",]
+crew_data_sep_sub_OHP <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Oak Haven Park",]
+crew_data_sep_sub_yates <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Yates",]
+crew_data_sep_sub_funk <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Funk",]
+crew_data_sep_sub_ps <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Purple Sanicle",]
+crew_data_sep_sub_calypso <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Calypso Woods",]
+crew_data_sep_sub_camas <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Camas Hill",]
+crew_data_sep_sub_havenwood <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Havenwood Park",]
+crew_data_sep_sub_bear <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Bear Hill",]
+```
+
+
+# Plots
+
+
+## CrewData-2022-2025
+### Oak Haven Park by Year
+```{r OHP-year}
+str(crew_data_sep_sub_OHP)
+colnames(crew_data_sep_sub_OHP)
+unique(crew_data_sep_sub_OHP$Year) # 2023 2025 2024 2022
+
+# Filter by year - need column for year
+crew_data_sep_sub_OHP_2025 <- crew_data_sep_sub_OHP[crew_data_sep_sub_OHP$Year == "2025",]
+crew_data_sep_sub_OHP_2024 <- crew_data_sep_sub_OHP[crew_data_sep_sub_OHP$Year == "2024",]
+crew_data_sep_sub_OHP_2023 <- crew_data_sep_sub_OHP[crew_data_sep_sub_OHP$Year == "2023",]
+crew_data_sep_sub_OHP_2022 <- crew_data_sep_sub_OHP[crew_data_sep_sub_OHP$Year == "2022",]
+
+crew_data_sep_sub_OHP_2025_plot <- 
+  ggplot(crew_data_sep_sub_OHP_2025, aes(x = Date, y = Crew_Hours, fill = Biomass_Removed_m3)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Oak Haven Park Biomass removed by HAT Crew',
+          subtitle='2025',
+          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Biomass_Removed_m3",
+          x = "Work Site", y = "Crew Hours")
+
+crew_data_sep_sub_OHP_2025_plot
+# ggsave(filename = paste0("images/crew_data_sep_sub_plot_W̱SÁNEĆ_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_plot)
+
+```
+
+
+### **** Group by Work Site and add work hours and biomass removed
+```{r}
+colnames(crew_data_sep_sub)
+str(crew_data_sep_sub)
+
+# aggregate(crew_data_sep_sub$Work_Site, by=list(Biomass_Removed_m3=crew_data_sep_sub$Biomass_Removed_m3), FUN=sum)
+## Error in FUN(X[[i]], ...) : invalid 'type' (character) of argument
+
+crew_data_sep_sub_sum_by_group_site <- crew_data_sep_sub %>%
+  group_by(Work_Site, Year) %>%
+  summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
+            Crew_Hours = sum(Crew_Hours),
+            Area_Cleared_m2 = sum(Area_Cleared_m2))
+crew_data_sep_sub_sum_by_group_site
+
+```
+
+### *** Total Biomass Removed Per Time Investment
+- group and add up total crew hours and biomass removed
+
+#### 2025
+```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-2025}
+colnames(crew_data_sep_sub_sum_by_group_site)
+# [1] "Work_Site"          "Year"               "Biomass_Removed_m3" "Crew_Hours" 
+
+unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+# Filter by year - need column for year
+crew_data_sep_sub_sum_by_group_site_2025 <- crew_data_sep_sub_sum_by_group_site[crew_data_sep_sub_sum_by_group_site$Year == "2025",]
+
+crew_data_sep_sub_sum_by_group_site_2025_plot <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Total Biomass Removed & Work Crew Hours',
+          subtitle='2025 HAT Properties',
+          # caption = "Chart by Wendy Anthony \n 2025-11-29", 
+          fill = "Work_Site",
+          x = "Biomass Removed (m3)", y = "Crew Hours") +
+  guides(fill = guide_legend(title="Work Site"))
+
+crew_data_sep_sub_sum_by_group_site_2025_plot
+# ggsave(filename = paste0("images/crew_data_sep_sub_2025_plotĆ_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_2025_plot)
+```
+#### 2024
+```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-2024}
+colnames(crew_data_sep_sub_sum_by_group_site)
+# [1] "Work_Site"          "Year"               "Biomass_Removed_m3" "Crew_Hours" 
+
+unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+# Filter by year - need column for year
+crew_data_sep_sub_sum_by_group_site_2024 <- crew_data_sep_sub_sum_by_group_site[crew_data_sep_sub_sum_by_group_site$Year == "2024",]
+
+crew_data_sep_sub_sum_by_group_site_2024_plot <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site_2024, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Total Biomass Removed & Work Crew Hours',
+          subtitle='2024 HAT Properties',
+          #caption = "Chart by Wendy Anthony \n 2025-11-29", 
+          fill = "Work_Site",
+          x = "Biomass Removed (m3)", y = "Crew Hours") +
+  guides(fill = guide_legend(title="Work Site"))
+
+crew_data_sep_sub_sum_by_group_site_2024_plot
+# ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_2024_plot_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_2024_plot)
+```
+
+#### 2023
+```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-2023}
+colnames(crew_data_sep_sub_sum_by_group_site)
+# [1] "Work_Site"          "Year"               "Biomass_Removed_m3" "Crew_Hours" 
+
+unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+# Filter by year - need column for year
+crew_data_sep_sub_sum_by_group_site_2023 <- crew_data_sep_sub_sum_by_group_site[crew_data_sep_sub_sum_by_group_site$Year == "2023",]
+
+crew_data_sep_sub_sum_by_group_site_2023_plot <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site_2023, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Total Biomass Removed & Work Crew Hours',
+          subtitle='2023 HAT Properties',
+          #caption = "Chart by Wendy Anthony \n 2025-11-29", 
+          fill = "Work_Site",
+          x = "Biomass Removed (m3)", y = "Crew Hours") +
+  guides(fill = guide_legend(title="Work Site"))
+
+crew_data_sep_sub_sum_by_group_site_2023_plot
+# ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_2023_plot_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_2023_plot)
+```
+
+#### 2022
+```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-2022}
+colnames(crew_data_sep_sub_sum_by_group_site)
+# [1] "Work_Site"          "Year"               "Biomass_Removed_m3" "Crew_Hours" 
+
+unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+# Filter by year - need column for year
+crew_data_sep_sub_sum_by_group_site_2022 <- crew_data_sep_sub_sum_by_group_site[crew_data_sep_sub_sum_by_group_site$Year == "2022",]
+
+crew_data_sep_sub_sum_by_group_site_2022_plot <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site_2022, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Total Biomass Removed & Work Crew Hours',
+          subtitle='2022 HAT Properties',
+          #caption = "Chart by Wendy Anthony \n 2025-11-29", 
+          fill = "Work_Site",
+          x = "Biomass Removed (m3)", y = "Crew Hours") +
+  guides(fill = guide_legend(title="Work Site"))
+
+crew_data_sep_sub_sum_by_group_site_2022_plot
+# ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_2022_plot_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_2022_plot)
+```
+
+#### *** Facet wrap 2022-2025
+```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-facetwrap-2022-2025}
+colnames(crew_data_sep_sub_sum_by_group_site)
+# [1] "Work_Site"          "Year"               "Biomass_Removed_m3" "Crew_Hours" 
+
+# unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+# Filter by year - need column for year
+# crew_data_sep_sub_sum_by_group_site_2022 <- crew_data_sep_sub_sum_by_group_site[crew_data_sep_sub_sum_by_group_site$Year == "2022",]
+
+crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025 <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 5, position = "dodge") +
+  facet_wrap(~Year) +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Total Biomass Removed & Work Crew Hours',
+          subtitle='HAT Properties 2022-2025',
+          #caption = "Chart by Wendy Anthony \n 2025-11-29", 
+          fill = "Work_Site",
+          x = "Biomass Removed (m3)", y = "Crew Hours") +
+  guides(fill = guide_legend(title="Work Site"))
+
+crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025
+# ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025)
+```
+
+
+
+####  **** FUNCTION for Total Biomass and Year WORKED!!!
+```{r function-crew-data-total-biomass-year}
+
+barchart_work_site_biomass_year_function <- function(data, filter_column, filter_value, plot_subtitle = "Filtered Plot", plot_ojbect){
+  filtered_data <- data %>%
+     filter({{filter_column}} == filter_value)
+  
+plot_ojbect <- ggplot(filtered_data, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title = 'Total Biomass Removed and HAT Work Crew Hours',
+          subtitle = plot_subtitle,
+          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Work_Site",
+          x = "Biomass Removed (m3)", y = "Crew Hours") +
+  guides(fill = guide_legend(title="Work Site"))
+print(plot_ojbect)
+return(filtered_data)
+# ?? print(barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site))
+}
+
+# this returns a list
+# biomass_2025 <- barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2025", "2025", "biomass_2025")
+barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2025", "2025", "biomass_2025")
+barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2024", "2024", "biomass_2024")
+barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2023", "2023", "biomass_2023")
+barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2022", "2022", "biomass_2022")
+
+
+
+# 
+# # barchart_work_site_biomass_year <- function(data, filter_column, filter_value, x_var, y_var, plot_title = "Filtered Plot"){
+# # # unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+# # 
+# # # Filter by year - need column for year
+# #   filtered_data <- data %>%
+# #     filter({{filter_column}} == filter_value)
+# # 
+# #   p <- ggplot(filtered_data, aes(x = .data[[x_var]], y = .data[[y_var]])) +
+# #     geom_bar(stat = "identity", width = 5, position = "dodge") +
+# #     labs(title = plot_title,
+# #          x = x_var,
+# #          y = y_var) +
+# #     theme_minimal()
+# # 
+# #   return(p)
+# # 
+# #  }
+# 
+# ### ERROR IN FILTER
+# # In argument: `crew_data_sep_sub_sum_by_group_site$Year == filter_value`.
+# # ℹ In group 1: `Work_Site = "Bear Hill"`.
+# # Caused by error:
+# # ! `..1` must be of size 1, not size 23.
+# # colnames(crew_data_sep_sub_sum_by_group_site)
+# # unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+# # barchart_work_site_biomass_year(crew_data_sep_sub_sum_by_group_site, crew_data_sep_sub_sum_by_group_site$Work_Site, "2024", crew_data_sep_sub_sum_by_group_site$Biomass_Removed_m3, crew_data_sep_sub_sum_by_group_site$Crew_Hours, "Total Biomass Removed and Work Crew Hours")
+# 
+# # barchart_work_site_biomass_year(crew_data_sep_sub_sum_by_group_site, crew_data_sep_sub_sum_by_group_site$Work_Site, "Oak Haven Park", crew_data_sep_sub_sum_by_group_site$Biomass_Removed_m3, crew_data_sep_sub_sum_by_group_site$Crew_Hours, "Total Biomass Removed and Work Crew Hours at Oak Haven Park")
+
+```
+
+
+### Arrange charts together
+- can't arrange charts created with function  
+- need to use same x & y axis limits so charts are comparable
+- ??? can I share Title and legend???
+```{r arrange-charts-together}
+
+library(cowplot)
+plot_grid(crew_data_sep_sub_sum_by_group_site_2025_plot, crew_data_sep_sub_sum_by_group_site_2024_plot, crew_data_sep_sub_sum_by_group_site_2023_plot, crew_data_sep_sub_sum_by_group_site_2022_plot, ncol = 4)
+# , labels = c("2025", "2024", "2023", "2022")
+
+
+# Warning in as_grob.default(plot) :
+#  Cannot convert object of class grouped_dftbl_dftbldata.frame into a grob.
+# plot_grid(barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2025", "2025", "biomass_2025"), barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2024", "2024", "biomass_2024"), barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2023", "2023", "biomass_2023"), barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2022", "2022", "biomass_2022"), ncol = 2)
+
+```
+
+
+
+
+
+### Biomass Removed
+```{r crew-data-2022-2025-plots-biomass-removed}
+str(crew_data_sep_sub)
+colnames(crew_data_sep_sub)
+
+
+# create custom colour-blind-friendly palette
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+# custom_colours_3 <- c("Native" = "#1b9e77", 
+#                     "Invasive" = "#d95f02",
+#                     "MixedGrass" = "#7570b3")
+
+crew_data_sep_sub_plot <- 
+  ggplot(crew_data_sep_sub, aes(x = Work_Site, y = Crew_Hours, fill = Biomass_Removed_m3)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Biomass removed',
+          subtitle='2025 HAT Properties',
+          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Biomass_Removed_m3",
+          x = "Work Site", y = "Crew Hours")
+
+crew_data_sep_sub_plot
+# ggsave(filename = paste0("images/crew_data_sep_sub_plot_W̱SÁNEĆ_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_plot)
+
+```
+
+
+
+# Leaflet Maps
+## 3-Site Map
+```{r leaflet-3-sites}
+# library(dplyr)
+library(leaflet)
+
+# Title control
+# (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
+     title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+     
+    # https://rstudio.github.io/leaflet/articles/markers.html
+    # Create a palette that maps factor levels to colors
+    #####
+ # #d95f02 orange; #7570b3 purple; #1b9e77 
+     # https://colorbrewer2.org/#type=qualitative&scheme=Dark2&n=5
+    pal <- colorFactor(c("#1b9e77", "#7570b3", "#d95f02", "#e7298a", "#66a61e"), domain = c("Central Saanich", "Colwood", "Esquimalt", "Saanich", "Metchosin"))
+HAT_sites_map  <-  leaflet(HAT_sites) %>%
+      addProviderTiles("Esri.WorldImagery") %>%
+      addCircleMarkers(
+        ~ Lng, ~ Lat,
+        #
+        color = ~pal(Municipality),
+        # color = "yellow",
+        weight = 1, # size of circle border
+        stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
+        radius = 5,
+        # OM_site_data$
+        # "<b>Global Restore Project GOE Monitoring Sites</b>", "<br>", "<i>(Shackelford, et. al., 2005-2022)</i>", "<br><br>",
+        popup = paste0(
+        "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
+          "<b>Site:</b> ", "<b>", HAT_sites$Site, "</b>",  "<br>",
+          "<b>Municipality:</b> ", HAT_sites$Municipality, "<br>",
+          "<b>Size:</b> ", HAT_sites$Size_ha, " (ha)", "<br>",
+          "<b>First Nations:</b> ", HAT_sites$FirstNations, "<br>",
+          # "<b>Project id:</b> ", HAT_sites$ID, "<br>",
+          "<b>HAT Status:</b> ", HAT_sites$HAT_Status, "<br>",
+          "<b>Co-Covenant:</b> ", HAT_sites$Co_Covenant, " (", HAT_sites$Date, ")", "<br>",
+          "<b>Ecosystems:</b> ", HAT_sites$Ecosystems, "<br>",
+          "<b>Volunteer Stewardship:</b> ", HAT_sites$Volunteer_Stewardship, "<br>"
+          ))  %>%
+      addLegend("bottomright", pal = pal, values = HAT_sites$Municipality, title = "Municipality") %>%
+
+      setView(-123.44799, 48.52919, 11) %>%
+      # add controls
+      #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
+      addControl(title, position = "topright")
+
+# Display map
+HAT_sites_map
+
+# Save map
+saveWidget(HAT_sites_map, "output/HAT_site_map.html")
+```
+
+
+
+---
+
+# Session info
+```{r session-info}
+# to document specific packages used to run script
+sessionInfo()
+```
