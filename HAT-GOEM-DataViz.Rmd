@@ -41,6 +41,13 @@ library(gridExtra) # combine plots
 crew_data <- read.csv("data/HATRestorationCrewData-2022-2025.csv", fileEncoding="UTF-8")
 #################################
 
+## Cover data from original Meadow Monitoring Spreadsheet 2025.xlsx & Meadow Monitoring Spreadsheet 2024.xlsx
+# separated by year and site
+cover_OH_2024 <- read.csv("data/HAT-MeadowMonitoring-2024-OakHaven.csv", fileEncoding="UTF-8")
+cover_OH_2025 <- read.csv("data/HAT-MeadowMonitoring-2025-OakHaven.csv", fileEncoding="UTF-8")
+cover_MCA_2024 <- read.csv("data/HAT-MeadowMonitoring-2024-Matson.csv", fileEncoding="UTF-8")
+cover_MCA_2025 <- read.csv("data/HAT-MeadowMonitoring-2025-Matson.csv", fileEncoding="UTF-8")
+
 #################################
 
 # Sites from HAT Covenants website
@@ -114,7 +121,7 @@ crew_data_sep$Date <- as.Date(crew_data_sep$Date)
 str(crew_data_sep)
 
 ```
-## Columns Change Names and Select
+### Columns Change Names and Select
 ```{r rename-cols-crew-data}
 colnames(crew_data_sep)
 # Rename columns
@@ -132,7 +139,7 @@ str(crew_data_sep_sub)
 
 ```
 
-## Change Format Numeric 
+### Change Format Numeric 
 ```{r change-numeric-format}
 # change to number format
 crew_data_sep_sub$Area_Cleared_m2 <- as.numeric(as.character(crew_data_sep_sub$Area_Cleared_m2))
@@ -164,6 +171,49 @@ crew_data_sep_sub_camas <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Cam
 crew_data_sep_sub_havenwood <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Havenwood Park",]
 crew_data_sep_sub_bear <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Bear Hill",]
 ```
+
+### Multiple Invasive Species Removed
+- will need to make a new column - too many errors to fix, different capitalization, space at end of name
+```{r}
+unique(crew_data_sep_sub$Invasive_Species_Cleared)
+```
+
+
+## HAT Cover Data
+### rbind 4 file ojbects into 1
+```{r rbind-cover-data}
+HAT_cover_OH_MM <- rbind(cover_OH_2024, cover_OH_2025, cover_MCA_2024, cover_MCA_2025)
+
+# update sort ID column
+HAT_cover_OH_MM$SortID <- 1:nrow(HAT_cover_OH_MM)
+
+# as.Date
+str(HAT_cover_OH_MM)
+HAT_cover_OH_MM$Date <- as.Date(HAT_cover_OH_MM$Date)
+str(HAT_cover_OH_MM)
+
+# Concatenate QUniqueID
+colnames(HAT_cover_OH_MM)
+HAT_cover_OH_MM$QUniqueID <- paste(HAT_cover_OH_MM$MonitorID, HAT_cover_OH_MM$Quadrat, HAT_cover_OH_MM$QuadratLocation_m, sep = "_")
+
+# remove excess coloumns not needed
+colnames(HAT_cover_OH_MM)
+HAT_cover_OH_MM_sub <- subset(HAT_cover_OH_MM, select = -c(2,9,10,11,12,16))
+HAT_cover_OH_MM_sub
+
+# write csv
+write.csv(HAT_cover_OH_MM_sub, "data/HAT_cover_OH_MM_sub.csv", row.names = FALSE)
+```
+
+### Filter Subset
+#### Native vs Invasive vs MixedGrass
+```{r filter-inv-nat-subset}
+
+```
+
+
+
+
 
 
 # Plots
