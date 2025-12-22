@@ -3,6 +3,10 @@ title: "HAT GOEM DataViz"
 author: "Wendy Anthony"
 date: "2025/11/30"
 output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
+    toc_depth: '3'
   html_document:
     highlight: zenburn
     toc: yes
@@ -10,12 +14,15 @@ output:
     toc_float: yes
     number_sections: yes
     # highlight: textmate
-  pdf_document:
-    toc: yes
-    toc_depth: '3'
+# R code is still in Times Roman
+# San serif code for knitting pdf
+# mainfont: "Arial"      # Your main font (serif or sans-serif)
+# sansfont: "Helvetica"  # The specific sans-serif font for sans-serif contexts
+# fontsize: 11pt
 ---
 
-Modified 2025-12-01
+
+Modified 2025-12-13
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -33,7 +40,7 @@ library(gridExtra) # combine plots
 # Data Import
 ```{r data-import-HAT}
 
-#################################
+################################# 
 # Crew Hours and Amount Removed Data
 
 # To read and display Indigenous Languages save as CSV UTF-8
@@ -43,6 +50,8 @@ crew_data <- read.csv("data/HATRestorationCrewData-2022-2025.csv", fileEncoding=
 
 ## Cover data from original Meadow Monitoring Spreadsheet 2025.xlsx & Meadow Monitoring Spreadsheet 2024.xlsx
 # separated by year and site
+# Oak Haven Cover data 2025
+## change invasive grass to mixed grass
 cover_OH_2024 <- read.csv("data/HAT-MeadowMonitoring-2024-OakHaven.csv", fileEncoding="UTF-8")
 cover_OH_2025 <- read.csv("data/HAT-MeadowMonitoring-2025-OakHaven.csv", fileEncoding="UTF-8")
 cover_MCA_2024 <- read.csv("data/HAT-MeadowMonitoring-2024-Matson.csv", fileEncoding="UTF-8")
@@ -61,13 +70,6 @@ HAT_sites
 oakhaven_2025_metadata <- read.csv("data/HAT-OH-MetaData.csv")
 oakhaven_2025_metadata
 
-# Oak Haven Cover data 2025
-## cleaned and wrangled from file
-## HAT-Meadow Monitoring Spreadsheet 2025 - Oak Haven Park example.xlsx
-# HAT-MeadowMonitoring-2025-OakHaven.xlsx
-## change invasive grass to mixed grass
-oakhaven_2025_cover <- read.csv("data/HAT-MeadowMonitoring-2025-OakHaven.csv")
-oakhaven_2025_cover
 #################################
 
 #################################
@@ -96,9 +98,10 @@ Timeline_OH_vis
 ## HAT Crew Data
 ```{r explore-data-crew-data}
 str(crew_data)
+glimpse(crew_data)
+
 colnames(crew_data)
 unique(crew_data$Work_Site)
-
 ```
 
 # Data Wrangling
@@ -121,6 +124,7 @@ crew_data_sep$Date <- as.Date(crew_data_sep$Date)
 str(crew_data_sep)
 
 ```
+
 ### Columns Change Names and Select
 ```{r rename-cols-crew-data}
 colnames(crew_data_sep)
@@ -138,6 +142,13 @@ colnames(crew_data_sep_sub)
 str(crew_data_sep_sub)
 
 ```
+
+### Save Crew Data subset
+```{r save-crew-subset}
+crew_data_sep_sub
+write.csv(crew_data_sep_sub, "data/crew_data_sep_sub.csv", row.names = FALSE)
+```
+
 
 ### Change Format Numeric 
 ```{r change-numeric-format}
@@ -208,11 +219,31 @@ write.csv(HAT_cover_OH_MM_sub, "data/HAT_cover_OH_MM_sub.csv", row.names = FALSE
 ### Filter Subset
 #### Native vs Invasive vs MixedGrass
 ```{r filter-inv-nat-subset}
+unique(HAT_cover_OH_MM_sub$Native_or_Invasive)
+HAT_cover_OH_MM_sub_nat <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Native_or_Invasive == "Native",]
 
+HAT_cover_OH_MM_sub_inv <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Native_or_Invasive == "Invasive",]
+
+HAT_cover_OH_MM_sub_mix <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Native_or_Invasive == "MixedGrass",]
+```
+
+#### Treated vs Untreated
+```{r filter-treat-untreat-subset}
+unique(HAT_cover_OH_MM_sub$Treated)
+HAT_cover_OH_MM_sub_treat <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Treated == "Treated",]
+HAT_cover_OH_MM_sub_untreat <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Treated == "Untreated",]
 ```
 
 
 
+## ??? Function Cover Subset
+```{r fun-cover-sub}
+# cover_subset_fun <- function(data, var, var_name, year, site){
+#   data -> data[data$var == "var_name",]
+#   
+#  }
+# cover_subset_ <- cover_subset_fun(HAT_cover_OH_MM_sub, Treated, "Treated", "2025", "Oak Haven") 
+```
 
 
 
@@ -264,7 +295,7 @@ crew_data_sep_sub_sum_by_group_site <- crew_data_sep_sub %>%
             Crew_Hours = sum(Crew_Hours),
             Area_Cleared_m2 = sum(Area_Cleared_m2))
 crew_data_sep_sub_sum_by_group_site
-
+write.csv(crew_data_sep_sub_sum_by_group_site, "data/crew_data_sep_sub_sum_by_group_site.csv", row.names = FALSE)
 ```
 
 ### *** Total Biomass Removed Per Time Investment
@@ -527,6 +558,12 @@ crew_data_sep_sub_plot <-
 
 crew_data_sep_sub_plot
 # ggsave(filename = paste0("images/crew_data_sep_sub_plot_W̱SÁNEĆ_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_plot)
+
+```
+
+
+## Cover Data Plots
+```{r cover-data-plot}
 
 ```
 

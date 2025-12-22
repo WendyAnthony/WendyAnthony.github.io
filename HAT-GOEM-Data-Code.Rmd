@@ -11,6 +11,7 @@ output:
     number_sections: yes
     # highlight: textmate
   pdf_document:
+    latex_engine: xelatex
     toc: yes
     toc_depth: '3'
 ---
@@ -200,10 +201,16 @@ write.csv(OH_timeline, "data/OH_timeline_date.csv", row.names = FALSE)
 ```{r data-from-WORD-doc}
 
 library(readtext)
+# text not showing UTF-8 characters
+# , fileEncoding="UTF-8"
+HAT_mca_2023_2024_text_utf8 <- readtext("data/MatsonMattocksFieldLog-2016-2024/2023_2024-FieldLog-MatsonMattocks.docx", encoding = "UTF-8")$text
 HAT_mca_2023_2024_text <- readtext("data/MatsonMattocksFieldLog-2016-2024/2023_2024-FieldLog-MatsonMattocks.docx")$text
 HAT_mca_2022_2023_text <- readtext("data/MatsonMattocksFieldLog-2016-2024/2022_2023 Field Log - Matson Mattocks.docx")$text
 
+
+
 # Split text into parts using new line character:
+HAT_mca_2023_2024_text_utf8_parts <- strsplit(HAT_mca_2023_2024_text_utf8, "\n")[[1]]
 HAT_mca_2023_2024_text_parts <- strsplit(HAT_mca_2023_2024_text, "\n")[[1]]
 HAT_mca_2022_2023_text_parts <- strsplit(HAT_mca_2022_2023_text, "\n")[[1]]
 
@@ -215,6 +222,7 @@ Date_2024_10_30 <- HAT_mca_2023_2024_text_parts[7]
 str(Date_2024_10_30)
 
 # save as a text file
+lapply(HAT_mca_2023_2024_text_utf8_parts, write, "data/MatsonMattocksFieldLog-2016-2024/HAT_mca_2023_2024_text_utf8_parts.txt", append=TRUE)
 lapply(HAT_mca_2023_2024_text_parts, write, "data/MatsonMattocksFieldLog-2016-2024/HAT_mca_2023_2024_text_parts.txt", append=TRUE)
 lapply(HAT_mca_2022_2023_text_parts, write, "data/MatsonMattocksFieldLog-2016-2024/HAT_mca_2022_2023_text_parts.txt", append=TRUE)
 
@@ -277,34 +285,39 @@ fieldlog_MM_all <- rbind(fieldlog_MM, fieldlog_MM_1, fieldlog_MM_2)
 
 ### ??? Function - Field log mining 
 ```{r function-field-log}
+HAT_mca_2023_2024_text_parts
 
-# fieldlog_index_cbind <- function(data, date, hours, biomass_removed, area_worked, invasive_sp_rem, species, species1, species2, species3){
-# 
-# 
-# Date <- data$date
-# Hours <- data$hours
-# Biomass_removed <- data$biomass_removed
-# Area_worked <- data$area_worked
-# Invasive_sp_rem<- data$invasive_sp_rem
-# Species <- data$species
-# Species1 <- data$species1
-# Species2 <- data$species2
-# Species3 <- data$species3
-# 
+fieldlog_index_cbind <- function(data, date, hours, biomass_removed, area_worked, invasive_sp_rem, species, species1, species2, species3){
+
+
+Date <- date
+Hours <- hours
+Biomass_removed <- biomass_removed
+Area_worked <- area_worked
+Invasive_sp_rem<- invasive_sp_rem
+Species <- species
+Species1 <- species1
+Species2 <- species2
+Species3 <- species3
+
+# wouldn't create a df
 # tempdf <- data.frame(Date, Hours, Biomass_removed, Area_worked, Invasive_sp_rem, Species, Species1, Species2, Species3)
-# 
-# }
-# 
-# ### Error in rbind(deparse.level, ...) :
-# ### object 'fieldlog_MM_index_sel' not found
-# 
+
+}
+
+### Error in rbind(deparse.level, ...) :
+### object 'fieldlog_MM_index_sel' not found
+
+# doesn't recognize tempdf
 # fieldlog_MM_all_test <- rbind(fieldlog_MM_all, tempdf)
-# 
-# # input index line as function values
-# # data - HAT_mca_2023_2024_text_parts
-# 
-# ##Error in rbind(deparse.level, ...) : object 'tempdf' not found
-# fieldlog_index_cbind(HAT_mca_2023_2024_text_parts, "90", "92", "94", "96", "99", "103", "104", "NA", "NA")
+
+# input index line as function values
+# data - HAT_mca_2023_2024_text_parts
+
+##Error in rbind(deparse.level, ...) : object 'tempdf' not found
+#fieldlog_index_cbind(HAT_mca_2023_2024_text_parts, "90", "92", "94", "96", "99", "103", "104", "NA", "NA")
+field_log_2024_10_02 <- fieldlog_index_cbind(HAT_mca_2023_2024_text_parts, 90, 92, 94, 96, 99, 103, 104, NA, NA)
+# Error in data$date : $ operator is invalid for atomic vectors
 ```
 
 
@@ -483,6 +496,7 @@ oakhaven_2025_cover_untreat_sub <-oakhaven_2025_cover_untreat[-c(1,2,9,10,11,12,
 # colnames(oakhaven_2025_cover_untreat_sub)
 str(oakhaven_2025_cover_untreat_sub)
 ```
+
 ### OH GRP 2006 Reduce Columns
 ```{r OH-GRP-Sp-Pr-red-col}
 ### GRP OH Species Presence Reference Data 2006
@@ -512,7 +526,7 @@ length(unique(OH_GRP_Sp_Presence_sub_unkown$GenusSpecies)) #1
 
 
 ```
-
+# Cover Data
 
 ## Summary Stats
 ```{r summary-stats}
