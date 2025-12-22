@@ -14,8 +14,6 @@ output:
     toc_float: yes
     number_sections: yes
     # highlight: textmate
-# R code is still in Times Roman
-# San serif code for knitting pdf
 # mainfont: "Arial"      # Your main font (serif or sans-serif)
 # sansfont: "Helvetica"  # The specific sans-serif font for sans-serif contexts
 # fontsize: 11pt
