@@ -3,6 +3,10 @@ title: "HAT-GOE-Monitor-Code"
 author: "Wendy Anthony"
 date: "2025/10/03"
 output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
+    toc_depth: '3'
   html_document:
     highlight: zenburn
     toc: yes
@@ -10,12 +14,8 @@ output:
     toc_float: yes
     number_sections: yes
     # highlight: textmate
-  pdf_document:
-    latex_engine: xelatex
-    toc: yes
-    toc_depth: '3'
 ---
-Modified 2025-11-17 @ 14:53
+Modified 2025-12-23 @ 08:26
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -60,6 +60,7 @@ oakhaven_2025_metadata
   
 # Oak Haven Cover data 2025
 ## cleaned and wrangled from file
+## Meadow Monitoring Spreadsheet 2025.xlsx
 ## HAT-Meadow Monitoring Spreadsheet 2025 - Oak Haven Park example.xlsx
 # HAT-MeadowMonitoring-2025-OakHaven.xlsx
 ## change invasive grass to mixed grass
@@ -534,23 +535,123 @@ summary(oakhaven_2025_cover_treat_sub)
 summary(oakhaven_2025_cover_untreat_sub)
 ```
 
-## Wrangling with Dplyr
-### Percent Cover By Treatment Group  
+## **** Mean Percent Cover Wrangling with Dplyr
+
+??? how to calculate standard deviation???
+```{r data-wrangle-cover-add-mean6-group-treat}
+colnames(oakhaven_2025_cover)
+unique(oakhaven_2025_cover$QUniqueID) #12  # 6 for treated 6 for untreated
+unique(oakhaven_2025_cover$Native_or_Invasive)
+
+num_treat <- oakhaven_2025_cover %>%
+  group_by(Treated) %>%
+    filter(Treated == "Treated") %>%
+  summarise(nQUniqueID = length(unique(QUniqueID)))
+num_treat
+
+num_untreat <- oakhaven_2025_cover %>%
+  group_by(Treated) %>%
+    filter(Treated == "Untreated") %>%
+  summarise(nQUniqueID = length(unique(QUniqueID)))
+num_untreat
+
+
+oakhaven_2025_cover_wrangle_group_nat <- oakhaven_2025_cover %>%
+  filter(Native_or_Invasive == "Native") %>%
+   group_by(Treated, Native_or_Invasive) %>%
+  summarise(PercentCover_sum = sum(PercentCover),
+            # nQUniqueID = length(unique(QUniqueID)),
+            PercentCover_mean = PercentCover_sum/6,
+            PercentCover_max = max(PercentCover),
+            PercentCover_min = min(PercentCover))
+oakhaven_2025_cover_wrangle_group_nat
+
+
+oakhaven_2025_cover_wrangle_group_inv <- oakhaven_2025_cover %>%
+  filter(Native_or_Invasive == "Invasive") %>%
+   group_by(Treated, Native_or_Invasive) %>%
+  summarise(PercentCover_sum = sum(PercentCover),
+            # nQUniqueID = length(unique(QUniqueID)),
+            PercentCover_mean = PercentCover_sum/6,
+            PercentCover_max = max(PercentCover),
+            PercentCover_min = min(PercentCover))
+oakhaven_2025_cover_wrangle_group_inv
+
+oakhaven_2025_cover_wrangle_group_mixgrs <- oakhaven_2025_cover %>%
+  filter(Native_or_Invasive == "MixedGrass") %>%
+   group_by(Treated, Native_or_Invasive) %>%
+  summarise(PercentCover_sum = sum(PercentCover),
+            # nQUniqueID = length(unique(QUniqueID)),
+            PercentCover_mean = PercentCover_sum/6,
+            PercentCover_max = max(PercentCover),
+            PercentCover_min = min(PercentCover))
+oakhaven_2025_cover_wrangle_group_mixgrs
+
+# round mean to 2 decimals
+oakhaven_2025_cover_wrangle_group_nat$PercentCover_mean <- round(oakhaven_2025_cover_wrangle_group_nat$PercentCover_mean, digits = 2)
+oakhaven_2025_cover_wrangle_group_inv$PercentCover_mean <- round(oakhaven_2025_cover_wrangle_group_inv$PercentCover_mean, digits = 2)
+oakhaven_2025_cover_wrangle_group_mixgrs$PercentCover_mean <- round(oakhaven_2025_cover_wrangle_group_mixgrs$PercentCover_mean, digits = 2)
+
+
+oakhaven_2025_cover_mean_by_group_treated <- rbind(oakhaven_2025_cover_wrangle_group_nat, oakhaven_2025_cover_wrangle_group_inv, oakhaven_2025_cover_wrangle_group_mixgrs)
+oakhaven_2025_cover_mean_by_group_treated
+
+
+
+```
+
+
+
+### ??? NOT for 6 quadrats Percent Cover By Treatment Group  
 ```{r data-wrangle-dplyr-group-mean-cover-treat}
 
 colnames(oakhaven_2025_cover)
 
+unique(oakhaven_2025_cover$QUniqueID) #12  # 6 for treated 6 for untreated
+
 oakhaven_2025_cover_mean_by_group_treat <- oakhaven_2025_cover %>%
-  group_by(Treated, Native_or_Invasive) %>%
+   group_by(Treated, Native_or_Invasive) %>%
   summarise(mean_value = mean(PercentCover), 
             sd_value = sd(PercentCover))
 oakhaven_2025_cover_mean_by_group_treat
 
-write.csv(oakhaven_2025_cover_mean_by_group_treat, "data/oakhaven_2025_cover_mean_by_group_treat.csv", row.names = FALSE)
+write.csv(oakhaven_2025_cover_mean_by_group_treat, file = paste0("data/oakhaven_2025_cover_mean_by_group_treat_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".csv"), row.names = FALSE)
+
+#write.csv(oakhaven_2025_cover_mean_by_group_treat, "data/oakhaven_2025_cover_mean_by_group_treat.csv", row.names = FALSE)
 ```
 
+#### ???? Group by QUniqueID to get mean of 6 quadrats per treated/untreated
+```{r data-wrangle-dplyr-group-mean-cover-treat_QUnique}
 
-### Percent Cover By Species Group  
+colnames(oakhaven_2025_cover)
+
+unique(oakhaven_2025_cover$QUniqueID) #12  # 6 for treated 6 for untreated
+
+oakhaven_2025_cover_mean_by_group_treat_QUnique <- oakhaven_2025_cover %>%
+#   group_by(Treated, Native_or_Invasive) %>%
+  group_by(Treated, QUniqueID, Native_or_Invasive) %>%
+  summarise(mean_value = mean(PercentCover), 
+            sd_value = sd(PercentCover))
+oakhaven_2025_cover_mean_by_group_treat_QUnique
+
+write.csv(oakhaven_2025_cover_mean_by_group_treat_QUnique, file = paste0("data/oakhaven_2025_cover_mean_by_group_treat_QUnique_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".csv"), row.names = FALSE)
+
+###################
+# Summarize mean of treated/untreated by 6 different quadrats each
+colnames(oakhaven_2025_cover_mean_by_group_treat_QUnique)
+
+oakhaven_2025_cover_mean_by_group_treat_QUnique_summ <- oakhaven_2025_cover_mean_by_group_treat_QUnique %>%
+#   group_by(Treated, Native_or_Invasive) %>%
+  group_by(Treated, Native_or_Invasive) %>%
+  summarise(mean_value = mean(mean_value), 
+            sd_value = sd(sd_value))
+oakhaven_2025_cover_mean_by_group_treat_QUnique_summ
+
+write.csv(oakhaven_2025_cover_mean_by_group_treat_QUnique_summ, file = paste0("data/oakhaven_2025_cover_mean_by_group_treat_QUnique_summ_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".csv"), row.names = FALSE)
+
+```
+
+###  ??? NOT for 6 quadrats Percent Cover By Species Group  
 ```{r data-wrangle-dplyr-group-mean-cover-species}
 
 oakhaven_2025_cover_mean_by_group_species <- oakhaven_2025_cover %>%
@@ -559,7 +660,36 @@ oakhaven_2025_cover_mean_by_group_species <- oakhaven_2025_cover %>%
             sd_value = sd(PercentCover))
 oakhaven_2025_cover_mean_by_group_species
 
-write.csv(oakhaven_2025_cover_mean_by_group_species, "data/oakhaven_2025_cover_mean_by_group_species.csv", row.names = FALSE)
+write.csv(oakhaven_2025_cover_mean_by_group_species, file = paste0("data/oakhaven_2025_cover_mean_by_group_species_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".csv"), row.names = FALSE)
+
+```
+
+### ???? Group by QUniqueID to get mean of 6 quadrats per treated/untreated
+NEED TO change number of decimal places in summary
+```{r data-wrangle-dplyr-group-mean-cover-species_QUnique}
+
+oakhaven_2025_cover_mean_by_group_species_QUnique <- oakhaven_2025_cover %>%
+  group_by(QUniqueID, Species, Treated, Native_or_Invasive) %>%
+  summarise(mean_value = mean(PercentCover), 
+            sd_value = sd(PercentCover))
+oakhaven_2025_cover_mean_by_group_species_QUnique
+
+write.csv(oakhaven_2025_cover_mean_by_group_species_QUnique, file = paste0("data/oakhaven_2025_cover_mean_by_group_species_QUnique_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".csv"), row.names = FALSE)
+
+###################
+# Summarize mean of treated/untreated by 6 different quadrats each
+colnames(oakhaven_2025_cover_mean_by_group_species_QUnique)
+
+oakhaven_2025_cover_mean_by_group_species_QUnique_summ <- oakhaven_2025_cover_mean_by_group_species_QUnique %>%
+#   group_by(Treated, Native_or_Invasive) %>%
+  group_by(Species, Treated, Native_or_Invasive) %>%
+  summarise(mean_value = mean(mean_value), 
+            sd_value = sd(mean_value))
+oakhaven_2025_cover_mean_by_group_species_QUnique_summ
+
+write.csv(oakhaven_2025_cover_mean_by_group_species_QUnique_summ, file = paste0("data/oakhaven_2025_cover_mean_by_group_species_QUnique_summ_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".csv"), row.names = FALSE)
+
+
 ```
 
 

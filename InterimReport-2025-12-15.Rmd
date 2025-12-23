@@ -1,0 +1,159 @@
+---
+title: "\\vspace{-2.5cm} HAT Monitor Data Visualization Interim Report #1"
+# title: "HAT Monitor Data Visualization Interim Report"
+# subtitle: "HAT Monitor Data Visualization"
+author: "2025/12/15 Wendy Anthony ER390"
+# date: "2025/12/15"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: no
+    # toc_depth: '3'
+  html_document:
+    highlight: zenburn
+    toc: no
+    # toc_depth: 3
+    # toc_float: yes
+    # number_sections: yes
+mainfont: "Arial"      # Your main font (serif or sans-serif)
+sansfont: "Helvetica"  # The specific sans-serif font for sans-serif contexts
+fontsize: 11pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Progress to date
+- HAT data for 2022-2025 work crew hours and biomass cleared has been cleaned, wrangled, and visualized in a grid of small multiples (see Figure 1, Page 2).
+- HAT cover data for 2024-2025 Oak Haven and Matson is in process of being cleaned, and wrangled for visualization.
+- Matson Field Logs are unformated text and requires at least 10 steps to copy and paste each days data into a spreadsheet in order to visualize the data. 
+
+---
+
+## Questions to Ask About HAT Data
+- What monitoring management decisions would be made from crew hours, area and species of biomass removed, difference between sites and years
+- 2025 Crew data only goes as far as Sept thus not truly comparable, can the rest of the year's data be made available
+- HAT Restoration Crew Data includes multiple invasive species pulled in one date without apportioning amounts ... what invasive species make up the most biomass and does this change over time at same site?
+- Matson Mattocks Field Log: is this available in a spreadsheet - could show a more complete picture of how much invasive species is being removed by HAT crew and volunteers
+
+---
+
+## Timelines and Future Directions
+- My ER390 course deadlines include submitting my Final Report Paper by 2026-04-15, and arranging to make a final present to HAT by 2026-05-08
+- I continue to work on making an interactive, user-choice interface to choose which sites, years and variables to visualize
+- I would like to meet with HAT in the very early weeks of January for feedback, direction and clarification of some data 
+
+---
+
+\newpage
+
+---
+  
+
+```{r load-libraries, echo=FALSE, message = FALSE}
+# Load Libraries
+library(tidyverse)
+library(plotly)
+library(htmlwidgets)
+library(stats) # for aggregate function mean
+library(gridExtra) # combine plots
+```
+
+```{r load-crew-data, echo=FALSE, message = FALSE}
+# load crew data
+# csv file saved in HAT-GOEM-DataViz.Rmd
+
+crew_data_sep_sub <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
+# str(crew_data_sep_sub)
+# Change to Date format
+crew_data_sep_sub$Date <- as.Date(crew_data_sep_sub$Date)
+# change Biomass_Removed_m3 chr to num
+crew_data_sep_sub$Biomass_Removed_m3 <- as.numeric(as.character(crew_data_sep_sub$Biomass_Removed_m3))
+```
+
+
+```{r group-by-site-add-biomas-hours, echo=FALSE, message = FALSE}
+### **** Group by Work Site and add work hours and biomass removed
+# colnames(crew_data_sep_sub)
+# str(crew_data_sep_sub)
+
+# aggregate(crew_data_sep_sub$Work_Site, by=list(Biomass_Removed_m3=crew_data_sep_sub$Biomass_Removed_m3), FUN=sum)
+## Error in FUN(X[[i]], ...) : invalid 'type' (character) of argument
+
+crew_data_sep_sub_sum_by_group_site <- crew_data_sep_sub %>%
+  group_by(Work_Site, Year) %>%
+  summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
+            Crew_Hours = sum(Crew_Hours),
+            Area_Cleared_m2 = sum(Area_Cleared_m2))
+# crew_data_sep_sub_sum_by_group_site
+
+write.csv(crew_data_sep_sub_sum_by_group_site, file = paste0("data/crew_data_sep_sub_sum_by_group_site_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".csv"), row.names = FALSE)
+
+```
+
+
+--- 
+
+```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-facetwrap_1, echo=FALSE, message = FALSE, warning = FALSE, fig.height = 6, fig.align = 'center'}
+#### *** Facet wrap 2022-2025
+## x axis  Crew_hours
+
+# colnames(crew_data_sep_sub_sum_by_group_site)
+crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025_hours_rev <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 11, position = "dodge") +
+  # negative vjust places label above bar
+  geom_text(aes(label = Biomass_Removed_m3), vjust = -0.3, size = 2.5) +
+  # positive vjust places label lower on bar
+  geom_text(aes(label = Work_Site), vjust = 1.5, size = 1.5) +
+  facet_wrap(~Year) +
+#  theme_minimal() + #get rid of grey background and tick marks
+  theme_bw() +
+  theme(legend.position ="bottom") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(plot.subtitle = element_text(hjust = 0.5)) +
+  theme(plot.caption = element_text(hjust = 0.5)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust = 0.5, size = 7)) +
+  # to make lower x axis different colour
+  # theme(axis.line.x.bottom = element_line(colour = "black")) +
+  # to force x/y axis to start at 0
+  # scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Total Biomass Removed & Work Crew Hours at HAT Properties 2022-2025',
+          # subtitle='HAT Properties 2022-2025',
+          caption = "Figure 2: Small Multiple Plots show yearly relationships between invasive biomass removed and work hours at 9 HAT sites.\n2022 Oak Haven Park is an outlier with much more biomass removed, making any patterns in other years difficult to see.", 
+          fill = "Work_Site",
+          x = "Crew_Hours", y = "Biomass Removed (m3)") +
+  guides(fill = guide_legend(title=""))
+ # guides(fill = guide_legend(title="Work Site"))
+
+crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025_hours_rev
+#ggsave("images/crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025_hours_rev.png", crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025_hours_rev, width = 7, height = 4, units = "in", dpi = 600)
+
+```
+
+
+
+
+
+\newpage
+
+---
+
+```{r image-ref-for-in-text-1, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Figure 1', out.width='0.80\\linewidth'}
+# knitr::include_graphics("./images/crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025_hours.png")
+```
+
+---
+
+```{r image-ref-for-in-text-2, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Figure 2', out.width='0.80\\linewidth'}
+# knitr::include_graphics("./images/crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025_hours_rev.png")
+```
+
+
+---
+
+
+
