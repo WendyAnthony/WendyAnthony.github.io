@@ -42,7 +42,8 @@ library(gridExtra) # combine plots
 
 # To read and display Indigenous Languages save as CSV UTF-8
 # and use fileEncoding="UTF-8" to keep Aboriginal characters
-crew_data <- read.csv("data/HATRestorationCrewData-2022-2025.csv", fileEncoding="UTF-8")
+# crew_data <- read.csv("data/HATRestorationCrewData-2022-2025.csv", fileEncoding="UTF-8")
+crew_data <- read.csv("data/HATRestorationCrewData-2022-2025-sepsp.csv", fileEncoding="UTF-8")
 #################################
 
 ## Cover data from original Meadow Monitoring Spreadsheet 2025.xlsx & Meadow Monitoring Spreadsheet 2024.xlsx
@@ -134,7 +135,7 @@ names(crew_data_sep)[names(crew_data_sep) == "Area.Cleared..m2."] <- "Area_Clear
 
 # Remove unneeded columns
 colnames(crew_data_sep)
-crew_data_sep_sub <- subset(crew_data_sep, select = -c(2,3))
+crew_data_sep_sub <- subset(crew_data_sep, select = -c(1,3,4,7,9,12))
 colnames(crew_data_sep_sub)
 str(crew_data_sep_sub)
 

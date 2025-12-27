@@ -930,6 +930,14 @@ unique(oakhaven_2025_cover_sub_inv_untr$Species)
 - The **native plant species** are: `r unique(oakhaven_2025_cover_sub_nat_tr$Species)`  
 - The **invasive plant species** are: `r unique(oakhaven_2025_cover_sub_inv_tr$Species)`  
 
+```{r add-values-to-report, results = FALSE, echo = TRUE}
+"- There are `r length(unique(oakhaven_2025_cover_sub_nat_tr$Species))` unique native plant species, 
+and `r length(unique(oakhaven_2025_cover_sub_inv_tr$Species))` invasive Plant species 
+found in both the Treated and Untreated monitoring locations at Oak Haven Park"
+"- The **native plant species** are: `r unique(oakhaven_2025_cover_sub_nat_tr$Species)`  "
+"- The **invasive plant species** are: `r unique(oakhaven_2025_cover_sub_inv_tr$Species)`  "
+```
+
 ---
 
 # Plots

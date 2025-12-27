@@ -5,16 +5,16 @@ title: "\\vspace{-2.5cm} HAT Monitor Data Visualization Interim Report #1"
 author: "2025/12/15 Wendy Anthony ER390"
 # date: "2025/12/15"
 output:
-  pdf_document:
-    latex_engine: xelatex
-    toc: no
-    # toc_depth: '3'
   html_document:
     highlight: zenburn
     toc: no
     # toc_depth: 3
     # toc_float: yes
     # number_sections: yes
+  pdf_document:
+    latex_engine: xelatex
+    toc: no
+    # toc_depth: '3'
 mainfont: "Arial"      # Your main font (serif or sans-serif)
 sansfont: "Helvetica"  # The specific sans-serif font for sans-serif contexts
 fontsize: 11pt
@@ -89,6 +89,7 @@ crew_data_sep_sub_sum_by_group_site <- crew_data_sep_sub %>%
 # crew_data_sep_sub_sum_by_group_site
 
 write.csv(crew_data_sep_sub_sum_by_group_site, file = paste0("data/crew_data_sep_sub_sum_by_group_site_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".csv"), row.names = FALSE)
+# write.csv(crew_data_sep_sub_sum_by_group_site, "data/crew_data_sep_sub_sum_by_group_site.csv", row.names = FALSE)
 
 ```
 

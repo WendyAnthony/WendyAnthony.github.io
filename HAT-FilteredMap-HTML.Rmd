@@ -1,0 +1,295 @@
+---
+title: "HAT Filtered Monitoring Data Webpage"
+author: "Wendy Anthony"
+date: "2025/12/24"
+output:
+  html_document:
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: no
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+---
+
+```{r, include = FALSE}
+### Load packages
+require(tidyverse)
+require(leaflet)
+require(crosstalk)
+library(plotly)
+# Idea from https://www.zajichekstats.com/post/filterable-maps/ 
+```
+
+
+```{r data-download, include = FALSE}
+# Load Data
+HAT_sites_HAT <- read.csv("data/HAT-Sites-HAT.csv", fileEncoding="UTF-8")
+str(HAT_sites_HAT)
+head(HAT_sites_HAT)
+
+crew_data_sep_sub_sum_by_group_site_1 <- read.csv("data/crew_data_sep_sub_sum_by_group_site.csv", fileEncoding="UTF-8")
+str(crew_data_sep_sub_sum_by_group_site_1)
+head(crew_data_sep_sub_sum_by_group_site_1)
+```
+
+
+
+```{r create-sharable-database, include = FALSE}
+### Create sharable database using Crosstalk package
+# Make the shared data set
+sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_1)
+```
+
+
+```{r create-sharable-database-HAT-sites, include = FALSE}
+### Create sharable database using Crosstalk package
+# Make the shared data set
+sd_sites <- SharedData$new(data = HAT_sites_HAT)
+```
+
+
+# Plots: Crew Data
+
+
+```{r staff-hrs-site}
+
+# Create a filter input
+site_filter = filter_select(id = "Work_Site", label = "Choose Work Site", sharedData = sd_crew, group = ~ Work_Site, multiple = T)
+year_filter = filter_select(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, multiple = T)
+
+bscols(
+  site_filter, 
+  widths = 12
+)
+bscols(
+  year_filter, 
+  widths = 12
+)
+
+HAT_data_inv_site_metrics_staffhrs <- ggplot(sd_crew, 
+   aes(x = Work_Site, y = Crew_Hours, fill = Work_Site)) + 
+#  aes(x = Site, y = Hours)) +   
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="right") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
+    # scale_fill_manual(values = custom_colours_4) +
+        labs(title='HAT Staff Site Hours',
+          subtitle='invasive species removal',
+          caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "",          
+#         caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "",
+          x = "Site", y = "Staff Hours")
+
+HAT_data_inv_site_metrics_staffhrs
+
+# ggsave(filename = paste0("images/HAT_data_inv_site_metrics_staffhrs_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), HAT_data_inv_site_metrics_staffhrs)
+```
+
+```{r crew-data-2022-2025-plots-facetwrap, echo = FALSE, message = FALSE, include = FALSE}
+# crew_data_plot <- 
+#   ggplot(sd_crew, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+#   geom_bar(stat = "identity", width = 11, position = "dodge") +
+#   # geom_text(aes(label = Biomass_Removed_m3), vjust = -0.3, size = 2.5) +
+#   # geom_text(aes(label = Work_Site), vjust = 1.5, size = 1.5) +
+#   facet_wrap(~Year) +
+#   theme_bw() 
+# +
+  # theme(legend.position ="bottom") + 
+  # theme(plot.title = element_text(hjust = 0.5)) +
+  # theme(plot.subtitle = element_text(hjust = 0.5)) +
+  # theme(plot.caption = element_text(hjust = 0.5)) +
+  # theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust = 0.5, size = 7)) +
+  #       labs(title='Total Biomass Removed & Work Crew Hours at HAT Properties 2022-2025',
+  #         # subtitle='HAT Properties 2022-2025',
+  #         caption = "Figure 2: Small Multiple Plots show yearly relationships between invasive biomass removed and work hours at 9 HAT sites.\n2022 Oak Haven Park is an outlier with much more biomass removed, making any patterns in other years difficult to see.", 
+  #         fill = "Work_Site",
+  #         x = "Crew_Hours", y = "Biomass Removed (m3)") +
+  # guides(fill = guide_legend(title=""))
+
+# crew_data_plot
+
+```
+
+
+```{r crew-data-2022-2025-plots-biomass-facet, echo = FALSE, message = FALSE, warning = FALSE}
+# order of elements to appear on webpage
+bscols(
+  widths = c(1, 11),
+  "",
+  htmltools::h3("HAT Managed Work Crew Invasive Species Removal", style = "font-style:italic;")
+)
+bscols(
+    widths = c(1,11),
+    "",
+    htmltools::h4("Note: These filters need to be manually reset to delete unwanted choices")
+)
+
+# Create a filter input
+site_filter = filter_select(id = "Work_Site", label = "Choose Work Site", sharedData = sd_crew, group = ~ Work_Site, multiple = T)
+year_filter = filter_select(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, multiple = T)
+
+bscols(
+  site_filter, 
+  widths = 12
+)
+bscols(
+  year_filter, 
+  widths = 12
+)
+
+ggplotly(
+    ggplot(sd_crew, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+      geom_bar(stat = "identity", width = 11, position = "dodge") +
+    geom_text(aes(label = Year), vjust = 1.3, size = 2.5) , 
+    tooltip = NULL, config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation="h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+# title = list('Biomass Removed & HAT Work Crew Hours 2022-2025', font = size = 8), 
+```
+
+---
+
+# Map
+
+```{r leaflet-all-sites, echo = FALSE, message = FALSE, include = FALSE}
+
+# Title control
+# (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
+     title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+     
+    # https://rstudio.github.io/leaflet/articles/markers.html
+    # Create a palette that maps factor levels to colors
+    #####
+ # #d95f02 orange; #7570b3 purple; #1b9e77 
+     # https://colorbrewer2.org/#type=qualitative&scheme=Dark2&n=5
+    # pal <- colorFactor(c("#1b9e77", "#7570b3", "#d95f02", "#e7298a", "#66a61e"), domain = c("Central Saanich", "Colwood", "Esquimalt", "Saanich", "Metchosin"))
+     pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Central Saanich", "Esquimalt", "Colwood"))
+HAT_sites_HAT_map  <-  leaflet(sd_sites) %>%
+      addProviderTiles("Esri.WorldImagery") %>%
+      addCircleMarkers(
+        ~ Lng, ~ Lat,
+        #
+        color = ~pal(Municipality),
+        # color = "yellow",
+        weight = 1, # size of circle border
+        stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
+        radius = 5,
+        # OM_site_data$
+        # "<b>Global Restore Project GOE Monitoring Sites</b>", "<br>", "<i>(Shackelford, et. al., 2005-2022)</i>", "<br><br>",
+        popup = paste0(
+        "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
+          "<b>Site:</b> ", "<b>", HAT_sites_HAT$Site, "</b>",  "<br>",
+          "<b>Municipality:</b> ", HAT_sites_HAT$Municipality, "<br>",
+          "<b>Size:</b> ", HAT_sites_HAT$Size_ha, " (ha)", "<br>",
+          "<b>First Nations:</b> ", HAT_sites_HAT$FirstNations, "<br>",
+          # "<b>Project id:</b> ", HAT_sites_HAT$ID, "<br>",
+          "<b>HAT Status:</b> ", HAT_sites_HAT$HAT_Status, "<br>",
+          "<b>Co-Covenant:</b> ", HAT_sites_HAT$Co_Covenant, " (", HAT_sites_HAT$Date, ")", "<br>",
+          "<b>Ecosystems:</b> ", HAT_sites_HAT$Ecosystems, "<br>",
+          "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br>"
+          ))  %>%
+      addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Municipality, title = "Municipality") %>%
+
+      setView(-123.44799, 48.52919, 9) %>%
+      # add controls
+      #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
+      addControl(title, position = "topright")
+
+# Display map
+HAT_sites_HAT_map
+
+# Save map
+# saveWidget(HAT_sites_HAT_map, "output/HAT_site_HAT_map.html")
+```
+
+
+```{r map-filter, echo = FALSE}
+# order of elements to appear on webpage
+bscols(
+  widths = c(1, 11),
+  "",
+  htmltools::h3("HAT Managed Public GOE Sites", style = "font-style:italic;")
+)
+# Size filter
+bscols(
+  widths = c(1, 10, 1),
+  "",
+  filter_slider(
+    id = "Size_ha",
+    label = "Size in ha",
+    sharedData = sd_sites,
+    column = ~Size_ha,
+    step = 1,
+    min = 0,
+    max = 20,
+    post = "ha"
+  ),
+  ""
+)
+
+bscols(
+    widths = c(1,11),
+    "",
+    htmltools::h4("Note: These filters need to be manually reset to ALL")
+)
+# Cohort filters: Row 1
+bscols(
+  widths = c(1, 3, 3, 3, 1),
+  "",
+  filter_select(
+    id = "Partner_Code",
+    label = "Partner",
+    sharedData = sd_sites,
+    group = ~Partner_Code
+  ),
+  filter_select(
+    id = "Municipality",
+    label = "Municipality",
+    sharedData = sd_sites,
+    group = ~Municipality
+  ),
+  filter_select(
+    id = "FirstNations",
+    label = "First Nations",
+    sharedData = sd_sites,
+    group = ~FirstNations
+  ),
+  ""
+)
+HAT_sites_HAT_map
+```
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
