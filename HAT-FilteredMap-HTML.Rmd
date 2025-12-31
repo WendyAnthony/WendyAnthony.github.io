@@ -1,7 +1,7 @@
 ---
 title: "HAT Filtered Monitoring Data Webpage"
 author: "Wendy Anthony"
-date: "2025/12/24"
+date: "2025/12/31"
 output:
   html_document:
     highlight: zenburn
@@ -37,6 +37,27 @@ head(HAT_sites_HAT)
 crew_data_sep_sub_sum_by_group_site_1 <- read.csv("data/crew_data_sep_sub_sum_by_group_site.csv", fileEncoding="UTF-8")
 str(crew_data_sep_sub_sum_by_group_site_1)
 head(crew_data_sep_sub_sum_by_group_site_1)
+
+cover_data <- read.csv("data/HAT_cover_mean.csv", fileEncoding="UTF-8")
+
+```
+
+
+```{r rename-site-location-worksite-columns-for-sd-key, include = FALSE}
+
+# df_renamed <- df %>%
+#  rename(new_colname_A = old_colname_1)
+
+crew_data_sep_sub_sum_by_group_site_rename_site <- crew_data_sep_sub_sum_by_group_site_1 %>%
+  rename(Site = Work_Site)
+
+cover_data_rename_site <- cover_data %>%
+  rename(Site = Location)
+
+colnames(cover_data_rename_site)
+cover_data_rename_site_sub <- subset(cover_data_rename_site, select = -c(9,10,11))
+ 
+
 ```
 
 
@@ -44,7 +65,8 @@ head(crew_data_sep_sub_sum_by_group_site_1)
 ```{r create-sharable-database, include = FALSE}
 ### Create sharable database using Crosstalk package
 # Make the shared data set
-sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_1)
+sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_rename_site)
+sd_cover <- SharedData$new(data = cover_data_rename_site_sub)
 ```
 
 
@@ -55,15 +77,21 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT)
 ```
 
 
+
 # Plots: Crew Data
 
-
-```{r staff-hrs-site}
+```{r filter-input-crew-data, echo = FALSE}
+bscols(
+  widths = 12,
+    # widths = c(1,11),
+    # "",
+    htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
+)
 
 # Create a filter input
-site_filter = filter_select(id = "Work_Site", label = "Choose Work Site", sharedData = sd_crew, group = ~ Work_Site, multiple = T)
-year_filter = filter_select(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, multiple = T)
-
+site_filter = filter_select(id = "Site", label = "Choose Work Site", sharedData = sd_crew, group = ~ Site, multiple = T)
+year_filter = filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
+# filter_checkbox()
 bscols(
   site_filter, 
   widths = 12
@@ -73,31 +101,55 @@ bscols(
   widths = 12
 )
 
-HAT_data_inv_site_metrics_staffhrs <- ggplot(sd_crew, 
-   aes(x = Work_Site, y = Crew_Hours, fill = Work_Site)) + 
+
+```
+
+
+```{r staff-hrs-site, echo = FALSE, message = FALSE, warning = FALSE}
+bscols(
+  widths = c(1, 11),
+  "",
+  htmltools::h3("HAT Managed Work Crew Staff Hours Invasive Species Removal", style = "font-style:italic;")
+)
+
+## NOTE
+# ggplot needs to be wrapped in ggplotly for crosstalk to work
+ggplotly(
+  ggplot(sd_crew, 
+   aes(x = Site, y = Crew_Hours, fill = Site)) + 
 #  aes(x = Site, y = Hours)) +   
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_bar(stat = "identity", width = 0.5, position = position_dodge2(padding = 0.2)) +
   theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="right") + 
+    theme(legend.position ="right") + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
     # scale_fill_manual(values = custom_colours_4) +
-        labs(title='HAT Staff Site Hours',
-          subtitle='invasive species removal',
-          caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "",          
-#         caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "",
-          x = "Site", y = "Staff Hours")
+        labs(
+#           title='HAT Staff Site Hours',
+#           subtitle='invasive species removal',
+#           caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "",          
+# #         caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "",
+          x = "Site", y = "Staff Hours") +
+  geom_text(aes(label = Year), vjust = 1.3, size = 2.5, angle = 45) , 
+    tooltip = c("x", "y", "Year"), config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation="h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
 
-HAT_data_inv_site_metrics_staffhrs
+
 
 # ggsave(filename = paste0("images/HAT_data_inv_site_metrics_staffhrs_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), HAT_data_inv_site_metrics_staffhrs)
 ```
 
 ```{r crew-data-2022-2025-plots-facetwrap, echo = FALSE, message = FALSE, include = FALSE}
 # crew_data_plot <- 
-#   ggplot(sd_crew, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+#   ggplot(sd_crew, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Site)) + 
 #   geom_bar(stat = "identity", width = 11, position = "dodge") +
 #   # geom_text(aes(label = Biomass_Removed_m3), vjust = -0.3, size = 2.5) +
-#   # geom_text(aes(label = Work_Site), vjust = 1.5, size = 1.5) +
+#   # geom_text(aes(label = Site), vjust = 1.5, size = 1.5) +
 #   facet_wrap(~Year) +
 #   theme_bw() 
 # +
@@ -109,7 +161,7 @@ HAT_data_inv_site_metrics_staffhrs
   #       labs(title='Total Biomass Removed & Work Crew Hours at HAT Properties 2022-2025',
   #         # subtitle='HAT Properties 2022-2025',
   #         caption = "Figure 2: Small Multiple Plots show yearly relationships between invasive biomass removed and work hours at 9 HAT sites.\n2022 Oak Haven Park is an outlier with much more biomass removed, making any patterns in other years difficult to see.", 
-  #         fill = "Work_Site",
+  #         fill = "Site",
   #         x = "Crew_Hours", y = "Biomass Removed (m3)") +
   # guides(fill = guide_legend(title=""))
 
@@ -125,30 +177,13 @@ bscols(
   "",
   htmltools::h3("HAT Managed Work Crew Invasive Species Removal", style = "font-style:italic;")
 )
-bscols(
-    widths = c(1,11),
-    "",
-    htmltools::h4("Note: These filters need to be manually reset to delete unwanted choices")
-)
-
-# Create a filter input
-site_filter = filter_select(id = "Work_Site", label = "Choose Work Site", sharedData = sd_crew, group = ~ Work_Site, multiple = T)
-year_filter = filter_select(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, multiple = T)
-
-bscols(
-  site_filter, 
-  widths = 12
-)
-bscols(
-  year_filter, 
-  widths = 12
-)
 
 ggplotly(
-    ggplot(sd_crew, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
-      geom_bar(stat = "identity", width = 11, position = "dodge") +
+    ggplot(sd_crew, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Site)) + 
+    geom_bar(stat = "identity", width = 11, position = "dodge") +
+    theme_minimal() + #get rid of grey background and tick marks
     geom_text(aes(label = Year), vjust = 1.3, size = 2.5) , 
-    tooltip = NULL, config = (displayModeBar = False) 
+    tooltip = c("x", "y", "Year", "fill"), config = (displayModeBar = False) 
   ) %>%
     layout(legend = list(orientation="h",
     xanchor="center",
@@ -157,6 +192,111 @@ ggplotly(
     y = -0.2
     ))
 # title = list('Biomass Removed & HAT Work Crew Hours 2022-2025', font = size = 8), 
+```
+
+
+# Plots: Cover Data
+
+```{r filter-input-cover-data, echo = FALSE}
+bscols(
+  widths = 12,
+    # widths = c(1,11),
+    # "",
+    htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
+)
+
+# Create a filter input
+site_filter = filter_select(id = "Site", label = "Choose Work Site", sharedData = sd_cover, group = ~ Site, multiple = T)
+year_filter = filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
+treat_filter = filter_select(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, multiple = T)
+origin_filter = filter_select(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_cover, group = ~ Native_or_Invasive, multiple = T)
+species_filter = filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, group = ~ Species, multiple = T)
+
+# filter_checkbox()
+bscols(
+  widths = c(5, 6),
+  site_filter, 
+  species_filter
+)
+
+# bscols(
+#   site_filter, 
+#   widths = 12
+# )
+
+bscols(
+  widths = c(3, 3, 6),
+    year_filter, 
+  treat_filter, 
+  origin_filter
+)
+
+# bscols(
+#   year_filter, 
+#   widths = 12
+# )
+# bscols(
+#   origin_filter, 
+#   widths = 12
+# )
+# bscols(
+#   treat_filter, 
+#   widths = 12
+# )
+
+# bscols(
+#   species_filter, 
+#   widths = 12
+# )
+```
+
+
+```{r species-richness-treat, echo = FALSE, message = FALSE, warning = FALSE}
+
+# library(ggplot2)
+# library(magrittr) # required for %>%
+# library(plotly)
+
+# https://ourcodingclub.github.io/tutorials/data-vis-2/
+# create custom colour-blind-friendly palette
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+# custom_colours_3 <- c("Native" = "#1b9e77", 
+#                     "Invasive" = "#d95f02",
+#                     "MixedGrass" = "#7570b3")
+
+ggplotly(
+  ggplot(sd_cover, aes(x = mean_value, y = Species, fill = Native_or_Invasive, text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nMean Value:", mean_value,
+                                                          "\nSD Value:", sd_value))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+      labs(
+    x = "Mean percent cover",   # Set the x-axis name
+    y = "Species",   # Set the y-axis name
+    fill = "Native or Invasive", 
+    title = "Species Cover at HAT's Oak Haven & Matson 2024-2025"  # Optionally, add a title
+  ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+    # tooltip = c("x", "fill", "Species", "Site", "sd_value"), 
+    tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+
+
+
+# ggsave(filename = paste0("images/oakhaven_2025_sp_rich_treat_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), oakhaven_2025_sp_rich_treat_plot)
 ```
 
 ---
