@@ -3,10 +3,6 @@ title: "HAT GOEM DataViz"
 author: "Wendy Anthony"
 date: "2025/11/30"
 output:
-  pdf_document:
-    latex_engine: xelatex
-    toc: yes
-    toc_depth: '3'
   html_document:
     highlight: zenburn
     toc: yes
@@ -14,12 +10,16 @@ output:
     toc_float: yes
     number_sections: yes
     # highlight: textmate
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
+    toc_depth: '3'
 # mainfont: "Arial"      # Your main font (serif or sans-serif)
 # sansfont: "Helvetica"  # The specific sans-serif font for sans-serif contexts
 # fontsize: 11pt
 ---
 
-Modified 2025-12-23 @ 08:26
+Modified 2025-12-31 @ 12:46
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -182,12 +182,28 @@ unique(crew_data_sep_sub$Invasive_Species_Cleared)
 
 
 ## HAT Cover Data
-### rbind 4 file ojbects into 1
+### rbind 4 file ojbects into 1 in long format
 ```{r rbind-cover-data}
 HAT_cover_OH_MM <- rbind(cover_OH_2024, cover_OH_2025, cover_MCA_2024, cover_MCA_2025)
 
+
+unique(HAT_cover_OH_MM$Species) #48
+
+# trim trailing while spaces
+HAT_cover_OH_MM$Species <- trimws(HAT_cover_OH_MM$Species)
+species_unique <- unique(HAT_cover_OH_MM$Species) #40
+
+ 
+ comma_separated_sp_names <- paste(species_unique, collapse = ", ")
+ comma_separated_sp_names
+ str(comma_separated_sp_names)
+ comma_separated_sp_names_sort <- as_tibble(comma_separated_sp_names) %>%
+ arrange(comma_separated_sp_names)
+
+
 # update sort ID column
 HAT_cover_OH_MM$SortID <- 1:nrow(HAT_cover_OH_MM)
+
 
 # as.Date
 str(HAT_cover_OH_MM)
@@ -199,13 +215,18 @@ colnames(HAT_cover_OH_MM)
 HAT_cover_OH_MM$QUniqueID <- paste(HAT_cover_OH_MM$MonitorID, HAT_cover_OH_MM$Quadrat, HAT_cover_OH_MM$QuadratLocation_m, sep = "_")
 
 # remove excess coloumns not needed
+# including SortID column
 colnames(HAT_cover_OH_MM)
-HAT_cover_OH_MM_sub <- subset(HAT_cover_OH_MM, select = -c(2,9,10,11,12,16))
+HAT_cover_OH_MM_sub <- subset(HAT_cover_OH_MM, select = -c(1,2,9,10,11,12,16))
 HAT_cover_OH_MM_sub
+
+# Replace hyphen with underscores in QUniqueID
+HAT_cover_OH_MM_sub$QUniqueID <- gsub("-", "_", HAT_cover_OH_MM_sub$QUniqueID)
 
 # write csv
 write.csv(HAT_cover_OH_MM_sub, "data/HAT_cover_OH_MM_sub.csv", row.names = FALSE)
 ```
+
 
 ### Filter Subset
 #### Native vs Invasive vs MixedGrass
@@ -225,16 +246,184 @@ HAT_cover_OH_MM_sub_treat <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Treated == 
 HAT_cover_OH_MM_sub_untreat <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Treated == "Untreated",]
 ```
 
+### *** Convert long format to wide format and group by Species
+WORKS !!!!
+```{r cover-data-long-to-wide}
+colnames(HAT_cover_OH_MM_sub)
+# filter subset
+HAT_cover_OH_MM_sub_treat_OH <- HAT_cover_OH_MM_sub_treat[HAT_cover_OH_MM_sub_treat$Location == "Oak Haven",]
+HAT_cover_OH_MM_sub_treat_OH_2025 <- HAT_cover_OH_MM_sub_treat_OH[HAT_cover_OH_MM_sub_treat_OH$Year == "2025",]
+HAT_cover_OH_MM_sub_treat_OH_2024 <- HAT_cover_OH_MM_sub_treat_OH[HAT_cover_OH_MM_sub_treat_OH$Year == "2024",]
+HAT_cover_OH_MM_sub_untreat_OH <- HAT_cover_OH_MM_sub_untreat[HAT_cover_OH_MM_sub_untreat$Location == "Oak Haven",]
+HAT_cover_OH_MM_sub_untreat_OH_2025 <- HAT_cover_OH_MM_sub_untreat_OH[HAT_cover_OH_MM_sub_untreat_OH$Year == "2025",]
+HAT_cover_OH_MM_sub_untreat_OH_2024 <- HAT_cover_OH_MM_sub_untreat_OH[HAT_cover_OH_MM_sub_untreat_OH$Year == "2024",]
 
 
-## ??? Function Cover Subset
-```{r fun-cover-sub}
-# cover_subset_fun <- function(data, var, var_name, year, site){
-#   data -> data[data$var == "var_name",]
-#   
-#  }
-# cover_subset_ <- cover_subset_fun(HAT_cover_OH_MM_sub, Treated, "Treated", "2025", "Oak Haven") 
+colnames(HAT_cover_OH_MM_sub_treat_OH_2025)
+
+# long to wide
+HAT_cover_OH_MM_sub_treat_OH_2025_wide <- HAT_cover_OH_MM_sub_treat_OH_2025 %>% 
+pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+
+### SOME PROBLEM WITH DUPLICATE DATA HAT_cover_OH_MM_sub_untreat_OH_2024
+# HAT_cover_OH_MM_sub_untreat_OH_2024_wide <- HAT_cover_OH_MM_sub_untreat_OH_2024 %>% 
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+
+# colnames(HAT_cover_OH_MM_sub_untreat_OH_2024_wide)
+
+# sum all percentage cover per species over all Quadrats
+HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg <- HAT_cover_OH_MM_sub_treat_OH_2025_wide %>% 
+group_by(Year, Date, Location, Treated, Species) %>% 
+  summarise(across(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3), sum))
+# 
+colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg)
+
 ```
+
+### *** Calculate Mean Cover Percent
+WORKS !!!!
+```{r cover-mean}
+### *** Calculate Mean Cover Percent
+HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg_mean <- HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg %>%
+   group_by(Year, Date, Location, Treated, Species) %>%
+  summarise(mean_value = mean(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3)), 
+            sd_value = sd(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3))) %>%  
+  # round
+  mutate_if(is.numeric, round, 2)
+
+ HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg_mean
+ 
+colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg_mean)
+
+write.csv(HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg_mean, "data/HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg_mean.csv", row.names = FALSE)
+
+```
+
+
+
+
+## Function Cover Subset
+- in preparation for creating average mean percentage cover
+```{r fun-cover-sub}
+
+unique(HAT_cover_OH_MM_sub$Location)
+
+
+HAT_cover_subset_fun <- function(data, col_name, location, col_name_2, treat, col_name_3, year){
+   
+  data  <- data %>% dplyr::filter(
+    {{col_name}} == location,
+    {{col_name_2}} == treat,
+    {{col_name_3}} == year)
+  
+  return(data)
+  data_location_treat_year
+  
+}
+HAT_cover_subset_fun_OH_T_2025 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Treated", Year, "2025")
+HAT_cover_subset_fun_OH_U_2025 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Untreated", Year, "2025")
+HAT_cover_subset_fun_OH_T_2024 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Treated", Year, "2024")
+HAT_cover_subset_fun_OH_U_2024 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Untreated", Year, "2024")
+HAT_cover_subset_fun_M_T_2025 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2025")
+HAT_cover_subset_fun_M_U_2025 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2025")
+HAT_cover_subset_fun_M_T_2024 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2024")
+HAT_cover_subset_fun_M_U_2024 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2024")
+```
+
+## Function Cover Subset pivot wide
+- in preparation for creating average mean percentage cover
+```{r fun-cover-sub-pivot-wide, echo=F, results='hide'}
+
+#unique(HAT_cover_OH_MM_sub$Location)
+
+
+HAT_cover_subset_fun_pivot_wide <- function(data, col_name, location, col_name_2, treat, col_name_3, year){
+   
+  data  <- data %>% dplyr::filter(
+    {{col_name}} == location,
+    {{col_name_2}} == treat,
+    {{col_name_3}} == year) %>% 
+    pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)  
+}
+#    pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)  
+## Error in `pivot_wider()`:
+# ! Can't convert `fill` <double> to <list>.
+# # HAT_cover_subset_fun_pivot_wide()
+```
+
+
+```{r}
+HAT_cover_subset_fun_OH_T_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Treated", Year, "2025")
+HAT_cover_subset_fun_OH_U_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Unreated", Year, "2025")
+HAT_cover_subset_fun_OH_T_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Treated", Year, "2024")
+
+## unable to pivot wide and fill to 0
+## ????????? some duplicate values
+HAT_cover_subset_fun_OH_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Untreated", Year, "2024")
+
+
+
+HAT_cover_subset_fun_M_T_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2025")
+HAT_cover_subset_fun_M_U_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2025")
+HAT_cover_subset_fun_M_T_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2024")
+HAT_cover_subset_fun_M_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2024")
+```
+
+## ??? Function Mean Percent Cover
+??? this isn't resulting in any numbers
+```{r fun-cover-percent}
+
+#   col  <- data %>%
+#   select(!(SortID:Native_or_Invasive))
+# 
+# cols <- colnames(col)
+# 
+# comma_separated_names <- paste(cols, collapse = ", ")
+
+
+############################################################
+############################################################
+# HAT_mean_cover_fun <- function(data) {
+
+
+#    data  <- subset(data, select = -SortID) %>% data %>%
+#      group_by(Year, Date, Location, Treated, Species) %>%
+#      summarise(across(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3), sum)) %>%
+#   # round
+#   mutate_if(is.numeric, round, 2)
+# 
+# }
+
+## Error in UseMethod("group_by") : no applicable method for 'group_by' applied to an object of class "character"
+############################################################
+############################################################
+
+
+
+
+
+
+
+
+
+#   col  <- HAT_cover_OH_MM_sub_treat_OH_2025_wide %>%
+#   select(!(SortID:Native_or_Invasive))
+# 
+# cols <- colnames(col)
+# 
+# comma_separated_names <- paste(cols, collapse = ", ")
+# comma_separated_names
+# 
+# colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide)
+ # test <- HAT_mean_cover_fun(HAT_cover_OH_MM_sub_treat_OH_2025_wide)
+# 
+# test <- HAT_mean_cover_fun(HAT_cover_OH_MM_sub_treat_OH_2025_wide, "T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3")
+
+
+
+
+```
+
 
 
 
@@ -614,6 +803,63 @@ HAT_sites_map
 saveWidget(HAT_sites_map, "output/HAT_site_map.html")
 ```
 
+---
+
+# Mermaid Flowchart
+
+
+```{r mermaid-flow-chart-ex, class.output="scroll-100"}
+library(DiagrammeR)
+# colors from https://colorbrewer2.org/#type=diverging&scheme=BrBG&n=8
+DiagrammeR("
+graph TB
+ A1{HAT} --> A[Field Data Collection]
+ 
+ A -->B[Data Entry & Formatting]
+ B--create data files--> B1{Data}
+
+ B1 -- import to -->C(RStudio)
+
+C-->D((Data Type?))
+D -- Vegetation Data-->E[Clean & Tidy Species Data]
+D -- Restoration Work Hours-->F[Clean Labour & Biomass Data]
+E--calculate-->G[Calculate: Species Richness]
+E--calculate-->H[Calculate: % Native vs Invasive Cover]
+F--calculate-->I[Calculate: Efficiency - Hours per cubic meter Biomass]
+
+G--plot-->J[Plot: Biodiversity Change Over Time]
+H--plot-->K[Plot: Stacked Bar of Community Comp]
+I--plot-->L[Plot: Cost/Effort Analysis]
+M[Final Reports & Adaptive Management]
+
+J--include in-->M
+K--include in-->M
+L--include in-->M
+    
+ style A1 fill:#bf812d, stroke:#01665e
+ style A fill:#80cdc1, stroke:#333, stroke-width:1px  
+ style B fill:#80cdc1, stroke:#333, stroke-width:1px  
+ style B1 fill:#80cdc1
+ style C fill:#E5E25F, stroke:#333, stroke-width:2px  
+ style D fill:#80cdc1
+ style E fill:#80cdc1, stroke:#35978f, stroke-width:1px  
+ style F fill:#80cdc1, stroke:#35978f, stroke-width:1px  
+ style G fill:#fff9c4, stroke:#fbc02d,stroke-width:2px
+ style H fill:#fff9c4, stroke:#fbc02d,stroke-width:2px
+ style I fill:#fff9c4, stroke:#fbc02d,stroke-width:2px
+ style J fill:#E5E25F, stroke:#333, stroke-width:2px  
+ style K fill:#E5E25F, stroke:#333, stroke-width:2px  
+ style L fill:#E5E25F, stroke:#333, stroke-width:2px  
+ style M fill:#bf812d, stroke:#333, stroke-width:3px  
+")
+# red style E fill:#cf1d2f 
+# grey style G fill:#9AA
+# blue with dark blue border style H fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+# yellow with dark yellow border style I fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+# gold with blue outline style K fill:#E5E25F, stroke:#333, stroke-width:2px  
+
+#  B1 -- data sent to -->A3[Wendy]
+```
 
 
 ---
