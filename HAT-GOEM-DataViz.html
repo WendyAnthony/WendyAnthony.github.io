@@ -2543,21 +2543,21 @@ div.tocify {
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(HAT_cover_OH_MM<span class="sc">$</span>Species) <span class="co">#48</span></span></code></pre></div>
-<pre><code>##  [1] &quot;snowberry&quot;            &quot;shiny geranium&quot;       &quot;moss&quot;                
-##  [4] &quot;mixed grass&quot;          &quot;camas&quot;                &quot;licorice fern&quot;       
-##  [7] &quot;bur chervil &quot;         &quot;Oregon grape &quot;        &quot;Scotch broom &quot;       
-## [10] &quot;vetch&quot;                &quot;common plantain&quot;      &quot;grass&quot;               
-## [13] &quot;dull Oregon grape&quot;    &quot;Scotch broom&quot;         &quot;field chickweed&quot;     
-## [16] &quot;chickweed &quot;           &quot;moss &amp; grass&quot;         &quot;Oregon grape&quot;        
+<pre><code>##  [1] &quot;bur chervil &quot;         &quot;camas&quot;                &quot;common plantain&quot;     
+##  [4] &quot;dull Oregon grape&quot;    &quot;grass&quot;                &quot;licorice fern&quot;       
+##  [7] &quot;mixed grass&quot;          &quot;moss&quot;                 &quot;Oregon grape &quot;       
+## [10] &quot;Scotch broom &quot;        &quot;shiny geranium&quot;       &quot;snowberry&quot;           
+## [13] &quot;vetch&quot;                &quot;chickweed &quot;           &quot;field chickweed&quot;     
+## [16] &quot;moss &amp; grass&quot;         &quot;Oregon grape&quot;         &quot;Scotch broom&quot;        
 ## [19] &quot;shooting star&quot;        &quot;Pacific sanicle&quot;      &quot;herb robert geranium&quot;
 ## [22] &quot;fawn lily&quot;            &quot;Menzies larkspur&quot;     &quot;saxifrage species&quot;   
 ## [25] &quot;rose&quot;                 &quot;speedwell&quot;            &quot;delphinium&quot;          
-## [28] &quot;onion&quot;                &quot;blue wildrye&quot;         &quot;English ivy&quot;         
-## [31] &quot;Garry oak&quot;            &quot;Himalayan blackberry&quot; &quot;oceanspray &quot;         
-## [34] &quot;Pacific sanicle &quot;     &quot;tall Oregon grape&quot;    &quot;trailing blackberry&quot; 
-## [37] &quot;&quot;                     &quot;aster&quot;                &quot;daphne&quot;              
-## [40] &quot;grass &quot;               &quot;leaf mulch &quot;          &quot;oceanspray&quot;          
-## [43] &quot;orchard grass&quot;        &quot;orchard grass &quot;       &quot;pickly wall lettuce &quot;
+## [28] &quot;onion&quot;                &quot;blue wildrye&quot;         &quot;Himalayan blackberry&quot;
+## [31] &quot;oceanspray &quot;          &quot;Pacific sanicle &quot;     &quot;English ivy&quot;         
+## [34] &quot;Garry oak&quot;            &quot;tall Oregon grape&quot;    &quot;trailing blackberry&quot; 
+## [37] &quot;&quot;                     &quot;aster&quot;                &quot;grass &quot;              
+## [40] &quot;oceanspray&quot;           &quot;pickly wall lettuce &quot; &quot;daphne&quot;              
+## [43] &quot;leaf mulch &quot;          &quot;orchard grass&quot;        &quot;orchard grass &quot;      
 ## [46] &quot;snowberry &quot;           &quot;trailing blackberry &quot; &quot;unknown&quot;</code></pre>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># trim trailing while spaces</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>HAT_cover_OH_MM<span class="sc">$</span>Species <span class="ot">&lt;-</span> <span class="fu">trimws</span>(HAT_cover_OH_MM<span class="sc">$</span>Species)</span>
@@ -2566,9 +2566,9 @@ div.tocify {
 <span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a> comma_separated_sp_names <span class="ot">&lt;-</span> <span class="fu">paste</span>(species_unique, <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>)</span>
 <span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a> comma_separated_sp_names</span></code></pre></div>
-<pre><code>## [1] &quot;snowberry, shiny geranium, moss, mixed grass, camas, licorice fern, bur chervil, Oregon grape, Scotch broom, vetch, common plantain, grass, dull Oregon grape, field chickweed, chickweed, moss &amp; grass, shooting star, Pacific sanicle, herb robert geranium, fawn lily, Menzies larkspur, saxifrage species, rose, speedwell, delphinium, onion, blue wildrye, English ivy, Garry oak, Himalayan blackberry, oceanspray, tall Oregon grape, trailing blackberry, , aster, daphne, leaf mulch, orchard grass, pickly wall lettuce, unknown&quot;</code></pre>
+<pre><code>## [1] &quot;bur chervil, camas, common plantain, dull Oregon grape, grass, licorice fern, mixed grass, moss, Oregon grape, Scotch broom, shiny geranium, snowberry, vetch, chickweed, field chickweed, moss &amp; grass, shooting star, Pacific sanicle, herb robert geranium, fawn lily, Menzies larkspur, saxifrage species, rose, speedwell, delphinium, onion, blue wildrye, Himalayan blackberry, oceanspray, English ivy, Garry oak, tall Oregon grape, trailing blackberry, , aster, pickly wall lettuce, daphne, leaf mulch, orchard grass, unknown&quot;</code></pre>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">str</span>(comma_separated_sp_names)</span></code></pre></div>
-<pre><code>##  chr &quot;snowberry, shiny geranium, moss, mixed grass, camas, licorice fern, bur chervil, Oregon grape, Scotch broom, ve&quot;| __truncated__</code></pre>
+<pre><code>##  chr &quot;bur chervil, camas, common plantain, dull Oregon grape, grass, licorice fern, mixed grass, moss, Oregon grape, &quot;| __truncated__</code></pre>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a> comma_separated_sp_names_sort <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(comma_separated_sp_names) <span class="sc">%&gt;%</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">arrange</span>(comma_separated_sp_names)</span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2581,7 +2581,7 @@ div.tocify {
 <span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(HAT_cover_OH_MM)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    242 obs. of  16 variables:
 ##  $ SortID            : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ MonitorID         : chr  &quot;T-CL&quot; &quot;T-CL&quot; &quot;T-CL&quot; &quot;T-CL&quot; ...
+##  $ MonitorID         : chr  &quot;T-CL&quot; &quot;T-CL&quot; &quot;T-HD&quot; &quot;T-HD&quot; ...
 ##  $ QUniqueID         : logi  NA NA NA NA NA NA ...
 ##  $ Date              : chr  &quot;2024-11-06&quot; &quot;2024-11-06&quot; &quot;2024-11-06&quot; &quot;2024-11-06&quot; ...
 ##  $ Year              : int  2024 2024 2024 2024 2024 2024 2024 2024 2024 2024 ...
@@ -2590,17 +2590,17 @@ div.tocify {
 ##  $ YearTreated       : int  2024 2024 2024 2024 2024 2024 2024 2024 2024 2024 ...
 ##  $ ExSpTabTitle      : chr  NA NA NA NA ...
 ##  $ Baseline          : int  NA NA NA NA NA NA NA NA NA NA ...
-##  $ Quadrat           : chr  &quot;Q1&quot; &quot;Q1&quot; &quot;Q1&quot; &quot;Q1&quot; ...
-##  $ QuadratLocation_m : num  4.3 4.3 4.3 4.3 4.3 4.3 3.3 3.3 3.3 3.3 ...
-##  $ Species           : chr  &quot;snowberry&quot; &quot;shiny geranium&quot; &quot;moss&quot; &quot;mixed grass&quot; ...
-##  $ Native_or_Invasive: chr  &quot;Native&quot; &quot;Invasive&quot; &quot;Native&quot; &quot;MixedGrass&quot; ...
-##  $ PercentCover      : int  14 55 8 20 2 1 5 40 35 19 ...
-##  $ OriginalSpecies   : chr  &quot;Snowberry &quot; &quot;Shiny geranium &quot; &quot;Moss &quot; &quot;Mixed grass&quot; ...</code></pre>
+##  $ Quadrat           : chr  &quot;Q2&quot; &quot;Q1&quot; &quot;Q1&quot; &quot;Q3&quot; ...
+##  $ QuadratLocation_m : num  3.3 4.3 4.3 8.3 4.3 3.3 8.3 4.3 4.3 3.3 ...
+##  $ Species           : chr  &quot;bur chervil&quot; &quot;camas&quot; &quot;common plantain&quot; &quot;dull Oregon grape&quot; ...
+##  $ Native_or_Invasive: chr  &quot;Invasive&quot; &quot;Native&quot; &quot;Invasive&quot; &quot;Native&quot; ...
+##  $ PercentCover      : int  1 2 1 25 40 10 25 1 3 4 ...
+##  $ OriginalSpecies   : chr  &quot;Bur chervil &quot; &quot;Camas &quot; &quot;Frog plantain&quot; &quot;Dull Oregon grape&quot; ...</code></pre>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>HAT_cover_OH_MM<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(HAT_cover_OH_MM<span class="sc">$</span>Date)</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(HAT_cover_OH_MM)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    242 obs. of  16 variables:
 ##  $ SortID            : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ MonitorID         : chr  &quot;T-CL&quot; &quot;T-CL&quot; &quot;T-CL&quot; &quot;T-CL&quot; ...
+##  $ MonitorID         : chr  &quot;T-CL&quot; &quot;T-CL&quot; &quot;T-HD&quot; &quot;T-HD&quot; ...
 ##  $ QUniqueID         : logi  NA NA NA NA NA NA ...
 ##  $ Date              : Date, format: &quot;2024-11-06&quot; &quot;2024-11-06&quot; ...
 ##  $ Year              : int  2024 2024 2024 2024 2024 2024 2024 2024 2024 2024 ...
@@ -2609,12 +2609,12 @@ div.tocify {
 ##  $ YearTreated       : int  2024 2024 2024 2024 2024 2024 2024 2024 2024 2024 ...
 ##  $ ExSpTabTitle      : chr  NA NA NA NA ...
 ##  $ Baseline          : int  NA NA NA NA NA NA NA NA NA NA ...
-##  $ Quadrat           : chr  &quot;Q1&quot; &quot;Q1&quot; &quot;Q1&quot; &quot;Q1&quot; ...
-##  $ QuadratLocation_m : num  4.3 4.3 4.3 4.3 4.3 4.3 3.3 3.3 3.3 3.3 ...
-##  $ Species           : chr  &quot;snowberry&quot; &quot;shiny geranium&quot; &quot;moss&quot; &quot;mixed grass&quot; ...
-##  $ Native_or_Invasive: chr  &quot;Native&quot; &quot;Invasive&quot; &quot;Native&quot; &quot;MixedGrass&quot; ...
-##  $ PercentCover      : int  14 55 8 20 2 1 5 40 35 19 ...
-##  $ OriginalSpecies   : chr  &quot;Snowberry &quot; &quot;Shiny geranium &quot; &quot;Moss &quot; &quot;Mixed grass&quot; ...</code></pre>
+##  $ Quadrat           : chr  &quot;Q2&quot; &quot;Q1&quot; &quot;Q1&quot; &quot;Q3&quot; ...
+##  $ QuadratLocation_m : num  3.3 4.3 4.3 8.3 4.3 3.3 8.3 4.3 4.3 3.3 ...
+##  $ Species           : chr  &quot;bur chervil&quot; &quot;camas&quot; &quot;common plantain&quot; &quot;dull Oregon grape&quot; ...
+##  $ Native_or_Invasive: chr  &quot;Invasive&quot; &quot;Native&quot; &quot;Invasive&quot; &quot;Native&quot; ...
+##  $ PercentCover      : int  1 2 1 25 40 10 25 1 3 4 ...
+##  $ OriginalSpecies   : chr  &quot;Bur chervil &quot; &quot;Camas &quot; &quot;Frog plantain&quot; &quot;Dull Oregon grape&quot; ...</code></pre>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Concatenate QUniqueID</span></span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(HAT_cover_OH_MM)</span></code></pre></div>
 <pre><code>##  [1] &quot;SortID&quot;             &quot;MonitorID&quot;          &quot;QUniqueID&quot;         
@@ -2637,74 +2637,74 @@ div.tocify {
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>HAT_cover_OH_MM_sub <span class="ot">&lt;-</span> <span class="fu">subset</span>(HAT_cover_OH_MM, <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">16</span>))</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>HAT_cover_OH_MM_sub</span></code></pre></div>
 <pre><code>##          QUniqueID       Date Year  Location   Treated YearTreated
-## 1      T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 1      T-CL_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
 ## 2      T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 3      T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 4      T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 5      T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 6      T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 7      T-CL_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 8      T-CL_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 9      T-CL_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 10     T-CL_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 11     T-CL_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 12     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 3      T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 4      T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 5      T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 6      T-HD_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 7      T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 8      T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 9      T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 10     T-HD_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 11     T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 12     T-CL_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
 ## 13     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 14     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 15     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 14     T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 15     T-CL_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
 ## 16     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 17     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 18     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 19     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 20     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 21     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 22     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 23     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 24     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 25     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 26     T-HD_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 17     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 18     T-HD_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 19     T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 20     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 21     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 22     T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 23     T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 24     T-CL_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 25     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 26     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
 ## 27     T-HD_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 28     T-HD_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 29     T-HD_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 30     T-HD_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 31     T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 32     T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 33     T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 28     T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 29     T-CL_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 30     T-CL_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 31     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 32     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 33     T-HD_Q2_3.3 2024-11-06 2024 Oak Haven   Treated        2024
 ## 34     T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 35     T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 36     T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 35     T-CL_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
+## 36     T-HD_Q1_4.3 2024-11-06 2024 Oak Haven   Treated        2024
 ## 37     T-HD_Q3_8.3 2024-11-06 2024 Oak Haven   Treated        2024
-## 38       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 39       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 40       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 41       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 42       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 43       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 44       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 45    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 46    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 47    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 48    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 49    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 50    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 51     U-CL_Q3_2.6 2024-11-07 2024 Oak Haven Untreated        2024
-## 52     U-CL_Q3_2.6 2024-11-07 2024 Oak Haven Untreated        2024
-## 53     U-CL_Q3_2.6 2024-11-07 2024 Oak Haven Untreated        2024
-## 54     U-CL_Q3_2.6 2024-11-07 2024 Oak Haven Untreated        2024
-## 55     U-CL_Q3_2.6 2024-11-07 2024 Oak Haven Untreated        2024
-## 56      U-CL2_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 57      U-CL2_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 58      U-CL2_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 59      U-CL2_Q1_9 2024-11-07 2024 Oak Haven Untreated        2024
-## 60   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 61   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 62   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 63   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 64   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 65   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated        2024
-## 66    U-CL2_Q3_2.6 2024-11-07 2024 Oak Haven Untreated        2024
-## 67    U-CL2_Q3_2.6 2024-11-07 2024 Oak Haven Untreated        2024
-## 68    U-CL2_Q3_2.6 2024-11-07 2024 Oak Haven Untreated        2024
+## 38       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
+## 39     U-CL_Q3_2.6 2024-11-07 2024 Oak Haven Untreated          NA
+## 40    U-CL2_Q3_2.6 2024-11-07 2024 Oak Haven Untreated          NA
+## 41      U-CL2_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
+## 42   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 43    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 44       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
+## 45    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 46     U-CL_Q3_2.6 2024-11-07 2024 Oak Haven Untreated          NA
+## 47   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 48     U-CL_Q3_2.6 2024-11-07 2024 Oak Haven Untreated          NA
+## 49      U-CL2_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
+## 50    U-CL2_Q3_2.6 2024-11-07 2024 Oak Haven Untreated          NA
+## 51   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 52       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
+## 53    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 54     U-CL_Q3_2.6 2024-11-07 2024 Oak Haven Untreated          NA
+## 55    U-CL2_Q3_2.6 2024-11-07 2024 Oak Haven Untreated          NA
+## 56    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 57       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
+## 58      U-CL2_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
+## 59   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 60       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
+## 61    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 62     U-CL_Q3_2.6 2024-11-07 2024 Oak Haven Untreated          NA
+## 63   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 64       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
+## 65    U-CL_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 66      U-CL2_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
+## 67   U-CL2_Q2_13.3 2024-11-07 2024 Oak Haven Untreated          NA
+## 68       U-CL_Q1_9 2024-11-07 2024 Oak Haven Untreated          NA
 ## 69     T-DL_Q1_4.3 2025-04-02 2025 Oak Haven   Treated        2024
 ## 70     T-DL_Q1_4.3 2025-04-02 2025 Oak Haven   Treated        2024
 ## 71     T-DL_Q1_4.3 2025-04-02 2025 Oak Haven   Treated        2024
@@ -2790,85 +2790,85 @@ div.tocify {
 ## 151    T-CH_Q3_8.3 2025-04-02 2025 Oak Haven   Treated        2024
 ## 152    T-CH_Q3_8.3 2025-04-02 2025 Oak Haven   Treated        2024
 ## 153    T-CH_Q3_8.3 2025-04-02 2025 Oak Haven   Treated        2024
-## 154    T-HCDD_Q3_8 2024-07-24 2024    Matson   Treated          NA
-## 155 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
-## 156  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
-## 157 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
-## 158  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
-## 159  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
-## 160    T-HCDD_Q1_2 2024-07-24 2024    Matson   Treated          NA
-## 161    T-HCDD_Q2_5 2024-07-24 2024    Matson   Treated          NA
-## 162    T-HCDD_Q3_8 2024-07-24 2024    Matson   Treated          NA
-## 163 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
-## 164  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
-## 165  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
-## 166    T-HCDD_Q3_8 2024-07-24 2024    Matson   Treated          NA
-## 167  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
+## 154    T-HCDD_Q3_8 2024-07-24 2024    Matson   Treated        2024
+## 155    T-HCDD_Q1_2 2024-07-24 2024    Matson   Treated        2024
+## 156    T-HCDD_Q2_5 2024-07-24 2024    Matson   Treated        2024
+## 157    T-HCDD_Q3_8 2024-07-24 2024    Matson   Treated        2024
+## 158    T-HCDD_Q3_8 2024-07-24 2024    Matson   Treated        2024
+## 159    T-HCDD_Q2_5 2024-07-24 2024    Matson   Treated        2024
+## 160    T-HCDD_Q2_5 2024-07-24 2024    Matson   Treated        2024
+## 161    T-HCDD_Q1_2 2024-07-24 2024    Matson   Treated        2024
+## 162    T-HCDD_Q2_5 2024-07-24 2024    Matson   Treated        2024
+## 163    T-HCDD_Q1_2 2024-07-24 2024    Matson   Treated        2024
+## 164    T-HCDD_Q2_5 2024-07-24 2024    Matson   Treated        2024
+## 165 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
+## 166  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
+## 167 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
 ## 168  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
-## 169    T-HCDD_Q2_5 2024-07-24 2024    Matson   Treated          NA
-## 170    T-HCDD_Q2_5 2024-07-24 2024    Matson   Treated          NA
-## 171 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
-## 172  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
-## 173    T-HCDD_Q1_2 2024-07-24 2024    Matson   Treated          NA
-## 174    T-HCDD_Q2_5 2024-07-24 2024    Matson   Treated          NA
-## 175  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
-## 176    T-HCDD_Q1_2 2024-07-24 2024    Matson   Treated          NA
-## 177 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
-## 178  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
-## 179  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
-## 180 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
-## 181  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
-## 182 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
-## 183  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
-## 184  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
-## 185    T-HCDD_Q2_5 2024-07-24 2024    Matson   Treated          NA
+## 169  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
+## 170 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
+## 171  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
+## 172  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
+## 173  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
+## 174  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
+## 175 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
+## 176  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
+## 177  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
+## 178 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
+## 179  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
+## 180  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
+## 181 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
+## 182  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
+## 183 U-HCDD_Q1_3.66 2024-07-25 2024    Matson Untreated          NA
+## 184  U-HCDD_Q2_5.7 2024-07-25 2024    Matson Untreated          NA
+## 185  U-HCDD_Q3_7.3 2024-07-25 2024    Matson Untreated          NA
 ## 186           __NA       &lt;NA&gt;   NA                              NA
 ## 187      T-LJ_Q1_8 2025-07-28 2025    Matson   Treated        2024
 ## 188      T-LJ_Q1_8 2025-07-28 2025    Matson   Treated        2024
 ## 189      T-LJ_Q3_4 2025-07-28 2025    Matson   Treated        2024
-## 190      T-DH_Q3_8 2025-07-28 2025    Matson   Treated          NA
+## 190      T-DH_Q3_8 2025-07-28 2025    Matson   Treated        2024
 ## 191      T-LJ_Q1_8 2025-07-28 2025    Matson   Treated        2024
-## 192      T-DH_Q3_8 2025-07-28 2025    Matson   Treated          NA
-## 193      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
-## 194      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
-## 195      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
-## 196      U-DH_Q1_2 2025-07-28 2025    Matson Untreated          NA
-## 197      U-DH_Q2_4 2025-07-28 2025    Matson Untreated          NA
-## 198      U-DH_Q3_9 2025-07-28 2025    Matson Untreated          NA
-## 199      T-DH_Q1_4 2025-07-28 2025    Matson   Treated          NA
-## 200      T-LJ_Q1_8 2025-07-28 2025    Matson   Treated        2024
-## 201      T-LJ_Q2_1 2025-07-28 2025    Matson   Treated        2024
-## 202      T-LJ_Q3_4 2025-07-28 2025    Matson   Treated        2024
-## 203      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
-## 204      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
-## 205      U-DH_Q1_2 2025-07-28 2025    Matson Untreated          NA
-## 206      U-DH_Q2_4 2025-07-28 2025    Matson Untreated          NA
-## 207      U-DH_Q3_9 2025-07-28 2025    Matson Untreated          NA
-## 208      T-DH_Q2_1 2025-07-28 2025    Matson   Treated          NA
-## 209      T-DH_Q3_8 2025-07-28 2025    Matson   Treated          NA
-## 210      T-LJ_Q1_8 2025-07-28 2025    Matson   Treated        2024
-## 211      T-LJ_Q3_4 2025-07-28 2025    Matson   Treated        2024
-## 212      T-DH_Q1_4 2025-07-28 2025    Matson   Treated          NA
-## 213      T-DH_Q3_8 2025-07-28 2025    Matson   Treated          NA
-## 214      U-LJ_Q1_4 2025-07-28 2025    Matson Untreated          NA
-## 215      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
-## 216      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
-## 217      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
-## 218      U-DH_Q1_2 2025-07-28 2025    Matson Untreated          NA
-## 219      U-DH_Q2_4 2025-07-28 2025    Matson Untreated          NA
-## 220      U-DH_Q3_9 2025-07-28 2025    Matson Untreated          NA
-## 221      T-LJ_Q2_1 2025-07-28 2025    Matson   Treated        2024
-## 222      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
-## 223      T-DH_Q2_1 2025-07-28 2025    Matson   Treated          NA
-## 224      U-LJ_Q1_4 2025-07-28 2025    Matson Untreated          NA
-## 225      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
-## 226      U-DH_Q1_2 2025-07-28 2025    Matson Untreated          NA
-## 227      U-DH_Q2_4 2025-07-28 2025    Matson Untreated          NA
-## 228      U-DH_Q3_9 2025-07-28 2025    Matson Untreated          NA
-## 229      U-LJ_Q1_4 2025-07-28 2025    Matson Untreated          NA
-## 230      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
-## 231      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
-## 232      T-LJ_Q1_8 2025-07-28 2025    Matson   Treated        2024
+## 192      T-DH_Q3_8 2025-07-28 2025    Matson   Treated        2024
+## 193      T-DH_Q1_4 2025-07-28 2025    Matson   Treated        2024
+## 194      T-LJ_Q1_8 2025-07-28 2025    Matson   Treated        2024
+## 195      T-LJ_Q2_1 2025-07-28 2025    Matson   Treated        2024
+## 196      T-LJ_Q3_4 2025-07-28 2025    Matson   Treated        2024
+## 197      T-DH_Q2_1 2025-07-28 2025    Matson   Treated        2024
+## 198      T-DH_Q3_8 2025-07-28 2025    Matson   Treated        2024
+## 199      T-LJ_Q1_8 2025-07-28 2025    Matson   Treated        2024
+## 200      T-LJ_Q3_4 2025-07-28 2025    Matson   Treated        2024
+## 201      T-DH_Q1_4 2025-07-28 2025    Matson   Treated        2024
+## 202      T-DH_Q3_8 2025-07-28 2025    Matson   Treated        2024
+## 203      T-LJ_Q2_1 2025-07-28 2025    Matson   Treated        2024
+## 204      T-DH_Q2_1 2025-07-28 2025    Matson   Treated        2024
+## 205      T-LJ_Q1_8 2025-07-28 2025    Matson   Treated        2024
+## 206      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
+## 207      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
+## 208      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
+## 209      U-DH_Q1_2 2025-07-28 2025    Matson Untreated          NA
+## 210      U-DH_Q2_4 2025-07-28 2025    Matson Untreated          NA
+## 211      U-DH_Q3_9 2025-07-28 2025    Matson Untreated          NA
+## 212      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
+## 213      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
+## 214      U-DH_Q1_2 2025-07-28 2025    Matson Untreated          NA
+## 215      U-DH_Q2_4 2025-07-28 2025    Matson Untreated          NA
+## 216      U-DH_Q3_9 2025-07-28 2025    Matson Untreated          NA
+## 217      U-LJ_Q1_4 2025-07-28 2025    Matson Untreated          NA
+## 218      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
+## 219      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
+## 220      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
+## 221      U-DH_Q1_2 2025-07-28 2025    Matson Untreated          NA
+## 222      U-DH_Q2_4 2025-07-28 2025    Matson Untreated          NA
+## 223      U-DH_Q3_9 2025-07-28 2025    Matson Untreated          NA
+## 224      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
+## 225      U-LJ_Q1_4 2025-07-28 2025    Matson Untreated          NA
+## 226      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
+## 227      U-DH_Q1_2 2025-07-28 2025    Matson Untreated          NA
+## 228      U-DH_Q2_4 2025-07-28 2025    Matson Untreated          NA
+## 229      U-DH_Q3_9 2025-07-28 2025    Matson Untreated          NA
+## 230      U-LJ_Q1_4 2025-07-28 2025    Matson Untreated          NA
+## 231      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
+## 232      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
 ## 233      U-LJ_Q1_4 2025-07-28 2025    Matson Untreated          NA
 ## 234      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
 ## 235      U-LJ_Q3_9 2025-07-28 2025    Matson Untreated          NA
@@ -2880,74 +2880,74 @@ div.tocify {
 ## 241      U-LJ_Q2_2 2025-07-28 2025    Matson Untreated          NA
 ## 242      U-LJ_Q1_4 2025-07-28 2025    Matson Untreated          NA
 ##                  Species Native_or_Invasive PercentCover
-## 1              snowberry             Native           14
-## 2         shiny geranium           Invasive           55
-## 3                   moss             Native            8
-## 4            mixed grass         MixedGrass           20
-## 5                  camas             Native            2
-## 6          licorice fern             Native            1
-## 7              snowberry             Native            5
-## 8         shiny geranium           Invasive           40
-## 9                   moss             Native           35
-## 10           mixed grass           Invasive           19
-## 11           bur chervil           Invasive            1
-## 12          Oregon grape             Native           15
-## 13             snowberry             Native           15
-## 14          Scotch broom           Invasive            3
-## 15        shiny geranium           Invasive           25
-## 16           mixed grass         MixedGrass           20
-## 17                 vetch           Invasive            2
-## 18                  moss             Native           20
-## 19             snowberry             Native           10
-## 20         licorice fern             Native            3
-## 21        shiny geranium           Invasive           30
-## 22                  moss             Native           15
-## 23       common plantain           Invasive            1
-## 24                 grass         MixedGrass           40
-## 25                 vetch           Invasive            1
-## 26             snowberry             Native            3
-## 27         licorice fern             Native            4
-## 28                  moss             Native           60
-## 29                 grass         MixedGrass           10
-## 30        shiny geranium           Invasive           23
-## 31     dull Oregon grape             Native           25
-## 32             snowberry             Native           20
-## 33          Scotch broom           Invasive            4
-## 34        shiny geranium           Invasive           15
-## 35                 grass         MixedGrass           25
+## 1            bur chervil           Invasive            1
+## 2                  camas             Native            2
+## 3        common plantain           Invasive            1
+## 4      dull Oregon grape             Native           25
+## 5                  grass         MixedGrass           40
+## 6                  grass         MixedGrass           10
+## 7                  grass         MixedGrass           25
+## 8          licorice fern             Native            1
+## 9          licorice fern             Native            3
+## 10         licorice fern             Native            4
+## 11           mixed grass         MixedGrass           20
+## 12           mixed grass         MixedGrass           19
+## 13           mixed grass         MixedGrass           20
+## 14                  moss             Native            8
+## 15                  moss             Native           35
+## 16                  moss             Native           20
+## 17                  moss             Native           15
+## 18                  moss             Native           60
+## 19                  moss             Native           10
+## 20          Oregon grape             Native           15
+## 21          Scotch broom           Invasive            3
+## 22          Scotch broom           Invasive            4
+## 23        shiny geranium           Invasive           55
+## 24        shiny geranium           Invasive           40
+## 25        shiny geranium           Invasive           25
+## 26        shiny geranium           Invasive           30
+## 27        shiny geranium           Invasive           23
+## 28        shiny geranium           Invasive           15
+## 29             snowberry             Native           14
+## 30             snowberry             Native            5
+## 31             snowberry             Native           15
+## 32             snowberry             Native           10
+## 33             snowberry             Native            3
+## 34             snowberry             Native           20
+## 35                 vetch           Invasive            2
 ## 36                 vetch           Invasive            1
-## 37                  moss             Native           10
-## 38          Oregon grape             Native           15
-## 39                 camas             Native            2
-## 40          Scotch broom           Invasive            3
-## 41                 vetch           Invasive            1
-## 42        shiny geranium           Invasive            5
-## 43                 grass         MixedGrass           73
-## 44             snowberry             Native            1
-## 45          Oregon grape             Native           20
-## 46             snowberry             Native           10
-## 47          Scotch broom           Invasive            5
-## 48       field chickweed             Native           15
-## 49        shiny geranium           Invasive           20
-## 50                 grass         MixedGrass           30
-## 51                  moss             Native           75
-## 52                 camas             Native            3
-## 53        shiny geranium           Invasive            1
-## 54                 grass         MixedGrass           19
-## 55          Oregon grape             Native            2
-## 56          Scotch broom           Invasive            8
-## 57             snowberry             Native           20
-## 58             chickweed             Native            5
-## 59          moss &amp; grass         MixedGrass           67
-## 60          Oregon grape             Native           40
-## 61             chickweed             Native            5
-## 62             snowberry             Native            5
+## 37                 vetch           Invasive            1
+## 38                 camas             Native            2
+## 39                 camas             Native            3
+## 40                 camas             Native            3
+## 41             chickweed             Native            5
+## 42             chickweed             Native            5
+## 43       field chickweed             Native           15
+## 44                 grass         MixedGrass           73
+## 45                 grass         MixedGrass           30
+## 46                 grass         MixedGrass           19
+## 47                 grass         MixedGrass           40
+## 48                  moss             Native           75
+## 49          moss &amp; grass         MixedGrass           67
+## 50          moss &amp; grass         MixedGrass           94
+## 51          Oregon grape             Native           40
+## 52          Oregon grape             Native           15
+## 53          Oregon grape             Native           20
+## 54          Oregon grape             Native            2
+## 55          Oregon grape             Native            3
+## 56          Scotch broom           Invasive            5
+## 57          Scotch broom           Invasive            3
+## 58          Scotch broom           Invasive            8
+## 59          Scotch broom           Invasive            5
+## 60        shiny geranium           Invasive            5
+## 61        shiny geranium           Invasive           20
+## 62        shiny geranium           Invasive            1
 ## 63        shiny geranium           Invasive            5
-## 64          Scotch broom           Invasive            5
-## 65                 grass         MixedGrass           40
-## 66          Oregon grape             Native            3
-## 67          moss &amp; grass         MixedGrass           94
-## 68                 camas             Native            3
+## 64             snowberry             Native            1
+## 65             snowberry             Native           10
+## 66             snowberry             Native           20
+## 67             snowberry             Native            5
+## 68                 vetch           Invasive            1
 ## 69         shooting star             Native           10
 ## 70       Pacific sanicle             Native            3
 ## 71                 camas             Native           10
@@ -3034,37 +3034,37 @@ div.tocify {
 ## 152       shiny geranium           Invasive           12
 ## 153          mixed grass         MixedGrass           32
 ## 154         blue wildrye             Native            4
-## 155    dull Oregon grape             Native            6
-## 156    dull Oregon grape             Native            2
-## 157          English ivy           Invasive           10
-## 158          English ivy           Invasive            5
-## 159            Garry oak             Native            1
-## 160                grass         MixedGrass           96
-## 161                grass         MixedGrass           84
-## 162                grass         MixedGrass           94
-## 163                grass         MixedGrass           57
-## 164                grass         MixedGrass           76
-## 165                grass         MixedGrass           20
-## 166 Himalayan blackberry           Invasive            2
-## 167        licorice fern             Native           10
-## 168        licorice fern             Native            5
-## 169           oceanspray             Native            3
-## 170                onion             Native            1
-## 171      Pacific sanicle             Native            1
-## 172      Pacific sanicle             Native            1
-## 173      Pacific sanicle             Native            2
-## 174         Scotch broom           Invasive            2
-## 175         Scotch broom           Invasive           25
-## 176            snowberry             Native            2
-## 177            snowberry             Native            2
-## 178            snowberry             Native            1
-## 179            snowberry             Native           10
-## 180    tall Oregon grape             Native           14
-## 181    tall Oregon grape             Native            2
-## 182  trailing blackberry             Native           10
+## 155                grass         MixedGrass           96
+## 156                grass         MixedGrass           84
+## 157                grass         MixedGrass           94
+## 158 Himalayan blackberry           Invasive            2
+## 159           oceanspray             Native            3
+## 160                onion             Native            1
+## 161      Pacific sanicle             Native            2
+## 162         Scotch broom           Invasive            2
+## 163            snowberry             Native            2
+## 164                vetch           Invasive           10
+## 165    dull Oregon grape             Native            6
+## 166    dull Oregon grape             Native            2
+## 167          English ivy           Invasive           10
+## 168          English ivy           Invasive            5
+## 169            Garry oak             Native            1
+## 170                grass         MixedGrass           57
+## 171                grass         MixedGrass           76
+## 172                grass         MixedGrass           20
+## 173        licorice fern             Native           10
+## 174        licorice fern             Native            5
+## 175      Pacific sanicle             Native            1
+## 176      Pacific sanicle             Native            1
+## 177         Scotch broom           Invasive           25
+## 178            snowberry             Native            2
+## 179            snowberry             Native            1
+## 180            snowberry             Native           10
+## 181    tall Oregon grape             Native           14
+## 182    tall Oregon grape             Native            2
 ## 183  trailing blackberry             Native           10
-## 184  trailing blackberry             Native            5
-## 185                vetch           Invasive           10
+## 184  trailing blackberry             Native           10
+## 185  trailing blackberry             Native            5
 ## 186                                                   NA
 ## 187                aster           Invasive            1
 ## 188         blue wildrye             Native           10
@@ -3072,46 +3072,46 @@ div.tocify {
 ## 190         blue wildrye             Native           15
 ## 191                camas             Native            4
 ## 192                camas             Native            5
-## 193               daphne           Invasive            1
-## 194          English ivy           Invasive           20
-## 195          English ivy           Invasive           10
-## 196          English ivy           Invasive           10
-## 197          English ivy           Invasive            5
-## 198          English ivy           Invasive           10
-## 199                grass         MixedGrass           90
-## 200                grass         MixedGrass           63
-## 201                grass         MixedGrass           99
-## 202                grass         MixedGrass           85
-## 203                grass         MixedGrass           20
-## 204                grass         MixedGrass           39
-## 205                grass         MixedGrass           85
-## 206                grass         MixedGrass           53
-## 207                grass         MixedGrass           23
-## 208                grass         MixedGrass           60
-## 209                grass         MixedGrass           70
-## 210 Himalayan blackberry           Invasive           20
-## 211 Himalayan blackberry           Invasive            2
-## 212 Himalayan blackberry           Invasive           10
-## 213 Himalayan blackberry           Invasive           10
-## 214           leaf mulch         MixedGrass           37
-## 215           leaf mulch         MixedGrass            6
-## 216           leaf mulch         MixedGrass            4
-## 217        licorice fern             Native            6
-## 218        licorice fern             Native            1
-## 219        licorice fern             Native            2
-## 220        licorice fern             Native            2
-## 221                 moss             Native            1
-## 222                 moss             Native           20
-## 223           oceanspray             Native           40
-## 224        orchard grass           Invasive           30
-## 225        orchard grass         MixedGrass           20
-## 226         Oregon grape             Native            7
-## 227         Oregon grape             Native           25
-## 228         Oregon grape             Native           60
-## 229         Oregon grape             Native           15
-## 230         Oregon grape             Native           10
-## 231         Oregon grape             Native           30
-## 232  pickly wall lettuce           Invasive            2
+## 193                grass         MixedGrass           90
+## 194                grass         MixedGrass           63
+## 195                grass         MixedGrass           99
+## 196                grass         MixedGrass           85
+## 197                grass         MixedGrass           60
+## 198                grass         MixedGrass           70
+## 199 Himalayan blackberry           Invasive           20
+## 200 Himalayan blackberry           Invasive            2
+## 201 Himalayan blackberry           Invasive           10
+## 202 Himalayan blackberry           Invasive           10
+## 203                 moss             Native            1
+## 204           oceanspray             Native           40
+## 205  pickly wall lettuce           Invasive            2
+## 206               daphne           Invasive            1
+## 207          English ivy           Invasive           20
+## 208          English ivy           Invasive           10
+## 209          English ivy           Invasive           10
+## 210          English ivy           Invasive            5
+## 211          English ivy           Invasive           10
+## 212                grass         MixedGrass           20
+## 213                grass         MixedGrass           39
+## 214                grass         MixedGrass           85
+## 215                grass         MixedGrass           53
+## 216                grass         MixedGrass           23
+## 217           leaf mulch         MixedGrass           37
+## 218           leaf mulch         MixedGrass            6
+## 219           leaf mulch         MixedGrass            4
+## 220        licorice fern             Native            6
+## 221        licorice fern             Native            1
+## 222        licorice fern             Native            2
+## 223        licorice fern             Native            2
+## 224                 moss             Native           20
+## 225        orchard grass         MixedGrass           30
+## 226        orchard grass         MixedGrass           20
+## 227         Oregon grape             Native            7
+## 228         Oregon grape             Native           25
+## 229         Oregon grape             Native           60
+## 230         Oregon grape             Native           15
+## 231         Oregon grape             Native           10
+## 232         Oregon grape             Native           30
 ## 233            snowberry             Native            3
 ## 234            snowberry             Native            3
 ## 235            snowberry             Native           10
@@ -3133,7 +3133,7 @@ div.tocify {
 <div id="native-vs-invasive-vs-mixedgrass" class="section level4" number="4.2.2.1">
 <h4 number="4.2.2.1"><span class="header-section-number">4.2.2.1</span> Native vs Invasive vs MixedGrass</h4>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(HAT_cover_OH_MM_sub<span class="sc">$</span>Native_or_Invasive)</span></code></pre></div>
-<pre><code>## [1] &quot;Native&quot;     &quot;Invasive&quot;   &quot;MixedGrass&quot; &quot;&quot;           &quot;Unkown&quot;</code></pre>
+<pre><code>## [1] &quot;Invasive&quot;   &quot;Native&quot;     &quot;MixedGrass&quot; &quot;&quot;           &quot;Unkown&quot;</code></pre>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>HAT_cover_OH_MM_sub_nat <span class="ot">&lt;-</span> HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub<span class="sc">$</span>Native_or_Invasive <span class="sc">==</span> <span class="st">&quot;Native&quot;</span>,]</span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>HAT_cover_OH_MM_sub_inv <span class="ot">&lt;-</span> HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub<span class="sc">$</span>Native_or_Invasive <span class="sc">==</span> <span class="st">&quot;Invasive&quot;</span>,]</span>
@@ -3289,16 +3289,16 @@ div.tocify {
 <span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a><span class="do">############################################################</span></span>
 <span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a><span class="do">############################################################</span></span>
-<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a><span class="co"># HAT_mean_cover_fun &lt;- function(data) {</span></span>
-<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a><span class="co">#    data  &lt;- subset(data, select = -SortID) %&gt;% data %&gt;%</span></span>
-<span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a><span class="co">#      group_by(Year, Date, Location, Treated, Species) %&gt;%</span></span>
-<span id="cb94-16"><a href="#cb94-16" aria-hidden="true" tabindex="-1"></a><span class="co">#      summarise(across(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3), sum)) %&gt;%</span></span>
-<span id="cb94-17"><a href="#cb94-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   # round</span></span>
-<span id="cb94-18"><a href="#cb94-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate_if(is.numeric, round, 2)</span></span>
-<span id="cb94-19"><a href="#cb94-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb94-20"><a href="#cb94-20" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a><span class="co"># HAT_mean_cover_fun &lt;- function(data, col_names) {</span></span>
+<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a><span class="co">#    data  &lt;- data %&gt;%</span></span>
+<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a><span class="co">#      group_by(Year, Date, Location, Treated, Species) %&gt;%</span></span>
+<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a><span class="co">#      summarise(across(c(col_names), sum)) %&gt;%</span></span>
+<span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a><span class="co">#      # summarise(across(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3), sum)) %&gt;%</span></span>
+<span id="cb94-16"><a href="#cb94-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   # round</span></span>
+<span id="cb94-17"><a href="#cb94-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate_if(is.numeric, round, 2)</span></span>
+<span id="cb94-18"><a href="#cb94-18" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb94-19"><a href="#cb94-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-20"><a href="#cb94-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Error in UseMethod(&quot;group_by&quot;) :   no applicable method for &#39;group_by&#39; applied to an object of class &quot;function&quot;</span></span>
 <span id="cb94-21"><a href="#cb94-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb94-22"><a href="#cb94-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Error in UseMethod(&quot;group_by&quot;) : no applicable method for &#39;group_by&#39; applied to an object of class &quot;character&quot;</span></span>
 <span id="cb94-23"><a href="#cb94-23" aria-hidden="true" tabindex="-1"></a><span class="do">############################################################</span></span>
@@ -3315,15 +3315,15 @@ div.tocify {
 <span id="cb94-34"><a href="#cb94-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   col  &lt;- HAT_cover_OH_MM_sub_treat_OH_2025_wide %&gt;%</span></span>
 <span id="cb94-35"><a href="#cb94-35" aria-hidden="true" tabindex="-1"></a><span class="co">#   select(!(SortID:Native_or_Invasive))</span></span>
 <span id="cb94-36"><a href="#cb94-36" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb94-37"><a href="#cb94-37" aria-hidden="true" tabindex="-1"></a><span class="co"># cols &lt;- colnames(col)</span></span>
+<span id="cb94-37"><a href="#cb94-37" aria-hidden="true" tabindex="-1"></a><span class="co"># cols &lt;- colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide)</span></span>
 <span id="cb94-38"><a href="#cb94-38" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
 <span id="cb94-39"><a href="#cb94-39" aria-hidden="true" tabindex="-1"></a><span class="co"># comma_separated_names &lt;- paste(cols, collapse = &quot;, &quot;)</span></span>
 <span id="cb94-40"><a href="#cb94-40" aria-hidden="true" tabindex="-1"></a><span class="co"># comma_separated_names</span></span>
-<span id="cb94-41"><a href="#cb94-41" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb94-42"><a href="#cb94-42" aria-hidden="true" tabindex="-1"></a><span class="co"># colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide)</span></span>
-<span id="cb94-43"><a href="#cb94-43" aria-hidden="true" tabindex="-1"></a> <span class="co"># test &lt;- HAT_mean_cover_fun(HAT_cover_OH_MM_sub_treat_OH_2025_wide)</span></span>
-<span id="cb94-44"><a href="#cb94-44" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb94-45"><a href="#cb94-45" aria-hidden="true" tabindex="-1"></a><span class="co"># test &lt;- HAT_mean_cover_fun(HAT_cover_OH_MM_sub_treat_OH_2025_wide, &quot;T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3&quot;)</span></span></code></pre></div>
+<span id="cb94-41"><a href="#cb94-41" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb94-42"><a href="#cb94-42" aria-hidden="true" tabindex="-1"></a><span class="co">#  colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide)</span></span>
+<span id="cb94-43"><a href="#cb94-43" aria-hidden="true" tabindex="-1"></a><span class="co">#  # test &lt;- HAT_mean_cover_fun(HAT_cover_OH_MM_sub_treat_OH_2025_wide)</span></span>
+<span id="cb94-44"><a href="#cb94-44" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb94-45"><a href="#cb94-45" aria-hidden="true" tabindex="-1"></a><span class="co">#  test &lt;- HAT_mean_cover_fun(HAT_cover_OH_MM_sub_treat_OH_2025_wide, &quot;T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3&quot;)</span></span></code></pre></div>
 </div>
 </div>
 <div id="plots" class="section level1" number="5">
@@ -3827,8 +3827,8 @@ div.tocify {
 <span id="cb164-44"><a href="#cb164-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb164-45"><a href="#cb164-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Display map</span></span>
 <span id="cb164-46"><a href="#cb164-46" aria-hidden="true" tabindex="-1"></a>HAT_sites_map</span></code></pre></div>
-<div id="htmlwidget-d70d8d068bf89152435a" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d70d8d068bf89152435a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[48.56419,48.41376,48.4293],[-123.44714,-123.50711,-123.39538],5,null,null,{"interactive":true,"className":"","stroke":true,"color":["#1B9E77","#7570B3","#D95F02"],"weight":1,"opacity":0.5,"fill":true,"fillColor":["#1B9E77","#7570B3","#D95F02"],"fillOpacity":1},null,null,["<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'><br><br><b>Site:<\/b> <b>Oak Haven Park<\/b><br><b>Municipality:<\/b> Central Saanich<br><b>Size:<\/b> 10.2 (ha)<br><b>First Nations:<\/b> W̱SÁNEĆ<br><b>HAT Status:<\/b> Co-Covenant<br><b>Co-Covenant:<\/b> Land Conservancy (2004)<br><b>Ecosystems:<\/b> <br><b>Volunteer Stewardship:<\/b> <br>","<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'><br><br><b>Site:<\/b> <b>Havenwood Park<\/b><br><b>Municipality:<\/b> Colwood<br><b>Size:<\/b> 16.5 (ha)<br><b>First Nations:<\/b> Songhees, Esquimalt, WSANEC, Beecher Bay, T'Sou-ke<br><b>HAT Status:<\/b> Co-Covenant<br><b>Co-Covenant:<\/b> City of Colwood (NA)<br><b>Ecosystems:<\/b> 5 wetlands; 3 small streams; 7 bedrock outcroppings<br><b>Volunteer Stewardship:<\/b> Friends of Havenwood Park<br>","<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'><br><br><b>Site:<\/b> <b>Matson Conservation Area<\/b><br><b>Municipality:<\/b> Esquimalt<br><b>Size:<\/b> NA (ha)<br><b>First Nations:<\/b> Songhees, Esquimalt<br><b>HAT Status:<\/b> Donation by Mandalay Developments Ltd.<br><b>Co-Covenant:<\/b> Nature Conservancy of Canada; Township of Esquimalt (2004)<br><b>Ecosystems:<\/b> Garry oak ecosystem<br><b>Volunteer Stewardship:<\/b> Friends of Matson Lands<br>"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#1B9E77","#7570B3","#D95F02"],"labels":["Central Saanich","Colwood","Esquimalt"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"factor","title":"Municipality","extra":null,"layerId":null,"className":"info legend","group":null}]},{"method":"addControl","args":["<p style=\"text-align: center; height: 18px; \"><img src=\"https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w\"><span style=\"font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;\");>GOE Monitoring Covenant Sites Map<\/span><\/p>","topright",null,"info legend"]}],"limits":{"lat":[48.41376,48.56419],"lng":[-123.50711,-123.39538]},"setView":[[48.52919,-123.44799],11,[]]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2fd2ddec5968f43988d4" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2fd2ddec5968f43988d4">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[48.56419,48.41376,48.4293],[-123.44714,-123.50711,-123.39538],5,null,null,{"interactive":true,"className":"","stroke":true,"color":["#1B9E77","#7570B3","#D95F02"],"weight":1,"opacity":0.5,"fill":true,"fillColor":["#1B9E77","#7570B3","#D95F02"],"fillOpacity":1},null,null,["<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'><br><br><b>Site:<\/b> <b>Oak Haven Park<\/b><br><b>Municipality:<\/b> Central Saanich<br><b>Size:<\/b> 10.2 (ha)<br><b>First Nations:<\/b> W̱SÁNEĆ<br><b>HAT Status:<\/b> Co-Covenant<br><b>Co-Covenant:<\/b> Land Conservancy (2004)<br><b>Ecosystems:<\/b> <br><b>Volunteer Stewardship:<\/b> <br>","<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'><br><br><b>Site:<\/b> <b>Havenwood Park<\/b><br><b>Municipality:<\/b> Colwood<br><b>Size:<\/b> 16.5 (ha)<br><b>First Nations:<\/b> Songhees, Esquimalt, WSANEC, Beecher Bay, T'Sou-ke<br><b>HAT Status:<\/b> Co-Covenant<br><b>Co-Covenant:<\/b> City of Colwood (NA)<br><b>Ecosystems:<\/b> 5 wetlands; 3 small streams; 7 bedrock outcroppings<br><b>Volunteer Stewardship:<\/b> Friends of Havenwood Park<br>","<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'><br><br><b>Site:<\/b> <b>Matson Conservation Area<\/b><br><b>Municipality:<\/b> Esquimalt<br><b>Size:<\/b> NA (ha)<br><b>First Nations:<\/b> Songhees, Esquimalt<br><b>HAT Status:<\/b> Donation by Mandalay Developments Ltd.<br><b>Co-Covenant:<\/b> Nature Conservancy of Canada; Township of Esquimalt (2004)<br><b>Ecosystems:<\/b> Garry oak ecosystem<br><b>Volunteer Stewardship:<\/b> Friends of Matson Lands<br>"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#1B9E77","#7570B3","#D95F02"],"labels":["Central Saanich","Colwood","Esquimalt"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"factor","title":"Municipality","extra":null,"layerId":null,"className":"info legend","group":null}]},{"method":"addControl","args":["<p style=\"text-align: center; height: 18px; \"><img src=\"https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w\"><span style=\"font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;\");>GOE Monitoring Covenant Sites Map<\/span><\/p>","topright",null,"info legend"]}],"limits":{"lat":[48.41376,48.56419],"lng":[-123.50711,-123.39538]},"setView":[[48.52919,-123.44799],11,[]]},"evals":[],"jsHooks":[]}</script>
 <div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save map</span></span>
 <span id="cb165-2"><a href="#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveWidget</span>(HAT_sites_map, <span class="st">&quot;output/HAT_site_map.html&quot;</span>)</span></code></pre></div>
 <hr />
@@ -3879,8 +3879,8 @@ div.tocify {
 <span id="cb166-41"><a href="#cb166-41" aria-hidden="true" tabindex="-1"></a><span class="st"> style L fill:#E5E25F, stroke:#333, stroke-width:2px  </span></span>
 <span id="cb166-42"><a href="#cb166-42" aria-hidden="true" tabindex="-1"></a><span class="st"> style M fill:#bf812d, stroke:#333, stroke-width:3px  </span></span>
 <span id="cb166-43"><a href="#cb166-43" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-36d525396900485e2dd7" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-36d525396900485e2dd7">{"x":{"diagram":"\ngraph TB\n A1{HAT} --> A[Field Data Collection]\n \n A -->B[Data Entry & Formatting]\n B--create data files--> B1{Data}\n\n B1 -- import to -->C(RStudio)\n\nC-->D((Data Type?))\nD -- Vegetation Data-->E[Clean & Tidy Species Data]\nD -- Restoration Work Hours-->F[Clean Labour & Biomass Data]\nE--calculate-->G[Calculate: Species Richness]\nE--calculate-->H[Calculate: % Native vs Invasive Cover]\nF--calculate-->I[Calculate: Efficiency - Hours per cubic meter Biomass]\n\nG--plot-->J[Plot: Biodiversity Change Over Time]\nH--plot-->K[Plot: Stacked Bar of Community Comp]\nI--plot-->L[Plot: Cost/Effort Analysis]\nM[Final Reports & Adaptive Management]\n\nJ--include in-->M\nK--include in-->M\nL--include in-->M\n    \n style A1 fill:#bf812d, stroke:#01665e\n style A fill:#80cdc1, stroke:#333, stroke-width:1px  \n style B fill:#80cdc1, stroke:#333, stroke-width:1px  \n style B1 fill:#80cdc1\n style C fill:#E5E25F, stroke:#333, stroke-width:2px  \n style D fill:#80cdc1\n style E fill:#80cdc1, stroke:#35978f, stroke-width:1px  \n style F fill:#80cdc1, stroke:#35978f, stroke-width:1px  \n style G fill:#fff9c4, stroke:#fbc02d,stroke-width:2px\n style H fill:#fff9c4, stroke:#fbc02d,stroke-width:2px\n style I fill:#fff9c4, stroke:#fbc02d,stroke-width:2px\n style J fill:#E5E25F, stroke:#333, stroke-width:2px  \n style K fill:#E5E25F, stroke:#333, stroke-width:2px  \n style L fill:#E5E25F, stroke:#333, stroke-width:2px  \n style M fill:#bf812d, stroke:#333, stroke-width:3px  \n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ad4a3e382802426141a4" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ad4a3e382802426141a4">{"x":{"diagram":"\ngraph TB\n A1{HAT} --> A[Field Data Collection]\n \n A -->B[Data Entry & Formatting]\n B--create data files--> B1{Data}\n\n B1 -- import to -->C(RStudio)\n\nC-->D((Data Type?))\nD -- Vegetation Data-->E[Clean & Tidy Species Data]\nD -- Restoration Work Hours-->F[Clean Labour & Biomass Data]\nE--calculate-->G[Calculate: Species Richness]\nE--calculate-->H[Calculate: % Native vs Invasive Cover]\nF--calculate-->I[Calculate: Efficiency - Hours per cubic meter Biomass]\n\nG--plot-->J[Plot: Biodiversity Change Over Time]\nH--plot-->K[Plot: Stacked Bar of Community Comp]\nI--plot-->L[Plot: Cost/Effort Analysis]\nM[Final Reports & Adaptive Management]\n\nJ--include in-->M\nK--include in-->M\nL--include in-->M\n    \n style A1 fill:#bf812d, stroke:#01665e\n style A fill:#80cdc1, stroke:#333, stroke-width:1px  \n style B fill:#80cdc1, stroke:#333, stroke-width:1px  \n style B1 fill:#80cdc1\n style C fill:#E5E25F, stroke:#333, stroke-width:2px  \n style D fill:#80cdc1\n style E fill:#80cdc1, stroke:#35978f, stroke-width:1px  \n style F fill:#80cdc1, stroke:#35978f, stroke-width:1px  \n style G fill:#fff9c4, stroke:#fbc02d,stroke-width:2px\n style H fill:#fff9c4, stroke:#fbc02d,stroke-width:2px\n style I fill:#fff9c4, stroke:#fbc02d,stroke-width:2px\n style J fill:#E5E25F, stroke:#333, stroke-width:2px  \n style K fill:#E5E25F, stroke:#333, stroke-width:2px  \n style L fill:#E5E25F, stroke:#333, stroke-width:2px  \n style M fill:#bf812d, stroke:#333, stroke-width:3px  \n"},"evals":[],"jsHooks":[]}</script>
 <div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="co"># red style E fill:#cf1d2f </span></span>
 <span id="cb167-2"><a href="#cb167-2" aria-hidden="true" tabindex="-1"></a><span class="co"># grey style G fill:#9AA</span></span>
 <span id="cb167-3"><a href="#cb167-3" aria-hidden="true" tabindex="-1"></a><span class="co"># blue with dark blue border style H fill:#e1f5fe,stroke:#01579b,stroke-width:2px</span></span>

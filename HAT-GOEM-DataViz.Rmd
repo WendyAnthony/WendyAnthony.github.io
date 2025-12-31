@@ -383,16 +383,16 @@ HAT_cover_subset_fun_M_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_
 
 ############################################################
 ############################################################
-# HAT_mean_cover_fun <- function(data) {
-
-
-#    data  <- subset(data, select = -SortID) %>% data %>%
+# HAT_mean_cover_fun <- function(data, col_names) {
+#    data  <- data %>%
 #      group_by(Year, Date, Location, Treated, Species) %>%
-#      summarise(across(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3), sum)) %>%
+#      summarise(across(c(col_names), sum)) %>%
+#      # summarise(across(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3), sum)) %>%
 #   # round
 #   mutate_if(is.numeric, round, 2)
-# 
 # }
+
+# Error in UseMethod("group_by") :   no applicable method for 'group_by' applied to an object of class "function"
 
 ## Error in UseMethod("group_by") : no applicable method for 'group_by' applied to an object of class "character"
 ############################################################
@@ -409,15 +409,15 @@ HAT_cover_subset_fun_M_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_
 #   col  <- HAT_cover_OH_MM_sub_treat_OH_2025_wide %>%
 #   select(!(SortID:Native_or_Invasive))
 # 
-# cols <- colnames(col)
+# cols <- colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide)
 # 
 # comma_separated_names <- paste(cols, collapse = ", ")
 # comma_separated_names
-# 
-# colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide)
- # test <- HAT_mean_cover_fun(HAT_cover_OH_MM_sub_treat_OH_2025_wide)
-# 
-# test <- HAT_mean_cover_fun(HAT_cover_OH_MM_sub_treat_OH_2025_wide, "T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3")
+# # 
+#  colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide)
+#  # test <- HAT_mean_cover_fun(HAT_cover_OH_MM_sub_treat_OH_2025_wide)
+# # 
+#  test <- HAT_mean_cover_fun(HAT_cover_OH_MM_sub_treat_OH_2025_wide, "T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3")
 
 
 
