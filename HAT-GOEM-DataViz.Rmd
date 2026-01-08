@@ -103,7 +103,7 @@ unique(crew_data$Work_Site)
 ```
 
 # Data Wrangling
-## Dates HAT Crew Data
+## HAT Crew Dates 
 ```{r data-wrangling-crew-data-dates}
 # separate values
 crew_data_sep <- crew_data %>% separate(Date, into = c("Day", "Month"), sep = "-")
@@ -158,7 +158,7 @@ write.csv(crew_data_sep_sub, "data/crew_data_sep_sub.csv", row.names = FALSE)
 ```
 
 
-### HAT Crew Filtered Data by Site
+### Filter by Site HAT Crew
 ```{r crew-filter-site}
 colnames(crew_data_sep_sub)
 unique(crew_data_sep_sub$Work_Site)
@@ -177,8 +177,60 @@ crew_data_sep_sub_bear <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Bear
 ### Multiple Invasive Species Removed
 - will need to make a new column - too many errors to fix, different capitalization, space at end of name
 ```{r}
+length(unique(crew_data_sep_sub$Invasive_Species_Cleared)) #23
 unique(crew_data_sep_sub$Invasive_Species_Cleared)
 ```
+
+### Biomass of Invasive Species Removed
+```{r}
+colnames(crew_data_sep_sub)
+
+crew_data_sep_sub_sum_bio_inv <- crew_data_sep_sub %>%
+  group_by(Work_Site, Year, Invasive_Species_Cleared) %>%
+  summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
+            Crew_Hours = sum(Crew_Hours),
+            Area_Cleared_m2 = sum(Area_Cleared_m2)
+            )
+crew_data_sep_sub_sum_bio_inv
+unique(crew_data_sep_sub_sum_bio_inv$Invasive_Species_Cleared)
+write.csv(crew_data_sep_sub_sum_bio_inv, "data/crew_data_sep_sub_sum_bio_inv.csv", row.names = FALSE)
+
+```
+
+
+### **** Calculations Group by Work Site and add work hours and biomass removed
+```{r}
+colnames(crew_data_sep_sub)
+str(crew_data_sep_sub)
+
+# aggregate(crew_data_sep_sub$Work_Site, by=list(Biomass_Removed_m3=crew_data_sep_sub$Biomass_Removed_m3), FUN=sum)
+## Error in FUN(X[[i]], ...) : invalid 'type' (character) of argument
+
+# crew_data_sep_sub_sum_by_group_site <- crew_data_sep_sub %>%
+#   group_by(Work_Site, Year) %>%
+#   summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
+#             Crew_Hours = sum(Crew_Hours),
+#             Area_Cleared_m2 = sum(Area_Cleared_m2))
+# crew_data_sep_sub_sum_by_group_site
+# write.csv(crew_data_sep_sub_sum_by_group_site, "data/crew_data_sep_sub_sum_by_group_site.csv", row.names = FALSE)
+
+
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio <- crew_data_sep_sub %>%
+  group_by(Work_Site, Year) %>%
+  summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
+            Crew_Hours = sum(Crew_Hours),
+            Area_Cleared_m2 = sum(Area_Cleared_m2),
+            Labour_Hr_Bio_Ratio = round(sum(Crew_Hours)/sum(Biomass_Removed_m3), digits = 1),
+            Labour_Bio_Hr_Ratio = round(sum(Biomass_Removed_m3)/sum(Crew_Hours), digits = 1), 
+            Area_Bio_Ratio = round(sum(Area_Cleared_m2)/sum(Biomass_Removed_m3), digits = 1), 
+            )
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio
+write.csv(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, "data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", row.names = FALSE)
+```
+
+
+
+
 
 
 ## HAT Cover Data
@@ -248,6 +300,7 @@ HAT_cover_OH_MM_sub_untreat <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Treated =
 
 ### *** Convert long format to wide format and group by Species
 WORKS !!!!
+See function that creates this wide format
 ```{r cover-data-long-to-wide}
 colnames(HAT_cover_OH_MM_sub)
 # filter subset
@@ -273,9 +326,9 @@ pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
 
 # sum all percentage cover per species over all Quadrats
 HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg <- HAT_cover_OH_MM_sub_treat_OH_2025_wide %>% 
-group_by(Year, Date, Location, Treated, Species) %>% 
+group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>% 
   summarise(across(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3), sum))
-# 
+ 
 colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg)
 
 ```
@@ -352,21 +405,209 @@ HAT_cover_subset_fun_pivot_wide <- function(data, col_name, location, col_name_2
 ```
 
 
-```{r}
+### Populate pivot wide using function Cover Subset pivot wide
+```{r fun-subset-pivot-wide}
 HAT_cover_subset_fun_OH_T_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Treated", Year, "2025")
-HAT_cover_subset_fun_OH_U_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Unreated", Year, "2025")
+HAT_cover_subset_fun_OH_U_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Untreated", Year, "2025")
 HAT_cover_subset_fun_OH_T_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Treated", Year, "2024")
 
-## unable to pivot wide and fill to 0
-## ????????? some duplicate values
+## unable to pivot wide and fill to 0 ## ????????? had to wrangle some duplicate values and quadrat ID
 HAT_cover_subset_fun_OH_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Untreated", Year, "2024")
-
-
 
 HAT_cover_subset_fun_M_T_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2025")
 HAT_cover_subset_fun_M_U_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2025")
 HAT_cover_subset_fun_M_T_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2024")
 HAT_cover_subset_fun_M_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2024")
+```
+
+
+### Calculate Mean Cover Percentage from pivot wide function results
+```{r fun-col-names}
+# gather column names for each data object to paste the UniqueID values into mean calculations 
+comma_separated_col_names <- function(data){
+  col  <- data
+
+cols <- colnames(col)
+
+comma_separated_col_names <- paste(cols, collapse = ", ")
+
+print(comma_separated_col_names)
+
+}
+
+##### COPY COLUMN SEPARATED NAMES FOR UNIQUE QUADRATS OT REPLACE C() VALUES
+# HAT_cover_subset_fun_OH_T_2025_wide
+comma_separated_col_names(HAT_cover_subset_fun_OH_T_2025_wide)
+HAT_cover_subset_fun_OH_T_2025_wide_mean <- HAT_cover_subset_fun_OH_T_2025_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3, T_CH_Q3_8.3)), 
+            sd_value = sd(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3, T_CH_Q3_8.3))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_OH_U_2025_wide
+comma_separated_col_names(HAT_cover_subset_fun_OH_U_2025_wide)
+HAT_cover_subset_fun_OH_U_2025_wide_mean <- HAT_cover_subset_fun_OH_U_2025_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(U_DL_Q1_9, U_DL_Q2_13.3, U_DL_Q3_2.6, U_CH_Q1_9, U_CH_Q2_13.3, U_CH_Q3_2.6)), 
+            sd_value = sd(c(U_DL_Q1_9, U_DL_Q2_13.3, U_DL_Q3_2.6, U_CH_Q1_9, U_CH_Q2_13.3, U_CH_Q3_2.6))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_OH_T_2024_wide
+comma_separated_col_names(HAT_cover_subset_fun_OH_T_2024_wide)
+HAT_cover_subset_fun_OH_T_2024_wide_mean <- HAT_cover_subset_fun_OH_T_2024_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(T_CL_Q2_3.3, T_CL_Q1_4.3, T_HD_Q1_4.3, T_HD_Q3_8.3, T_HD_Q2_3.3, T_CL_Q3_8.3)), 
+            sd_value = sd(c(T_CL_Q2_3.3, T_CL_Q1_4.3, T_HD_Q1_4.3, T_HD_Q3_8.3, T_HD_Q2_3.3, T_CL_Q3_8.3))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_OH_U_2024_wide
+comma_separated_col_names(HAT_cover_subset_fun_OH_U_2024_wide)
+HAT_cover_subset_fun_OH_U_2024_wide_mean <- HAT_cover_subset_fun_OH_U_2024_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(U_CL_Q1_9, U_CL_Q3_2.6, U_CL2_Q3_2.6, U_CL2_Q1_9, U_CL2_Q2_13.3, U_CL_Q2_13.3)), 
+            sd_value = sd(c(U_CL_Q1_9, U_CL_Q3_2.6, U_CL2_Q3_2.6, U_CL2_Q1_9, U_CL2_Q2_13.3, U_CL_Q2_13.3))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_M_T_2025_wide
+comma_separated_col_names(HAT_cover_subset_fun_M_T_2025_wide)
+HAT_cover_subset_fun_M_T_2025_wide_mean <- HAT_cover_subset_fun_M_T_2025_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(T_LJ_Q1_8, T_LJ_Q3_4, T_DH_Q3_8, T_DH_Q1_4, T_LJ_Q2_1, T_DH_Q2_1)), 
+            sd_value = sd(c(T_LJ_Q1_8, T_LJ_Q3_4, T_DH_Q3_8, T_DH_Q1_4, T_LJ_Q2_1, T_DH_Q2_1))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_M_U_2025_wide
+comma_separated_col_names(HAT_cover_subset_fun_M_U_2025_wide)
+HAT_cover_subset_fun_M_U_2025_wide_mean <- HAT_cover_subset_fun_M_U_2025_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(U_LJ_Q3_9, U_LJ_Q2_2, U_DH_Q1_2, U_DH_Q2_4, U_DH_Q3_9, U_LJ_Q1_4)), 
+            sd_value = sd(c(U_LJ_Q3_9, U_LJ_Q2_2, U_DH_Q1_2, U_DH_Q2_4, U_DH_Q3_9, U_LJ_Q1_4))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_M_T_2024_wide
+comma_separated_col_names(HAT_cover_subset_fun_M_T_2024_wide)
+HAT_cover_subset_fun_M_T_2024_wide_mean <- HAT_cover_subset_fun_M_T_2024_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(T_HCDD_Q3_8, T_HCDD_Q1_2, T_HCDD_Q2_5)), 
+            sd_value = sd(c(T_HCDD_Q3_8, T_HCDD_Q1_2, T_HCDD_Q2_5))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_OH_U_2025_wide
+comma_separated_col_names(HAT_cover_subset_fun_M_U_2024_wide)
+HAT_cover_subset_fun_M_U_2024_wide_mean <- HAT_cover_subset_fun_M_U_2024_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(U_HCDD_Q1_3.66, U_HCDD_Q2_5.7, U_HCDD_Q3_7.3)), 
+            sd_value = sd(c(U_HCDD_Q1_3.66, U_HCDD_Q2_5.7, U_HCDD_Q3_7.3))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+```
+
+### Rbind mean cover data
+```{r mean-cover-merge}
+HAT_cover_mean <- rbind(HAT_cover_subset_fun_OH_T_2025_wide_mean, HAT_cover_subset_fun_OH_U_2025_wide_mean, HAT_cover_subset_fun_OH_T_2024_wide_mean, HAT_cover_subset_fun_OH_U_2024_wide_mean, HAT_cover_subset_fun_M_T_2025_wide_mean, HAT_cover_subset_fun_M_U_2025_wide_mean, HAT_cover_subset_fun_M_T_2024_wide_mean, HAT_cover_subset_fun_M_U_2024_wide_mean)
+
+write.csv(HAT_cover_mean, "data/HAT_cover_mean.csv", row.names = FALSE)
+```
+
+
+## Report: Species Richness Values
+```{r mean-cover-merge-species-richness, results = TRUE, echo = FALSE}
+# colnames(HAT_cover_mean)
+# unique(HAT_cover_mean$Native_or_Invasive)
+
+## Native vs Invasive
+nat_cover_mean <- subset(HAT_cover_mean, Native_or_Invasive == "Native")
+inv_cover_mean <- subset(HAT_cover_mean, Native_or_Invasive == "Invasive")  
+
+nat_cover_mean_OH <- subset(nat_cover_mean, Location == "Oak Haven")
+inv_cover_mean_OH <- subset(inv_cover_mean, Location == "Oak Haven")
+nat_cover_mean_M <- subset(nat_cover_mean, Location == "Matson")
+inv_cover_mean_M <- subset(inv_cover_mean, Location == "Matson")
+
+# Treated vs Untreated
+nat_cover_T_mean <- subset(nat_cover_mean, Treated == "Treated")
+nat_cover_U_mean <- subset(nat_cover_mean, Treated == "Untreated")  
+inv_cover_T_mean <- subset(inv_cover_mean, Treated == "Treated")
+inv_cover_U_mean <- subset(inv_cover_mean, Treated == "Untreated")  
+
+
+nat_cover_T_mean_OH <- subset(nat_cover_T_mean, Location == "Oak Haven")
+nat_cover_U_mean_OH <- subset(nat_cover_U_mean, Location == "Oak Haven")
+inv_cover_T_mean_OH <- subset(inv_cover_T_mean, Location == "Oak Haven")
+inv_cover_U_mean_OH <- subset(inv_cover_U_mean, Location == "Oak Haven")
+
+nat_cover_T_mean_M <- subset(nat_cover_T_mean, Location == "Matson")
+nat_cover_U_mean_M <- subset(nat_cover_U_mean, Location == "Matson")
+inv_cover_T_mean_M <- subset(inv_cover_T_mean, Location == "Matson")
+inv_cover_U_mean_M <- subset(inv_cover_U_mean, Location == "Matson")
+```
+
+### In Oak Haven
+- There are `r length(unique(nat_cover_mean_OH$Species))` unique native plant species, and `r   length(unique(inv_cover_mean_OH$Species))` invasive Plant species   
+- `r length(unique(nat_cover_T_mean_OH$Species))` unique native plant species in the Treated, and `r length(unique(nat_cover_U_mean_OH$Species))` unique native plant species in the Untreated monitoring locations
+- `r length(unique(inv_cover_T_mean_OH$Species))` unique invasive plant species in the Treated, and `r length(unique(inv_cover_U_mean_OH$Species))` unique invasive plant species in the Untreated monitoring locations
+- The **native plant species** are: `r unique(nat_cover_mean_OH$Species)`  
+- The **invasive plant species** are: `r unique(inv_cover_mean_OH$Species)`  
+
+### In Matson
+- There are `r length(unique(nat_cover_mean_M$Species))` unique native plant species, and `r   length(unique(inv_cover_mean_M$Species))` invasive Plant species   
+- `r length(unique(nat_cover_T_mean_M$Species))` unique native plant species in the Treated, and `r length(unique(nat_cover_U_mean_M$Species))` unique native plant species in the Untreated monitoring locations
+- `r length(unique(inv_cover_T_mean_M$Species))` unique invasive plant species in the Treated, and `r length(unique(inv_cover_U_mean_M$Species))` unique invasive plant species in the Untreated monitoring locations
+- The **native plant species** are: `r unique(nat_cover_mean_M$Species)`  
+- The **invasive plant species** are: `r unique(inv_cover_mean_M$Species)`  
+
+```{r add-values-to-report, results = FALSE, echo = TRUE}
+"- There are `r length(unique(HAT_cover_mean$Species))` unique native plant species, 
+and `r length(unique(HAT_cover_mean$Species))` invasive Plant species 
+found in both the Treated and Untreated monitoring locations at Oak Haven Park"
+"- The **native plant species** are: `r unique(HAT_cover_mean$Species)`  "
+"- The **invasive plant species** are: `r unique(HAT_cover_mean$Species)`  "
+```
+
+
+### Species Richness by Treatment
+- this is for both Oak Haven and Matson
+```{r species-richness-treat}
+length(unique(HAT_cover_mean$Species)) #11
+
+colnames(HAT_cover_mean)
+
+library(ggplot2)
+library(magrittr) # required for %>%
+library(plotly)
+
+# https://ourcodingclub.github.io/tutorials/data-vis-2/
+species_counts <- HAT_cover_mean %>%
+  dplyr::group_by(Treated, Native_or_Invasive, Location) %>%
+  dplyr::summarise(Species_number = length(unique(Species)))
+colnames(species_counts) # [1] "Treated" "Native_or_Invasive" "Species_number" 
+
+# create custom colour-blind-friendly palette
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+# custom_colours_3 <- c("Native" = "#1b9e77", 
+#                     "Invasive" = "#d95f02",
+#                     "MixedGrass" = "#7570b3")
+
+HAT_cover_mean_sp_rich_treat_plot <- 
+  ggplot(species_counts, aes(x = Treated, y = Species_number, fill = Native_or_Invasive)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    scale_fill_manual(values = custom_colours_3) +
+        labs(title='Oak Haven and MatsonSpecies Richness by Treatment',
+          subtitle='HAT Oak Haven and Matson',
+          caption = "Chart by Wendy Anthony \n 2025-12-31", fill = "",
+          x = "Treatment", y = "Species Count")
+
+HAT_cover_mean_sp_rich_treat_plot
+
+# ggplotly
+  ggplotly(HAT_cover_mean_sp_rich_treat_plot)
+
+# ggsave(filename = paste0("images/oakhaven_2025_sp_rich_treat_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), oakhaven_2025_sp_rich_treat_plot)
 ```
 
 ## ??? Function Mean Percent Cover
@@ -383,14 +624,14 @@ HAT_cover_subset_fun_M_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_
 
 ############################################################
 ############################################################
-# HAT_mean_cover_fun <- function(data, col_names) {
-#    data  <- data %>%
-#      group_by(Year, Date, Location, Treated, Species) %>%
-#      summarise(across(c(col_names), sum)) %>%
-#      # summarise(across(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3), sum)) %>%
-#   # round
-#   mutate_if(is.numeric, round, 2)
-# }
+HAT_mean_cover_fun <- function(data, col_names) {
+   data  <- data %>%
+     group_by(Year, Date, Location, Treated, Species) %>%
+     summarise(across(c(col_names), sum)) %>%
+     # summarise(across(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3), sum)) %>%
+  # round
+  mutate_if(is.numeric, round, 2)
+}
 
 # Error in UseMethod("group_by") :   no applicable method for 'group_by' applied to an object of class "function"
 
@@ -461,37 +702,116 @@ crew_data_sep_sub_OHP_2025_plot
 ```
 
 
-### **** Group by Work Site and add work hours and biomass removed
-```{r}
-colnames(crew_data_sep_sub)
-str(crew_data_sep_sub)
-
-# aggregate(crew_data_sep_sub$Work_Site, by=list(Biomass_Removed_m3=crew_data_sep_sub$Biomass_Removed_m3), FUN=sum)
-## Error in FUN(X[[i]], ...) : invalid 'type' (character) of argument
-
-crew_data_sep_sub_sum_by_group_site <- crew_data_sep_sub %>%
-  group_by(Work_Site, Year) %>%
-  summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
-            Crew_Hours = sum(Crew_Hours),
-            Area_Cleared_m2 = sum(Area_Cleared_m2))
-crew_data_sep_sub_sum_by_group_site
-write.csv(crew_data_sep_sub_sum_by_group_site, "data/crew_data_sep_sub_sum_by_group_site.csv", row.names = FALSE)
-```
 
 ### *** Total Biomass Removed Per Time Investment
 - group and add up total crew hours and biomass removed
 
+#### Hours to Total Biomass Removed Ratio
+```{r crew-data-2022-2025-plots-hrs-per-biomass-removed-time-invested-allsites-ratio}
+colnames(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio) 
+
+crew_data_sep_hr_bio_ratio_by_group_site <- ggplot(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, aes(y = Work_Site, x = Labour_Hr_Bio_Ratio, fill = Year)) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Ratio of Work Crew Hours to Total Biomass Removed',
+          subtitle='HAT Properties',
+          # caption = "Chart by Wendy Anthony \n 2025-11-29", 
+          fill = "Year",
+          y = "Site", x = "Hours Labour per m3 Biomass Removed") +
+  guides(fill = guide_legend(title="Work Site"))
+crew_data_sep_hr_bio_ratio_by_group_site
+
+crew_data_sep_hr_bio_ratio_by_group_site_rev <- ggplot(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, aes(y = as.factor(Work_Site), x = Labour_Hr_Bio_Ratio, fill = as.factor(Year))) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Ratio of Work Crew Hours to Total Biomass Removed',
+          subtitle='HAT Properties',
+          # caption = "Chart by Wendy Anthony \n 2025-11-29", 
+          fill = "Year",
+          y = "Site", x = "Labour Hours per m3 Biomass Removed") +
+  guides(fill = guide_legend(title=""))
+crew_data_sep_hr_bio_ratio_by_group_site_rev
+```
+
+
+#### Total Biomass Removed to Hours Ratio
+```{r crew-data-2022-2025-plots-biomass-removed-per-hrs--ratio}
+colnames(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio) 
+
+crew_data_sep_bio_hr_ratio_by_group_site_rev <- ggplot(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, aes(y = as.factor(Work_Site), x = Labour_Bio_Hr_Ratio, fill = as.factor(Year))) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Ratio of Total Biomass Removed to Work Crew Hours',
+          subtitle='HAT Properties',
+          # caption = "Chart by Wendy Anthony \n 2025-11-29", 
+          fill = "Year",
+          y = "Site", x = "m3 Biomass Removed per Labour Hour") +
+  guides(fill = guide_legend(title=""))
+crew_data_sep_bio_hr_ratio_by_group_site_rev
+```
+
+
+### Biomass of Invasive Species
+```{r}
+colnames(crew_data_sep_sub_sum_bio_inv)
+
+ggplotly(
+  ggplot(crew_data_sep_sub_sum_bio_inv, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Year), text = paste("Year:", Year,
+                                                          "\nSite:", Work_Site,
+                                                          "\nCrew Hours:", Crew_Hours,      
+                                                          "\nBiomass Removed m3:", Biomass_Removed_m3,  
+                                                          "\nInvasive Species:", Invasive_Species_Cleared,
+                                                          "\nArea Cleared m2:", Area_Cleared_m2))) + 
+#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Biomass Removed per Invasive Species',
+          subtitle='HAT Properties',
+          # caption = "Chart by Wendy Anthony \n 2025-11-29", 
+          fill = "Year",
+          x = "Invasive Species", y = "m3 Biomass Removed") +
+      theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust = 1, size = 7)), 
+    # tooltip = c("x", "fill", "Species", "Site", "sd_value"), 
+    tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation="h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    )
+)
+```
+
+
 #### 2025
 ```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-2025}
-colnames(crew_data_sep_sub_sum_by_group_site)
+colnames(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio)
 # [1] "Work_Site"          "Year"               "Biomass_Removed_m3" "Crew_Hours" 
 
-unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+unique(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio$Work_Site)
 # Filter by year - need column for year
-crew_data_sep_sub_sum_by_group_site_2025 <- crew_data_sep_sub_sum_by_group_site[crew_data_sep_sub_sum_by_group_site$Year == "2025",]
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2025 <- crew_data_sep_sub_sum_by_group_site_hr_bio_ratio[crew_data_sep_sub_sum_by_group_site_hr_bio_ratio$Year == "2025",]
 
-crew_data_sep_sub_sum_by_group_site_2025_plot <- 
-  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2025_plot <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2025, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
 #  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
   geom_bar(stat = "identity", width = 5, position = "dodge") +
   theme_minimal() + #get rid of grey background and tick marks
@@ -505,20 +825,21 @@ crew_data_sep_sub_sum_by_group_site_2025_plot <-
           x = "Biomass Removed (m3)", y = "Crew Hours") +
   guides(fill = guide_legend(title="Work Site"))
 
-crew_data_sep_sub_sum_by_group_site_2025_plot
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2025_plot
 # ggsave(filename = paste0("images/crew_data_sep_sub_2025_plotĆ_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_2025_plot)
 ```
+
 #### 2024
 ```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-2024}
-colnames(crew_data_sep_sub_sum_by_group_site)
+colnames(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio)
 # [1] "Work_Site"          "Year"               "Biomass_Removed_m3" "Crew_Hours" 
 
-unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+unique(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio$Work_Site)
 # Filter by year - need column for year
-crew_data_sep_sub_sum_by_group_site_2024 <- crew_data_sep_sub_sum_by_group_site[crew_data_sep_sub_sum_by_group_site$Year == "2024",]
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2024 <- crew_data_sep_sub_sum_by_group_site_hr_bio_ratio[crew_data_sep_sub_sum_by_group_site_hr_bio_ratio$Year == "2024",]
 
-crew_data_sep_sub_sum_by_group_site_2024_plot <- 
-  ggplot(crew_data_sep_sub_sum_by_group_site_2024, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2024_plot <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2024, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
 #  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
   geom_bar(stat = "identity", width = 5, position = "dodge") +
   theme_minimal() + #get rid of grey background and tick marks
@@ -532,21 +853,21 @@ crew_data_sep_sub_sum_by_group_site_2024_plot <-
           x = "Biomass Removed (m3)", y = "Crew Hours") +
   guides(fill = guide_legend(title="Work Site"))
 
-crew_data_sep_sub_sum_by_group_site_2024_plot
-# ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_2024_plot_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_2024_plot)
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2024_plot
+# ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2024_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2024_plot)
 ```
 
 #### 2023
 ```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-2023}
-colnames(crew_data_sep_sub_sum_by_group_site)
+colnames(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio)
 # [1] "Work_Site"          "Year"               "Biomass_Removed_m3" "Crew_Hours" 
 
-unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+unique(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio$Work_Site)
 # Filter by year - need column for year
-crew_data_sep_sub_sum_by_group_site_2023 <- crew_data_sep_sub_sum_by_group_site[crew_data_sep_sub_sum_by_group_site$Year == "2023",]
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2023 <- crew_data_sep_sub_sum_by_group_site_hr_bio_ratio[crew_data_sep_sub_sum_by_group_site_hr_bio_ratio$Year == "2023",]
 
-crew_data_sep_sub_sum_by_group_site_2023_plot <- 
-  ggplot(crew_data_sep_sub_sum_by_group_site_2023, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2023_plot <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2023, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
 #  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
   geom_bar(stat = "identity", width = 5, position = "dodge") +
   theme_minimal() + #get rid of grey background and tick marks
@@ -560,21 +881,21 @@ crew_data_sep_sub_sum_by_group_site_2023_plot <-
           x = "Biomass Removed (m3)", y = "Crew Hours") +
   guides(fill = guide_legend(title="Work Site"))
 
-crew_data_sep_sub_sum_by_group_site_2023_plot
-# ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_2023_plot_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_2023_plot)
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2023_plot
+# ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2023_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2023_plot)
 ```
 
 #### 2022
 ```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-2022}
-colnames(crew_data_sep_sub_sum_by_group_site)
+colnames(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio)
 # [1] "Work_Site"          "Year"               "Biomass_Removed_m3" "Crew_Hours" 
 
-unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
+unique(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio$Work_Site)
 # Filter by year - need column for year
-crew_data_sep_sub_sum_by_group_site_2022 <- crew_data_sep_sub_sum_by_group_site[crew_data_sep_sub_sum_by_group_site$Year == "2022",]
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2022 <- crew_data_sep_sub_sum_by_group_site_hr_bio_ratio[crew_data_sep_sub_sum_by_group_site_hr_bio_ratio$Year == "2022",]
 
-crew_data_sep_sub_sum_by_group_site_2022_plot <- 
-  ggplot(crew_data_sep_sub_sum_by_group_site_2022, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2022_plot <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2022, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
 #  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
   geom_bar(stat = "identity", width = 5, position = "dodge") +
   theme_minimal() + #get rid of grey background and tick marks
@@ -588,21 +909,21 @@ crew_data_sep_sub_sum_by_group_site_2022_plot <-
           x = "Biomass Removed (m3)", y = "Crew Hours") +
   guides(fill = guide_legend(title="Work Site"))
 
-crew_data_sep_sub_sum_by_group_site_2022_plot
-# ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_2022_plot_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_2022_plot)
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2022_plot
+# ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2022_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2022)
 ```
 
 #### *** Facet wrap 2022-2025
 ```{r crew-data-2022-2025-plots-biomass-removed-time-invested-allsites-facetwrap-2022-2025}
-colnames(crew_data_sep_sub_sum_by_group_site)
+colnames(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio)
 # [1] "Work_Site"          "Year"               "Biomass_Removed_m3" "Crew_Hours" 
 
 # unique(crew_data_sep_sub_sum_by_group_site$Work_Site)
 # Filter by year - need column for year
 # crew_data_sep_sub_sum_by_group_site_2022 <- crew_data_sep_sub_sum_by_group_site[crew_data_sep_sub_sum_by_group_site$Year == "2022",]
 
-crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025 <- 
-  ggplot(crew_data_sep_sub_sum_by_group_site, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_plot_facetwrap_2022_2025 <- 
+  ggplot(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, aes(x = Crew_Hours, y = Biomass_Removed_m3, fill = Work_Site)) + 
 #  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
   geom_bar(stat = "identity", width = 5, position = "dodge") +
   facet_wrap(~Year) +
@@ -617,7 +938,7 @@ crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025 <-
           x = "Biomass Removed (m3)", y = "Crew Hours") +
   guides(fill = guide_legend(title="Work Site"))
 
-crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_plot_facetwrap_2022_2025
 # ggsave(filename = paste0("images/crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025_plot_", format(Sys.time(), "%Y-%m-%d_%H.%M"),".png"), crew_data_sep_sub_sum_by_group_site_plot_facetwrap_2022_2025)
 ```
 
@@ -649,10 +970,10 @@ return(filtered_data)
 
 # this returns a list
 # biomass_2025 <- barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2025", "2025", "biomass_2025")
-barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2025", "2025", "biomass_2025")
-barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2024", "2024", "biomass_2024")
-barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2023", "2023", "biomass_2023")
-barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Year, "2022", "2022", "biomass_2022")
+barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, Year, "2025", "2025", "biomass_2025")
+barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, Year, "2024", "2024", "biomass_2024")
+barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, Year, "2023", "2023", "biomass_2023")
+barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, Year, "2022", "2022", "biomass_2022")
 
 
 
@@ -696,7 +1017,9 @@ barchart_work_site_biomass_year_function(crew_data_sep_sub_sum_by_group_site, Ye
 ```{r arrange-charts-together}
 
 library(cowplot)
-plot_grid(crew_data_sep_sub_sum_by_group_site_2025_plot, crew_data_sep_sub_sum_by_group_site_2024_plot, crew_data_sep_sub_sum_by_group_site_2023_plot, crew_data_sep_sub_sum_by_group_site_2022_plot, ncol = 4)
+plot_grid(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2025_plot, crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2024_plot, 
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2023_plot,
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio_2022, ncol = 4)
 # , labels = c("2025", "2024", "2023", "2022")
 
 
@@ -807,28 +1130,34 @@ saveWidget(HAT_sites_map, "output/HAT_site_map.html")
 
 # Mermaid Flowchart
 
-
+## v1 Original
 ```{r mermaid-flow-chart-ex, class.output="scroll-100"}
 library(DiagrammeR)
 # colors from https://colorbrewer2.org/#type=diverging&scheme=BrBG&n=8
-DiagrammeR("
+# DiagrammeR("
+mermaid("
 graph TB
  A1{HAT} --> A[Field Data Collection]
  
  A -->B[Data Entry & Formatting]
- B--create data files--> B1{Data}
+ B--create data files--> B1{Shared Data}
 
- B1 -- import to -->C(RStudio)
+ B1 -- import to -->C1(Excel)
+ C1 -- save as .csv -->C(RStudio)
+C1 -- explore data -->C(RStudio)
 
-C-->D((Data Type?))
-D -- Vegetation Data-->E[Clean & Tidy Species Data]
-D -- Restoration Work Hours-->F[Clean Labour & Biomass Data]
+C(RStudio)-- wrangle data-->E1{Vegetation Cover}
+C-- wrangle data-->F1{Restoration Crew Work}
+C-- wrangle data-->F2{Volunteer Work}
+E1-->E[Clean & Tidy Species Data]
+F1-->F[Clean Labour & Biomass Data]
+F2-->F
 E--calculate-->G[Calculate: Species Richness]
 E--calculate-->H[Calculate: % Native vs Invasive Cover]
 F--calculate-->I[Calculate: Efficiency - Hours per cubic meter Biomass]
 
 G--plot-->J[Plot: Biodiversity Change Over Time]
-H--plot-->K[Plot: Stacked Bar of Community Comp]
+H--plot-->K[Plot: Stacked Bar of Community Composition]
 I--plot-->L[Plot: Cost/Effort Analysis]
 M[Final Reports & Adaptive Management]
 
@@ -837,13 +1166,17 @@ K--include in-->M
 L--include in-->M
     
  style A1 fill:#bf812d, stroke:#01665e
- style A fill:#80cdc1, stroke:#333, stroke-width:1px  
- style B fill:#80cdc1, stroke:#333, stroke-width:1px  
+ style A fill:
+ style B fill:
  style B1 fill:#80cdc1
  style C fill:#E5E25F, stroke:#333, stroke-width:2px  
- style D fill:#80cdc1
- style E fill:#80cdc1, stroke:#35978f, stroke-width:1px  
- style F fill:#80cdc1, stroke:#35978f, stroke-width:1px  
+ style C1 fill:#E5E25F, stroke:#333, stroke-width:2px  
+
+ style E fill:
+ style F fill:
+ style E1 fill:#80cdc1
+ style F1 fill:#80cdc1
+ style F2 fill:#80cdc1
  style G fill:#fff9c4, stroke:#fbc02d,stroke-width:2px
  style H fill:#fff9c4, stroke:#fbc02d,stroke-width:2px
  style I fill:#fff9c4, stroke:#fbc02d,stroke-width:2px
@@ -861,6 +1194,93 @@ L--include in-->M
 #  B1 -- data sent to -->A3[Wendy]
 ```
 
+
+
+## v2 Arranged by Subgroups
+can't seem to change ugly default yellow background
+```{r mermaid-flow-chart-ex-subgrp, class.output="scroll-100"}
+mermaid("
+ 
+graph TD
+
+subgraph HAT DATA CREATION
+  A[Field Data Collection]-->B[Data Entry & Formatting & File Creation]
+  B-->B1{Shared Data}
+end
+
+
+subgraph DATA EXPLORATION
+    C1(Excel)
+    C1-- save as .csv -->C(RStudio)
+    C1-- explore data -->C(RStudio)
+end
+
+subgraph COVER DATA
+     E1{Vegetation Cover}-->E[Clean & Tidy Species Data]
+     E--calculate-->G[Species Richness]
+     E--calculate-->H[% Native vs Invasive Cover]
+     E--calculate-->H1[% Treated vs Untreated]        
+     G--plot-->J[Biodiversity Change Over Time]
+     H--plot-->K[Stacked Bar of Community Composition]
+     H1--plot-->K1[Stacked Bar of Treatment Regimes]
+end
+
+subgraph CREW DATA
+     F1{Restoration Crew Work}-->F[Clean Labour & Biomass Data]
+     F--calculate-->I[Efficiency - Hours per cubic meter Biomass]
+     F--calculate-->II3[cubic meter Biomass per Species]
+     I--plot-->L[Cost/Effort Analysis]
+     II3--plot-->II[Biomass Removed per Species]
+end
+
+subgraph VOLUNTEER DATA
+     F2{Volunteer Work}-->F3[Clean Labour & Biomass Data]
+     F3--calculate-->I2[Efficiency - Hours per cubic meter Biomass]
+     F3--calculate-->II2[cubic meter Biomass per Species]
+     I2--plot-->L2[Cost/Effort Analysis]
+     II2--plot-->III[Biomass Removed per Species]
+end
+ 
+subgraph DATA VISUALIZATION
+     DV[Visualizations to Assist Management Decision Making]
+end
+
+subgraph INTERACTIVE DATA VIZ TOOL
+     M[Interactive Filter Selection]-- in -->M1[Shiny]
+     M-- in -->M2[HTML]
+end
+
+subgraph FINAL REPORT & PRESENTATION
+     N[Report]-->NP[RNS Publication]
+     N1[Presentation]-->HAT[HAT]
+end
+ 
+  B1-- import to -->C1
+ 	C-- wrangles -->E1
+ 	C-- wrangles -->F1
+ 	C-- wrangles -->F2
+ 	J-->DV
+ 	K-->DV
+ 	K1-->DV
+ 	L-->DV
+ 	L2-->DV
+ 	DV--include in-->M
+ 	DV--include in-->N
+ 	
+ style B1 fill:#bf812d, stroke:#01665e
+ style E1 fill:#bf812d, stroke:#01665e
+ style F1 fill:#bf812d, stroke:#01665e
+ style F2 fill:#bf812d, stroke:#01665e
+ style G fill:#80cdc1
+ style H fill:#80cdc1
+ style H1 fill:#80cdc1
+ style I fill:#80cdc1
+ style II3 fill:#80cdc1
+ style I2 fill:#80cdc1
+ style II2 fill:#80cdc1
+
+ ")
+```
 
 ---
 
