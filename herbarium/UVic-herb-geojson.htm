@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Herbarium UVic - specimen map markers</title>
+    <link rel="stylesheet" type="text/css" href="css/leaflet/leaflet.css" />
+
+      <script type='text/javascript' src='js/jquery.min.js'></script>
+      <script type='text/javascript' src='js/leaflet/leaflet.js'></script>
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.s/mq-map.js?key=Nd8knlHalkg4ovlgWfE3kEDFEBzeG67M"></script>
+    <style>
+        html, body, #map {
+            height: 100%;
+        }
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        h1 {
+            font-size: 98%;
+        }
+        p {font-size: 80%;}
+    </style>
+ </head>
+ <body>
+<h1 align="center">UVic Herbarium: Mapping 5000 Specimens</h1>
+<div id="map"></div>
+<div>
+<p align="center" id="codehack">Code inspired from article: <a href="http://asmaloney.com/2014/01/code/creating-an-interactive-map-with-leaflet-and-openstreetmap" target="_blank">Creating An Interactive Map With Leaflet, OpenStreetMap & JSON code</a> <br><br>Orchestrated from UVic Herbarium data, by Wendy Anthony 2016</p>
+</div>
+      <script type='text/javascript' src='markers-e.json'></script>
+      <script type='text/javascript' src='leaf-demo-4.js'></script>      
+ </body>
+</html>
+
+
+     
+      
