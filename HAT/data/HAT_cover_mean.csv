@@ -1,0 +1,95 @@
+"Year","Date","Location","Treated","Species","Native_or_Invasive","mean_value","sd_value"
+2025,2025-04-02,"Oak Haven","Treated","Menzies larkspur","Native",3.17,4.92
+2025,2025-04-02,"Oak Haven","Treated","Oregon grape","Native",7.17,14.01
+2025,2025-04-02,"Oak Haven","Treated","Pacific sanicle","Native",0.83,1.17
+2025,2025-04-02,"Oak Haven","Treated","Scotch broom","Invasive",0.67,1.21
+2025,2025-04-02,"Oak Haven","Treated","camas","Native",5,4.86
+2025,2025-04-02,"Oak Haven","Treated","delphinium","Native",3,4.69
+2025,2025-04-02,"Oak Haven","Treated","fawn lily","Native",1.33,1.03
+2025,2025-04-02,"Oak Haven","Treated","field chickweed","Native",0.5,1.22
+2025,2025-04-02,"Oak Haven","Treated","herb robert geranium","Invasive",2.17,3.71
+2025,2025-04-02,"Oak Haven","Treated","mixed grass","MixedGrass",22.83,22.45
+2025,2025-04-02,"Oak Haven","Treated","mixed moss and grass","MixedGrass",16.17,27.13
+2025,2025-04-02,"Oak Haven","Treated","moss","Native",8,10.3
+2025,2025-04-02,"Oak Haven","Treated","saxifrage species","Native",0.17,0.41
+2025,2025-04-02,"Oak Haven","Treated","shiny geranium","Invasive",15.83,10.28
+2025,2025-04-02,"Oak Haven","Treated","shooting star","Native",7.33,7.09
+2025,2025-04-02,"Oak Haven","Treated","snowberry","Native",5.83,8.45
+2025,2025-04-03,"Oak Haven","Untreated","Menzies larkspur","Native",3,5.29
+2025,2025-04-03,"Oak Haven","Untreated","Oregon grape","Native",5.5,6.25
+2025,2025-04-03,"Oak Haven","Untreated","Scotch broom","Invasive",1.17,2.04
+2025,2025-04-03,"Oak Haven","Untreated","camas","Native",4.67,4.5
+2025,2025-04-03,"Oak Haven","Untreated","delphinium","Native",1.5,1.97
+2025,2025-04-03,"Oak Haven","Untreated","fawn lily","Native",2.5,2.07
+2025,2025-04-03,"Oak Haven","Untreated","field chickweed","Native",0.5,0.84
+2025,2025-04-03,"Oak Haven","Untreated","mixed grass","MixedGrass",47.17,39.13
+2025,2025-04-03,"Oak Haven","Untreated","mixed invasive grasses","MixedGrass",8.83,21.64
+2025,2025-04-03,"Oak Haven","Untreated","mixed moss and grass","MixedGrass",17.5,36.02
+2025,2025-04-03,"Oak Haven","Untreated","moss","Native",1.33,3.27
+2025,2025-04-03,"Oak Haven","Untreated","onion","Native",0.17,0.41
+2025,2025-04-03,"Oak Haven","Untreated","rose","Native",0.17,0.41
+2025,2025-04-03,"Oak Haven","Untreated","shooting star","Native",2.17,2.32
+2025,2025-04-03,"Oak Haven","Untreated","snowberry","Native",3.67,5.99
+2025,2025-04-03,"Oak Haven","Untreated","speedwell","Invasive",0.17,0.41
+2024,2024-11-06,"Oak Haven","Treated","Oregon grape","Native",2.5,6.12
+2024,2024-11-06,"Oak Haven","Treated","Scotch broom","Invasive",1.17,1.83
+2024,2024-11-06,"Oak Haven","Treated","bur chervil","Invasive",0.17,0.41
+2024,2024-11-06,"Oak Haven","Treated","camas","Native",0.33,0.82
+2024,2024-11-06,"Oak Haven","Treated","common plantain","Invasive",0.17,0.41
+2024,2024-11-06,"Oak Haven","Treated","dull Oregon grape","Native",4.17,10.21
+2024,2024-11-06,"Oak Haven","Treated","grass","MixedGrass",12.5,16.66
+2024,2024-11-06,"Oak Haven","Treated","licorice fern","Native",1.33,1.75
+2024,2024-11-06,"Oak Haven","Treated","mixed grass","MixedGrass",9.83,10.78
+2024,2024-11-06,"Oak Haven","Treated","moss","Native",24.67,19.82
+2024,2024-11-06,"Oak Haven","Treated","shiny geranium","Invasive",31.33,14.24
+2024,2024-11-06,"Oak Haven","Treated","snowberry","Native",11.17,6.43
+2024,2024-11-06,"Oak Haven","Treated","vetch","Invasive",0.67,0.82
+2024,2024-11-07,"Oak Haven","Untreated","Oregon grape","Native",13.33,15.31
+2024,2024-11-07,"Oak Haven","Untreated","Scotch broom","Invasive",3.5,3.15
+2024,2024-11-07,"Oak Haven","Untreated","camas","Native",1.33,1.51
+2024,2024-11-07,"Oak Haven","Untreated","chickweed","Native",1.67,2.58
+2024,2024-11-07,"Oak Haven","Untreated","field chickweed","Native",2.5,6.12
+2024,2024-11-07,"Oak Haven","Untreated","grass","MixedGrass",27,27.63
+2024,2024-11-07,"Oak Haven","Untreated","moss","Native",12.5,30.62
+2024,2024-11-07,"Oak Haven","Untreated","moss & grass","MixedGrass",26.83,42.44
+2024,2024-11-07,"Oak Haven","Untreated","shiny geranium","Invasive",5.17,7.63
+2024,2024-11-07,"Oak Haven","Untreated","snowberry","Native",6,7.87
+2024,2024-11-07,"Oak Haven","Untreated","vetch","Invasive",0.17,0.41
+2025,2025-07-28,"Matson","Treated","Himalayan blackberry","Invasive",7,7.87
+2025,2025-07-28,"Matson","Treated","aster","Invasive",0.17,0.41
+2025,2025-07-28,"Matson","Treated","blue wildrye","Native",5,6.32
+2025,2025-07-28,"Matson","Treated","camas","Native",1.5,2.35
+2025,2025-07-28,"Matson","Treated","grass","MixedGrass",77.83,15.79
+2025,2025-07-28,"Matson","Treated","moss","Native",0.17,0.41
+2025,2025-07-28,"Matson","Treated","oceanspray","Native",6.67,16.33
+2025,2025-07-28,"Matson","Treated","pickly wall lettuce","Invasive",0.33,0.82
+2025,2025-07-28,"Matson","Untreated","English ivy","Invasive",9.17,6.65
+2025,2025-07-28,"Matson","Untreated","Oregon grape","Native",24.5,19.48
+2025,2025-07-28,"Matson","Untreated","daphne","Invasive",0.17,0.41
+2025,2025-07-28,"Matson","Untreated","grass","MixedGrass",36.67,29.72
+2025,2025-07-28,"Matson","Untreated","leaf mulch","MixedGrass",7.83,14.51
+2025,2025-07-28,"Matson","Untreated","licorice fern","Native",1.83,2.23
+2025,2025-07-28,"Matson","Untreated","moss","Native",3.33,8.16
+2025,2025-07-28,"Matson","Untreated","orchard grass","MixedGrass",8.33,13.29
+2025,2025-07-28,"Matson","Untreated","snowberry","Native",5.5,2.66
+2025,2025-07-28,"Matson","Untreated","trailing blackberry","Native",3.5,5.05
+2025,2025-07-28,"Matson","Untreated","unknown","Unkown",0.83,2.04
+2024,2024-07-24,"Matson","Treated","Himalayan blackberry","Invasive",0.67,1.15
+2024,2024-07-24,"Matson","Treated","Pacific sanicle","Native",0.67,1.15
+2024,2024-07-24,"Matson","Treated","Scotch broom","Invasive",0.67,1.15
+2024,2024-07-24,"Matson","Treated","blue wildrye","Native",1.33,2.31
+2024,2024-07-24,"Matson","Treated","grass","MixedGrass",91.33,6.43
+2024,2024-07-24,"Matson","Treated","oceanspray","Native",1,1.73
+2024,2024-07-24,"Matson","Treated","onion","Native",0.33,0.58
+2024,2024-07-24,"Matson","Treated","snowberry","Native",0.67,1.15
+2024,2024-07-24,"Matson","Treated","vetch","Invasive",3.33,5.77
+2024,2024-07-25,"Matson","Untreated","English ivy","Invasive",5,5
+2024,2024-07-25,"Matson","Untreated","Garry oak","Native",0.33,0.58
+2024,2024-07-25,"Matson","Untreated","Pacific sanicle","Native",0.67,0.58
+2024,2024-07-25,"Matson","Untreated","Scotch broom","Invasive",8.33,14.43
+2024,2024-07-25,"Matson","Untreated","dull Oregon grape","Native",2.67,3.06
+2024,2024-07-25,"Matson","Untreated","grass","MixedGrass",51,28.48
+2024,2024-07-25,"Matson","Untreated","licorice fern","Native",5,5
+2024,2024-07-25,"Matson","Untreated","snowberry","Native",4.33,4.93
+2024,2024-07-25,"Matson","Untreated","tall Oregon grape","Native",5.33,7.57
+2024,2024-07-25,"Matson","Untreated","trailing blackberry","Native",8.33,2.89

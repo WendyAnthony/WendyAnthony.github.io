@@ -1,0 +1,26 @@
+"Year","Treated","Native_or_Invasive","Location","Species_number"
+2024,"Treated","Invasive","Matson",3
+2024,"Treated","Invasive","Oak Haven",5
+2024,"Treated","MixedGrass","Matson",1
+2024,"Treated","MixedGrass","Oak Haven",2
+2024,"Treated","Native","Matson",5
+2024,"Treated","Native","Oak Haven",6
+2024,"Untreated","Invasive","Matson",2
+2024,"Untreated","Invasive","Oak Haven",3
+2024,"Untreated","MixedGrass","Matson",1
+2024,"Untreated","MixedGrass","Oak Haven",2
+2024,"Untreated","Native","Matson",7
+2024,"Untreated","Native","Oak Haven",6
+2025,"Treated","Invasive","Matson",3
+2025,"Treated","Invasive","Oak Haven",3
+2025,"Treated","MixedGrass","Matson",1
+2025,"Treated","MixedGrass","Oak Haven",2
+2025,"Treated","Native","Matson",4
+2025,"Treated","Native","Oak Haven",11
+2025,"Untreated","Invasive","Matson",2
+2025,"Untreated","Invasive","Oak Haven",2
+2025,"Untreated","MixedGrass","Matson",3
+2025,"Untreated","MixedGrass","Oak Haven",3
+2025,"Untreated","Native","Matson",5
+2025,"Untreated","Native","Oak Haven",11
+2025,"Untreated","Unkown","Matson",1
