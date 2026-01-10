@@ -20,7 +20,6 @@ output:
 
 
 ```{r include=FALSE}
-
 knitr::opts_chunk$set(
 	message = FALSE,
 	warning = FALSE
@@ -33,7 +32,6 @@ library(crosstalk)
 library(plotly)
 library(leaflet)
 library(htmltools)
-
 ```
 
 
@@ -56,8 +54,6 @@ cover_data <- read.csv("data/HAT_cover_mean.csv", fileEncoding="UTF-8")
 
 # Species counts
 species_count <- read.csv("data/species_counts.csv", fileEncoding="UTF-8")
-
-
 ```
 
 
@@ -111,8 +107,6 @@ cover_data_rename_site_sub_inv_u <- cover_data_rename_site_sub_inv[cover_data_re
 species_count <- species_count[-c(25), ]
 species_count <- species_count %>%
   rename(Site = Location)
-
-
 ```
 
 ```{r shared-data, include = FALSE}
@@ -136,7 +130,6 @@ sd_cover_inv_u <- SharedData$new(data = cover_data_rename_site_sub_inv_u, group 
 sd_count <- SharedData$new(data = species_count, group = "count_group")
 
 sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create sharable database using Crosstalk package
-
 ```
 
 <style type="text/css">
@@ -174,15 +167,12 @@ htmltools::br()
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
 htmltools::br()
-htmltools::br()
-htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
 htmltools::br()
-htmltools::em("HAT data source: HAT Restoration Crew Data.xlsx")
-
-
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
 ```
 
 Row
@@ -223,12 +213,11 @@ ggplotly(
     tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
-    layout(legend = list(orientation="h"
-    #                      ,
-    # xanchor="center",
-    # x = 0.5,
-    # # gives some space between x axis label and legend
-    # y = -0.2
+    layout(legend = list(orientation="h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
     ))
 ```
 
@@ -264,25 +253,13 @@ ggplotly(
     tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
-    layout(legend = list(orientation="h"
-    #                      ,
-    # xanchor="center",
-    # x = 0.5,
-    # # gives some space between x axis label and legend
-    # y = -0.2
+    layout(legend = list(orientation="h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
     ))
 ```
-
-```{r}
-# Row
-# Tables shortens charts and makes legends invisible
-# -------------------------------------
-# ### Table of Crew Hours & Biomass Removed
-# 
-# datatable(sd_crew, options = list(pageLength = 25, fillContainer = TRUE))
-```
-
-
 
 
  Cover Data
@@ -304,19 +281,19 @@ htmltools::br()
 htmltools::br()
 
 # Create a filter input
-filter_select(id = "Site", label = "Choose Work Site", sharedData = sd_cover, group = ~ Site, multiple = T)
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
 filter_select(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, multiple = T)
 filter_select(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_cover, group = ~ Native_or_Invasive, multiple = T)
 filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, group = ~ Species, multiple = T)
 
 htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
 htmltools::br()
-htmltools::em("HAT data source: Cover Data 2024-2025")
-
+htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
 ```
 
 
@@ -420,14 +397,12 @@ htmltools::br()
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
 htmltools::br()
-htmltools::br()
-htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
 htmltools::br()
-htmltools::em("HAT data source: HAT Restoration Crew Data.xlsx")
-
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
 ```
 
 Row
@@ -467,7 +442,6 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
     # gives some space between x axis label and legend
     y = -0.2
     ))
-
 ```
 
 Row
@@ -508,7 +482,6 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
     # gives some space between x axis label and legend
     y = -0.2
     ))
-
 ```
 
 
@@ -531,20 +504,18 @@ htmltools::br()
 htmltools::br()
 
 # Create a filter input
-filter_select(id = "Site", label = "Choose Work Site", sharedData = sd_count, group = ~ Site, multiple = T)
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_count, group = ~ Year, allLevels = TRUE)
 filter_select(id = "Treated", label = "Choose Treatment", sharedData = sd_count, group = ~ Treated, multiple = T)
 filter_select(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_count, group = ~ Native_or_Invasive, multiple = T)
 
 htmltools::br()
-htmltools::br()
-htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
 htmltools::br()
-htmltools::em("HAT data source: Cover Data 2024-2025")
-
+htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
 ```
 
 
@@ -584,8 +555,6 @@ ggplotly(
     # gives some space between x axis label and legend
     y = -0.2
     ))
-
-
 ```
 
 
@@ -609,28 +578,35 @@ htmltools::br()
 htmltools::em("Note: Reset filters to delete unwanted choices")
 htmltools::br()
 htmltools::br()
-htmltools::hr(style = "border: 1px solid black; width: 250px; margin: auto;")
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 # Create a filter input
 htmltools::h4("Filters for Crew and Biomass Tables")
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
 htmltools::br()
-htmltools::hr(style = "border: 1px solid black; width: 250px; margin: auto;")
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::h4("Filters for Cover Tables")
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
 htmltools::br()
-htmltools::hr(style = "border: 1px solid black; width: 250px; margin: auto;")
+htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::h4("Filters for Count Tables")
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_count, group = ~ Year, allLevels = TRUE)
 htmltools::br()
-htmltools::hr(style = "border: 1px solid black; width: 250px; margin: auto;")
-
+htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
-htmltools::br()
-htmltools::em("HAT data source: HAT Restoration Crew Data.xlsx")
 htmltools::br()
 ```
 
@@ -638,7 +614,7 @@ Row
 ---------------------------------------------
 
 ```{r}
-htmltools::hr(style = "border: 1px solid black; width: 100%; margin: auto;")
+htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
 ```
 
@@ -664,7 +640,7 @@ Row
 
 
 ```{r}
-htmltools::hr(style = "border: 1px solid black; width: 100%; margin: auto;")
+htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
 ```
 
@@ -691,7 +667,7 @@ Row
 
 
 ```{r}
-htmltools::hr(style = "border: 1px solid black; width: 100%; margin: auto;")
+htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
 ```
 
@@ -718,7 +694,7 @@ Row
 
 
 ```{r}
-htmltools::hr(style = "border: 1px solid black; width: 100%; margin: auto;")
+htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
 ```
 
@@ -745,7 +721,7 @@ Row
 
 
 ```{r}
-htmltools::hr(style = "border: 1px solid black; width: 100%; margin: auto;")
+htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
 ```
 
@@ -758,24 +734,26 @@ Inputs {.sidebar data-width=250}
 
 ```{r}
 htmltools::br()
-htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
+htmltools::em("Note: To reset filters, delete unwanted choices")
 htmltools::br()
 htmltools::br()
 
 filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
 
-filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
-
-filter_slider(id = "Size_ha", label = "Size in ha", sharedData = sd_sites, column = ~Size_ha, step = 1, min = 0, max = 20, post = "ha")
-
-filter_select(id = "Partner_Code", label = "Partner", sharedData = sd_sites, group = ~Partner_Code)
-  
-filter_select(id = "FirstNations", label = "First Nations", sharedData = sd_sites, group = ~FirstNations)
+# filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
+# 
+# filter_slider(id = "Size_ha", label = "Size in ha", sharedData = sd_sites, column = ~Size_ha, step = 1, min = 0, max = 20, post = "ha")
+# 
+# filter_select(id = "Partner_Code", label = "Partner", sharedData = sd_sites, group = ~Partner_Code)
+#   
+# filter_select(id = "FirstNations", label = "First Nations", sharedData = sd_sites, group = ~FirstNations)
   
 htmltools::br()
 htmltools::br()
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
 htmltools::em("HAT data source: ")
 htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://hat.bc.ca/community-based-restoration")
@@ -788,7 +766,6 @@ Row
 
 ### Map of HAT Managed Public GOE Sites
 ```{r leaflet-all-sites, echo = FALSE, message = FALSE, include = TRUE}
-
 # Title control
 # (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
      title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
@@ -824,8 +801,6 @@ leaflet(sd_sites) %>%
       # add controls
       #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
       addControl(title, position = "topright")
-
-
 ```
 
  About
@@ -834,35 +809,31 @@ leaflet(sd_sites) %>%
 ### <img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'> RNS Project for Visualizing HAT Monitoring Data 
 ```{r}
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-htmltools::h2("RNS Project for ER390")
-htmltools::strong("Coded by Wendy Anthony 2026-01-10")
-htmltools::br()
-
-hr()
+htmltools::h3("RNS Project for ER390")
+htmltools::strong("Created and Coded for HAT by Wendy Anthony 2026-01-10")
+hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 
 HTML("
-  <h4>RNS Data Visualization Project</h4>
+  <h5>RNS Data Visualization Project</h5>
       This interactive data visualization tool was created as a final project for University of Victoria Restoration of Natural Ecosystems ER390, with HAT as a community partner, supervised by Nancy Shackelford
      
-  <h4>Data</h4>
+  <h5>Data</h5>
      Three different data files, of 9 HAT-only-Managed-Sites were shared by HAT: <br>
      1. Cover Data 2024-2025 (species richness, percent native/invasive)<br>
      2. HAT Restoration Crew Data (invasive species removal)<br>
      3. Matson Conservation Area -  Matson Mattocks Field Logs (volunteer invasive species removal)
     
-  <h4>How to use this interactive data visualization tool</h4>
-  <h5>Data Filters</h5>
+  <h5>How to use this interactive data visualization tool</h5>
+  <h6>Data Filters</h6>
   - each tab uses different data and different filters<br>
   - filters must be cleared, using delete or backspace key in order to start new filter
-  <h5>Data Visualizations</h5>
+  <h6>Data Visualizations</h6>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
   - data visualization can be focused by dragging a certain area; double-click graph to return to original version
   <br><br>
   ")
+hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
-htmltools::br()
-htmltools::br()
-
 ```
 
