@@ -11,6 +11,12 @@ output:
     source_code: embed
 ---
 
+<script>
+   $(document).ready(function() {
+     $head = $('#header');
+     $head.prepend('<img src=\"HAT-FernNewsletter-ss.png\" style=\"float: right;width: 150px;\"/>')
+   });
+</script>
 
 
 ```{r include=FALSE}
@@ -162,7 +168,13 @@ filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = 
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
 htmltools::br()
 htmltools::br()
+htmltools::br()
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
 htmltools::em("HAT data source: HAT Restoration Crew Data.xlsx")
+
 
 ```
 
@@ -287,6 +299,9 @@ filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, g
 
 htmltools::br()
 htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
 htmltools::em("HAT data source: Cover Data 2024-2025")
 
 ```
@@ -377,7 +392,7 @@ Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
 ```{r}
-# htmltools::br()
+htmltools::br()
 htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
 htmltools::br()
 htmltools::br()
@@ -385,6 +400,11 @@ htmltools::br()
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
+htmltools::br()
+htmltools::br()
+htmltools::br()
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
 htmltools::br()
 htmltools::em("HAT data source: HAT Restoration Crew Data.xlsx")
@@ -493,6 +513,11 @@ filter_select(id = "Native_or_Invasive", label = "Choose Native or Invasive", sh
 
 htmltools::br()
 htmltools::br()
+htmltools::br()
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
 htmltools::em("HAT data source: Cover Data 2024-2025")
 
 ```
@@ -562,6 +587,11 @@ filter_select(id = "FirstNations", label = "First Nations", sharedData = sd_site
   
 htmltools::br()
 htmltools::br()
+htmltools::br()
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
 htmltools::em("HAT data source: ")
 htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://hat.bc.ca/community-based-restoration")
 
@@ -616,18 +646,30 @@ leaflet(sd_sites) %>%
  About
 =====================================  
 
-### About Project for Visualizing HAT Data
-
+### <img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'> RNS Project for Visualizing HAT Monitoring Data 
 ```{r}
-
+#htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::h2("RNS Project for ER390")
-htmltools::h3("Code by Wendy Anthony")
-htmltools::h4("2026-01-10")
+htmltools::strong("Coded by Wendy Anthony 2026-01-10")
 htmltools::br()
 
 hr()
 
-HTML("Initiated as a final project for University of Victoria Restoration of Natural Ecosystems ER390, with HAT as a community partner, supervised by Nancy Shackelford")
+HTML("
+  <h4>RNS Data Visualization Project</h4>
+      This interactive data visualization tool was created as a final project for University of Victoria Restoration of Natural Ecosystems ER390, with HAT as a community partner, supervised by Nancy Shackelford
+     
+  <h4>Data</h4>
+     Three different data files, of 9 HAT-only-Managed-Sites were shared by HAT: <br>
+     1. Cover Data 2024-2025 (species richness, percent native/invasive)<br>
+     2. HAT Restoration Crew Data (invasive species removal)<br>
+     3. Matson Conservation Area -  Matson Mattocks Field Logs (volunteer invasive species removal)
+    
+  <h4>How to use this interactive data visualization tool</h4>
+- each tab uses different data and different filters<br>
+- 
+  ")
+
 
 ```
 
