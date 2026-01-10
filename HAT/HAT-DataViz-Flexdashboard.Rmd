@@ -199,7 +199,7 @@ ggplotly(
     xanchor="center",
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.2
+    y = -0.1
     ))
 ```
 
@@ -239,7 +239,7 @@ ggplotly(
     xanchor="center",
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.2
+    y = -0.1
     ))
 ```
 
@@ -301,8 +301,8 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-    x = "Mean % cover",   # Set the x-axis name
-    y = "Species",   # Set the y-axis name
+    x = "",   # Set the x-axis name
+    y = "Mean % cover",   # Set the y-axis name
     fill = "Site", 
 #    title = "Native Species Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
   ) +
@@ -312,9 +312,11 @@ ggplotly(
   ) %>%
     layout(legend = list(orientation = "h",
     xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    # x = 1 # too far to right
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.2
+    y = -0.5
     ))
 ```
 
@@ -342,8 +344,8 @@ coord_flip() +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-    x = "Mean % cover",   # Set the x-axis name
-    y = "Species",   # Set the y-axis name
+    x = "",   # Set the x-axis name
+    y = "Mean % cover",   # Set the y-axis name
     fill = "Site", 
 #    title = "Invasive Species Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
   ) +
@@ -353,9 +355,10 @@ coord_flip() +
   ) %>%
     layout(legend = list(orientation = "h",
     xanchor="center",
+    #x = 0.5 legend too close to x axis label
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.2
+    y = -0.5
     ))
 ```
 
@@ -382,8 +385,8 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-    x = "Mean % cover",   # Set the x-axis name
-    y = "Species",   # Set the y-axis name
+    x = "",   # Set the x-axis name
+    y = "Mean % cover",   # Set the y-axis name
     fill = "Site", 
     #title = "Mixed Grasses Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
   ) +
@@ -393,9 +396,10 @@ ggplotly(
   ) %>%
     layout(legend = list(orientation = "h",
     xanchor="center",
+    #x = 0.5 legend too close to x axis label
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.2
+    y = -0.5
     ))
 ```
 
@@ -465,7 +469,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
     xanchor="center",
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.2
+    y = -0.1
     ))
 ```
 
@@ -503,7 +507,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
     xanchor="center",
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.2
+    y = -0.1
     ))
 ```
 
@@ -576,7 +580,7 @@ ggplotly(
     xanchor="center",
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.2
+    y = -0.1
     ))
 ```
 
