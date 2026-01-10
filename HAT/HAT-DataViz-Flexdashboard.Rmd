@@ -301,7 +301,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-    x = "Mean percent cover",   # Set the x-axis name
+    x = "Mean % cover",   # Set the x-axis name
     y = "Species",   # Set the y-axis name
     fill = "Site", 
     title = "Native Species Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
@@ -342,7 +342,7 @@ coord_flip() +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-    x = "Mean percent cover",   # Set the x-axis name
+    x = "Mean % cover",   # Set the x-axis name
     y = "Species",   # Set the y-axis name
     fill = "Site", 
     title = "Invasive Species Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
@@ -382,7 +382,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-    x = "Mean percent cover",   # Set the x-axis name
+    x = "Mean % cover",   # Set the x-axis name
     y = "Species",   # Set the y-axis name
     fill = "Site", 
     title = "Mixed Grasses Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
