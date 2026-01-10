@@ -860,7 +860,9 @@ HTML("
   - data visualization can be focused by dragging a certain area; double-click graph to return to original version
   <br><br>
   ")
-
+htmltools::br()
+htmltools::br()
+htmltools::br()
 
 ```
 
