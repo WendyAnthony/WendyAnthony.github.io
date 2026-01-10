@@ -282,7 +282,7 @@ htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
 Row
 ---------------------------------------------
 
-### Mean % Cover - Native Species
+### Mean % Cover - Native Species at Oak Haven & Matson 2024-2025
 ```{r mean-cover-nat, echo = FALSE, message = FALSE, warning = FALSE}
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
@@ -304,7 +304,7 @@ ggplotly(
     x = "Mean % cover",   # Set the x-axis name
     y = "Species",   # Set the y-axis name
     fill = "Site", 
-    title = "Native Species Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
+#    title = "Native Species Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
   ) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
     tooltip = "text",
@@ -322,7 +322,7 @@ ggplotly(
 Row
 ---------------------------------------------
 
-### Mean % Cover - Invasive Species
+### Mean % Cover - Invasive Species at Oak Haven & Matson 2024-2025
 ```{r mean-cover-inv, echo = FALSE, message = FALSE, warning = FALSE}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -345,7 +345,7 @@ coord_flip() +
     x = "Mean % cover",   # Set the x-axis name
     y = "Species",   # Set the y-axis name
     fill = "Site", 
-    title = "Invasive Species Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
+#    title = "Invasive Species Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
   ) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
     tooltip = "text",
@@ -363,7 +363,7 @@ coord_flip() +
 Row
 ---------------------------------------------
 
-### Mean % Cover - Mixed Grasses
+### Mean % Cover - Mixed Grasses at Oak Haven & Matson 2024-2025
 ```{r mean-cover-grs, echo = FALSE, message = FALSE, warning = FALSE}
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
@@ -385,7 +385,7 @@ ggplotly(
     x = "Mean % cover",   # Set the x-axis name
     y = "Species",   # Set the y-axis name
     fill = "Site", 
-    title = "Mixed Grasses Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
+    #title = "Mixed Grasses Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
   ) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
     tooltip = "text",
