@@ -666,8 +666,14 @@ HTML("
      3. Matson Conservation Area -  Matson Mattocks Field Logs (volunteer invasive species removal)
     
   <h4>How to use this interactive data visualization tool</h4>
-- each tab uses different data and different filters<br>
-- 
+  <h5>Data Filters</h5>
+  - each tab uses different data and different filters<br>
+  - filters must be cleared, using delete or backspace key in order to start new filter
+  <h5>Data Visualizations</h5>
+  - are responsive to data filters<br>
+  - hover over data visualizations to view tooltips<br>
+  - data visualization can be focused by dragging a certain area; double-click graph to return to original version
+  <br><br>
   ")
 
 
