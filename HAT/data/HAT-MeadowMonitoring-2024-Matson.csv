@@ -1,0 +1,33 @@
+SortID,MonitorID,QUniqueID,Date,Year,Location,Treated,YearTreated,ExSpTabTitle,Baseline,Quadrat,QuadratLocation_m,Species,Native_or_Invasive,PercentCover,OriginalSpecies
+10,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q3,8,blue wildrye,Native,4,blue wildrye
+3,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q1,2,grass,MixedGrass,96,unidentified grasses and rock
+8,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q2,5,grass,MixedGrass,84,grasses
+11,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q3,8,grass,MixedGrass,94,grass species
+9,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q3,8,Himalayan blackberry,Invasive,2,h blackberry
+4,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q2,5,oceanspray ,Native,3,oceanspray 
+6,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q2,5,onion,Native,1,onion
+2,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q1,2,Pacific sanicle ,Native,2,pacific sanicle 
+5,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q2,5,Scotch broom ,Invasive,2,s. broom 
+1,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q1,2,snowberry,Native,2,snowberry
+7,T-HCDD,,2024-07-24,2024,Matson,Treated,2024,,,Q2,5,vetch,Invasive,10,vetch
+12,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q1,3.66,dull Oregon grape,Native,6,dull oregon grape
+23,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q2,5.7,dull Oregon grape,Native,2,dull oregon grape
+16,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q1,3.66,English ivy,Invasive,10,e. ivy
+28,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q3,7.3,English ivy,Invasive,5,e. ivy
+31,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q3,7.3,Garry oak,Native,1,garry oak
+18,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q1,3.66,grass,MixedGrass,57,grasses
+24,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q2,5.7,grass,MixedGrass,76,grasses
+32,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q3,7.3,grass,MixedGrass,20,grasses
+19,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q2,5.7,licorice fern,Native,10,licorice fern
+30,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q3,7.3,licorice fern,Native,5,licorice fern
+17,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q1,3.66,Pacific sanicle,Native,1,pacific sanicle
+21,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q2,5.7,Pacific sanicle,Native,1,pacific sanicle 
+26,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q3,7.3,Scotch broom ,Invasive,25,s. broom
+14,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q1,3.66,snowberry,Native,2,snowberry
+22,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q2,5.7,snowberry,Native,1,snowberry
+27,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q3,7.3,snowberry,Native,10,snowberry
+13,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q1,3.66,tall Oregon grape,Native,14,tall oregon grape
+25,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q3,7.3,tall Oregon grape,Native,2,tall oregon grape
+15,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q1,3.66,trailing blackberry,Native,10,trailing blackberry
+20,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q2,5.7,trailing blackberry,Native,10,trailing blackberry
+29,U-HCDD,,2024-07-25,2024,Matson,Untreated,NA,,,Q3,7.3,trailing blackberry,Native,5,trailing blackberry

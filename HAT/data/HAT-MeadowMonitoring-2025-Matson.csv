@@ -1,0 +1,57 @@
+﻿SortID,MonitorID,QUniqueID,Date,Year,Location,Treated,YearTreated,ExSpTabTitle,Baseline,Quadrat,QuadratLocation_m,Species,Native_or_Invasive,PercentCover,OriginalSpecies
+5,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,aster,Invasive,1,Unknown aster
+2,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,blue wildrye,Native,10,Blue Wildrye
+11,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q3,4,blue wildrye,Native,5,blue wildrye
+53,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q3,8,blue wildrye,Native,15,Blue wildrye
+1,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,camas,Native,4,Camas
+55,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q3,8,camas,Native,5,Camas
+50,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q1,4,grass,MixedGrass,90,Grass
+6,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,grass ,MixedGrass,63,unknown grasses 
+7,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q2,1,grass ,MixedGrass,99,Unknow grasses 
+10,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q3,4,grass ,MixedGrass,85,Unknow grasses 
+52,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q2,1,grass ,MixedGrass,60,Grass
+56,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q3,8,grass ,MixedGrass,70,Grass sp.
+3,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,Himalayan blackberry,Invasive,20,Himalayan blackberry
+9,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q3,4,Himalayan blackberry,Invasive,2,himalayan blackberry 
+49,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q1,4,Himalayan blackberry,Invasive,10,Himalayan Blackberry
+54,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q3,8,Himalayan blackberry,Invasive,10,Himalayan blackberry
+8,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q2,1,moss,Native,1,moss
+51,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q2,1,oceanspray,Native,40,Oceanspray
+4,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,pickly wall lettuce ,Invasive,2,pickly wall lettuce 
+29,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,daphne,Invasive,1,daphne
+21,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,English ivy,Invasive,20,english ivy
+30,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,English ivy,Invasive,10,english ivy 
+35,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,2,English ivy,Invasive,10,english ivy
+41,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,4,English ivy,Invasive,5,English ivy
+46,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,English ivy,Invasive,10,English ivy
+24,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,grass ,MixedGrass,20,unknown grasses 
+32,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,grass ,MixedGrass,39,Unidentified grasses 
+36,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,2,grass ,MixedGrass,85,Grass sp.
+43,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,4,grass ,MixedGrass,53,Grass and bare soil
+48,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,grass ,MixedGrass,23,Grass
+17,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,4,leaf mulch ,MixedGrass,37,Bare soil/ leaf mulch 
+25,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,leaf mulch ,MixedGrass,6,leaf mulch 
+31,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,leaf mulch ,MixedGrass,4,leaf mulch 
+28,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,licorice fern,Native,6,Fern 
+37,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,2,licorice fern,Native,1,Licorice fern
+40,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,4,licorice fern,Native,2,Licorice fern
+47,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,licorice fern,Native,2,Licorice fern
+23,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,moss,Native,20,moss
+15,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,4,orchard grass,MixedGrass,30,orchard grass
+22,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,orchard grass ,MixedGrass,20,orchard grass 
+33,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,2,Oregon grape,Native,7,Oregon grape
+38,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,4,Oregon grape,Native,25,Oregon grape
+44,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,Oregon grape,Native,60,Oregon grape
+12,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,4,Oregon grape ,Native,15,oregon grape 
+18,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,Oregon grape ,Native,10,oregon grape 
+26,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,Oregon grape ,Native,30,oregon grape 
+13,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,4,snowberry ,Native,3,snowberry 
+19,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,snowberry ,Native,3,Snowberry 
+27,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,snowberry ,Native,10,snowberry 
+34,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,2,snowberry ,Native,7,Snowberry
+42,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,4,snowberry ,Native,5,Snowberry
+45,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,snowberry ,Native,5,Snowberry
+39,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,4,trailing blackberry,Native,10,trailing blackberry
+14,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,4,trailing blackberry ,Native,10,trailing blackberry 
+20,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,trailing blackberry ,Native,1,trailing blackberry 
+16,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,4,unknown,Unkown,5,unknown

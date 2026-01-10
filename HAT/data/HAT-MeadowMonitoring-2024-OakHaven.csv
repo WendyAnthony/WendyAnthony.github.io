@@ -1,0 +1,69 @@
+﻿SortID,MonitorID,QUniqueID,Date,Year,Location,Treated,YearTreated,ExSpTabTitle,Baseline,Quadrat,QuadratLocation_m,Species,Native_or_Invasive,PercentCover,OriginalSpecies
+11,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q2,3.3,bur chervil ,Invasive,1,Bur chervil 
+5,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,camas,Native,2,Camas 
+23,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,common plantain,Invasive,1,Frog plantain
+31,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,dull Oregon grape,Native,25,Dull Oregon grape
+24,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,grass,MixedGrass,40,Grass
+29,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q2,3.3,grass,MixedGrass,10,Grasses
+35,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,grass,MixedGrass,25,Grasses
+6,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,licorice fern,Native,1,Fern 
+20,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,licorice fern,Native,3,Licorice fern
+27,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q2,3.3,licorice fern,Native,4,Liquorice fern
+4,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,mixed grass,MixedGrass,20,Mixed grass
+10,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q2,3.3,mixed grass,MixedGrass,19,Mixed grass 
+16,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,mixed grass,MixedGrass,20,Mixed grasses
+3,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,moss,Native,8,Moss 
+9,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q2,3.3,moss,Native,35,Moss
+18,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,moss,Native,20,Moss 
+22,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,moss,Native,15,Moss sp.
+28,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q2,3.3,moss,Native,60,Moss
+37,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,moss,Native,10,Moss 
+12,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,Oregon grape ,Native,15,Oregon grape 
+14,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,Scotch broom ,Invasive,3,Scotch broom 
+33,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,Scotch broom ,Invasive,4,Scotch broom 
+2,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,shiny geranium,Invasive,55,Shiny geranium 
+8,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q2,3.3,shiny geranium,Invasive,40,Shiny geranium 
+15,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,shiny geranium,Invasive,25,Shiny geranium 
+21,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,shiny geranium,Invasive,30,Shiny geranium
+30,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q2,3.3,shiny geranium,Invasive,23,Shiny geranium 
+34,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,shiny geranium,Invasive,15,Shiny geranium
+1,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,snowberry,Native,14,Snowberry 
+7,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q2,3.3,snowberry,Native,5,Snowberry
+13,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,snowberry,Native,15,Snowberry
+19,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,snowberry,Native,10,Snowberry
+26,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q2,3.3,snowberry,Native,3,Snowberry
+32,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,snowberry,Native,20,Snowberry
+17,T-CL,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,vetch,Invasive,2,Vetch ? 
+25,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q1,4.3,vetch,Invasive,1,Vetch
+36,T-HD,,2024-11-06,2024,Oak Haven,Treated,2024,,,Q3,8.3,vetch,Invasive,1,Vetch
+39,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,camas,Native,2,Camas 
+52,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q3,2.6,camas,Native,3,Camas 
+68,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q3,2.6,camas,Native,3,Camas (death or common)  
+58,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,chickweed ,Native,5,Chickweed 
+61,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,chickweed ,Native,5,Chickweed 
+48,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,field chickweed,Native,15,Field chickweed
+43,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,grass,MixedGrass,73,Mixed grass
+50,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,grass,MixedGrass,30,Mixed grass 
+54,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q3,2.6,grass,MixedGrass,19,Mixed grass 
+65,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,grass,MixedGrass,40,Mixed grasses 
+51,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q3,2.6,moss,Native,75,Moss 
+59,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,moss & grass,MixedGrass,67,Mixed grass and moss 
+67,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q3,2.6,moss & grass,MixedGrass,94,Moss/grass 
+60,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,Oregon grape,Native,40,Oregon grape
+38,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,Oregon grape ,Native,15,Oregon grape 
+45,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,Oregon grape ,Native,20,Oregon grape 
+55,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q3,2.6,Oregon grape ,Native,2,Oregon grape 
+66,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q3,2.6,Oregon grape ,Native,3,Oregon grape 
+47,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,Scotch broom,Invasive,5,Scotch broom
+40,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,Scotch broom ,Invasive,3,Scotch broom 
+56,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,Scotch broom ,Invasive,8,Scotch broom 
+64,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,Scotch broom ,Invasive,5,Scotch broom 
+42,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,shiny geranium,Invasive,5,Shiny geranium
+49,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,shiny geranium,Invasive,20,Shiny G
+53,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q3,2.6,shiny geranium,Invasive,1,Shiny geranium 
+63,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,shiny geranium,Invasive,5,Shiny geranium 
+44,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,snowberry,Native,1,Snowberry 
+46,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,snowberry,Native,10,Snowberry
+57,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,snowberry,Native,20,Snowberry 
+62,U-CL2,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q2,13.3,snowberry,Native,5,Snowberry 
+41,U-CL,,2024-11-07,2024,Oak Haven,Untreated,NA,,,Q1,9,vetch,Invasive,1,Vetch?

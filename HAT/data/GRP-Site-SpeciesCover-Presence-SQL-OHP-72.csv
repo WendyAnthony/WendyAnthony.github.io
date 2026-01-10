@@ -1,0 +1,93 @@
+siteid,projectid,Site,Subregion,treatmentid,v_year_measure,replicate,speciesid,speciesorigin,response,responselevel,responsemetric,measurementscale,measurementmetric,genus,species,lifeform,Treated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ger_dis,exotic,1,species,presence,varied,m2,Geranium,dissectum,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Lin_bic,native,1,species,presence,varied,m2,Linanthus,bicolor,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Myo_dis,exotic,1,species,presence,varied,m2,Myosotis,discolor,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Nem_par,native,1,species,presence,varied,m2,Nemophila,parviflora,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ple_mac,native,1,species,presence,varied,m2,Plectritis,macrocera,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,She_arv,exotic,1,species,presence,varied,m2,Sherardia,arvensis,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Sis_off,exotic,1,species,presence,varied,m2,Sisymbrium,officinale,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Tri_dub,exotic,1,species,presence,varied,m2,Trifolium,dubium,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Tri_wil,native,1,species,presence,varied,m2,Trifolium,willdenovii,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ver_arv,exotic,1,species,presence,varied,m2,Veronica,arvensis,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Vic_hir,exotic,1,species,presence,varied,m2,Vicia,hirsuta,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Vic_sat,exotic,1,species,presence,varied,m2,Vicia,sativa,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Air_car,exotic,1,species,presence,varied,m2,Aira,caryophyllea,annual grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Air_pra,exotic,1,species,presence,varied,m2,Aira,praecox,annual grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Bro_hor,exotic,1,species,presence,varied,m2,Bromus,hordeaceus,annual grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Bro_rig,exotic,1,species,presence,varied,m2,Bromus,rigidus,annual grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Bro_ste,exotic,1,species,presence,varied,m2,Bromus,sterilis,annual grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Cyn_ech,exotic,1,species,presence,varied,m2,Cynosurus,echinatus,annual grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Poa_ann,exotic,1,species,presence,varied,m2,Poa,annua,annual grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Vul_bro,exotic,1,species,presence,varied,m2,Vulpia,bromoides,annual grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Vul_myu,exotic,1,species,presence,varied,m2,Vulpia,myuros,annual grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Dau_car,exotic,1,species,presence,varied,m2,Daucus,carota,biennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ero_cic,exotic,1,species,presence,varied,m2,Erodium,cicutarium,biennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Lac_mur,exotic,1,species,presence,varied,m2,Lactuca,muralis,biennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Lam_pur,exotic,1,species,presence,varied,m2,Lamium,purpureum,biennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Pte_aqu,native,1,species,presence,varied,m2,Pteridium,aquilinum,fern,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Car_ino,native,1,species,presence,varied,m2,Carex,inops,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Dod_hen,native,1,species,presence,varied,m2,Dodecatheon,hendersonii,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Lat_nev,native,1,species,presence,varied,m2,Lathyrus,nevadensis,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Lit_par,native,1,species,presence,varied,m2,Lithophragma,parviflorum,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Mic_dou,native,1,species,presence,varied,m2,Micromeria,douglasii,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Moe_mac,native,1,species,presence,varied,m2,Moehringia,macrophylla,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ran_occ,native,1,species,presence,varied,m2,Ranunculus,occidentalis,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,San_cra,native,1,species,presence,varied,m2,Sanicula,crassicaulis,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Tri_bor,native,1,species,presence,varied,m2,Trientalis,borealis,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,G_Bro_spp,unknown,1,species,presence,varied,m2,Bromus,spp,grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ame_aln,native,1,species,presence,varied,m2,Amelanchier,alnifolia,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Cir_vul,exotic,1,species,presence,varied,m2,Cirsium,vulgare,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Epi_ang,native,1,species,presence,varied,m2,Epilobium,angustifolium,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Fra_vir,native,1,species,presence,varied,m2,Fragaria,virginiana,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,G_Clay_spp,native,1,species,presence,varied,m2,Claytonia,spp,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,G_Sen_spp,exotic,1,species,presence,varied,m2,Senecio,spp,forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,G_Son_spp,exotic,1,species,presence,varied,m2,Sonchus,spp,annual forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Rub_par,native,1,species,presence,varied,m2,Rubus,parviflorus,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ach_mil,native,1,species,presence,varied,m2,Achillea,millefolium,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,All_cer,native,1,species,presence,varied,m2,Allium,cernuum,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Alli_acu,native,1,species,presence,varied,m2,Allium,acuminatum,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ana_mar,native,1,species,presence,varied,m2,Anaphalis,margaritacea,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Aqu_for,native,1,species,presence,varied,m2,Aquilegia,formosa,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Bel_per,exotic,1,species,presence,varied,m2,Bellis,perennis,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Cer_arv,native,1,species,presence,varied,m2,Cerastium,arvense,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Cir_arv,exotic,1,species,presence,varied,m2,Cirsium,arvense,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Cre_cap,exotic,1,species,presence,varied,m2,Crepis,capillaris,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Eri_lan,native,1,species,presence,varied,m2,Eriophyllum,lanatum,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Gal_apa,native,1,species,presence,varied,m2,Galium,aparine,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ger_mol,exotic,1,species,presence,varied,m2,Geranium,molle,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ger_rob,exotic,1,species,presence,varied,m2,Geranium,robertianum,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Hyp_rad,exotic,1,species,presence,varied,m2,Hypochaeris,radicata,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Lap_com,exotic,1,species,presence,varied,m2,Lapsana,communis,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Leu_vul,exotic,1,species,presence,varied,m2,Leucanthemum,vulgare,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Luz_mul,native,1,species,presence,varied,m2,Luzula,multiflora,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Mim_gut,native,1,species,presence,varied,m2,Mimulus,guttatus,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Nar_pse,exotic,1,species,presence,varied,m2,Narcissus,pseudonarcissus,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Pla_lan,exotic,1,species,presence,varied,m2,Plantago,lanceolata,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Pot_rec,exotic,1,species,presence,varied,m2,Potentilla,recta,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Pru_vul,native,1,species,presence,varied,m2,Prunella,vulgaris,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Rum_ace,exotic,1,species,presence,varied,m2,Rumex,acetosella,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ste_med,exotic,1,species,presence,varied,m2,Stellaria,media,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Tri_hya,native,1,species,presence,varied,m2,Triteleia,hyacinthina,perennial forb,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ant_odo,exotic,1,species,presence,varied,m2,Anthoxanthum,odoratum,perennial grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Cyn_cri,exotic,1,species,presence,varied,m2,Cynosurus,cristatus,perennial grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Dac_glo,exotic,1,species,presence,varied,m2,Dactylis,glomerata,perennial grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Dan_cal,native,1,species,presence,varied,m2,Danthonia,californica,perennial grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ely_ely,native,1,species,presence,varied,m2,Elymus,elymoides,perennial grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Fra_ves,native,1,species,presence,varied,m2,Fragaria,vesca,perennial grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Hol_lan,exotic,1,species,presence,varied,m2,Holcus,lanatus,perennial grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Meli_sub,native,1,species,presence,varied,m2,Melica,subulata,perennial grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Poa_com,exotic,1,species,presence,varied,m2,Poa,compressa,perennial grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Poa_pra,exotic,1,species,presence,varied,m2,Poa,pratensis,perennial grass,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ber_aqu,native,1,species,presence,varied,m2,Berberis,aquifolium,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Cyt_sco,exotic,1,species,presence,varied,m2,Cytisus,scoparius,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Hed_hel,exotic,1,species,presence,varied,m2,Hedera,helix,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Hol_dis,native,1,species,presence,varied,m2,Holodiscus,discolor,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Lon_his,native,1,species,presence,varied,m2,Lonicera,hispidula,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Oem_cer,native,1,species,presence,varied,m2,Oemleria,cerasiformis,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Rub_pra,exotic,1,species,presence,varied,m2,Rubus,praecox,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Rub_urs,native,1,species,presence,varied,m2,Rubus,ursinus,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Sym_alb,native,1,species,presence,varied,m2,Symphoricarpos,albus,shrub,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Ace_mac,native,1,species,presence,varied,m2,Acer,macrophyllum,tree,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Arb_men,native,1,species,presence,varied,m2,Arbutus,menziesii,tree,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Pse_men,native,1,species,presence,varied,m2,Pseudotsuga,menziesii,tree,Untreated
+72,1,Oak Haven,C-SP,1_72,2006,1,Que_gar,native,1,species,presence,varied,m2,Quercus,garryana,tree,Untreated
