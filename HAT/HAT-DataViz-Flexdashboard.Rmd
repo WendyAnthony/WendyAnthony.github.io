@@ -765,6 +765,7 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-input-map}
 htmltools::br()
+htmltools::br()
 htmltools::em("Note: To reset filters, delete unwanted choices")
 htmltools::br()
 htmltools::br()
