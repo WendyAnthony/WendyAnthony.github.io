@@ -133,11 +133,11 @@ Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
 ```{r filter-input-crew}
-# htmltools::br()
+htmltools::br()
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version
+  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
 ")
 htmltools::br()
 htmltools::br()
@@ -251,10 +251,11 @@ Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
 ```{r filter-input-cover}
+htmltools::br()
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version
+  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
 ")
 htmltools::br()
 htmltools::br()
@@ -411,10 +412,11 @@ Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
 ```{r filter-input-biomass}
+htmltools::br()
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version
+  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
 ")
 htmltools::br()
 htmltools::br()
@@ -519,10 +521,11 @@ Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
 ```{r filter-input-count}
+htmltools::br()
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version
+  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
 ")
 htmltools::br()
 htmltools::br()
@@ -592,10 +595,11 @@ Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
 ```{r filter-input-tables}
+htmltools::br()
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version
+  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
 ")
 htmltools::br()
 htmltools::br()
