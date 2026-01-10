@@ -770,15 +770,14 @@ Row
 # (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
      title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
      
-     pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Central Saanich", "Esquimalt", "Colwood"))
+#     pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Central Saanich", "Esquimalt", "Colwood"))
+          pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
 
 leaflet(sd_sites) %>%
       addProviderTiles("Esri.WorldImagery") %>%
       addCircleMarkers(
         ~ Lng, ~ Lat,
-        #
-        color = ~pal(Municipality),
-        # color = "yellow",
+        color = ~pal(Site),
         weight = 1, # size of circle border
         stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
         radius = 5,
@@ -795,7 +794,7 @@ leaflet(sd_sites) %>%
           "<b>Ecosystems:</b> ", HAT_sites_HAT$Ecosystems, "<br>",
           "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br>"
           ))  %>%
-      addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Municipality, title = "Municipality") %>%
+      addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
 
       setView(-123.44799, 48.52919, 9) %>%
       # add controls
