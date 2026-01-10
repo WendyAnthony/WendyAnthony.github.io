@@ -11,13 +11,6 @@ output:
     source_code: embed
 ---
 
-<script>
-   $(document).ready(function() {
-     $head = $('#header');
-     $head.prepend('<img src=\"HAT-FernNewsletter-ss.png\" style=\"float: right;width: 150px;\"/>')
-   });
-</script>
-
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(
@@ -57,7 +50,7 @@ species_count <- read.csv("data/species_counts.csv", fileEncoding="UTF-8")
 ```
 
 
-```{r rename-site-location-worksite-columns-for-sd-key, include = FALSE}
+```{r rename-site-location-worksite-columns-for-sd-group, include = FALSE}
 # Sites Data
 HAT_sites_HAT
 colnames(HAT_sites_HAT)
@@ -132,17 +125,6 @@ sd_count <- SharedData$new(data = species_count, group = "count_group")
 sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create sharable database using Crosstalk package
 ```
 
-<style type="text/css">
-
-.value-box .value {
-  color: black; /* Change the main value font color */
-}
-.value-box .caption {
-  color: black; /* Change the caption font color */
-}
-/* You can target other elements by their CSS class (e.g., .chart-title) */
-</style>
-
 
  Crew Hours
 =====================================  
@@ -150,7 +132,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
-```{r}
+```{r filter-input-crew}
 # htmltools::br()
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
@@ -181,7 +163,7 @@ Row
 ### Staff Hours Removing Invasive Species
 
 
-```{r staff-hrs-site, echo = FALSE, message = FALSE, warning = FALSE, height = 7}
+```{r crew-hrs-site, echo = FALSE, message = FALSE, warning = FALSE, height = 7}
 
 custom_colours_4b <- c("2022" = "#ffff33", 
                     "2023" = "#4daf4a", 
@@ -225,7 +207,7 @@ ggplotly(
 ### Invasive Species Biomass Removal 
 
 
-```{r crew-data-2022-2025-plots-biomass-facet, echo = FALSE, message = FALSE, warning = FALSE, height = "100%"}
+```{r crew-data-biomass, echo = FALSE, message = FALSE, warning = FALSE, height = "100%"}
 
 ggplotly(
   ggplot(sd_crew, 
@@ -268,7 +250,7 @@ ggplotly(
 Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
-```{r}
+```{r filter-input-cover}
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
@@ -301,7 +283,7 @@ Row
 ---------------------------------------------
 
 ### Mean % Cover - Native Species
-```{r species-richness-nat, echo = FALSE, message = FALSE, warning = FALSE}
+```{r mean-cover-nat, echo = FALSE, message = FALSE, warning = FALSE}
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
                     "MixedGrass" = "#8da0cb")
@@ -311,6 +293,7 @@ ggplotly(
                                                           "\nSite:", Site,
                                                           "\nSpecies:", Species,      
                                                           "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
@@ -340,7 +323,7 @@ Row
 ---------------------------------------------
 
 ### Mean % Cover - Invasive Species
-```{r species-richness-inv, echo = FALSE, message = FALSE, warning = FALSE}
+```{r mean-cover-inv, echo = FALSE, message = FALSE, warning = FALSE}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
@@ -351,6 +334,7 @@ ggplotly(
                                                           "\nSite:", Site,
                                                           "\nSpecies:", Species,      
                                                           "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
@@ -375,13 +359,54 @@ coord_flip() +
     ))
 ```
 
+
+Row
+---------------------------------------------
+
+### Mean % Cover - Mixed Grasses
+```{r mean-cover-grs, echo = FALSE, message = FALSE, warning = FALSE}
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+ggplotly(
+  ggplot(sd_cover_grs, aes(x = reorder(Species, desc(Species)), y = mean_value, fill = as.factor(Site), text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean Value:", mean_value,
+                                                          "\nSD Value:", sd_value))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+      labs(
+    x = "Mean percent cover",   # Set the x-axis name
+    y = "Species",   # Set the y-axis name
+    fill = "Site", 
+    title = "Mixed Grasses Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
+  ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+    tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
 Invasive Biomass
 =====================================  
 
 Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
-```{r}
+```{r filter-input-biomass}
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
@@ -408,7 +433,7 @@ htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xls
 Row
 -----------------------------------------------
 
-#### Total Biomass Removed to Hours Ratio
+### Total Biomass Removed to Labor Hours Ratio (Efficiency)
 ```{r crew-biomass-removed-per-hrs-ratio}
 
 ggplotly(
@@ -431,7 +456,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
           # subtitle='HAT Properties',
           # caption = "Chart by Wendy Anthony \n 2025-11-29", 
           fill = "Year",
-          x = "", y = "Ratio of Biomass Removed per Labour Hour") +
+          x = "", y = "Ratio of Biomass m3 Removed per Labour Hour") +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
     tooltip = "text",
   config = (displayModeBar = False) 
@@ -444,10 +469,8 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
     ))
 ```
 
-Row
----------------------------------------------
 
-#### Total Hours to Biomass Removed Ratio
+### Total Labor Hours to Biomass Removed Ratio (Cost)
 ```{r crew-hrs-per-biomass-removed-ratio}
 
 ggplotly(
@@ -471,7 +494,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
         #   subtitle='HAT Properties',
           # caption = "Chart by Wendy Anthony \n 2025-11-29", 
           fill = "Year",
-          x = "", y = "Ratio of Labour Hours per Biomass Removed") +
+          x = "", y = "Ratio of Labour Hours per Biomass m3 Removed") +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
     tooltip = "text",
   config = (displayModeBar = False) 
@@ -491,7 +514,7 @@ Species Richness
 Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
-```{r}
+```{r filter-input-count}
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
@@ -522,7 +545,7 @@ htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
 Row
 ---------------------------------------------
 ### Species Counts for Oak Haven and Matson 2024-2025
-```{r species-richness-treat}
+```{r species-richness-count}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
@@ -564,7 +587,7 @@ Data Tables
 Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
-```{r}
+```{r filter-input-tables}
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
@@ -613,7 +636,7 @@ htmltools::br()
 Row
 ---------------------------------------------
 
-```{r}
+```{r hr-1}
 htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
 ```
@@ -622,7 +645,7 @@ htmltools::br()
 Row
 ---------------------------------------------
 
-```{r}
+```{r data-table-crew}
 htmltools::br()
 htmltools::br()
 htmltools::h5("Crew Datatable")
@@ -639,7 +662,7 @@ Row
 ---------------------------------------------
 
 
-```{r}
+```{r hr-2}
 htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
 ```
@@ -649,7 +672,7 @@ Row
 ---------------------------------------------
 
 
-```{r}
+```{r data-table-biomass}
 htmltools::br()
 htmltools::br()
 htmltools::h5("Invasive Biomass Datatable")
@@ -666,7 +689,7 @@ Row
 ---------------------------------------------
 
 
-```{r}
+```{r hr-3}
 htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
 ```
@@ -676,7 +699,7 @@ Row
 ---------------------------------------------
 
 
-```{r}
+```{r data-table-cover}
 htmltools::br()
 htmltools::br()
 htmltools::h5("Cover Datatable")
@@ -693,7 +716,7 @@ Row
 ---------------------------------------------
 
 
-```{r}
+```{r hr-4}
 htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
 ```
@@ -703,7 +726,7 @@ Row
 ---------------------------------------------
 
 
-```{r}
+```{r data-table-count}
 htmltools::br()
 htmltools::br()
 htmltools::h5("Count Datatable")
@@ -720,7 +743,7 @@ Row
 ---------------------------------------------
 
 
-```{r}
+```{r hr-5}
 htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 htmltools::br()
 ```
@@ -732,7 +755,7 @@ htmltools::br()
 Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
-```{r}
+```{r filter-input-map}
 htmltools::br()
 htmltools::em("Note: To reset filters, delete unwanted choices")
 htmltools::br()
@@ -783,6 +806,7 @@ leaflet(sd_sites) %>%
         radius = 5,
         popup = paste0(
         "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
+        # NOTE: popups need to refer to original data object, not shared sd
           "<b>Site:</b> ", "<b>", HAT_sites_HAT$Site, "</b>",  "<br>",
           "<b>FullName:</b> ", "<b>", HAT_sites_HAT$FullName, "</b>",  "<br>",
           "<b>Municipality:</b> ", HAT_sites_HAT$Municipality, "<br>",
@@ -806,7 +830,7 @@ leaflet(sd_sites) %>%
 =====================================  
 
 ### <img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'> RNS Project for Visualizing HAT Monitoring Data 
-```{r}
+```{r about}
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::h3("RNS Project for ER390")
 htmltools::strong("Created and Coded for HAT by Wendy Anthony 2026-01-10")
@@ -829,7 +853,8 @@ HTML("
   <h6>Data Visualizations</h6>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version
+  - data visualization can be focused by dragging a certain area; double-click graph to return to original version<br>
+  - if all else fails, refresh webpage in browser
   <br><br>
   ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
