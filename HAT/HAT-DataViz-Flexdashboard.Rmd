@@ -150,16 +150,12 @@ HTML("
     
   <h5>How to use this interactive data visualization tool</h5>
   * Tabs in the top header host different data visualization charts
-  <h6>Data Filters</h6>
   * each tab uses different data and different filters<br>
   * filters must be cleared, using delete or backspace key in order to start new filter
-  <h6>Data Visualizations</h6>
+  * Data Visualizations are responsive to data filters<br>
   * all years and sites are shown until data is filtered<br>
-  * are responsive to data filters<br>
-  * filters must be manually cleared with delete/backspace to use a different filter<br>
   * hover over data visualizations to view tooltips<br>
-  * data visualization can be focused by with a click-drag over a certain area; double-click within chart to return to original version<br>
-  * if all else fails, refresh webpage in browser
+  * data visualization can be focused by with a click-drag over a certain area; double-click within chart to return to original version - if all else fails, refresh webpage in browser
   <br><br>
   ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -176,17 +172,12 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-input-crew}
 htmltools::br()
-htmltools::HTML("<h5>Data Visualizations</h5>
-  - are responsive to data filters<br>
-  - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
-")
-htmltools::br()
 htmltools::br()
 htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
 htmltools::br()
-htmltools::br()
-
+h4("Filtered Statistics")
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 Biomass Removed"))
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
@@ -298,17 +289,12 @@ Inputs {.sidebar data-width=250}
 ```{r filter-input-biomass}
 htmltools::br()
 htmltools::br()
-htmltools::HTML("<h5>Data Visualizations</h5>
-  - are responsive to data filters<br>
-  - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
-")
-htmltools::br()
-htmltools::br()
 htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
 htmltools::br()
 htmltools::br()
-
+h4("Filtered Statistics")
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Bio_Hr_Ratio", statistic = "mean"), span(class = "caption", "= hours of labor/m3 biomass"))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Hr_Bio_Ratio", statistic = "mean"), span(class = "caption", "= m3 biomass/hours of labor"))
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
@@ -412,18 +398,10 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-input-inv-biomass}
 htmltools::br()
-htmltools::br()
-htmltools::HTML("<h5>Data Visualizations</h5>
-  - are responsive to data filters<br>
-  - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
-")
-htmltools::br()
 htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
 htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
-
 p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
 p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 of biomass"))
 p(class = "container", class = "value",  summarywidget(sd_bio_inv, column = "Area_Cleared_m2", statistic = "sum"), span(class = "caption", "= m2 of area"))
@@ -575,21 +553,11 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-input-cover}
 htmltools::br()
-htmltools::br()
-htmltools::HTML("<h5>Data Visualizations</h5>
-  - are responsive to data filters<br>
-  - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
-")
-htmltools::br()
-htmltools::br()
 htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
 htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_cover, column = "mean_value", statistic = "sum"), span(class = "caption", "% mean cover"))
-
-htmltools::br()
 htmltools::br()
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, multiple = T)
