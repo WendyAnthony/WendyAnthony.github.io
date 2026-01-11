@@ -154,8 +154,9 @@ HTML("
   * filters must be cleared, using delete or backspace key in order to start new filter
   <h6>Data Visualizations</h6>
   * are responsive to data filters<br>
+  * filters must be manually cleared with delete/backspace to use a different filter
   * hover over data visualizations to view tooltips<br>
-  * data visualization can be focused by dragging a certain area; double-click graph to return to original version<br>
+  * data visualization can be focused by with a click-drag over a certain area; double-click within chart to return to original version<br>
   * if all else fails, refresh webpage in browser
   <br><br>
   ")
