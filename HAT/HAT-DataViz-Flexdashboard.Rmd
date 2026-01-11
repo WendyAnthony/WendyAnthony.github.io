@@ -25,6 +25,8 @@ library(crosstalk)
 library(plotly)
 library(leaflet)
 library(htmltools)
+# devtools::install_github("kent37/summarywidget")
+library(summarywidget)
 ```
 
 
@@ -191,6 +193,8 @@ filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group 
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
+
+
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
 htmltools::br()
@@ -415,11 +419,15 @@ htmltools::HTML("<h5>Data Visualizations</h5>
   - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
 ")
 htmltools::br()
-htmltools::br()
 htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
 htmltools::br()
 htmltools::br()
-
+h4("Filtered Statistics")
+p("HAT work crew spent", summarywidget(sd_bio_inv, column = "Crew_Hours", statistic = "sum"), span("total hours of labor Pulling invasive species"))
+p("A total of", summarywidget(sd_bio_inv, column = "Biomass_Removed_m3", statistic = "sum"), span("m3 of biomass was removed"), "with a mean value of", summarywidget(sd_bio_inv, column = "Biomass_Removed_m3", statistic = "mean"), span("m3 biomass"))
+p("A total area of", summarywidget(sd_bio_inv, column = "Area_Cleared_m2", statistic = "sum"), span("m2 was cleared of invasive species"), "with a mean value of", summarywidget(sd_bio_inv, column = "Area_Cleared_m2", statistic = "mean"), span("m2"))
+htmltools::br()
+htmltools::br()
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_bio_inv, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_bio_inv, group = ~ Year, allLevels = TRUE)
@@ -496,7 +504,10 @@ htmltools::br()
 htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
 htmltools::br()
 htmltools::br()
-
+h4("Filtered Statistics")
+p("HAT work crew counted", summarywidget(sd_count, column = "Species_number", statistic = "sum"), span("different species"))
+htmltools::br()
+htmltools::br()
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_count, group = ~ Year, allLevels = TRUE)
@@ -573,7 +584,10 @@ htmltools::br()
 htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
 htmltools::br()
 htmltools::br()
-
+h4("Filtered Statistics")
+p("HAT work crew sampled cover data with a mean value of", summarywidget(sd_cover, column = "mean_value", statistic = "mean"), span("% cover"))
+htmltools::br()
+htmltools::br()
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
