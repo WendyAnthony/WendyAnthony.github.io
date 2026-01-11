@@ -423,9 +423,10 @@ htmltools::em("Note: These filters need to be manually reset to delete unwanted 
 htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
-p("HAT work crew spent", summarywidget(sd_bio_inv, column = "Crew_Hours", statistic = "sum"), span("total hours of labor Pulling invasive species"))
-p("A total of", summarywidget(sd_bio_inv, column = "Biomass_Removed_m3", statistic = "sum"), span("m3 of biomass was removed"), "with a mean value of", summarywidget(sd_bio_inv, column = "Biomass_Removed_m3", statistic = "mean"), span("m3 biomass"))
-p("A total area of", summarywidget(sd_bio_inv, column = "Area_Cleared_m2", statistic = "sum"), span("m2 was cleared of invasive species"), "with a mean value of", summarywidget(sd_bio_inv, column = "Area_Cleared_m2", statistic = "mean"), span("m2"))
+
+p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 of biomass"))
+p(class = "container", class = "value",  summarywidget(sd_bio_inv, column = "Area_Cleared_m2", statistic = "sum"), span(class = "caption", "= m2 of area"))
 htmltools::br()
 htmltools::br()
 # Create a filter input
@@ -505,7 +506,8 @@ htmltools::em("Note: These filters need to be manually reset to delete unwanted 
 htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
-p("HAT work crew counted", summarywidget(sd_count, column = "Species_number", statistic = "sum"), span("different species"))
+p(class = "container", class = "value", summarywidget(sd_count, column = "Species_number", statistic = "sum"), span(class = "caption", "= different species"))
+
 htmltools::br()
 htmltools::br()
 # Create a filter input
@@ -585,7 +587,8 @@ htmltools::em("Note: These filters need to be manually reset to delete unwanted 
 htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
-p("HAT work crew sampled cover data with a mean value of", summarywidget(sd_cover, column = "mean_value", statistic = "mean"), span("% cover"))
+p(class = "container", class = "value", summarywidget(sd_cover, column = "mean_value", statistic = "sum"), span(class = "caption", "% mean cover"))
+
 htmltools::br()
 htmltools::br()
 # Create a filter input
