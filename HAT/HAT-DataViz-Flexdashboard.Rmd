@@ -200,7 +200,7 @@ htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xls
 Row
 -------------------------------------
 
-### Staff Hours Removing Invasive Species
+### Staff Hours 
 
 
 ```{r crew-hrs-site, echo = FALSE, message = FALSE, warning = FALSE, height = 7}
@@ -228,6 +228,7 @@ ggplotly(
   scale_fill_manual(values = custom_colours_4b) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
         labs(
+          title = "Staff Hours Removing Invasive Species",
           fill = "Year",
           x = "", y = "Staff Hours") +
     theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
@@ -244,7 +245,7 @@ ggplotly(
 ```
 
 
-### Invasive Species Biomass Removal 
+### Biomass Removal 
 
 
 ```{r crew-data-biomass, echo = FALSE, message = FALSE, warning = FALSE, height = "100%"}
@@ -266,9 +267,7 @@ ggplotly(
   scale_fill_manual(values = custom_colours_4b) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
         labs(
-#           title='HAT Staff Site Hours for Invasive Species Removal',
-#           caption = "Chart by Wendy Anthony \n 2025-11-17", fill = "",          
-# #         caption = "Chart by Wendy Anthony \n 2025-11-17", 
+           title='Invasive Species Biomass (m3) Removal',
           fill = "Year",
           x = "", y = "Biomass Removed (m3)") +
     theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
@@ -324,7 +323,7 @@ htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
 Row
 ---------------------------------------------
 
-### Mean % Cover - Native Species at Oak Haven & Matson 2024-2025
+### Mean % Cover - Native Species
 ```{r mean-cover-nat, echo = FALSE, message = FALSE, warning = FALSE}
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
@@ -343,10 +342,10 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-    x = "",   # Set the x-axis name
-    y = "Mean % cover",   # Set the y-axis name
+    x = "",   
+    y = "Mean % cover",   
     fill = "Site", 
-#    title = "Native Species Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
+    title = "Mean % Cover - Native Species at Oak Haven & Matson 2024-2025"  
   ) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
     tooltip = "text",
@@ -366,7 +365,7 @@ ggplotly(
 Row
 ---------------------------------------------
 
-### Mean % Cover - Invasive Species at Oak Haven & Matson 2024-2025
+### Mean % Cover - Invasive Species
 ```{r mean-cover-inv, echo = FALSE, message = FALSE, warning = FALSE}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -386,10 +385,10 @@ coord_flip() +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-    x = "",   # Set the x-axis name
-    y = "Mean % cover",   # Set the y-axis name
-    fill = "Site", 
-#    title = "Invasive Species Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
+    title = "Invasive Species Mean % Cover at Oak Haven & Matson 2024-2025",        
+    x = "",  
+    y = "Mean % cover", 
+    fill = "Site" 
   ) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
     tooltip = "text",
@@ -408,7 +407,7 @@ coord_flip() +
 Row
 ---------------------------------------------
 
-### Mean % Cover - Mixed Grasses at Oak Haven & Matson 2024-2025
+### Mean % Cover - Mixed Grasses
 ```{r mean-cover-grs, echo = FALSE, message = FALSE, warning = FALSE}
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
@@ -427,10 +426,10 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-    x = "",   # Set the x-axis name
-    y = "Mean % cover",   # Set the y-axis name
-    fill = "Site", 
-    #title = "Mixed Grasses Mean % Cover at Oak Haven & Matson 2024-2025"  # Optionally, add a title
+    title = "Mean % Cover - Mixed Grasses at Oak Haven & Matson 2024-2025",     
+    x = "",   
+    y = "Mean % cover",
+    fill = "Site"
   ) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
     tooltip = "text",
@@ -481,7 +480,7 @@ htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xls
 Row
 -----------------------------------------------
 
-### Total Biomass Removed to Labor Hours Ratio (Efficiency)
+### Biomass to Labor Hours (Efficiency Ratio)
 ```{r crew-biomass-removed-per-hrs-ratio}
 
 ggplotly(
@@ -493,16 +492,13 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
                                                           "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
                                                           "\nArea Cleared m2:", Area_Cleared_m2,
                                                           "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
-#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
   coord_flip() +    
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
         labs(
-          # title='Ratio of Total Biomass Removed to Work Crew Hours',
-          # subtitle='HAT Properties',
-          # caption = "Chart by Wendy Anthony \n 2025-11-29", 
+          title='Ratio of Total Biomass Removed to Work Crew Hours (efficiency)',
           fill = "Year",
           x = "", y = "Ratio of Biomass m3 Removed per Labour Hour") +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
@@ -518,7 +514,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
 ```
 
 
-### Total Labor Hours to Biomass Removed Ratio (Cost)
+### Labor Hours to Biomass (Cost Ratio)
 ```{r crew-hrs-per-biomass-removed-ratio}
 
 ggplotly(
@@ -538,11 +534,11 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
     #scale_fill_manual(values = custom_colours_3) +
          labs(
-           #title='Ratio of Total Work Crew Hours to Biomass Removed',
+           title='Ratio of Total Work Crew Hours to Biomass Removed (cost)',
         #   subtitle='HAT Properties',
           # caption = "Chart by Wendy Anthony \n 2025-11-29", 
           fill = "Year",
-          x = "", y = "Ratio of Labour Hours per Biomass m3 Removed") +
+          x = "", y = "Ratio of Labour Hours per Biomass m3 Removed (cost)") +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
     tooltip = "text",
   config = (displayModeBar = False) 
@@ -594,7 +590,7 @@ htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
 
 Row
 ---------------------------------------------
-### Species Counts for Oak Haven and Matson 2024-2025
+### Species Counts 
 ```{r species-richness-count}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -613,9 +609,7 @@ ggplotly(
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
     scale_fill_manual(values = custom_colours_3) +
         labs(
-          # title='Oak Haven and MatsonSpecies Richness by Treatment',
-          # subtitle='HAT Oak Haven and Matson',
-          # caption = "Chart by Wendy Anthony \n 2025-12-31", 
+          title='Species Richness at Oak Haven and Matson',
           fill = "",
           x = "Treatment", y = "Species Count") +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
