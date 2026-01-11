@@ -153,8 +153,9 @@ HTML("
   * each tab uses different data and different filters<br>
   * filters must be cleared, using delete or backspace key in order to start new filter
   <h6>Data Visualizations</h6>
+  * all years and sites are shown until data is filtered<br>
   * are responsive to data filters<br>
-  * filters must be manually cleared with delete/backspace to use a different filter
+  * filters must be manually cleared with delete/backspace to use a different filter<br>
   * hover over data visualizations to view tooltips<br>
   * data visualization can be focused by with a click-drag over a certain area; double-click within chart to return to original version<br>
   * if all else fails, refresh webpage in browser
