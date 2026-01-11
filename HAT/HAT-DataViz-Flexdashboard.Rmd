@@ -136,10 +136,9 @@ HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
 HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-10</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-
+# <h5>RNS Data Visualization Project</h5>
 HTML("
-  <h5>RNS Data Visualization Project</h5>
-      This interactive data visualization tool was created as a final project for University of Victoria Restoration of Natural Ecosystems ER390, with HAT as a community partner, supervised by Nancy Shackelford
+  <br>This interactive data visualization tool was created as a final project for University of Victoria Restoration of Natural Ecosystems ER390, with HAT as a community partner, supervised by Nancy Shackelford
      
   <h5>Data</h5>
      Three different data files, of 9 HAT-only-Managed-Sites were shared by HAT: <br>
