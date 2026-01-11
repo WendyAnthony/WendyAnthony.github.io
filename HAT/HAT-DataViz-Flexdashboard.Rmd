@@ -126,6 +126,47 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 ```
 
 
+ About
+=====================================  
+
+### <img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'> 
+```{r about}
+#htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::h3("RNS ER390 Project for Visualizing HAT Monitoring Data")
+htmltools::strong("Created and Coded for HAT by Wendy Anthony 2026-01-10")
+hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+
+HTML("
+  <h5>RNS Data Visualization Project</h5>
+      This interactive data visualization tool was created as a final project for University of Victoria Restoration of Natural Ecosystems ER390, with HAT as a community partner, supervised by Nancy Shackelford
+     
+  <h5>Data</h5>
+     Three different data files, of 9 HAT-only-Managed-Sites were shared by HAT: <br>
+     1. Cover Data 2024-2025 (species richness, percent native/invasive)<br>
+     2. HAT Restoration Crew Data (invasive species removal)<br>
+     3. Matson Conservation Area -  Matson Mattocks Field Logs (volunteer invasive species removal)
+    
+  <h5>How to use this interactive data visualization tool</h5>
+  <h6>Tabs</h6>
+  * Each tab in the top header hosts different data visualization charts
+  <h6>Data Filters</h6>
+  * each tab uses different data and different filters<br>
+  * filters must be cleared, using delete or backspace key in order to start new filter
+  <h6>Data Visualizations</h6>
+  * are responsive to data filters<br>
+  * hover over data visualizations to view tooltips<br>
+  * data visualization can be focused by dragging a certain area; double-click graph to return to original version<br>
+  * if all else fails, refresh webpage in browser
+  <h6>Source Code</h6>
+  * by default (I actually don't know how to remove it!), a link to the </>SourceCode for this interactive webpage is available in the top header 
+  <br><br>
+  ")
+hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+htmltools::br()
+HTML("<span style='font-size=65%;'><strong>Contact:</strong> <a href='wanthony@uvic.ca'>Wendy Anthony - wanthony@uvic.ca</a></span>")
+```
+
+
  Crew Hours
 =====================================  
 
@@ -251,6 +292,7 @@ Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
 ```{r filter-input-cover}
+htmltools::br()
 htmltools::br()
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
@@ -413,6 +455,7 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-input-biomass}
 htmltools::br()
+htmltools::br()
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
@@ -522,6 +565,7 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-input-count}
 htmltools::br()
+htmltools::br()
 htmltools::HTML("<h5>Data Visualizations</h5>
   - are responsive to data filters<br>
   - hover over data visualizations to view tooltips<br>
@@ -596,10 +640,12 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-input-tables}
 htmltools::br()
-htmltools::HTML("<h5>Data Visualizations</h5>
-  - are responsive to data filters<br>
-  - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
+htmltools::br()
+htmltools::HTML("<h5>Table Funtionality</h5>
+  - each table is responsive to separate data filters<br>
+  - columns can be sorted using up/down arrows to right of column name<br>
+  - each table can also be searched using the search bars
+
 ")
 htmltools::br()
 htmltools::br()
@@ -829,44 +875,9 @@ leaflet(sd_sites) %>%
           ))  %>%
       addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
 
-      setView(-123.44799, 48.52919, 9) %>%
+      setView(-123.44799, 48.52919, 10) %>%
       # add controls
       #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
       addControl(title, position = "topright")
-```
-
- About
-=====================================  
-
-### <img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'> RNS Project for Visualizing HAT Monitoring Data 
-```{r about}
-#htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-htmltools::h3("RNS Project for ER390")
-htmltools::strong("Created and Coded for HAT by Wendy Anthony 2026-01-10")
-hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-
-HTML("
-  <h5>RNS Data Visualization Project</h5>
-      This interactive data visualization tool was created as a final project for University of Victoria Restoration of Natural Ecosystems ER390, with HAT as a community partner, supervised by Nancy Shackelford
-     
-  <h5>Data</h5>
-     Three different data files, of 9 HAT-only-Managed-Sites were shared by HAT: <br>
-     1. Cover Data 2024-2025 (species richness, percent native/invasive)<br>
-     2. HAT Restoration Crew Data (invasive species removal)<br>
-     3. Matson Conservation Area -  Matson Mattocks Field Logs (volunteer invasive species removal)
-    
-  <h5>How to use this interactive data visualization tool</h5>
-  <h6>Data Filters</h6>
-  - each tab uses different data and different filters<br>
-  - filters must be cleared, using delete or backspace key in order to start new filter
-  <h6>Data Visualizations</h6>
-  - are responsive to data filters<br>
-  - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version<br>
-  - if all else fails, refresh webpage in browser
-  <br><br>
-  ")
-hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-htmltools::br()
 ```
 
