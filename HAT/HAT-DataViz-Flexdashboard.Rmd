@@ -8,7 +8,7 @@ output:
     theme: 
       version: 4
       bootswatch: flatly
-    #source_code: embed
+    source_code: embed
 ---
 
 
