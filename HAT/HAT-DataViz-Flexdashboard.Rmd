@@ -285,7 +285,7 @@ ggplotly(
 ```
 
 
-Invasive Biomass
+Labor to Biomass
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -398,6 +398,83 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
     y = -0.1
     ))
 ```
+
+
+Invasive Biomass
+=====================================  
+
+Inputs {.sidebar data-width=250}
+-----------------------------------------------
+
+```{r filter-input-inv-biomass}
+htmltools::br()
+htmltools::br()
+htmltools::HTML("<h5>Data Visualizations</h5>
+  - are responsive to data filters<br>
+  - hover over data visualizations to view tooltips<br>
+  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
+")
+htmltools::br()
+htmltools::br()
+htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
+htmltools::br()
+htmltools::br()
+
+# Create a filter input
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_bio_inv, group = ~ Site, multiple = T)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_bio_inv, group = ~ Year, allLevels = TRUE)
+filter_select(id = "Invasive_Species_Cleared", label = "Choose Invasive Species", sharedData = sd_bio_inv, group = ~ Invasive_Species_Cleared, multiple = T)
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+```
+
+Row
+-----------------------------------------------
+
+### Biomass m3 per Invasive Species
+```{r inv-sp-biomass}
+
+ggplotly(
+  ggplot(sd_bio_inv, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
+                                                          "\nCrew Hours:", Crew_Hours,
+                                                          "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+                                                          "\nArea Cleared (m2):", Area_Cleared_m2))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+      labs(
+          title = "Biomass m3 of Invasive Species Cleared", 
+          x = "Invasive Species",   
+          y = "Biomass Removed (m3)",   
+          fill = "Site"
+          ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+    scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
+  
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    # x = 1 # too far to right
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.5
+    ))
+```
+
 
 
 Species Richness
