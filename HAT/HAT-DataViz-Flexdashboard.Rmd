@@ -136,7 +136,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-10</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-12</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -171,13 +171,13 @@ Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
 ```{r filter-input-crew}
-htmltools::br()
-htmltools::br()
-htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
-htmltools::br()
+
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 Biomass Removed"))
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+h4("Filters")
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
@@ -289,12 +289,13 @@ Inputs {.sidebar data-width=250}
 ```{r filter-input-biomass}
 htmltools::br()
 htmltools::br()
-htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
-htmltools::br()
-htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Bio_Hr_Ratio", statistic = "mean"), span(class = "caption", "= hours of labor/m3 biomass"))
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Hr_Bio_Ratio", statistic = "mean"), span(class = "caption", "= m3 biomass/hours of labor"))
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+h4("Filters")
+
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
@@ -398,15 +399,15 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-input-inv-biomass}
 htmltools::br()
-htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
-htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
 p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 of biomass"))
 p(class = "container", class = "value",  summarywidget(sd_bio_inv, column = "Area_Cleared_m2", statistic = "sum"), span(class = "caption", "= m2 of area"))
 htmltools::br()
-htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+h4("Filters")
+
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_bio_inv, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_bio_inv, group = ~ Year, allLevels = TRUE)
@@ -479,21 +480,12 @@ Inputs {.sidebar data-width=250}
 ```{r filter-input-count}
 htmltools::br()
 htmltools::br()
-htmltools::HTML("<h5>Data Visualizations</h5>
-  - are responsive to data filters<br>
-  - hover over data visualizations to view tooltips<br>
-  - data visualization can be focused by dragging a certain area; double-click graph to return to original version, or refresh browser if stuck
-")
-htmltools::br()
-htmltools::br()
-htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
-htmltools::br()
-htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_count, column = "Species_number", statistic = "sum"), span(class = "caption", "= different species"))
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+h4("Filters")
 
-htmltools::br()
-htmltools::br()
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_count, group = ~ Year, allLevels = TRUE)
@@ -551,7 +543,7 @@ ggplotly(
 
 
 
- Cover Data
+ Cover Data 
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -559,12 +551,13 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-input-cover}
 htmltools::br()
-htmltools::em("Note: These filters need to be manually reset to delete unwanted choices")
-htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_cover, column = "mean_value", statistic = "sum"), span(class = "caption", "% mean cover"))
 htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+h4("Filters")
+
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
@@ -733,7 +726,7 @@ ggplotly(
 
 
 
-Data Tables
+Data Tables 
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -743,20 +736,12 @@ Inputs {.sidebar data-width=250}
 htmltools::br()
 htmltools::br()
 htmltools::HTML("<h5>Table Funtionality</h5>
-  - each table is responsive to separate data filters<br>
-  - columns can be sorted using up/down arrows to right of column name<br>
-  - each table can also be searched using the search bars
-
-")
+  - Data filters for each table<br>
+  - Sort columns using up/down arrows by column name<br>
+  - Search table using the search bars<br>
+  - Reset filters to delete unwanted choices")
 htmltools::br()
 htmltools::br()
-htmltools::strong("To view individual table data, hover over a table row, and scroll down")
-htmltools::br()
- htmltools::br()
-htmltools::em("Note: Reset filters to delete unwanted choices")
-htmltools::br()
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 # Create a filter input
 htmltools::h4("Filters for Crew and Biomass Tables")
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
@@ -797,29 +782,22 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row
----------------------------------------------
 
 ```{r hr-1}
-htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+# htmltools::br()
 ```
 
+Row  {.tabset}
+-----------------------------------------------
 
-Row
----------------------------------------------
-
+### Crew Data Table
 ```{r data-table-crew}
-htmltools::br()
-htmltools::br()
 htmltools::h5("Crew Datatable")
 htmltools::br()
-htmltools::br()
  datatable(sd_crew, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons", "Scroller"),
+           extensions = c("Buttons"),
            options = list(dom = 'Bfrtip',
-                         extend = 'collection',
-                         scroller = TRUE,
                          buttons = c(                        
                         'colvis',
                         'csv',
@@ -828,36 +806,25 @@ htmltools::br()
                           ),
              columnDefs = list(list(className = 'dt-center', targets = c(1:7))
            )))
- htmltools::br()
- htmltools::br()
- htmltools::br()
 ```
 
 
-Row
----------------------------------------------
 
 ```{r hr-2}
-htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+# htmltools::br()
 ```
 
 
-Row
----------------------------------------------
+### Invasive Biomass Datatable 
 
 ```{r data-table-biomass}
-htmltools::br()
-htmltools::br()
 htmltools::h5("Invasive Biomass Datatable")
-htmltools::br()
 htmltools::br()
  datatable(sd_bio_inv, 
            rownames = FALSE, class = 'compact',
-           extensions = c("Buttons", "Scroller"),
+           extensions = c("Buttons"),
            options = list(dom = 'Bfrtip',
-                         extend = 'collection',
-                         scroller = TRUE,
                          buttons = c(                        
                         'colvis',
                         'csv',
@@ -866,35 +833,23 @@ htmltools::br()
                           ),
              columnDefs = list(list(className = 'dt-center', targets = c(1,3,4,5))
            )))
- htmltools::br()
- htmltools::br()
- htmltools::br()
 ```
 
 
-Row
----------------------------------------------
 
 ```{r hr-3}
-htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+# htmltools::br()
 ```
 
 
-Row
----------------------------------------------
-
+### Cover Datatable
 ```{r data-table-cover}
-htmltools::br()
-htmltools::br()
 htmltools::h5("Cover Datatable")
 htmltools::br()
-htmltools::br()
  datatable(sd_cover, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons", "Scroller"),
+           extensions = c("Buttons"),
            options = list(dom = 'Bfrtip',
-                         extend = 'collection',
-                         scroller = TRUE,
                          buttons = c(                        
                         'colvis',
                         'csv',
@@ -903,36 +858,23 @@ htmltools::br()
                           ),
              columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
            )))
-htmltools::br()
-htmltools::br()
-htmltools::br()
 ```
 
 
-Row
----------------------------------------------
 
 ```{r hr-4}
-htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+# htmltools::br()
 ```
 
 
-Row
----------------------------------------------
-
+### Count Datatable
 ```{r data-table-count}
-htmltools::br()
-htmltools::br()
 htmltools::h5("Count Datatable")
 htmltools::br()
-htmltools::br()
  datatable(sd_count, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons", "Scroller"),
+           extensions = c("Buttons"),
            options = list(dom = 'Bfrtip',
-                          pageLength = 5,
-                         extend = 'collection',
-                         scroller = TRUE,
                          buttons = c(                        
                         'colvis',
                         'csv',
@@ -941,14 +883,9 @@ htmltools::br()
                           ),
              columnDefs = list(list(className = 'dt-center', targets = c(0,4)
            ))))
- htmltools::br()
- htmltools::br()
- htmltools::br()
 ```
 
 
-Row
----------------------------------------------
 
 ```{r hr-5}
 htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
