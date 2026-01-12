@@ -537,7 +537,7 @@ ggplotly(
       title='Species Richness at Oak Haven and Matson',
       fill = "",
       x = "Treatment", 
-      y = "Species Count") +
+      y = "Species Count (Year & Site)") +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
   tooltip = "text",
   config = (displayModeBar = False) 
