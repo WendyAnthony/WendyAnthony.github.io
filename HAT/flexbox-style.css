@@ -1,0 +1,71 @@
+.section.sidebar {
+  padding-left: 120px; /* Adjust the value as needed (e.g., 20px, 1em) */
+  margin-left: 5px;
+}
+
+
+/* navbar colour  */
+.navbar-inverse {
+  background-color: #fd7e14;
+  border-color: #1967be;
+}
+
+p {
+  font-weight: bold;
+}
+
+/*
+.label {
+    display: inline;
+    padding: 0.2em 0.6em 0.3em;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
+} */
+
+.container {
+    display: inline;
+    padding: 0.2em 0.6em 0.3em;
+    font-size: 80%;
+    font-weight: bold;
+    line-height: 1;
+    color: #000;
+    background-color: #b5c0c1; /* #C7EED4 Light grayish cyan - lime green */
+    display: flex;
+    flex-wrap: wrap; /* Allows items to move to the next line */
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
+}
+
+
+.value-box .value {
+  font-size: 125%;
+  color: black; /* Change the main value font color */
+  background-color: #addacd; /* Light minty background */
+  font-weight: bold;
+  width: 200px;
+  padding: 20px;
+  margin: 10px;
+  /* Borders */
+  border: 2px solid #007bff; /* Blue solid border */
+  border-radius: 8px; /* Rounded corners */
+
+  /* Text styling */
+  text-align: center;
+  font-family: Arial, sans-serif;
+
+  /* Ensures padding/border don't affect set width */
+  box-sizing: border-box;
+}
+.value-box .caption {
+  color: black; /* Change the caption font color */
+}
+
+/* You can target other elements by their CSS class (e.g., .chart-title) */

@@ -420,7 +420,7 @@ htmltools::br()
 htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
 ```
 
-Row
+Row  {.tabset}
 -----------------------------------------------
 
 ### Biomass m3 per Invasive Species
@@ -461,6 +461,12 @@ ggplotly(
     y = -0.5
     ))
 ```
+
+### Invasive Species
+```{r inv-sp}
+
+```
+
 
 
 
@@ -576,7 +582,7 @@ htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
 ```
 
 
-Row
+Row {.tabset}
 ---------------------------------------------
 
 ### Mean % Cover - Native Species
@@ -622,8 +628,6 @@ ggplotly(
 ```
 
 
-Row
----------------------------------------------
 
 ### Mean % Cover - Invasive Species
 ```{r mean-cover-inv, echo = FALSE, message = FALSE, warning = FALSE}
@@ -667,9 +671,6 @@ ggplotly(
 ```
 
 
-Row
----------------------------------------------
-
 ### Mean % Cover - Mixed Grasses
 ```{r mean-cover-grs, echo = FALSE, message = FALSE, warning = FALSE}
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -710,6 +711,25 @@ ggplotly(
     ))
 ```
 
+### Species Mean % With Uncertainty
+```{r}
+# create custom colour-blind-friendly palette
+custom_colours_2 <- c("Treated" = "#b2df8a", 
+                    "Untreated" = "#1f78b4")
+
+ggplotly(
+  ggplot(sd_cover, aes(Species, mean_value, fill = Treated)) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_errorbar(aes(ymax = mean_value + sd_value, ymin = pmax(mean_value - sd_value, 0)), width =.02, position = position_dodge(0.5)) +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
+    scale_fill_manual(values = custom_colours_2) +
+        labs(
+          title='Species Mean % Cover (& SD) by Treat',
+          x = "", y = "Mean % Cover", fill = "")
+)
+```
 
 
 
