@@ -496,10 +496,10 @@ htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
 
 # Create a filter input
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, multiple = T)
+filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, allLevels = TRUE)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_count, group = ~ Year, allLevels = TRUE)
-filter_select(id = "Treated", label = "Choose Treatment", sharedData = sd_count, group = ~ Treated, multiple = T)
-filter_select(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_count, group = ~ Native_or_Invasive, multiple = T)
+filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_count, group = ~ Treated, allLevels = TRUE)
+filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_count, group = ~ Native_or_Invasive, allLevels = TRUE)
 
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
@@ -568,11 +568,12 @@ htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
 
 # Create a filter input
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, multiple = T)
+
+filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, allLevels = TRUE)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
-filter_select(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, multiple = T)
-filter_select(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_cover, group = ~ Native_or_Invasive, multiple = T)
-filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, group = ~ Species, multiple = T)
+filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, allLevels = TRUE)
+filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_cover, group = ~ Native_or_Invasive, allLevels = TRUE)
+filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, group = ~ Species, multiple = TRUE)
 
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
@@ -720,9 +721,9 @@ custom_colours_2 <- c("Treated" = "#b2df8a",
                     "Untreated" = "#1f78b4")
 
 ggplotly(
-  ggplot(sd_cover, aes(Species, mean_value, fill = Treated)) + 
+  ggplot(sd_cover, aes(reorder(Species, desc(Species)), mean_value, fill = Treated)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
-  # geom_errorbar(aes(ymax = mean_value + sd_value, ymin = pmax(mean_value - sd_value, 0)), width =.02, position = position_dodge(0.5)) +
+  coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
