@@ -149,9 +149,9 @@ HTML("
      3. Matson Conservation Area -  Matson Mattocks Field Logs (volunteer invasive species removal)
     
   <h5>How to use this interactive data visualization tool</h5>
-  * Tabs in the top header host different data visualization charts
+  * Tabs in the top header host different data visualization charts<br>
   * each tab uses different data and different filters<br>
-  * filters must be cleared, using delete or backspace key in order to start new filter
+  * filters must be cleared, using delete or backspace key in order to start new filter<br>
   * Data Visualizations are responsive to data filters<br>
   * all years and sites are shown until data is filtered<br>
   * hover over data visualizations to view tooltips<br>
@@ -164,7 +164,7 @@ htmltools::br()
 ```
 
 
- Crew Hours
+  Invasive Biomass Hours
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -175,6 +175,8 @@ Inputs {.sidebar data-width=250}
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 Biomass Removed"))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Bio_Hr_Ratio", statistic = "mean"), span(class = "caption", "= hours of labor/m3 biomass"))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Hr_Bio_Ratio", statistic = "mean"), span(class = "caption", "= m3 biomass/hours of labor"))
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
@@ -192,11 +194,10 @@ htmltools::br()
 htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
 ```
 
-Row
+Row  {.tabset}
 -------------------------------------
 
 ### Staff Hours 
-
 
 ```{r crew-hrs-site, echo = FALSE, message = FALSE, warning = FALSE, height = 7}
 
@@ -280,39 +281,43 @@ ggplotly(
 ```
 
 
-Labor to Biomass
-=====================================  
-
-Inputs {.sidebar data-width=250}
------------------------------------------------
 
 ```{r filter-input-biomass}
-htmltools::br()
-htmltools::br()
-h4("Filtered Statistics")
-p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Bio_Hr_Ratio", statistic = "mean"), span(class = "caption", "= hours of labor/m3 biomass"))
-p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Hr_Bio_Ratio", statistic = "mean"), span(class = "caption", "= m3 biomass/hours of labor"))
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-h4("Filters")
+# Labor to Biomass
+# =====================================  
+# 
+# Inputs {.sidebar data-width=250}
+# -----------------------------------------------
 
-# Create a filter input
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
-filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-htmltools::br()
-htmltools::br()
-htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+# htmltools::br()
+# htmltools::br()
+# h4("Filtered Statistics")
+# p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Bio_Hr_Ratio", statistic = "mean"), span(class = "caption", "= hours of labor/m3 biomass"))
+# p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Hr_Bio_Ratio", statistic = "mean"), span(class = "caption", "= m3 biomass/hours of labor"))
+# htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# h4("Filters")
+# 
+# # Create a filter input
+# filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
+# filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
+# htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# htmltools::br()
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# htmltools::br()
+# htmltools::br()
+# htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
 ```
 
-Row
------------------------------------------------
 
 ### Biomass to Labor Hours (Efficiency Ratio)
 ```{r crew-biomass-removed-per-hrs-ratio}
+
+custom_colours_4b <- c("2022" = "#ffff33", 
+                    "2023" = "#4daf4a", 
+                    "2024" = "#984ea3", 
+                    "2025" = "#ff7f00")
 
 ggplotly(
 ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill = as.factor(Year), 
@@ -328,6 +333,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
   coord_flip() +    
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
+    scale_fill_manual(values = custom_colours_4b) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
       # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
@@ -352,8 +358,14 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
 ### Labor Hours to Biomass (Cost Ratio)
 ```{r crew-hrs-per-biomass-removed-ratio}
 
+custom_colours_4b <- c("2022" = "#ffff33", 
+                    "2023" = "#4daf4a", 
+                    "2024" = "#984ea3", 
+                    "2025" = "#ff7f00")
+
 ggplotly(
-ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill = as.factor(Year), text = paste("Year:", Year,
+ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill = as.factor(Year), 
+                                                          text = paste("Year:", Year,
                                                           "\nSite:", Site,
                                                           "\nCrew Hours:", Crew_Hours,
                                                           "\nBiomass Removed m3:", Biomass_Removed_m3,  
@@ -361,19 +373,16 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
                                                           "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
                                                           "\nArea Cleared m2:", Area_Cleared_m2,
                                                           "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
-#  ggplot(crew_data_sep_sub_sum_by_group_site_2025, aes(x = Biomass_Removed_m3, y = Crew_Hours, fill = Work_Site)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
   coord_flip() +    
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
+    scale_fill_manual(values = custom_colours_4b) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
       # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
-    #scale_fill_manual(values = custom_colours_3) +
   labs(
        title='Ratio of Total Work Crew Hours to Biomass Removed (cost)',
-    #   subtitle='HAT Properties',
-      # caption = "Chart by Wendy Anthony \n 2025-11-29", 
       fill = "Year",
       x = "", 
     y = "Ratio of Labour Hours per Biomass m3 Removed (cost)"
@@ -391,38 +400,36 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
 ```
 
 
-Invasive Biomass
-=====================================  
-
-Inputs {.sidebar data-width=250}
------------------------------------------------
 
 ```{r filter-input-inv-biomass}
-htmltools::br()
-htmltools::br()
-h4("Filtered Statistics")
-p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
-p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 of biomass"))
-p(class = "container", class = "value",  summarywidget(sd_bio_inv, column = "Area_Cleared_m2", statistic = "sum"), span(class = "caption", "= m2 of area"))
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-h4("Filters")
-
-# Create a filter input
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_bio_inv, group = ~ Site, multiple = T)
-filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_bio_inv, group = ~ Year, allLevels = TRUE)
-filter_select(id = "Invasive_Species_Cleared", label = "Choose Invasive Species", sharedData = sd_bio_inv, group = ~ Invasive_Species_Cleared, multiple = T)
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-htmltools::br()
-htmltools::br()
-htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+# Invasive Biomass
+# =====================================  
+# 
+# Inputs {.sidebar data-width=250}
+# -----------------------------------------------
+# 
+# htmltools::br()
+# htmltools::br()
+# h4("Filtered Statistics")
+# p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+# p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 of biomass"))
+# p(class = "container", class = "value",  summarywidget(sd_bio_inv, column = "Area_Cleared_m2", statistic = "sum"), span(class = "caption", "= m2 of area"))
+# htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# h4("Filters")
+# 
+# # Create a filter input
+# filter_select(id = "Site", label = "Choose Site", sharedData = sd_bio_inv, group = ~ Site, multiple = T)
+# filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_bio_inv, group = ~ Year, allLevels = TRUE)
+# filter_select(id = "Invasive_Species_Cleared", label = "Choose Invasive Species", sharedData = sd_bio_inv, group = ~ Invasive_Species_Cleared, multiple = T)
+# htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# htmltools::br()
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# htmltools::br()
+# htmltools::br()
+# htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
 ```
-
-Row  {.tabset}
------------------------------------------------
 
 ### Biomass m3 per Invasive Species
 ```{r inv-sp-biomass}
@@ -464,6 +471,8 @@ ggplotly(
 ```
 
 ### Invasive Species
+
+Something coming soon ...
 ```{r inv-sp}
 
 ```
@@ -704,7 +713,7 @@ ggplotly(
     ))
 ```
 
-### Species Mean % With Uncertainty
+### Mean % All Species 
 ```{r}
 # create custom colour-blind-friendly palette
 custom_colours_2 <- c("Treated" = "#b2df8a", 
@@ -713,7 +722,7 @@ custom_colours_2 <- c("Treated" = "#b2df8a",
 ggplotly(
   ggplot(sd_cover, aes(Species, mean_value, fill = Treated)) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
-  geom_errorbar(aes(ymax = mean_value + sd_value, ymin = pmax(mean_value - sd_value, 0)), width =.02, position = position_dodge(0.5)) +
+  # geom_errorbar(aes(ymax = mean_value + sd_value, ymin = pmax(mean_value - sd_value, 0)), width =.02, position = position_dodge(0.5)) +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
@@ -969,5 +978,11 @@ leaflet(sd_sites) %>%
       # add controls
       #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
       addControl(title, position = "topright")
+```
+
+
+```{r session-info}
+# Session Info to document specific packages used to run this script at a specific point in time
+sessionInfo()
 ```
 
