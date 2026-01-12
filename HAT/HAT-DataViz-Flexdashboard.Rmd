@@ -170,7 +170,7 @@ htmltools::br()
 Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
-```{r filter-input-crew}
+```{r filter-crew-hours-biomass-inv-sp}
 
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
@@ -194,7 +194,17 @@ htmltools::br()
 htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
 ```
 
-Row  {.tabset}
+Row  {data-height=30}
+-----------------------------------------------
+
+### Crew Data
+```{r}
+htmltools::HTML("
+  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed.<br>
+  There is still some missing data for 2025")
+```
+
+Row  {.tabset .tabset-fade}
 -------------------------------------
 
 ### Staff Hours 
@@ -279,37 +289,6 @@ ggplotly(
     y = -0.1
     ))
 ```
-
-
-
-```{r filter-input-biomass}
-# Labor to Biomass
-# =====================================  
-# 
-# Inputs {.sidebar data-width=250}
-# -----------------------------------------------
-
-# htmltools::br()
-# htmltools::br()
-# h4("Filtered Statistics")
-# p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Bio_Hr_Ratio", statistic = "mean"), span(class = "caption", "= hours of labor/m3 biomass"))
-# p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Hr_Bio_Ratio", statistic = "mean"), span(class = "caption", "= m3 biomass/hours of labor"))
-# htmltools::br()
-# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-# h4("Filters")
-# 
-# # Create a filter input
-# filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
-# filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
-# htmltools::br()
-# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-# htmltools::br()
-# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-# htmltools::br()
-# htmltools::br()
-# htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
-```
-
 
 ### Biomass to Labor Hours (Efficiency Ratio)
 ```{r crew-biomass-removed-per-hrs-ratio}
@@ -400,36 +379,6 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
 ```
 
 
-
-```{r filter-input-inv-biomass}
-# Invasive Biomass
-# =====================================  
-# 
-# Inputs {.sidebar data-width=250}
-# -----------------------------------------------
-# 
-# htmltools::br()
-# htmltools::br()
-# h4("Filtered Statistics")
-# p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
-# p(class = "container", class = "value", summarywidget(sd_bio_inv, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 of biomass"))
-# p(class = "container", class = "value",  summarywidget(sd_bio_inv, column = "Area_Cleared_m2", statistic = "sum"), span(class = "caption", "= m2 of area"))
-# htmltools::br()
-# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-# h4("Filters")
-# 
-# # Create a filter input
-# filter_select(id = "Site", label = "Choose Site", sharedData = sd_bio_inv, group = ~ Site, multiple = T)
-# filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_bio_inv, group = ~ Year, allLevels = TRUE)
-# filter_select(id = "Invasive_Species_Cleared", label = "Choose Invasive Species", sharedData = sd_bio_inv, group = ~ Invasive_Species_Cleared, multiple = T)
-# htmltools::br()
-# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-# htmltools::br()
-# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-# htmltools::br()
-# htmltools::br()
-# htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
-```
 
 ### Biomass m3 per Invasive Species
 ```{r inv-sp-biomass}
@@ -584,8 +533,17 @@ htmltools::br()
 htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
 ```
 
+Row  {data-height=40}
+-----------------------------------------------
 
-Row {.tabset}
+### Cover Data
+```{r}
+htmltools::HTML("
+  Cover data was collected using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. As different seasonal meadows species were sampled, the comparison data may not be as meaningful.")
+```
+
+
+Row {.tabset .tabset-fade}
 ---------------------------------------------
 
 ### Mean % Cover - Native Species
@@ -744,42 +702,37 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-input-tables}
 htmltools::br()
-htmltools::br()
-htmltools::HTML("<h5>Table Funtionality</h5>
-  - Data filters for each table<br>
-  - Sort columns using up/down arrows by column name<br>
-  - Search table using the search bars<br>
-  - Reset filters to delete unwanted choices")
-htmltools::br()
+htmltools::h3("Table Filters")
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
 # Create a filter input
-htmltools::h4("Filters for Crew and Biomass Tables")
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
+htmltools::h4("Crew & Biomass Filters")
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = TRUE)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
-filter_select(id = "Invasive_Species_Cleared", label = "Choose Invasive Species", sharedData = sd_bio_inv, group = ~ Invasive_Species_Cleared, multiple = T)
+filter_select(id = "Invasive_Species_Cleared", label = "Choose Invasive Species", sharedData = sd_bio_inv, group = ~ Invasive_Species_Cleared, multiple = TRUE)
 htmltools::br()
 htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
 htmltools::br()
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 
-htmltools::h4("Filters for Cover Tables")
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, multiple = T)
+htmltools::h4("Cover Filters")
+filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, allLevels = TRUE)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
-filter_select(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, multiple = T)
+filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, allLevels = TRUE)
+filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_cover, group = ~ Native_or_Invasive, allLevels = TRUE)
 filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, group = ~ Species, multiple = T)
-filter_select(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_cover, group = ~ Native_or_Invasive, multiple = T)
 htmltools::br()
 htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
 htmltools::br()
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 
-htmltools::h4("Filters for Count Tables")
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, multiple = T)
+htmltools::h4("Count Filters")
+filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, allLevels = TRUE)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_count, group = ~ Year, allLevels = TRUE)
-filter_select(id = "Treated", label = "Choose Treatment", sharedData = sd_count, group = ~ Treated, multiple = T)
-filter_select(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_count, group = ~ Native_or_Invasive, multiple = T)
+filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_count, group = ~ Treated, allLevels = TRUE)
+filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_count, group = ~ Native_or_Invasive, allLevels = TRUE)
 
 htmltools::br()
 htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
@@ -792,13 +745,18 @@ htmltools::br()
 htmltools::br()
 ```
 
+Row  {data-height=60}
+-----------------------------------------------
 
-```{r hr-1}
-# htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-# htmltools::br()
+### Tables Functionality
+```{r}
+htmltools::HTML("
+  - Different filters for each table<br>
+  - Sort columns using up/down arrows by column name<br>
+  - Search tables with search bars")
 ```
 
-Row  {.tabset}
+Row  {.tabset .tabset-fade}
 -----------------------------------------------
 
 ### Crew Data Table
