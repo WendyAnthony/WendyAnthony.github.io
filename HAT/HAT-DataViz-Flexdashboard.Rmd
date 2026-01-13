@@ -212,7 +212,7 @@ htmltools::br()
 Row  {data-height=30}
 -----------------------------------------------
 
-### Crew Data
+### **Crew Data**
 ```{r}
 htmltools::HTML("
   At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed.<br>
@@ -444,12 +444,12 @@ ggplotly(
                                                           "\nCrew Hours:", Crew_Hours,
                                                           "\nBiomass Removed (m3):", Biomass_Removed_m3,  
                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_bar(stat = "identity", width = 0.9, position = "dodge") +
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-          title = "Biomass m3 of Invasive Species Cleared", 
+          title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
           x = "Invasive Species",   
           y = "Biomass Removed (m3)",   
           fill = "Site"
@@ -543,21 +543,22 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=75}
+Row  {data-height=100}
 -----------------------------------------------
 
-### Species Richness Unique Count
+### **Species Richness Unique Count**
 ```{r}
 htmltools::HTML("
   Cover data was collected, in both treated and untreated areas, using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. The mean % cover for each species is measured for each area. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful.<br>
-  Species counts are the total numbers of each unique species found.")
+  Species counts are the total numbers of each unique species found.<br><br>
+  <strong>Analysis: </strong> Invasive species count higher in treated areas ... is invasive species removal allowing room for more invasive species to move it?")
 ```
 
 
 Row {.tabset .tabset-fade}
 ---------------------------------------------
 
-### Species Counts 
+### **Species Counts** 
 ```{r species-richness-count}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -648,7 +649,7 @@ htmltools::br()
 Row  {data-height=40}
 -----------------------------------------------
 
-### Mean % Species Cover Data
+### **Mean % Species Cover Data**
 ```{r}
 htmltools::HTML("
   Cover data was collected using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful.")
@@ -1030,9 +1031,18 @@ htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://ha
 htmltools::br()
 ```
 
+Row  {data-height=50}
+-----------------------------------------------
+
+### **Interactive Map**
+```{r}
+htmltools::HTML("
+This map shows the 3 public HAT sites listed on the <a href='https://hat.bc.ca/community-based-restoration'>HAT webpage</a>
+                ")
+```
+
 Row
 ---------------------------------------------
-
 
 ### Map of HAT Managed Public GOE Sites
 ```{r leaflet-all-sites, echo = FALSE, message = FALSE, include = TRUE}
