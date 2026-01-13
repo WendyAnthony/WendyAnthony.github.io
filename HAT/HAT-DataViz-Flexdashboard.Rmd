@@ -299,7 +299,7 @@ ggplotly(
     ))
 ```
 
-### Biomass to Labor Hours (Efficiency Ratio)
+### Biomass / Hours (Efficiency)
 ```{r crew-biomass-removed-per-hrs-ratio}
 
 custom_colours_4b <- c("2022" = "#ffff33", 
@@ -343,7 +343,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
 ```
 
 
-### Labor Hours to Biomass (Cost Ratio)
+### Hours / Biomass (Cost)
 ```{r crew-hrs-per-biomass-removed-ratio}
 
 custom_colours_4b <- c("2022" = "#ffff33", 
@@ -389,7 +389,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
 
 
 
-### Biomass m3 per Invasive Species
+### Biomass / Species
 ```{r inv-sp-biomass}
 
 ggplotly(
@@ -445,7 +445,7 @@ htmltools::br()
            )))
 ```
 
-### Datatable Invasive Biomass  
+### Datatable Biomass  
 
 ```{r data-table-biomass}
 htmltools::h5("Invasive Biomass Datatable")
@@ -464,10 +464,11 @@ htmltools::br()
            )))
 ```
 
+```{r inv-sp}
 ### Invasive Species
 
-Something coming soon ...
-```{r inv-sp}
+# Something coming soon ...
+
 # sd_crew
 # crew_data_sep_sub_sum_bio_inv
 # crew_data_sep_sub_sum_by_group_site_rename_site
@@ -511,7 +512,7 @@ htmltools::br()
 Row  {data-height=75}
 -----------------------------------------------
 
-### Mean % Cover Data
+### Species Richness Unique Count
 ```{r}
 htmltools::HTML("
   Cover data was collected, in both treated and untreated areas, using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. The mean % cover for each species is measured for each area. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful.<br>
@@ -613,7 +614,7 @@ htmltools::br()
 Row  {data-height=40}
 -----------------------------------------------
 
-### Cover Data
+### Mean % Species Cover Data
 ```{r}
 htmltools::HTML("
   Cover data was collected using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful.")
@@ -643,7 +644,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-          title = "Mean % Cover - Native Species at Oak Haven & Matson 2024-2025", 
+          title = "Native Species Mean % Cover at Oak Haven & Matson 2024-2025", 
           x = "",   
           y = "Mean % cover",   
           fill = "Site"
@@ -729,7 +730,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   labs(
-        title = "Mean % Cover - Mixed Grasses at Oak Haven & Matson 2024-2025",     
+        title = "Mixed Grasses Mean % Cover at Oak Haven & Matson 2024-2025",     
         x = "",   
         y = "Mean % cover",
         fill = "Site"
@@ -764,7 +765,7 @@ ggplotly(
   theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
     scale_fill_manual(values = custom_colours_2) +
         labs(
-          title='Species Mean % Cover (& SD) by Treat',
+          title='All Species Mean % Cover (& SD) by Treat',
           x = "", y = "Mean % Cover", fill = "")
 )
 ```
