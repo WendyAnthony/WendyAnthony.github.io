@@ -98,6 +98,14 @@ cover_data_rename_site_sub_nat_u <- cover_data_rename_site_sub_nat[cover_data_re
 cover_data_rename_site_sub_inv_t <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Treated",]
 cover_data_rename_site_sub_inv_u <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Untreated",]
 
+# Uniqu Invasive species
+# unique(cover_data_rename_site_sub_inv$Species)
+# colnames(cover_data_rename_site_sub_inv)
+# cover_data_rename_site_sub_inv_sp <- cover_data_rename_site_sub_inv %>%
+#   group_by(Year, Site) %>%
+#   summarise(unique_values = list(unique(Species)))
+
+
 # drop unknown species
 species_count <- species_count[-c(25), ]
 species_count <- species_count %>%
@@ -136,7 +144,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-12 @12:20</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-13 @10:06</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -149,11 +157,12 @@ HTML("
      3. Matson Conservation Area -  Matson Mattocks Field Logs (volunteer invasive species removal)
     
   <h5>How to use this interactive data visualization tool</h5>
-  * Tabs in the top header host different data visualization charts<br>
-  * Data Visualizations are responsive to data filters<br>
+  * Tabs in the top header host different data visualization charts and datatables<br>
+  * Data Visualizations and tables are responsive to data filters<br>
   * each tab uses different data and different filters<br>
   * filters must be cleared, using delete or backspace key in order to start new filter<br>
   * all years and sites are shown until data is filtered<br>
+  * Filtered summary statistics accompany each data set<br>
   * hover over data visualizations to view tooltips<br>
   * data visualization can be focused by with a click-drag over a certain area; double-click within chart to return to original version - if all else fails, refresh webpage in browser
   <br><br>
@@ -184,14 +193,14 @@ h4("Filters")
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
 htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+htmltools::br()
+htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
-
-
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
 htmltools::br()
-htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
 ```
 
 Row  {data-height=30}
@@ -419,11 +428,49 @@ ggplotly(
     ))
 ```
 
+### Datatable Crew 
+```{r data-table-crew}
+htmltools::h5("Crew Datatable")
+htmltools::br()
+ datatable(sd_crew, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(                        
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+             columnDefs = list(list(className = 'dt-center', targets = c(1:7))
+           )))
+```
+
+### Datatable Invasive Biomass  
+
+```{r data-table-biomass}
+htmltools::h5("Invasive Biomass Datatable")
+htmltools::br()
+ datatable(sd_bio_inv, 
+           rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(                        
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+             columnDefs = list(list(className = 'dt-center', targets = c(1,3,4,5))
+           )))
+```
+
 ### Invasive Species
 
 Something coming soon ...
 ```{r inv-sp}
-
+# sd_crew
+# crew_data_sep_sub_sum_bio_inv
+# crew_data_sep_sub_sum_by_group_site_rename_site
 ```
 
 
@@ -451,17 +498,30 @@ filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_coun
 filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_count, group = ~ Native_or_Invasive, allLevels = TRUE)
 
 htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+htmltools::br()
+htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
 htmltools::br()
-htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+```
+
+Row  {data-height=75}
+-----------------------------------------------
+
+### Mean % Cover Data
+```{r}
+htmltools::HTML("
+  Cover data was collected, in both treated and untreated areas, using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. The mean % cover for each species is measured for each area. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful.<br>
+  Species counts are the total numbers of each unique species found.")
 ```
 
 
-Row
+Row {.tabset .tabset-fade}
 ---------------------------------------------
+
 ### Species Counts 
 ```{r species-richness-count}
 # create custom colour-blind-friendly palette
@@ -499,9 +559,24 @@ ggplotly(
     ))
 ```
 
+### Datatable Count
+```{r data-table-count}
+htmltools::h5("Count Datatable")
+htmltools::br()
+ datatable(sd_count, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(                        
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+             columnDefs = list(list(className = 'dt-center', targets = c(0,4)
+           ))))
+```
 
-
- Cover Data 
+ Mean % Cover
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -511,7 +586,7 @@ Inputs {.sidebar data-width=250}
 htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
-p(class = "container", class = "value", summarywidget(sd_cover, column = "mean_value", statistic = "sum"), span(class = "caption", "% mean cover"))
+p(class = "container", class = "value", summarywidget(sd_cover, column = "mean_value", statistic = "sum"), span(class = "caption", "= mean % cover"))
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
@@ -523,14 +598,16 @@ filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group
 filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, allLevels = TRUE)
 filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_cover, group = ~ Native_or_Invasive, allLevels = TRUE)
 filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, group = ~ Species, multiple = TRUE)
-
+htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+htmltools::br()
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 htmltools::br()
 htmltools::br()
-htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+
 ```
 
 Row  {data-height=40}
@@ -546,7 +623,7 @@ htmltools::HTML("
 Row {.tabset .tabset-fade}
 ---------------------------------------------
 
-### Mean % Cover - Native Species
+### Native Species
 ```{r mean-cover-nat, echo = FALSE, message = FALSE, warning = FALSE}
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
@@ -590,7 +667,7 @@ ggplotly(
 
 
 
-### Mean % Cover - Invasive Species
+### Invasive Species
 ```{r mean-cover-inv, echo = FALSE, message = FALSE, warning = FALSE}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -632,7 +709,7 @@ ggplotly(
 ```
 
 
-### Mean % Cover - Mixed Grasses
+### Mixed Grasses
 ```{r mean-cover-grs, echo = FALSE, message = FALSE, warning = FALSE}
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
                     "Native" = "#66c2a5", 
@@ -672,7 +749,7 @@ ggplotly(
     ))
 ```
 
-### Mean % All Species 
+### All Species 
 ```{r}
 # create custom colour-blind-friendly palette
 custom_colours_2 <- c("Treated" = "#b2df8a", 
@@ -692,126 +769,7 @@ ggplotly(
 )
 ```
 
-
-
-Data Tables 
-=====================================  
-
-Inputs {.sidebar data-width=250}
------------------------------------------------
-
-```{r filter-input-tables}
-htmltools::br()
-htmltools::h3("Table Filters")
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-htmltools::br()
-# Create a filter input
-htmltools::h4("Crew & Biomass Filters")
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = TRUE)
-filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
-filter_select(id = "Invasive_Species_Cleared", label = "Choose Invasive Species", sharedData = sd_bio_inv, group = ~ Invasive_Species_Cleared, multiple = TRUE)
-htmltools::br()
-htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
-htmltools::br()
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-
-htmltools::h4("Cover Filters")
-filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, allLevels = TRUE)
-filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
-filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, allLevels = TRUE)
-filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_cover, group = ~ Native_or_Invasive, allLevels = TRUE)
-filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, group = ~ Species, multiple = T)
-htmltools::br()
-htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
-htmltools::br()
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-
-htmltools::h4("Count Filters")
-filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, allLevels = TRUE)
-filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_count, group = ~ Year, allLevels = TRUE)
-filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_count, group = ~ Treated, allLevels = TRUE)
-filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_count, group = ~ Native_or_Invasive, allLevels = TRUE)
-
-htmltools::br()
-htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
-htmltools::br()
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-htmltools::br()
-htmltools::br()
-```
-
-Row  {data-height=60}
------------------------------------------------
-
-### Tables Functionality
-```{r}
-htmltools::HTML("
-  - Different filters for each table<br>
-  - Sort columns using up/down arrows by column name<br>
-  - Search tables with search bars")
-```
-
-Row  {.tabset .tabset-fade}
------------------------------------------------
-
-### Crew Data Table
-```{r data-table-crew}
-htmltools::h5("Crew Datatable")
-htmltools::br()
- datatable(sd_crew, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons"),
-           options = list(dom = 'Bfrtip',
-                         buttons = c(                        
-                        'colvis',
-                        'csv',
-                        'excel',
-                        'print'
-                          ),
-             columnDefs = list(list(className = 'dt-center', targets = c(1:7))
-           )))
-```
-
-
-
-```{r hr-2}
-# htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-# htmltools::br()
-```
-
-
-### Invasive Biomass Datatable 
-
-```{r data-table-biomass}
-htmltools::h5("Invasive Biomass Datatable")
-htmltools::br()
- datatable(sd_bio_inv, 
-           rownames = FALSE, class = 'compact',
-           extensions = c("Buttons"),
-           options = list(dom = 'Bfrtip',
-                         buttons = c(                        
-                        'colvis',
-                        'csv',
-                        'excel',
-                        'print'
-                          ),
-             columnDefs = list(list(className = 'dt-center', targets = c(1,3,4,5))
-           )))
-```
-
-
-
-```{r hr-3}
-# htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-# htmltools::br()
-```
-
-
-### Cover Datatable
+### Datatable Cover
 ```{r data-table-cover}
 htmltools::h5("Cover Datatable")
 htmltools::br()
@@ -829,6 +787,146 @@ htmltools::br()
 ```
 
 
+```{r filter-input-tables}
+# Data Tables 
+# =====================================  
+# 
+# Inputs {.sidebar data-width=250}
+# -----------------------------------------------
+# 
+# htmltools::br()
+# htmltools::h3("Table Filters")
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# htmltools::br()
+# # Create a filter input
+# htmltools::h4("Crew & Biomass Filters")
+# filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = TRUE)
+# filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
+# filter_select(id = "Invasive_Species_Cleared", label = "Choose Invasive Species", sharedData = sd_bio_inv, group = ~ Invasive_Species_Cleared, multiple = TRUE)
+# htmltools::br()
+# htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+# htmltools::br()
+# htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# 
+# htmltools::h4("Cover Filters")
+# filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, allLevels = TRUE)
+# filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
+# filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, allLevels = TRUE)
+# filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_cover, group = ~ Native_or_Invasive, allLevels = TRUE)
+# filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, group = ~ Species, multiple = T)
+# htmltools::br()
+# htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+# htmltools::br()
+# htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# 
+# htmltools::h4("Count Filters")
+# filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, allLevels = TRUE)
+# filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_count, group = ~ Year, allLevels = TRUE)
+# filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_count, group = ~ Treated, allLevels = TRUE)
+# filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_count, group = ~ Native_or_Invasive, allLevels = TRUE)
+# 
+# htmltools::br()
+# htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+# htmltools::br()
+# htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# htmltools::br()
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# htmltools::br()
+# htmltools::br()
+```
+
+```{r}
+# Row  {data-height=60}
+# -----------------------------------------------
+# 
+# ### Tables Functionality
+# 
+# htmltools::HTML("
+#   - Different filters for each table<br>
+#   - Sort columns using up/down arrows by column name<br>
+#   - Search tables with search bars")
+```
+
+```{r data-table-crew-tab}
+# Row  {.tabset .tabset-fade}
+# -----------------------------------------------
+# 
+# ### Crew Data Table
+# 
+# htmltools::h5("Crew Datatable")
+# htmltools::br()
+#  datatable(sd_crew, rownames = FALSE, class = 'compact',
+#            extensions = c("Buttons"),
+#            options = list(dom = 'Bfrtip',
+#                          buttons = c(                        
+#                         'colvis',
+#                         'csv',
+#                         'excel',
+#                         'print'
+#                           ),
+#              columnDefs = list(list(className = 'dt-center', targets = c(1:7))
+#            )))
+```
+
+
+
+```{r hr-2}
+# htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+# htmltools::br()
+```
+
+
+
+```{r data-table-biomass-tab}
+### Invasive Biomass Datatable
+# 
+# htmltools::h5("Invasive Biomass Datatable")
+# htmltools::br()
+#  datatable(sd_bio_inv, 
+#            rownames = FALSE, class = 'compact',
+#            extensions = c("Buttons"),
+#            options = list(dom = 'Bfrtip',
+#                          buttons = c(                        
+#                         'colvis',
+#                         'csv',
+#                         'excel',
+#                         'print'
+#                           ),
+#              columnDefs = list(list(className = 'dt-center', targets = c(1,3,4,5))
+#            )))
+```
+
+
+
+
+```{r hr-3}
+# htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+# htmltools::br()
+```
+
+
+
+```{r data-table-cover-tab}
+### Cover Datatable
+# htmltools::h5("Cover Datatable")
+# htmltools::br()
+#  datatable(sd_cover, rownames = FALSE, class = 'compact',
+#            extensions = c("Buttons"),
+#            options = list(dom = 'Bfrtip',
+#                          buttons = c(                        
+#                         'colvis',
+#                         'csv',
+#                         'excel',
+#                         'print'
+#                           ),
+#              columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
+#            )))
+```
+
+
 
 ```{r hr-4}
 # htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -836,28 +934,29 @@ htmltools::br()
 ```
 
 
+
+```{r data-table-count-tab}
 ### Count Datatable
-```{r data-table-count}
-htmltools::h5("Count Datatable")
-htmltools::br()
- datatable(sd_count, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons"),
-           options = list(dom = 'Bfrtip',
-                         buttons = c(                        
-                        'colvis',
-                        'csv',
-                        'excel',
-                        'print'
-                          ),
-             columnDefs = list(list(className = 'dt-center', targets = c(0,4)
-           ))))
+# htmltools::h5("Count Datatable")
+# htmltools::br()
+#  datatable(sd_count, rownames = FALSE, class = 'compact',
+#            extensions = c("Buttons"),
+#            options = list(dom = 'Bfrtip',
+#                          buttons = c(                        
+#                         'colvis',
+#                         'csv',
+#                         'excel',
+#                         'print'
+#                           ),
+#              columnDefs = list(list(className = 'dt-center', targets = c(0,4)
+#            ))))
 ```
 
 
 
 ```{r hr-5}
-htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+# htmltools::br()
 ```
 
 
