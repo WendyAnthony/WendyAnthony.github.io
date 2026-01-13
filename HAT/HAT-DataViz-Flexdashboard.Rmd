@@ -212,7 +212,7 @@ htmltools::br()
 Row  {data-height=30}
 -----------------------------------------------
 
-### **Crew Data**
+### ***Crew Data***
 ```{r}
 htmltools::HTML("
   At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed.<br>
@@ -543,14 +543,14 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=100}
+Row  {data-height=80}
 -----------------------------------------------
 
-### **Species Richness Unique Count**
+### ***Species Richness Unique Count***
 ```{r}
 htmltools::HTML("
-  Cover data was collected, in both treated and untreated areas, using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. The mean % cover for each species is measured for each area. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful. Species counts are the total numbers of each unique species found.<br>
-  <strong>Analysis: </strong> Invasive species count is higher in the treated areas ... is invasive species removal allowing room for more invasive species to move in?")
+  Cover data was collected, using quadrat-sampling methods in both treated and untreated areas, at Matson in July 2024 and 2025, and at Oak Haven in April 2024 and 2025. The mean % cover of each species is measured for each area. Species counts are the total numbers of each unique species found. Meadows species were sampled during different seasons, which may affect any meaningful comparison between sites. <br>
+  <strong>Example Analysis: </strong> Invasive species count is higher in treated areas ... Does invasive species removal create an environment for more invasive species to move in?")
 ```
 
 
@@ -645,10 +645,10 @@ htmltools::br()
 
 ```
 
-Row  {data-height=40}
+Row  {data-height=35}
 -----------------------------------------------
 
-### **Mean % Species Cover Data**
+### ***Mean % Species Cover Data***
 ```{r}
 htmltools::HTML("
   Cover data was collected using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful.")
@@ -1030,13 +1030,13 @@ htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://ha
 htmltools::br()
 ```
 
-Row  {data-height=50}
+Row  {data-height=20}
 -----------------------------------------------
 
-### **Interactive Map**
+### ***Interactive Map***
 ```{r}
 htmltools::HTML("
-This map shows the 3 public HAT sites listed on the <a href='https://hat.bc.ca/community-based-restoration'>HAT webpage</a>
+This map shows 3 public sites listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>. Click map markers to open pop-up windows with information about each site
                 ")
 ```
 
