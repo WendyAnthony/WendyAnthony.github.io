@@ -150,7 +150,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-13 @14:59</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-13 @15:25</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -428,7 +428,7 @@ ggplotly(
     # x = 1 # too far to right
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.5
+    y = -0.2
     ))
 ```
 ### Biomass / Top 5 Species (Facet-year)
@@ -458,7 +458,7 @@ ggplotly(
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
-    scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
+    scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90)), 
   
   tooltip = "text",
   config = (displayModeBar = False) 
@@ -469,7 +469,7 @@ ggplotly(
     # x = 1 # too far to right
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.5
+    y = -0.2
     ))
 ```
 
@@ -477,7 +477,7 @@ ggplotly(
 ```{r inv-sp-biomass-top5-facet-site}
 
 ggplotly(
-  ggplot(sd_bio_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
+  ggplot(sd_bio_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Year), 
                                                           text = paste("Year:", Year,
                                                           "\nSite:", Site,
                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
@@ -495,12 +495,12 @@ ggplotly(
           title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
           x = "",   
           y = "Biomass Removed (m3)",   
-          fill = "Site"
+          fill = "Year"
           ) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
-    scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
+    scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90)), 
   
   tooltip = "text",
   config = (displayModeBar = False) 
@@ -511,7 +511,7 @@ ggplotly(
     # x = 1 # too far to right
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.5
+    y = -0.2
     ))
 ```
 
@@ -550,7 +550,7 @@ ggplotly(
     # x = 1 # too far to right
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.5
+    y = -0.2
     ))
 ```
 
@@ -630,7 +630,7 @@ htmltools::br()
 Row  {data-height=80}
 -----------------------------------------------
 
-### ***Species Richness Unique Count***
+### ***Species Richness Unique Count @ Matson & Oak Haven***
 ```{r}
 htmltools::HTML("
   Cover data was collected, using quadrat-sampling methods in both treated and untreated areas, at Matson in July 2024 and 2025, and at Oak Haven in April 2024 and 2025. The mean % cover of each species is measured for each area. Species counts are the total numbers of each unique species found. Meadows species were sampled during different seasons, which may affect any meaningful comparison between sites. <br>
@@ -733,7 +733,6 @@ ggplotly(
                       "\nSpecies Number", Species_number))) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
   facet_wrap( ~ Site) +
-
   theme_minimal() + #get rid of grey background and tick marks
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
   theme(legend.position ="bottom") + 
@@ -861,7 +860,7 @@ ggplotly(
     # x = 1 # too far to right
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.5
+    y = -0.2
     ))
 ```
 
@@ -904,7 +903,7 @@ ggplotly(
     #x = 0.5 legend too close to x axis label
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.5
+    y = -0.2
     ))
 ```
 
@@ -945,7 +944,7 @@ ggplotly(
     #x = 0.5 legend too close to x axis label
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.5
+    y = -0.2
     ))
 ```
 
@@ -956,17 +955,71 @@ custom_colours_2 <- c("Treated" = "#b2df8a",
                     "Untreated" = "#1f78b4")
 
 ggplotly(
-  ggplot(sd_cover, aes(reorder(Species, desc(Species)), mean_value, fill = Treated)) + 
+  ggplot(sd_cover, aes(reorder(Species, desc(Species)), mean_value, fill = Treated, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean % Value:", mean_value,
+                                                          "\nSD Value:", sd_value))) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1, size = 7)) +
-    scale_fill_manual(values = custom_colours_2) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  scale_fill_manual(values = custom_colours_2) +
         labs(
           title='All Species Mean % Cover (& SD) by Treat',
-          x = "", y = "Mean % Cover", fill = "")
-)
+          x = "", y = "Mean % Cover", fill = ""), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.1
+    ))
+```
+
+### All Species (facet-treatment)
+```{r}
+# create custom colour-blind-friendly palette
+custom_colours_2 <- c("Treated" = "#b2df8a", 
+                    "Untreated" = "#1f78b4")
+
+ggplotly(
+  ggplot(sd_cover, aes(reorder(Species, desc(Species)), mean_value, fill = Treated, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean % Value:", mean_value,
+                                                          "\nSD Value:", sd_value))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  facet_wrap( ~ Site) +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +  
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  scale_fill_manual(values = custom_colours_2) +
+        labs(
+          title='All Species Mean % Cover (& SD) by Treat',
+          x = "", y = "Mean % Cover", fill = ""), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.1
+    ))
 ```
 
 ### Datatable Cover
