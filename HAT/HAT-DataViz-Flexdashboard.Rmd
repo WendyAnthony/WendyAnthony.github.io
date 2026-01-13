@@ -150,7 +150,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-13 @10:06</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-13 @14:14</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -261,7 +261,7 @@ ggplotly(
     xanchor="center",
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.1
+    y = -0.2
     ))
 ```
 
@@ -301,7 +301,7 @@ ggplotly(
     xanchor="center",
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.1
+    y = -0.2
     ))
 ```
 
@@ -344,7 +344,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
     xanchor="center",
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.1
+    y = -0.2
     ))
 ```
 
@@ -389,50 +389,10 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
     xanchor="center",
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.1
+    y = -0.2
     ))
 ```
 
-
-
-### Biomass / Species
-```{r inv-sp-biomass}
-
-ggplotly(
-  ggplot(sd_bio_inv, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site,
-                                                          "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
-                                                          "\nCrew Hours:", Crew_Hours,
-                                                          "\nBiomass Removed (m3):", Biomass_Removed_m3,  
-                                                          "\nArea Cleared (m2):", Area_Cleared_m2))) + 
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
-  coord_flip() + 
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-      labs(
-          title = "Biomass m3 of Invasive Species Cleared", 
-          x = "Invasive Species",   
-          y = "Biomass Removed (m3)",   
-          fill = "Site"
-          ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-    # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-    scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
-  
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    #x = 0.5 legend too close to x axis label
-    # x = 1 # too far to right
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.5
-    ))
-```
 ### Biomass / Top 5 Species
 ```{r inv-sp-biomass-top5}
 
@@ -450,7 +410,7 @@ ggplotly(
   theme(legend.position ="bottom") + 
       labs(
           title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
-          x = "Invasive Species",   
+          x = "",   
           y = "Biomass Removed (m3)",   
           fill = "Site"
           ) +
@@ -471,6 +431,46 @@ ggplotly(
     y = -0.5
     ))
 ```
+
+### Biomass / All Species
+```{r inv-sp-biomass}
+
+ggplotly(
+  ggplot(sd_bio_inv, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
+                                                          "\nCrew Hours:", Crew_Hours,
+                                                          "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+                                                          "\nArea Cleared (m2):", Area_Cleared_m2))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+      labs(
+          title = "Biomass m3 of Invasive Species Cleared", 
+          x = "",   
+          y = "Biomass Removed (m3)",   
+          fill = "Site"
+          ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+    scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
+  
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    # x = 1 # too far to right
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.5
+    ))
+```
+
 
 ### Datatable Crew 
 ```{r data-table-crew}
@@ -590,9 +590,10 @@ ggplotly(
     xanchor="center",
     x = 0.5,
     # gives some space between x axis label and legend
-    y = -0.1
+    y = -0.2
     ))
 ```
+
 
 ### Datatable Count
 ```{r data-table-count}
