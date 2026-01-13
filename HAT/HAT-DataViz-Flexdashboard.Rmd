@@ -549,9 +549,8 @@ Row  {data-height=100}
 ### **Species Richness Unique Count**
 ```{r}
 htmltools::HTML("
-  Cover data was collected, in both treated and untreated areas, using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. The mean % cover for each species is measured for each area. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful.<br>
-  Species counts are the total numbers of each unique species found.<br><br>
-  <strong>Analysis: </strong> Invasive species count higher in treated areas ... is invasive species removal allowing room for more invasive species to move it?")
+  Cover data was collected, in both treated and untreated areas, using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. The mean % cover for each species is measured for each area. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful. Species counts are the total numbers of each unique species found.<br>
+  <strong>Analysis: </strong> Invasive species count is higher in the treated areas ... is invasive species removal allowing room for more invasive species to move in?")
 ```
 
 
