@@ -75,7 +75,8 @@ crew_data_sep_sub_1$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_su
 colnames(crew_data_sep_sub_1)
 crew_data_sep_sub_1 <- subset(crew_data_sep_sub_1, select = -c(3,9))
 # change column order
-crew_data_sep_sub_1 <- crew_data_sep_sub_1[, c("Year", "Date", "Site", "Crew_Hours", "Invasive_Species_Cleared", "Biomass_Removed_m3", "Area_Cleared_m2", "Data_Change_Assumptions")]
+# this just changes column name not the actual data@!
+# crew_data_sep_sub_1 <- crew_data_sep_sub_1[, c("Year", "Date", "Site", "Crew_Hours", "Invasive_Species_Cleared", "Biomass_Removed_m3", "Area_Cleared_m2", "Data_Change_Assumptions")]
 
 #str(crew_data_sep_sub_1)
 # Date format
