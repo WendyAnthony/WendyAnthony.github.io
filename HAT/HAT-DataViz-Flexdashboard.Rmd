@@ -37,7 +37,12 @@ HAT_sites_HAT <- read.csv("data/HAT-Sites-HAT.csv", fileEncoding="UTF-8")
 str(HAT_sites_HAT)
 head(HAT_sites_HAT)
 
-# Crew Data
+
+# Crew Data 
+crew_data_sep_sub_1 <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
+
+
+# Crew Data summarized
 crew_data_sep_sub_sum_by_group_site_1 <- read.csv("data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", fileEncoding="UTF-8")
 str(crew_data_sep_sub_sum_by_group_site_1)
 head(crew_data_sep_sub_sum_by_group_site_1)
@@ -62,6 +67,22 @@ HAT_sites_HAT$Site <- gsub("Oak Haven Park", "Oak Haven", HAT_sites_HAT$Site)
 HAT_sites_HAT$Site <- gsub("Havenwood Park", "Havenwood", HAT_sites_HAT$Site)
 
 # Crew Data
+crew_data_sep_sub_1 <- crew_data_sep_sub_1 %>% rename(Site = Work_Site)
+
+crew_data_sep_sub_1$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_1$Site)
+crew_data_sep_sub_1$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_1$Site)
+crew_data_sep_sub_1$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_1$Site)
+colnames(crew_data_sep_sub_1)
+crew_data_sep_sub_1 <- subset(crew_data_sep_sub_1, select = -c(3,9))
+# change column order
+crew_data_sep_sub_1 <- crew_data_sep_sub_1[, c("Year", "Date", "Site", "Crew_Hours", "Invasive_Species_Cleared", "Biomass_Removed_m3", "Area_Cleared_m2", "Data_Change_Assumptions")]
+
+#str(crew_data_sep_sub_1)
+# Date format
+crew_data_sep_sub_1$Date <- as.Date(crew_data_sep_sub_1$Date)
+
+
+
 crew_data_sep_sub_sum_by_group_site_rename_site <- crew_data_sep_sub_sum_by_group_site_1 %>%
   rename(Site = Work_Site)
 
@@ -120,6 +141,8 @@ species_count <- species_count %>%
 ```{r shared-data, include = FALSE}
 ### Create sharable database using Crosstalk package
 
+
+sd_crew_all <- SharedData$new(data = crew_data_sep_sub_1, group = "crew_all_group")
 sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_rename_site, group = "crew_group")
 
 sd_bio_inv <- SharedData$new(data = crew_data_sep_sub_sum_bio_inv_rename_site, group = "crew_group")
@@ -150,7 +173,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-13 @15:25</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-13 @19:40</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -177,6 +200,112 @@ hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 HTML("<span style='font-size:75%';>wanthony@uvic.ca</span>")
 htmltools::br()
 ```
+
+
+  Crew Data
+=====================================  
+
+Inputs {.sidebar data-width=250}
+-----------------------------------------------
+
+```{r filter-crew-hours-all}
+
+h4("Filtered Statistics")
+p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+h4("Filters")
+# Create a filter input
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_all, group = ~ Site, multiple = T)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_all, group = ~ Year, allLevels = TRUE)
+filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_all, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
+htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
+```
+
+Row  {data-height=30}
+-----------------------------------------------
+
+### ***Crew Data***
+```{r}
+htmltools::HTML("
+  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. <br>
+  <em>Note: There is still some missing data for 2025</em>")
+```
+
+Row  {.tabset .tabset-fade}
+-------------------------------------
+
+### **Box plots Invasive Biomass** 
+```{r species-richness-count-box}
+# create custom colour-blind-friendly palette
+# custom_colours_3 <- c("Invasive" = "#fc8d62", 
+#                     "Native" = "#66c2a5", 
+#                     "MixedGrass" = "#8da0cb")
+ggplotly(
+  ggplot(sd_crew_all, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site))) + 
+  geom_boxplot() +
+  coord_flip() +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+#  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Invasive Biomass Removed',
+      fill = "",
+      x = "", 
+      y = "Biomass Removed (m3)") +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+### Datatable Crew Hours & Biomass
+```{r data-table-crew-all}
+htmltools::h5("Crew Hours & Biomass Datatable")
+htmltools::br()
+ datatable(sd_crew_all, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(                        
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+             columnDefs = list(list(className = 'dt-center', targets = c(1:7))
+           )))
+```
+
+### Crew Hours 
+
+```{r crew-hrs-all, echo = FALSE, message = FALSE, warning = FALSE, height = 7}
+```
+
+### Biomass Removed 
+
+```{r biomass-all, echo = FALSE, message = FALSE, warning = FALSE, height = 7}
+```
+
 
 
   Invasive Biomass Hours
@@ -212,10 +341,10 @@ htmltools::br()
 Row  {data-height=30}
 -----------------------------------------------
 
-### ***Crew Data***
+### ***Crew Data Summarized***
 ```{r}
 htmltools::HTML("
-  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed.<br>
+  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. These charts summarize this data<br>
   <em>Note: There is still some missing data for 2025</em>")
 ```
 
@@ -677,6 +806,8 @@ ggplotly(
     y = -0.2
     ))
 ```
+
+
 
 ### **Species Counts (Facet-year)** 
 ```{r species-richness-count-facet-yr}
