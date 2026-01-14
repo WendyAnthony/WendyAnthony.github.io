@@ -173,7 +173,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-13 @19:40</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-13 @20:11</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -257,7 +257,7 @@ ggplotly(
   coord_flip() +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
           # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
 #  scale_fill_manual(values = custom_colours_3) +
@@ -265,8 +265,7 @@ ggplotly(
       title='Invasive Biomass Removed',
       fill = "",
       x = "", 
-      y = "Biomass Removed (m3)") +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+      y = "Biomass Removed (m3)"), 
   tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
@@ -297,14 +296,10 @@ htmltools::br()
 ```
 
 ### Crew Hours 
-
+something coming here soon ...
 ```{r crew-hrs-all, echo = FALSE, message = FALSE, warning = FALSE, height = 7}
 ```
 
-### Biomass Removed 
-
-```{r biomass-all, echo = FALSE, message = FALSE, warning = FALSE, height = 7}
-```
 
 
 
@@ -376,7 +371,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   scale_fill_manual(values = custom_colours_4b) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +  
   labs(
@@ -416,7 +411,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   scale_fill_manual(values = custom_colours_4b) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +  
         labs(
@@ -457,7 +452,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
     scale_fill_manual(values = custom_colours_4b) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) + 
       # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
   labs(
@@ -501,7 +496,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
     scale_fill_manual(values = custom_colours_4b) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) + 
       # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
   labs(
@@ -509,8 +504,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
       fill = "Year",
       x = "", 
     y = "Ratio of Labour Hours per Biomass m3 Removed (cost)"
-    ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+    ),
   tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
@@ -543,7 +537,7 @@ ggplotly(
           y = "Biomass Removed (m3)",   
           fill = "Site"
           ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
     scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
@@ -577,6 +571,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
     # needs to be below first theme
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
+  theme(strip.text = element_text(size = 10)) +
   theme(legend.position ="bottom") + 
       labs(
           title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
@@ -584,7 +579,7 @@ ggplotly(
           y = "Biomass Removed (m3)",   
           fill = "Site"
           ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
     scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90)), 
@@ -619,6 +614,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
     # needs to be below first theme
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
+  theme(strip.text = element_text(size = 10)) +
   theme(legend.position ="bottom") + 
       labs(
           title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
@@ -626,7 +622,7 @@ ggplotly(
           y = "Biomass Removed (m3)",   
           fill = "Year"
           ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
     scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90)), 
@@ -665,7 +661,7 @@ ggplotly(
           y = "Biomass Removed (m3)",   
           fill = "Site"
           ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
     scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
@@ -786,7 +782,7 @@ ggplotly(
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
           # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
@@ -794,8 +790,7 @@ ggplotly(
       title='Species Richness at Oak Haven and Matson',
       fill = "",
       x = "Treatment", 
-      y = "Species Count") +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+      y = "Species Count"), 
   tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
@@ -827,8 +822,9 @@ ggplotly(
 
   theme_minimal() + #get rid of grey background and tick marks
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
+  theme(strip.text = element_text(size = 10)) +
   theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
           # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
@@ -836,8 +832,7 @@ ggplotly(
       title='Species Richness at Oak Haven and Matson',
       fill = "",
       x = "Treatment", 
-      y = "Species Count") +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+      y = "Species Count"),
   tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
@@ -866,8 +861,9 @@ ggplotly(
   facet_wrap( ~ Site) +
   theme_minimal() + #get rid of grey background and tick marks
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
+  theme(strip.text = element_text(size = 10)) +
   theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
           # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
@@ -875,8 +871,7 @@ ggplotly(
       title='Species Richness at Oak Haven and Matson',
       fill = "",
       x = "Treatment", 
-      y = "Species Count") +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+      y = "Species Count"),
   tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
@@ -978,7 +973,7 @@ ggplotly(
           y = "Mean % cover",   
           fill = "Site"
           ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) , 
   
@@ -1023,7 +1018,7 @@ ggplotly(
         y = "Mean % cover", 
         fill = "Site" 
       ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
       # aligns title to left
   theme(plot.title = element_text(hjust = 0)), 
   tooltip = "text",
@@ -1064,7 +1059,7 @@ ggplotly(
         y = "Mean % cover",
         fill = "Site"
         ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) + 
       # aligns title to left
   theme(plot.title = element_text(hjust = 0)), 
   tooltip = "text",
@@ -1098,7 +1093,7 @@ ggplotly(
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
   scale_fill_manual(values = custom_colours_2) +
         labs(
           title='All Species Mean % Cover (& SD) by Treat',
@@ -1136,7 +1131,8 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +  
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  theme(strip.text = element_text(size = 10)) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
   scale_fill_manual(values = custom_colours_2) +
         labs(
           title='All Species Mean % Cover (& SD) by Treat',
