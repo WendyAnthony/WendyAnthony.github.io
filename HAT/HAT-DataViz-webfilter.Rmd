@@ -299,6 +299,8 @@ htmltools::br()
                         'excel',
                         'print'
                           )
+## THIS LINE IS STILL CAUSING A DT WARNING
+# DataTables warning: table id=DataTables_Table_0 - Requested unknown parameter '7' for row 0, column 7. For more information about this error, please see http://datatables.net/tn/4 THOUGH STILL USED IN OTHER TABLES ???? 
            #              ,
            #   columnDefs = list(list(className = 'dt-center', targets = c(1:7))
            # )
