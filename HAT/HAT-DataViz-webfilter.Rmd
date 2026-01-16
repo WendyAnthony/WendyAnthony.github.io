@@ -1376,7 +1376,7 @@ htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://ha
 htmltools::br()
 ```
 
-Row  {data-height=20}
+Row  {data-height=30}
 -----------------------------------------------
 
 ### ***Interactive Map***
