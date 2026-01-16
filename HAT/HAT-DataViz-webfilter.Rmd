@@ -221,7 +221,7 @@ p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Cre
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
-strong("Tip: Start by choosing a site")
+strong(em("Tip: Start by choosing a site"))
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_all, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_all, group = ~ Year, allLevels = TRUE)
