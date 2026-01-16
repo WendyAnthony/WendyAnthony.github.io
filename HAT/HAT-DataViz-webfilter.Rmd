@@ -243,8 +243,8 @@ Row  {data-height=50}
 ### ***Crew Data***
 ```{r}
 htmltools::HTML("
-  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. <br>
-  <em>Note: There is still some missing data for 2025</em>")
+  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. <em>Note: There is still some missing data for 2025</em> 
+  <br><strong><em>Tip: Start by choosing a site</em></strong>")
 ```
 
 Row  {.tabset .tabset-fade}
