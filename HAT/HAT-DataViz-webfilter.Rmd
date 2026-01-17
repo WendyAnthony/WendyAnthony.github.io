@@ -214,7 +214,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-17 11:44</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-17 12:02</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -251,8 +251,10 @@ Inputs {.sidebar data-width=250}
 ```{r filter-crew-hours-all}
 #############################################
 h4("Filtered Statistics")
-p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+#p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
 p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
+
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 
@@ -263,6 +265,7 @@ strong(em("Tip: Start by choosing a site"))
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_all, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_all, group = ~ Year, allLevels = TRUE)
 filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_all, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
+filter_select(id = "Work_Volunteer", label = "Choose Work or Volunteer", sharedData = sd_crew_vol, group = ~ Work_Volunteer, multiple = T)
 
 #############################################
 htmltools::br()
@@ -296,7 +299,7 @@ Row  {.tabset .tabset-fade}
 #                     "Native" = "#66c2a5", 
 #                     "MixedGrass" = "#8da0cb")
 ggplotly(
-  ggplot(sd_crew_all, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+  ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
                                                           text = paste("Year:", Year,
                                                           "\nSite:", Site))) + 
   geom_boxplot() +
@@ -328,7 +331,7 @@ ggplotly(
 ### **Box/Violin Widgets**
 ```{r}
 ggplotly(
-  ggplot(sd_crew_all, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+  ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
                                                           text = paste("Year:", Year,
                                                           "\nSite:", Site))) + 
   geom_boxplot() +
@@ -379,7 +382,7 @@ ggplotly(
 #                     "Native" = "#66c2a5", 
 #                     "MixedGrass" = "#8da0cb")
 ggplotly(
-  ggplot(sd_crew_all, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+  ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
                                                           text = paste("Year:", Year,
                                                           "\nSite:", Site))) + 
   geom_point() +
@@ -408,49 +411,7 @@ ggplotly(
 ```
 
 
-
-### Datatable Crew Hours & Biomass
-```{r data-table-crew-all}
-htmltools::h5("Crew Hours & Biomass Datatable")
-htmltools::br()
- datatable(sd_crew_all, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons"),
-           options = list(dom = 'Bfrtip',
-                         buttons = c(
-                        'colvis',
-                        'csv',
-                        'excel',
-                        'print'
-                          )
-## THIS LINE IS STILL CAUSING A DT WARNING
-# DataTables warning: table id=DataTables_Table_0 - Requested unknown parameter '7' for row 0, column 7. For more information about this error, please see http://datatables.net/tn/4 THOUGH STILL USED IN OTHER TABLES ???? 
-           #              ,
-           #   columnDefs = list(list(className = 'dt-center', targets = c(1:7))
-           # )
-           ))
-```
-### Datatable Volunteer Hours & Biomass
-```{r data-table-volunteer-all}
-htmltools::h5("Volunteer Hours & Biomass Datatable")
-htmltools::br()
- datatable(sd_vol_mat, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons"),
-           options = list(dom = 'Bfrtip',
-                         buttons = c(
-                        'colvis',
-                        'csv',
-                        'excel',
-                        'print'
-                          )
-## THIS LINE IS STILL CAUSING A DT WARNING
-# DataTables warning: table id=DataTables_Table_0 - Requested unknown parameter '7' for row 0, column 7. For more information about this error, please see http://datatables.net/tn/4 THOUGH STILL USED IN OTHER TABLES ???? 
-           #              ,
-           #   columnDefs = list(list(className = 'dt-center', targets = c(1:7))
-           # )
-           ))
-```
-
-### Datatable Combined Volunteer Hours & Biomass
+### Datatable Crew, Volunteer Hours & Biomass
 ```{r data-table-combine}
 htmltools::h5("Crew amd Volunteer Hours & Biomass Datatable")
 htmltools::br()
