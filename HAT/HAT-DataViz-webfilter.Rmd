@@ -180,7 +180,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-16 07:52</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-17 08:17</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -208,7 +208,7 @@ HTML("<span style='font-size:75%';>wanthony@uvic.ca</span>")
 htmltools::br()
 ```
 
-  Crew Data
+  Crew Data all
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -218,6 +218,7 @@ Inputs {.sidebar data-width=250}
 
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
@@ -286,6 +287,90 @@ ggplotly(
 ```
 
 
+### **Box/Violin Widgets**
+```{r}
+ggplotly(
+  ggplot(sd_crew_all, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site))) + 
+  geom_boxplot() +
+  coord_flip() +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+#  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Invasive Biomass Removed',
+      fill = "",
+      x = "", 
+      y = "Biomass Removed (m3)"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    )) %>%
+  layout(title = list("Invasive Species Biomass Removed", x = 0),
+         xaxis = list(title = "Biomass Removed (m3)"),
+         yaxis = list(title = ""),
+#         width=900, height=620,
+         updatemenus = list( # dropdown
+           list(
+             buttons = list(
+               list(method = "restyle",
+                    args = list("type", "box"),
+                    label = "Boxplot"),
+               list(method = "restyle",
+                    args = list("type", "violin"),
+                    label = "Violin Plot")
+             )
+           )
+         ))
+```
+
+### **Scatter plots Invasive Biomass** 
+```{r species-richness-count-scatter}
+# create custom colour-blind-friendly palette
+# custom_colours_3 <- c("Invasive" = "#fc8d62", 
+#                     "Native" = "#66c2a5", 
+#                     "MixedGrass" = "#8da0cb")
+ggplotly(
+  ggplot(sd_crew_all, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site))) + 
+  geom_point() +
+  coord_flip() +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+#  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Invasive Biomass Removed',
+      fill = "",
+      x = "", 
+      y = "Biomass Removed (m3)"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+
 ### Datatable Crew Hours & Biomass
 ```{r data-table-crew-all}
 htmltools::h5("Crew Hours & Biomass Datatable")
@@ -343,7 +428,7 @@ htmltools::br()
 Row  {data-height=50}
 -----------------------------------------------
 
-### ***Crew Data***
+### ***Crew Data Summarized***
 ```{r}
 htmltools::HTML("
   At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed.<br>
