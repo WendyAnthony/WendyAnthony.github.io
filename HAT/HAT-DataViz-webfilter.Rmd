@@ -32,13 +32,15 @@ library(summarywidget)
 
 ```{r data-download, include = FALSE}
 # Load Data
+################################# 
 # Sites Data
 HAT_sites_HAT <- read.csv("data/HAT-Sites-HAT.csv", fileEncoding="UTF-8")
 str(HAT_sites_HAT)
 head(HAT_sites_HAT)
 
-crew_data_sep_sub_1 <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
 
+################################# 
+crew_data_sep_sub_1 <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
 
 # Crew Data
 crew_data_sep_sub_1 <- crew_data_sep_sub_1 %>% rename(Site = Work_Site)
@@ -47,9 +49,9 @@ crew_data_sep_sub_1$Site <- gsub("Matson Conservation Area", "Matson", crew_data
 crew_data_sep_sub_1$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_1$Site)
 crew_data_sep_sub_1$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_1$Site)
 colnames(crew_data_sep_sub_1)
-crew_data_sep_sub_1 <- subset(crew_data_sep_sub_1, select = -c(3,9))
 
 # Date format
+str(crew_data_sep_sub_1)
 crew_data_sep_sub_1$Date <- as.Date(crew_data_sep_sub_1$Date)
 
 str(crew_data_sep_sub_1)
@@ -65,7 +67,6 @@ crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
 crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
   filter(Date != "2025-09-04")
 
-
 # Crew Data
 crew_data_sep_sub_sum_by_group_site_1 <- read.csv("data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", fileEncoding="UTF-8")
 str(crew_data_sep_sub_sum_by_group_site_1)
@@ -73,15 +74,25 @@ head(crew_data_sep_sub_sum_by_group_site_1)
 
 crew_data_sep_sub_sum_bio_inv <- read.csv("data/crew_data_sep_sub_sum_bio_inv.csv", fileEncoding="UTF-8")
 
+################################# 
+## Matson Field log volunteer 
+volunteer_data_matson <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-Field-Log-2022-2025.csv", fileEncoding="UTF-8")
+volunteer_data_matson$Date <- as.Date(volunteer_data_matson$Date)
+str(volunteer_data_matson)
+colnames(volunteer_data_matson)
+
+################################# 
 # Cover data
 cover_data <- read.csv("data/HAT_cover_mean.csv", fileEncoding="UTF-8")
 
+################################# 
 # Species counts
 species_count <- read.csv("data/species_counts.csv", fileEncoding="UTF-8")
 ```
 
 
 ```{r rename-site-location-worksite-columns-for-sd-group, include = FALSE}
+#############################################
 # Sites Data
 HAT_sites_HAT
 colnames(HAT_sites_HAT)
@@ -90,6 +101,8 @@ HAT_sites_HAT$Site <- gsub("Matson Conservation Area", "Matson", HAT_sites_HAT$S
 HAT_sites_HAT$Site <- gsub("Oak Haven Park", "Oak Haven", HAT_sites_HAT$Site)
 HAT_sites_HAT$Site <- gsub("Havenwood Park", "Havenwood", HAT_sites_HAT$Site)
 
+
+#############################################
 # Crew Data
 crew_data_sep_sub_sum_by_group_site_rename_site <- crew_data_sep_sub_sum_by_group_site_1 %>%
   rename(Site = Work_Site)
@@ -111,6 +124,26 @@ colnames(crew_data_sep_sub_sum_bio_inv_rename_site)
 unique(crew_data_sep_sub_sum_bio_inv_rename_site$Invasive_Species_Cleared)
 crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("Daphne", "English Ivy",  "Himalayan blackberry", "Scotch broom", "Shiny geranium"))
 
+
+#############################################
+## Matson Field log volunteer 
+str(volunteer_data_matson)
+colnames(volunteer_data_matson)
+volunteer_data_matson_sub <- subset(volunteer_data_matson, select = -c(1,4,6,8,10,11,14,17:21))
+colnames(volunteer_data_matson_sub)
+
+
+# change column order to same as volunteer_data_matson
+colnames(crew_data_sep_sub_1_filtered)
+crew_data_sep_sub_1_filtered <- subset(crew_data_sep_sub_1_filtered, select = -c(3))
+crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
+  relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer)
+
+#############################################
+# rbind work and volunteer
+crew_vol <- rbind(crew_data_sep_sub_1_filtered, volunteer_data_matson_sub)
+
+#############################################
 # Cover Data
 cover_data_rename_site <- cover_data %>%
   rename(Site = Location)
@@ -132,14 +165,8 @@ cover_data_rename_site_sub_nat_u <- cover_data_rename_site_sub_nat[cover_data_re
 cover_data_rename_site_sub_inv_t <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Treated",]
 cover_data_rename_site_sub_inv_u <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Untreated",]
 
-# Uniqu Invasive species
-# unique(cover_data_rename_site_sub_inv$Species)
-# colnames(cover_data_rename_site_sub_inv)
-# cover_data_rename_site_sub_inv_sp <- cover_data_rename_site_sub_inv %>%
-#   group_by(Year, Site) %>%
-#   summarise(unique_values = list(unique(Species)))
 
-
+#############################################
 # drop unknown species
 species_count <- species_count[-c(25), ]
 species_count <- species_count %>%
@@ -149,12 +176,17 @@ species_count <- species_count %>%
 ```{r shared-data, include = FALSE}
 ### Create sharable database using Crosstalk package
 
+#############################################
 sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_rename_site, group = "crew_group")
 sd_crew_all <- SharedData$new(data = crew_data_sep_sub_1_filtered, group = "crew_all_group")
+sd_vol_mat <- SharedData$new(data = volunteer_data_matson_sub, group = "crew_all_group")
+sd_crew_vol <- SharedData$new(data = crew_vol, group = "crew_all_group")
+
 
 sd_bio_inv <- SharedData$new(data = crew_data_sep_sub_sum_bio_inv_rename_site, group = "crew_group")
 sd_bio_inv_top5 <- SharedData$new(data = crew_data_sep_sub_sum_bio_inv_top5, group = "crew_group")
 
+#############################################
 sd_cover <- SharedData$new(data = cover_data_rename_site_sub, group = "cover_group")
 
 sd_cover_grs <- SharedData$new(data = cover_data_rename_site_sub_grs, group = "cover_group")
@@ -166,8 +198,10 @@ sd_cover_nat_u <- SharedData$new(data = cover_data_rename_site_sub_nat_u, group 
 sd_cover_inv_t <- SharedData$new(data = cover_data_rename_site_sub_inv_t, group = "cover_group")
 sd_cover_inv_u <- SharedData$new(data = cover_data_rename_site_sub_inv_u, group = "cover_group")
 
+#############################################
 sd_count <- SharedData$new(data = species_count, group = "count_group")
 
+#############################################
 sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create sharable database using Crosstalk package
 ```
 
@@ -180,7 +214,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-17 08:17</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-17 11:44</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -215,18 +249,22 @@ Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
 ```{r filter-crew-hours-all}
-
+#############################################
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
 p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+
+#############################################
 h4("Filters")
 strong(em("Tip: Start by choosing a site"))
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_all, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_all, group = ~ Year, allLevels = TRUE)
 filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_all, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
+
+#############################################
 htmltools::br()
 htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
 htmltools::br()
@@ -376,6 +414,47 @@ ggplotly(
 htmltools::h5("Crew Hours & Biomass Datatable")
 htmltools::br()
  datatable(sd_crew_all, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          )
+## THIS LINE IS STILL CAUSING A DT WARNING
+# DataTables warning: table id=DataTables_Table_0 - Requested unknown parameter '7' for row 0, column 7. For more information about this error, please see http://datatables.net/tn/4 THOUGH STILL USED IN OTHER TABLES ???? 
+           #              ,
+           #   columnDefs = list(list(className = 'dt-center', targets = c(1:7))
+           # )
+           ))
+```
+### Datatable Volunteer Hours & Biomass
+```{r data-table-volunteer-all}
+htmltools::h5("Volunteer Hours & Biomass Datatable")
+htmltools::br()
+ datatable(sd_vol_mat, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          )
+## THIS LINE IS STILL CAUSING A DT WARNING
+# DataTables warning: table id=DataTables_Table_0 - Requested unknown parameter '7' for row 0, column 7. For more information about this error, please see http://datatables.net/tn/4 THOUGH STILL USED IN OTHER TABLES ???? 
+           #              ,
+           #   columnDefs = list(list(className = 'dt-center', targets = c(1:7))
+           # )
+           ))
+```
+
+### Datatable Combined Volunteer Hours & Biomass
+```{r data-table-combine}
+htmltools::h5("Crew amd Volunteer Hours & Biomass Datatable")
+htmltools::br()
+ datatable(sd_crew_vol, rownames = FALSE, class = 'compact',
            extensions = c("Buttons"),
            options = list(dom = 'Bfrtip',
                          buttons = c(
