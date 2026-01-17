@@ -406,11 +406,12 @@ ggplotly(
   tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
+    layout(legend = list(
+      orientation = "h",
+      xanchor="center",
+      x = 0.5,
+      # gives some space between x axis label and legend
+      y = -0.2
     ))
 ```
 
@@ -1230,7 +1231,7 @@ ggplotly(
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
   scale_fill_manual(values = custom_colours_2) +
         labs(
-          title='All Species Mean % Cover (& SD) by Treat',
+          title='All Species Mean % Cover by Treatment',
           x = "", y = "Mean % Cover", fill = ""), 
   tooltip = "text",
   config = (displayModeBar = False) 
@@ -1268,7 +1269,7 @@ ggplotly(
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
   scale_fill_manual(values = custom_colours_2) +
         labs(
-          title='All Species Mean % Cover (& SD) by Treat',
+          title='All Species Mean % Cover by Treatment',
           x = "", y = "Mean % Cover", fill = ""), 
   tooltip = "text",
   config = (displayModeBar = False) 
