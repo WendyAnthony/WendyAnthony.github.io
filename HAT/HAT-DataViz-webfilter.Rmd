@@ -214,7 +214,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-17 13:31</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-18 09:51</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -266,6 +266,7 @@ filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_all, grou
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_all, group = ~ Year, allLevels = TRUE)
 filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_all, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
 filter_select(id = "Work_Volunteer", label = "Choose Work or Volunteer", sharedData = sd_crew_vol, group = ~ Work_Volunteer, multiple = T)
+filter_select(id = "Native_or_Invasive", label = "Choose Invasive or MixedGrass", sharedData = sd_crew_vol, group = ~ Native_or_Invasive, multiple = T)
 
 #############################################
 htmltools::br()
@@ -428,12 +429,12 @@ htmltools::br()
                         'csv',
                         'excel',
                         'print'
-                          )
-## THIS LINE IS STILL CAUSING A DT WARNING
-# DataTables warning: table id=DataTables_Table_0 - Requested unknown parameter '7' for row 0, column 7. For more information about this error, please see http://datatables.net/tn/4 THOUGH STILL USED IN OTHER TABLES ???? 
-           #              ,
-           #   columnDefs = list(list(className = 'dt-center', targets = c(1:7))
-           # )
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE, 
+                    # centre contents of columns 4,5 8
+                         columnDefs = list(list(className = 'dt-center', targets = c(3,4,7))
+                            )
            ))
 ```
 
@@ -830,6 +831,8 @@ htmltools::br()
                         'excel',
                         'print'
                           ),
+                        # removed previous / next buttons
+                         paging = FALSE, 
              columnDefs = list(list(className = 'dt-center', targets = c(1:7))
            )))
 ```
@@ -849,6 +852,8 @@ htmltools::br()
                         'excel',
                         'print'
                           ),
+                        # removed previous / next buttons
+                         paging = FALSE,                         
              columnDefs = list(list(className = 'dt-center', targets = c(1,3,4,5))
            )))
 ```
@@ -1032,6 +1037,8 @@ htmltools::br()
                         'excel',
                         'print'
                           ),
+                        # removed previous / next buttons
+                         paging = FALSE,                         
              columnDefs = list(list(className = 'dt-center', targets = c(0,4)
            ))))
 ```
@@ -1296,6 +1303,8 @@ htmltools::br()
                         'excel',
                         'print'
                           ),
+                        # removed previous / next buttons
+                         paging = FALSE,                         
              columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
            )))
 ```
@@ -1565,5 +1574,14 @@ leaflet(sd_sites) %>%
 ```{r session-info}
 # Session Info to document specific packages used to run this script at a specific point in time
 sessionInfo()
+```
+
+```{js, echo=FALSE}
+var sc_project=13198915; 
+var sc_invisible=1; 
+var sc_security="116553d3"; 
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
 ```
 
