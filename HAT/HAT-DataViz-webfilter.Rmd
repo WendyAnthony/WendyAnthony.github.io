@@ -143,6 +143,7 @@ crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
 # rbind work and volunteer
 crew_vol <- rbind(crew_data_sep_sub_1_filtered, volunteer_data_matson_sub)
 
+
 #############################################
 # Cover Data
 cover_data_rename_site <- cover_data %>%
@@ -214,7 +215,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-18 09:51</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-18 10:35</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -361,10 +362,6 @@ ggplotly(
   layout(title = list("Invasive Species Biomass Removed", x = 0),
          xaxis = list(title = "Biomass Removed (m3)"),
          yaxis = list(title = ""),
-          x = 0.5,
-          # gives some space between x axis label and legend
-          y = -0.2,
-      
       #         width=900, height=620,
          updatemenus = list( # dropdown
            list(
@@ -1576,12 +1573,4 @@ leaflet(sd_sites) %>%
 sessionInfo()
 ```
 
-```{js, echo=FALSE}
-var sc_project=13198915; 
-var sc_invisible=1; 
-var sc_security="116553d3"; 
-<script type="text/javascript"
-src="https://www.statcounter.com/counter/counter.js"
-async></script>
-```
 
