@@ -236,7 +236,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-18 12:12</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-18 13:13</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -419,6 +419,81 @@ ggplotly(
     x = 0.5,
     # gives some space between x axis label and legend
     y = -0.2
+    ))
+```
+
+
+### **Scatter plots Hours per Year** 
+```{r inv-hours-scatter-year}
+ggplotly(
+  ggplot(sd_crew_vol_inv, aes(x = Date, y = Crew_Hours, color = Site, 
+                              text = paste("Year:", Year,
+                                           "\nDate:", Date,
+                                           "\nCrew Hours:", Crew_Hours,
+                                           "\nWork or Volunteer:", Work_Volunteer,
+                                           "\nSite:", Site,
+                                           "\nInvasive Species:", Invasive_Species_Cleared,
+                                           "\nBiomass Removed (m3):", Biomass_Removed_m3))) + 
+  geom_point() +
+#  geom_line(stat = "identity", position = "identity") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+  # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+   scale_color_manual(values = c("#b15928","#ffff99","#6a3d9a","#cab2d6","#ff7f00","#33a02c","#a6cee3","#b2df8a", "#cab2d6")) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Hours of Biomass removal by HAT Crew & Volunteers',
+          # subtitle='2025',
+#          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Biomass_Removed_m3",
+          x = "Date", y = "Crew Hours"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(
+      orientation = "h",
+      xanchor="center",
+      x = 0.5,
+      # gives some space between x axis label and legend
+      y = -0.2
+    ))
+```
+
+### **Scatter plots Biomass per Year** 
+```{r inv-biomass-scatter-year}
+ggplotly(
+  ggplot(sd_crew_vol_inv, aes(x = Date, y = Biomass_Removed_m3, color = Site, 
+                              text = paste("Year:", Year,
+                                           "\nDate:", Date,
+                                           "\nCrew Hours:", Crew_Hours,
+                                           "\nWork or Volunteer:", Work_Volunteer,
+                                           "\nSite:", Site,
+                                           "\nInvasive Species:", Invasive_Species_Cleared,
+                                           "\nBiomass Removed (m3):", Biomass_Removed_m3))) + 
+  geom_point() +
+#  geom_line(stat = "identity", position = "identity") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+  # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+   scale_color_manual(values = c("#b15928","#ffff99","#6a3d9a","#cab2d6","#ff7f00","#33a02c","#a6cee3","#b2df8a", "#cab2d6")) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Biomass removal (m3) by HAT Crew & Volunteers',
+          # subtitle='2025',
+#          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Biomass_Removed_m3",
+          x = "Date", y = "iomass Removed (m3)"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(
+      orientation = "h",
+      xanchor="center",
+      x = 0.5,
+      # gives some space between x axis label and legend
+      y = -0.2
     ))
 ```
 
