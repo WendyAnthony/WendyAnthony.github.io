@@ -124,7 +124,7 @@ crew_data_sep_sub_sum_bio_inv_rename_site$Site <- gsub("Havenwood Park", "Havenw
 colnames(crew_data_sep_sub_sum_bio_inv_rename_site)
 unique(crew_data_sep_sub_sum_bio_inv_rename_site$Invasive_Species_Cleared)
 
-crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English Ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
+crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
 
 
 #############################################
@@ -150,7 +150,7 @@ crew_vol_grs <- crew_vol[crew_vol$Native_or_Invasive == "MixedGrass",]
 crew_vol_inv <- crew_vol[crew_vol$Native_or_Invasive == "Invasive",]
 
 
-crew_vol_inv_top5 <- crew_vol %>% filter(Invasive_Species_Cleared %in% c("daphne", "English Ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
+crew_vol_inv_top5 <- crew_vol %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
 
 #############################################
 # Cover Data
