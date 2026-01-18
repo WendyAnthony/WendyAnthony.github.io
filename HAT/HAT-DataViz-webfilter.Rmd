@@ -104,6 +104,7 @@ HAT_sites_HAT$Site <- gsub("Havenwood Park", "Havenwood", HAT_sites_HAT$Site)
 
 #############################################
 # Crew Data
+# Summary data totals per year per site
 crew_data_sep_sub_sum_by_group_site_rename_site <- crew_data_sep_sub_sum_by_group_site_1 %>%
   rename(Site = Work_Site)
 
@@ -122,6 +123,7 @@ crew_data_sep_sub_sum_bio_inv_rename_site$Site <- gsub("Havenwood Park", "Havenw
 # Top 5 Invasive Species
 colnames(crew_data_sep_sub_sum_bio_inv_rename_site)
 unique(crew_data_sep_sub_sum_bio_inv_rename_site$Invasive_Species_Cleared)
+
 crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English Ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
 
 
@@ -135,14 +137,20 @@ colnames(volunteer_data_matson_sub)
 
 # change column order to same as volunteer_data_matson
 colnames(crew_data_sep_sub_1_filtered)
-crew_data_sep_sub_1_filtered <- subset(crew_data_sep_sub_1_filtered, select = -c(3))
-crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
+#crew_data_sep_sub_1_filtered <- subset(crew_data_sep_sub_1_filtered, select = -c(3))
+crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1_filtered %>%
   relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer)
 
 #############################################
 # rbind work and volunteer
 crew_vol <- rbind(crew_data_sep_sub_1_filtered, volunteer_data_matson_sub)
 
+unique(crew_vol$Native_or_Invasive)
+crew_vol_grs <- crew_vol[crew_vol$Native_or_Invasive == "MixedGrass",]
+crew_vol_inv <- crew_vol[crew_vol$Native_or_Invasive == "Invasive",]
+
+
+crew_vol_inv_top5 <- crew_vol %>% filter(Invasive_Species_Cleared %in% c("daphne", "English Ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
 
 #############################################
 # Cover Data
@@ -178,14 +186,25 @@ species_count <- species_count %>%
 ### Create sharable database using Crosstalk package
 
 #############################################
-sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_rename_site, group = "crew_group")
-sd_crew_all <- SharedData$new(data = crew_data_sep_sub_1_filtered, group = "crew_all_group")
-sd_vol_mat <- SharedData$new(data = volunteer_data_matson_sub, group = "crew_all_group")
+# crew_data_sep_sub.csv 238 obs 9 variable
+# sd_crew_all <- SharedData$new(data = crew_data_sep_sub_1_filtered, group = "crew_all_group")
+#  sd_vol_mat <- SharedData$new(data = volunteer_data_matson_sub, group = "crew_all_group")
+# crew_vol = rbind with crew_data_sep_sub_1_filtered, volunteer_data_matson_sub
 sd_crew_vol <- SharedData$new(data = crew_vol, group = "crew_all_group")
 
+sd_crew_vol_grs <- SharedData$new(data = crew_vol_grs, group = "crew_all_group")
+sd_crew_vol_inv <- SharedData$new(data = crew_vol_inv, group = "crew_all_group")
+sd_crew_vol_inv_top5 <- SharedData$new(data = crew_vol_inv_top5, group = "crew_all_group")
 
+
+#############################################
+# Summary data totals per year per site
+# used in Invasive Biomass charts
+sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_rename_site, group = "crew_group")
+# crew_data_sep_sub_sum_bio_inv.csv
 sd_bio_inv <- SharedData$new(data = crew_data_sep_sub_sum_bio_inv_rename_site, group = "crew_group")
 sd_bio_inv_top5 <- SharedData$new(data = crew_data_sep_sub_sum_bio_inv_top5, group = "crew_group")
+
 
 #############################################
 sd_cover <- SharedData$new(data = cover_data_rename_site_sub, group = "cover_group")
@@ -199,8 +218,10 @@ sd_cover_nat_u <- SharedData$new(data = cover_data_rename_site_sub_nat_u, group 
 sd_cover_inv_t <- SharedData$new(data = cover_data_rename_site_sub_inv_t, group = "cover_group")
 sd_cover_inv_u <- SharedData$new(data = cover_data_rename_site_sub_inv_u, group = "cover_group")
 
+
 #############################################
 sd_count <- SharedData$new(data = species_count, group = "count_group")
+
 
 #############################################
 sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create sharable database using Crosstalk package
@@ -215,7 +236,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-18 10:35</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-18 12:03</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -252,8 +273,8 @@ Inputs {.sidebar data-width=250}
 ```{r filter-crew-hours-all}
 #############################################
 h4("Filtered Statistics")
-#p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
-p(class = "container", class = "value", summarywidget(sd_crew_all, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
+#p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
 p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
 
 htmltools::br()
@@ -263,9 +284,9 @@ htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
 strong(em("Tip: Start by choosing a site"))
 # Create a filter input
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_all, group = ~ Site, multiple = T)
-filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_all, group = ~ Year, allLevels = TRUE)
-filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_all, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol, group = ~ Site, multiple = T)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol, group = ~ Year, allLevels = TRUE)
+filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_vol, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
 filter_select(id = "Work_Volunteer", label = "Choose Work or Volunteer", sharedData = sd_crew_vol, group = ~ Work_Volunteer, multiple = T)
 filter_select(id = "Native_or_Invasive", label = "Choose Invasive or MixedGrass", sharedData = sd_crew_vol, group = ~ Native_or_Invasive, multiple = T)
 
@@ -288,14 +309,121 @@ Row  {data-height=50}
 ```{r}
 htmltools::HTML("
   At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. <em>Note: There is still some missing data for 2025</em> 
-  <br><strong><em>Tip: Start by choosing a site</em></strong>")
+  <br><strong><em>Tip: Start by choosing a site & drag to select a specific species</em></strong>")
 ```
 
 Row  {.tabset .tabset-fade}
 -------------------------------------
 
-### **Box plots Invasive Biomass** 
-```{r species-richness-count-box}
+### **Box plots Top 5 Invasive Species Biomass** 
+```{r inv-biomass-box-inv-top5}
+# create custom colour-blind-friendly palette
+# custom_colours_3 <- c("Invasive" = "#fc8d62", 
+#                     "Native" = "#66c2a5", 
+#                     "MixedGrass" = "#8da0cb")
+ggplotly(
+  ggplot(sd_crew_vol_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site))) + 
+  geom_boxplot() +
+  coord_flip() +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+#  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Top 5 Invasive Species Biomass Removed',
+      fill = "",
+      x = "", 
+      y = "Biomass Removed (m3)"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+### **Jitter-Box plots Top 5 Invasive Species Biomass** 
+```{r inv-biomass-jitter-box-inv-top5}
+# create custom colour-blind-friendly palette
+# custom_colours_3 <- c("Invasive" = "#fc8d62", 
+#                     "Native" = "#66c2a5", 
+#                     "MixedGrass" = "#8da0cb")
+ggplotly(
+  ggplot(sd_crew_vol_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site))) + 
+  geom_boxplot() +
+  geom_jitter() +
+  coord_flip() +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+#  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Top 5 Invasive Species Biomass Removed',
+      fill = "",
+      x = "", 
+      y = "Biomass Removed (m3)"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+### **Jitter-Box plots Invasive Grass Species Biomass** 
+```{r inv-biomass-jitter-box-inv}
+# create custom colour-blind-friendly palette
+# custom_colours_3 <- c("Invasive" = "#fc8d62", 
+#                     "Native" = "#66c2a5", 
+#                     "MixedGrass" = "#8da0cb")
+ggplotly(
+  ggplot(sd_crew_vol_grs, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site))) + 
+  geom_boxplot() +
+  geom_jitter() +
+  coord_flip() +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+#  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Invasive Grass Species Biomass Removed',
+      fill = "",
+      x = "", 
+      y = "Biomass Removed (m3)"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+### **Box plots All Species Removal Biomass** 
+```{r inv-biomass-box}
 # create custom colour-blind-friendly palette
 # custom_colours_3 <- c("Invasive" = "#fc8d62", 
 #                     "Native" = "#66c2a5", 
@@ -330,8 +458,45 @@ ggplotly(
 ```
 
 
+### **Jitter-Box plots Invasive Biomass** 
+```{r inv-biomass-jitter-box}
+# create custom colour-blind-friendly palette
+# custom_colours_3 <- c("Invasive" = "#fc8d62", 
+#                     "Native" = "#66c2a5", 
+#                     "MixedGrass" = "#8da0cb")
+ggplotly(
+  ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site))) + 
+  geom_boxplot() +
+  geom_jitter() +
+  coord_flip() +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+#  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Invasive Biomass Removed',
+      fill = "",
+      x = "", 
+      y = "Biomass Removed (m3)"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
 ### **Box/Violin Widgets**
-```{r}
+```{r inv-biomass-widget-box-violin}
 ggplotly(
   ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
                                                           text = paste("Year:", Year,
@@ -378,7 +543,7 @@ ggplotly(
 ```
 
 ### **Scatter plots Invasive Biomass** 
-```{r species-richness-count-scatter}
+```{r inv-biomass-scatter}
 # create custom colour-blind-friendly palette
 # custom_colours_3 <- c("Invasive" = "#fc8d62", 
 #                     "Native" = "#66c2a5", 
