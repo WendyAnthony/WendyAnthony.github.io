@@ -258,7 +258,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 08:54</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 09:03</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -1035,7 +1035,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Species Richness at Oak Haven and Matson',
+      title='Species Richness Count at Oak Haven and Matson',
       fill = "",
       x = "Treatment", 
       y = "Species Count") +
@@ -1051,7 +1051,7 @@ ggplotly(
     ))
 ```
 
-### **Facet-year Species Counts** 
+### **Species Counts by Year** 
 ```{r species-richness-count-facet-yr}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -1091,7 +1091,7 @@ ggplotly(
     ))
 ```
 
-### **Facet-site Species Counts** 
+### **Species Counts by Site** 
 ```{r species-richness-count-facet-site}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -1323,43 +1323,44 @@ ggplotly(
     ))
 ```
 
-### All Species 
-```{r}
-# create custom colour-blind-friendly palette
-custom_colours_2 <- c("Treated" = "#b2df8a", 
-                    "Untreated" = "#1f78b4")
 
-ggplotly(
-  ggplot(sd_cover, aes(reorder(Species, desc(Species)), mean_value, fill = Treated, 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site,
-                                                          "\nSpecies:", Species,      
-                                                          "\nNative or Invasive:", Native_or_Invasive,  
-                                                          "\nTreated:", Treated,
-                                                          "\nMean % Value:", mean_value,
-                                                          "\nSD Value:", sd_value))) + 
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
-  coord_flip() + 
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-  scale_fill_manual(values = custom_colours_2) +
-        labs(
-          title='All Species Mean % Cover by Treatment',
-          x = "", y = "Mean % Cover", fill = ""), 
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    #x = 0.5 legend too close to x axis label
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.1
-    ))
+```{r}
+# ### All Species 
+# # create custom colour-blind-friendly palette
+# custom_colours_2 <- c("Treated" = "#b2df8a", 
+#                     "Untreated" = "#1f78b4")
+# 
+# ggplotly(
+#   ggplot(sd_cover, aes(reorder(Species, desc(Species)), mean_value, fill = Treated, 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nSpecies:", Species,      
+#                                                           "\nNative or Invasive:", Native_or_Invasive,  
+#                                                           "\nTreated:", Treated,
+#                                                           "\nMean % Value:", mean_value,
+#                                                           "\nSD Value:", sd_value))) + 
+#   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+#   coord_flip() + 
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#   scale_fill_manual(values = custom_colours_2) +
+#         labs(
+#           title='All Species Mean % Cover by Treatment',
+#           x = "", y = "Mean % Cover", fill = ""), 
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.1
+#     ))
 ```
 
-### All Species (facet-treatment)
+### All Species by Site
 ```{r}
 # create custom colour-blind-friendly palette
 custom_colours_2 <- c("Treated" = "#b2df8a", 
