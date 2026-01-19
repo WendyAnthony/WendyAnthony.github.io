@@ -236,7 +236,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-18 13:13</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 05:44</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -264,7 +264,7 @@ HTML("<span style='font-size:75%';>wanthony@uvic.ca</span>")
 htmltools::br()
 ```
 
-  Crew Data all
+  Crew Data
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -315,7 +315,7 @@ htmltools::HTML("
 Row  {.tabset .tabset-fade}
 -------------------------------------
 
-### **Box plots Top 5 Invasive Species Biomass** 
+### **Box Top 5 Species Biomass** 
 ```{r inv-biomass-box-inv-top5}
 # create custom colour-blind-friendly palette
 # custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -350,7 +350,7 @@ ggplotly(
     ))
 ```
 
-### **Jitter-Box plots Top 5 Invasive Species Biomass** 
+### **Jitter-Box Top 5 Species Biomass** 
 ```{r inv-biomass-jitter-box-inv-top5}
 # create custom colour-blind-friendly palette
 # custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -386,7 +386,7 @@ ggplotly(
     ))
 ```
 
-### **Jitter-Box plots Invasive Grass Species Biomass** 
+### **Jitter-Box Invasive Grass Biomass** 
 ```{r inv-biomass-jitter-box-inv}
 # create custom colour-blind-friendly palette
 # custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -423,7 +423,7 @@ ggplotly(
 ```
 
 
-### **Scatter plots Hours per Year** 
+### **Scatter Hours per Year** 
 ```{r inv-hours-scatter-year}
 ggplotly(
   ggplot(sd_crew_vol_inv, aes(x = Date, y = Crew_Hours, color = Site, 
@@ -460,7 +460,7 @@ ggplotly(
     ))
 ```
 
-### **Scatter plots Biomass per Year** 
+### **Scatter Biomass per Year** 
 ```{r inv-biomass-scatter-year}
 ggplotly(
   ggplot(sd_crew_vol_inv, aes(x = Date, y = Biomass_Removed_m3, color = Site, 
@@ -497,7 +497,8 @@ ggplotly(
     ))
 ```
 
-### **Box plots All Species Removal Biomass** 
+
+### **Box All Species Biomass** 
 ```{r inv-biomass-box}
 # create custom colour-blind-friendly palette
 # custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -533,7 +534,7 @@ ggplotly(
 ```
 
 
-### **Jitter-Box plots Invasive Biomass** 
+### **Jitter-Box Species Biomass** 
 ```{r inv-biomass-jitter-box}
 # create custom colour-blind-friendly palette
 # custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -617,7 +618,7 @@ ggplotly(
          ))
 ```
 
-### **Scatter plots Invasive Biomass** 
+### **Scatter Species Biomass** 
 ```{r inv-biomass-scatter}
 # create custom colour-blind-friendly palette
 # custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -654,7 +655,7 @@ ggplotly(
 ```
 
 
-### Datatable Crew, Volunteer Hours & Biomass
+### Datatable
 ```{r data-table-combine}
 htmltools::h5("Crew amd Volunteer Hours & Biomass Datatable")
 htmltools::br()
@@ -678,7 +679,7 @@ htmltools::br()
 
 
 
-  Invasive Biomass Hours
+  Invasive Biomass
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -930,7 +931,7 @@ ggplotly(
     y = -0.2
     ))
 ```
-### Biomass / Top 5 Species (Facet-year)
+### Facet-year Top 5 Species
 ```{r inv-sp-biomass-top5-facet-yr}
 
 ggplotly(
@@ -972,7 +973,7 @@ ggplotly(
     ))
 ```
 
-### Biomass / Top 5 Species (Facet-site)
+### Facet-site Top 5 Species
 ```{r inv-sp-biomass-top5-facet-site}
 
 ggplotly(
@@ -1014,7 +1015,7 @@ ggplotly(
     ))
 ```
 
-### Biomass / All Species
+### All Species
 ```{r inv-sp-biomass}
 
 ggplotly(
@@ -1181,7 +1182,7 @@ ggplotly(
     ))
 ```
 
-### **Species Counts (Facet-year)** 
+### **Facet-year Species Counts** 
 ```{r species-richness-count-facet-yr}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -1221,7 +1222,7 @@ ggplotly(
     ))
 ```
 
-### **Species Counts (Facet-site)** 
+### **Facet-site Species Counts** 
 ```{r species-richness-count-facet-site}
 # create custom colour-blind-friendly palette
 custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -1261,7 +1262,7 @@ ggplotly(
 ```
 
 
-### Datatable Count
+### Datatable
 ```{r data-table-count}
 htmltools::h5("Count Datatable")
 htmltools::br()
@@ -1280,7 +1281,7 @@ htmltools::br()
            ))))
 ```
 
- Mean % Cover
+ Cover
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -1527,7 +1528,7 @@ ggplotly(
     ))
 ```
 
-### Datatable Cover
+### Datatable
 ```{r data-table-cover}
 htmltools::h5("Cover Datatable")
 htmltools::br()
@@ -1544,6 +1545,76 @@ htmltools::br()
                          paging = FALSE,                         
              columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
            )))
+```
+
+
+Density Plots
+=====================================  
+
+Inputs {.sidebar data-width=250}
+-----------------------------------------------
+
+```{r filter-crew-hours-all-density}
+#############################################
+h4("Filtered Statistics")
+#p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours"))
+
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+
+#############################################
+h4("Filters")
+strong(em("Tip: Start by choosing a site"))
+# Create a filter input
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol, group = ~ Site, multiple = T)
+
+#############################################
+htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx and Matson Field Logs</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
+```
+
+
+Row  {data-height=40}
+-----------------------------------------------
+
+### ***Density Plots***
+```{r}
+htmltools::HTML("
+  Density plots show the distribution of a specific variablem e.g. number of times the work hours or biomass removed equal a certain amount. They do not respond to filters for Year, or Species, or Work/Volunteer")
+```
+
+
+Row {.tabset .tabset-fade}
+---------------------------------------------
+
+
+### **Density Hours** 
+```{r inv-density-hours}
+ggplotly(
+  ggplot(sd_crew_vol, aes(x = Crew_Hours)) +
+    geom_density(aes(fill = Site), alpha = 0.5) + 
+    labs(title = "Density plot of crew hours") +
+  theme_minimal() 
+  ) 
+```
+
+### **Density biomass** 
+```{r inv-density-biomass}
+ggplotly(
+  ggplot(sd_crew_vol, aes(x = Biomass_Removed_m3)) +
+    geom_density(aes(fill = Site), alpha = 0.5) + 
+    labs(title = "Density plot of Invasive Biomass Removed (m3)") +
+  theme_minimal() 
+  ) 
 ```
 
 
