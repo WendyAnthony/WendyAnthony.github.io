@@ -302,7 +302,7 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=50}
+Row  {data-height=55}
 -----------------------------------------------
 
 ### ***Crew Data***
@@ -709,7 +709,7 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=50}
+Row  {data-height=55}
 -----------------------------------------------
 
 ### ***Crew Data Summarized***
@@ -1102,7 +1102,7 @@ htmltools::br()
 Species Richness
 =====================================  
 
-Inputs {.sidebar data-width=250}
+Inputs {.sidebar data-width=260}
 -----------------------------------------------
 
 ```{r filter-input-count}
@@ -1284,7 +1284,7 @@ htmltools::br()
  Cover
 =====================================  
 
-Inputs {.sidebar data-width=250}
+Inputs {.sidebar data-width=255}
 -----------------------------------------------
 
 ```{r filter-input-cover}
