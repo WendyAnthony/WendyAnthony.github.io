@@ -258,7 +258,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 06:48</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 08:54</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -338,7 +338,7 @@ htmltools::HTML("
 Row  {.tabset .tabset-fade}
 -------------------------------------
 
-### **Box Top 5 Species Biomass** 
+### **Top 5 Species Biomass** 
 ```{r inv-biomass-box-inv-top5}
 # create custom colour-blind-friendly palette
 # custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -373,80 +373,8 @@ ggplotly(
     ))
 ```
 
-### **Jitter-Box Top 5 Species Biomass** 
-```{r inv-biomass-jitter-box-inv-top5}
-# create custom colour-blind-friendly palette
-# custom_colours_3 <- c("Invasive" = "#fc8d62", 
-#                     "Native" = "#66c2a5", 
-#                     "MixedGrass" = "#8da0cb")
-ggplotly(
-  ggplot(sd_crew_vol_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site))) + 
-  geom_boxplot() +
-  geom_jitter() +
-  coord_flip() +
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
-  theme(axis.text.y = element_text(size = 9)) +  
-          # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-#  scale_fill_manual(values = custom_colours_3) +
-  labs(
-      title='Top 5 Invasive Species Removed - Data Distribution Means, Variance and Outliers',
-      fill = "",
-      x = "", 
-      y = "Biomass Removed (m3)"), 
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
-```
 
-### **Jitter-Box Invasive Grass Biomass** 
-```{r inv-biomass-jitter-box-inv}
-# create custom colour-blind-friendly palette
-# custom_colours_3 <- c("Invasive" = "#fc8d62", 
-#                     "Native" = "#66c2a5", 
-#                     "MixedGrass" = "#8da0cb")
-ggplotly(
-  ggplot(sd_crew_vol_grs, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site))) + 
-  geom_boxplot() +
-  geom_jitter() +
-  coord_flip() +
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
-  theme(axis.text.y = element_text(size = 9)) +  
-          # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-#  scale_fill_manual(values = custom_colours_3) +
-  labs(
-      title='Invasive Grass Species Removed - Data Distribution Means, Variance and Outliers',
-      fill = "",
-      x = "", 
-      y = "Biomass Removed (m3)"), 
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
-```
-
-
-### **Scatter Hours per Year** 
+### **Hours per Year** 
 ```{r inv-hours-scatter-year}
 ggplotly(
   ggplot(sd_crew_vol_inv, aes(x = Date, y = Crew_Hours, color = Site, 
@@ -483,7 +411,7 @@ ggplotly(
     ))
 ```
 
-### **Scatter Biomass per Year** 
+### **Biomass per Year** 
 ```{r inv-biomass-scatter-year}
 ggplotly(
   ggplot(sd_crew_vol_inv, aes(x = Date, y = Biomass_Removed_m3, color = Site, 
@@ -507,7 +435,7 @@ ggplotly(
         labs(title='Biomass removal (m3) by HAT Crew & Volunteers',
           # subtitle='2025',
 #          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Biomass_Removed_m3",
-          x = "Date", y = "iomass Removed (m3)"), 
+          x = "Date", y = "Biomass Removed (m3)"), 
   tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
@@ -520,13 +448,13 @@ ggplotly(
     ))
 ```
 
-
 ### **Density Hours** 
 ```{r inv-density-hours}
 ggplotly(
   ggplot(sd_crew_vol, aes(x = Crew_Hours)) +
     geom_density(aes(fill = Site), alpha = 0.5) + 
     labs(title = "Density Distribution of Times Crew Worked Specific # Hours a Day",
+         caption = "test",
          x = "Crew Work Hours") +
   theme_minimal() 
   ) 
@@ -543,161 +471,56 @@ ggplotly(
   ) 
 ```
 
-### **Box All Species Biomass** 
-```{r inv-biomass-box}
-# create custom colour-blind-friendly palette
-# custom_colours_3 <- c("Invasive" = "#fc8d62", 
-#                     "Native" = "#66c2a5", 
-#                     "MixedGrass" = "#8da0cb")
-ggplotly(
-  ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site))) + 
-  geom_boxplot() +
-  coord_flip() +
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
-  theme(axis.text.y = element_text(size = 9)) +  
-          # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-#  scale_fill_manual(values = custom_colours_3) +
-  labs(
-      title='Invasive Biomass Removed',
-      fill = "",
-      x = "", 
-      y = "Biomass Removed (m3)"), 
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
-```
 
 
-### **Jitter-Box Species Biomass** 
-```{r inv-biomass-jitter-box}
-# create custom colour-blind-friendly palette
-# custom_colours_3 <- c("Invasive" = "#fc8d62", 
-#                     "Native" = "#66c2a5", 
-#                     "MixedGrass" = "#8da0cb")
-ggplotly(
-  ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site))) + 
-  geom_boxplot() +
-  geom_jitter() +
-  coord_flip() +
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
-  theme(axis.text.y = element_text(size = 9)) +  
-          # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-#  scale_fill_manual(values = custom_colours_3) +
-  labs(
-      title='Invasive Biomass Removed',
-      fill = "",
-      x = "", 
-      y = "Biomass Removed (m3)"), 
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
-```
-
-
-### **Box/Violin Widgets**
 ```{r inv-biomass-widget-box-violin}
-ggplotly(
-  ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site))) + 
-  geom_boxplot() +
-  coord_flip() +
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
-  theme(axis.text.y = element_text(size = 9)) +  
-          # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-#  scale_fill_manual(values = custom_colours_3) +
-  labs(
-      title='Invasive Biomass Removed',
-      fill = "",
-      x = "", 
-      y = "Biomass Removed (m3)"), 
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    )) %>%
-  layout(title = list("Invasive Species Biomass Removed", x = 0),
-         xaxis = list(title = "Biomass Removed (m3)"),
-         yaxis = list(title = ""),
-      #         width=900, height=620,
-         updatemenus = list( # dropdown
-           list(
-             buttons = list(
-               list(method = "restyle",
-                    args = list("type", "box"),
-                    label = "Boxplot"),
-               list(method = "restyle",
-                    args = list("type", "violin"),
-                    label = "Violin Plot")
-             )
-           )
-         ))
+# ### **Box/Violin Widgets**
+# ggplotly(
+#   ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site))) + 
+#   geom_boxplot() +
+#   coord_flip() +
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+#   theme(axis.text.y = element_text(size = 9)) +  
+#           # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+# #  scale_fill_manual(values = custom_colours_3) +
+#   labs(
+#       title='Invasive Biomass Removed',
+#       fill = "",
+#       x = "", 
+#       y = "Biomass Removed (m3)"), 
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     )) %>%
+#   layout(title = list("Invasive Species Biomass Removed", x = 0),
+#          xaxis = list(title = "Biomass Removed (m3)"),
+#          yaxis = list(title = ""),
+#       #         width=900, height=620,
+#          updatemenus = list( # dropdown
+#            list(
+#              buttons = list(
+#                list(method = "restyle",
+#                     args = list("type", "box"),
+#                     label = "Boxplot"),
+#                list(method = "restyle",
+#                     args = list("type", "violin"),
+#                     label = "Violin Plot")
+#              )
+#            )
+#          ))
 ```
 
-### **Scatter Species Biomass** 
-```{r inv-biomass-scatter}
-# create custom colour-blind-friendly palette
-# custom_colours_3 <- c("Invasive" = "#fc8d62", 
-#                     "Native" = "#66c2a5", 
-#                     "MixedGrass" = "#8da0cb")
-ggplotly(
-  ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site))) + 
-  geom_point() +
-  coord_flip() +
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
-  theme(axis.text.y = element_text(size = 9)) +  
-          # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-#  scale_fill_manual(values = custom_colours_3) +
-  labs(
-      title='Invasive Biomass Removed',
-      fill = "",
-      x = "", 
-      y = "Biomass Removed (m3)"), 
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(
-      orientation = "h",
-      xanchor="center",
-      x = 0.5,
-      # gives some space between x axis label and legend
-      y = -0.2
-    ))
-```
+
 
 
 ### Datatable
@@ -850,47 +673,47 @@ ggplotly(
     ))
 ```
 
-### Biomass / Hours (Efficiency)
+
 ```{r crew-biomass-removed-per-hrs-ratio}
-
-custom_colours_4b <- c("2022" = "#ffff33", 
-                    "2023" = "#4daf4a", 
-                    "2024" = "#984ea3", 
-                    "2025" = "#ff7f00")
-
-ggplotly(
-ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill = as.factor(Year), 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site,
-                                                          "\nCrew Hours:", Crew_Hours,
-                                                          "\nBiomass Removed m3:", Biomass_Removed_m3,  
-                                                          "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
-                                                          "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
-                                                          "\nArea Cleared m2:", Area_Cleared_m2,
-                                                          "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
-  coord_flip() +    
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-    scale_fill_manual(values = custom_colours_4b) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
-      # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-  labs(
-        title='Ratio of Total Biomass Removed to Work Crew Hours (efficiency)',
-        fill = "Year",
-        x = "", 
-        y = "Ratio of Biomass m3 Removed per Labour Hour"
-        ), 
-    tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
+### Biomass / Hours (Efficiency)
+# custom_colours_4b <- c("2022" = "#ffff33", 
+#                     "2023" = "#4daf4a", 
+#                     "2024" = "#984ea3", 
+#                     "2025" = "#ff7f00")
+# 
+# ggplotly(
+# ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill = as.factor(Year), 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nCrew Hours:", Crew_Hours,
+#                                                           "\nBiomass Removed m3:", Biomass_Removed_m3,  
+#                                                           "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
+#                                                           "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
+#                                                           "\nArea Cleared m2:", Area_Cleared_m2,
+#                                                           "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
+#   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+#   coord_flip() +    
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#     scale_fill_manual(values = custom_colours_4b) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
+#       # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+#   labs(
+#         title='Ratio of Total Biomass Removed to Work Crew Hours (efficiency)',
+#         fill = "Year",
+#         x = "", 
+#         y = "Ratio of Biomass m3 Removed per Labour Hour"
+#         ), 
+#     tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
 ```
 
 
@@ -921,10 +744,10 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
       # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
   labs(
-       title='Ratio of Total Work Crew Hours to Biomass Removed (cost)',
+       title='Total Work Crew Hours Required to Remove each m3 Biomass (cost)',
       fill = "Year",
       x = "", 
-    y = "Ratio of Labour Hours per Biomass m3 Removed (cost)"
+    y = "Ratio of Labour Hours per Biomass m3 Removed"
     ) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
   tooltip = "text",
@@ -938,88 +761,88 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
     ))
 ```
 
-### 1. Biomass / Top 5 Species
+
 ```{r inv-sp-biomass-top5}
-
-ggplotly(
-  ggplot(sd_bio_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site,
-                                                          "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
-                                                          "\nCrew Hours:", Crew_Hours,
-                                                          "\nBiomass Removed (m3):", Biomass_Removed_m3,  
-                                                          "\nArea Cleared (m2):", Area_Cleared_m2))) + 
-  geom_bar(stat = "identity", width = 0.9, position = "dodge") +
-  coord_flip() + 
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-      labs(
-          title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
-          x = "",   
-          y = "Biomass Removed (m3)",   
-          fill = "Site"
-          ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-    # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-    scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
-  
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    #x = 0.5 legend too close to x axis label
-    # x = 1 # too far to right
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
+# ### 1. Biomass / Top 5 Species
+# ggplotly(
+#   ggplot(sd_bio_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
+#                                                           "\nCrew Hours:", Crew_Hours,
+#                                                           "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+#                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
+#   geom_bar(stat = "identity", width = 0.9, position = "dodge") +
+#   coord_flip() + 
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#       labs(
+#           title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
+#           x = "",   
+#           y = "Biomass Removed (m3)",   
+#           fill = "Site"
+#           ) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#     # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+#     scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
+#   
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     # x = 1 # too far to right
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
 ```
 
-### 2. Facet-year Top 5 Species
+
 ```{r inv-sp-biomass-top5-facet-yr}
-
-ggplotly(
-  ggplot(sd_bio_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site,
-                                                          "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
-                                                          "\nCrew Hours:", Crew_Hours,
-                                                          "\nBiomass Removed (m3):", Biomass_Removed_m3,  
-                                                          "\nArea Cleared (m2):", Area_Cleared_m2))) + 
-  geom_bar(stat = "identity", width = 0.9, position = "dodge") +
-  facet_wrap( ~ Year) +
-  coord_flip() + 
-  theme_minimal() + #get rid of grey background and tick marks
-    # needs to be below first theme
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
-  theme(legend.position ="bottom") + 
-      labs(
-          title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
-          x = "",   
-          y = "Biomass Removed (m3)",   
-          fill = "Site"
-          ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-    # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-    scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90)), 
-  
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    #x = 0.5 legend too close to x axis label
-    # x = 1 # too far to right
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
+### 2. Facet-year Top 5 Species
+# ggplotly(
+#   ggplot(sd_bio_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
+#                                                           "\nCrew Hours:", Crew_Hours,
+#                                                           "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+#                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
+#   geom_bar(stat = "identity", width = 0.9, position = "dodge") +
+#   facet_wrap( ~ Year) +
+#   coord_flip() + 
+#   theme_minimal() + #get rid of grey background and tick marks
+#     # needs to be below first theme
+#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
+#   theme(legend.position ="bottom") + 
+#       labs(
+#           title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
+#           x = "",   
+#           y = "Biomass Removed (m3)",   
+#           fill = "Site"
+#           ) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#     # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+#     scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90)), 
+#   
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     # x = 1 # too far to right
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
 ```
 
-### 3. Facet-site Top 5 Species
+### Top 5 Species by Site
 ```{r inv-sp-biomass-top5-facet-site}
 
 ggplotly(
@@ -1061,45 +884,44 @@ ggplotly(
     ))
 ```
 
-### All Species
+
 ```{r inv-sp-biomass}
-
-ggplotly(
-  ggplot(sd_bio_inv, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site,
-                                                          "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
-                                                          "\nCrew Hours:", Crew_Hours,
-                                                          "\nBiomass Removed (m3):", Biomass_Removed_m3,  
-                                                          "\nArea Cleared (m2):", Area_Cleared_m2))) + 
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
-  coord_flip() + 
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-      labs(
-          title = "Biomass m3 of All Invasive Species Cleared", 
-          x = "",   
-          y = "Biomass Removed (m3)",   
-          fill = "Site"
-          ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-    # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-    scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
-  
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    #x = 0.5 legend too close to x axis label
-    # x = 1 # too far to right
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
+### All Species
+# ggplotly(
+#   ggplot(sd_bio_inv, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
+#                                                           "\nCrew Hours:", Crew_Hours,
+#                                                           "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+#                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
+#   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+#   coord_flip() + 
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#       labs(
+#           title = "Biomass m3 of All Invasive Species Cleared", 
+#           x = "",   
+#           y = "Biomass Removed (m3)",   
+#           fill = "Site"
+#           ) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#     # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+#     scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
+#   
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     # x = 1 # too far to right
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
 ```
-
 
 
 ### Datatable Crew 
@@ -1120,6 +942,7 @@ htmltools::br()
              columnDefs = list(list(className = 'dt-center', targets = c(1:7))
            )))
 ```
+
 
 ### Datatable Biomass  
 
