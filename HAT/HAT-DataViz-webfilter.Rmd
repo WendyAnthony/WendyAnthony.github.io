@@ -1131,7 +1131,7 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=100}
+Row  {data-height=120}
 -----------------------------------------------
 
 ### ***Species Richness Unique Count @ Matson & Oak Haven***
@@ -1583,7 +1583,7 @@ htmltools::br()
 ```
 
 
-Row  {data-height=40}
+Row  {data-height=60}
 -----------------------------------------------
 
 ### ***Density Plots***
