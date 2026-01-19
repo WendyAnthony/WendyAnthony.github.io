@@ -236,7 +236,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 06:17</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 06:37</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -336,7 +336,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
 #  scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Top 5 Invasive Species Biomass Removed',
+      title='Top 5 Invasive Species Removed - Data Distribution Means, Variance and Outliers',
       fill = "",
       x = "", 
       y = "Biomass Removed (m3)"), 
@@ -372,7 +372,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
 #  scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Top 5 Invasive Species Biomass Removed',
+      title='Top 5 Invasive Species Removed - Data Distribution Means, Variance and Outliers',
       fill = "",
       x = "", 
       y = "Biomass Removed (m3)"), 
@@ -408,7 +408,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
 #  scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Invasive Grass Species Biomass Removed',
+      title='Invasive Grass Species Removed - Data Distribution Means, Variance and Outliers',
       fill = "",
       x = "", 
       y = "Biomass Removed (m3)"), 
@@ -774,7 +774,7 @@ ggplotly(
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +  
   labs(
-        title = "Staff Hours Removing Invasive Species",
+        title = "Staff Hours Removing Invasive Species by Site",
         fill = "Year",
         x = "", y = "Staff Hours"), 
   tooltip = "text",
@@ -814,7 +814,7 @@ ggplotly(
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +  
         labs(
-          title='Invasive Species Biomass (m3) Removal',
+          title='Invasive Species Biomass (m3) Removal by Site',
           fill = "Year",
           x = "", y = "Biomass Removed (m3)"),
   tooltip = "text",
@@ -916,7 +916,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
     ))
 ```
 
-### Biomass / Top 5 Species
+### 1. Biomass / Top 5 Species
 ```{r inv-sp-biomass-top5}
 
 ggplotly(
@@ -954,7 +954,8 @@ ggplotly(
     y = -0.2
     ))
 ```
-### Facet-year Top 5 Species
+
+### 2. Facet-year Top 5 Species
 ```{r inv-sp-biomass-top5-facet-yr}
 
 ggplotly(
@@ -996,7 +997,7 @@ ggplotly(
     ))
 ```
 
-### Facet-site Top 5 Species
+### 3. Facet-site Top 5 Species
 ```{r inv-sp-biomass-top5-facet-site}
 
 ggplotly(
@@ -1054,7 +1055,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-          title = "Biomass m3 of Invasive Species Cleared", 
+          title = "Biomass m3 of All Invasive Species Cleared", 
           x = "",   
           y = "Biomass Removed (m3)",   
           fill = "Site"
@@ -1229,7 +1230,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Species Richness at Oak Haven and Matson',
+      title='Species Richness Count at Oak Haven and Matson',
       fill = "",
       x = "Treatment", 
       y = "Species Count") +
@@ -1268,7 +1269,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Species Richness at Oak Haven and Matson',
+      title='Species Richness Count at Oak Haven and Matson',
       fill = "",
       x = "Treatment", 
       y = "Species Count") +
