@@ -236,7 +236,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 05:52</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 06:17</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -283,6 +283,7 @@ htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 #############################################
 h4("Filters")
 strong(em("Tip: Start by choosing a site"))
+p("Note: Density plots only respond to Site filter")
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol, group = ~ Year, allLevels = TRUE)
@@ -497,6 +498,28 @@ ggplotly(
     ))
 ```
 
+
+### **Density Hours** 
+```{r inv-density-hours}
+ggplotly(
+  ggplot(sd_crew_vol, aes(x = Crew_Hours)) +
+    geom_density(aes(fill = Site), alpha = 0.5) + 
+    labs(title = "Density Distribution of Times Crew Worked Specific # Hours a Day",
+         x = "Crew Work Hours") +
+  theme_minimal() 
+  ) 
+```
+
+### **Density Biomass** 
+```{r inv-density-biomass}
+ggplotly(
+  ggplot(sd_crew_vol, aes(x = Biomass_Removed_m3)) +
+    geom_density(aes(fill = Site), alpha = 0.5) + 
+    labs(title = "Density Distribution of Same Amounts of Invasive Biomass Removed Each Time",
+         x = "Biomass Removed (m3)") +
+  theme_minimal() 
+  ) 
+```
 
 ### **Box All Species Biomass** 
 ```{r inv-biomass-box}
@@ -1547,75 +1570,6 @@ htmltools::br()
            )))
 ```
 
-
-Density Plots
-=====================================  
-
-Inputs {.sidebar data-width=250}
------------------------------------------------
-
-```{r filter-crew-hours-all-density}
-#############################################
-h4("Filtered Statistics")
-#p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
-p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
-p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours"))
-
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-
-#############################################
-h4("Filters")
-strong(em("Tip: Start by choosing a site"))
-# Create a filter input
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol, group = ~ Site, multiple = T)
-
-#############################################
-htmltools::br()
-htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx and Matson Field Logs</em>")
-htmltools::br()
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-htmltools::br()
-htmltools::br()
-```
-
-
-Row  {data-height=60}
------------------------------------------------
-
-### ***Density Plots***
-```{r}
-htmltools::HTML("
-  Density plots show the distribution of a specific variable e.g. number of times the work hours or biomass removed equal a certain amount. They do not respond to filters for Year, or Species, or Work/Volunteer")
-```
-
-
-Row {.tabset .tabset-fade}
----------------------------------------------
-
-
-### **Density Hours** 
-```{r inv-density-hours}
-ggplotly(
-  ggplot(sd_crew_vol, aes(x = Crew_Hours)) +
-    geom_density(aes(fill = Site), alpha = 0.5) + 
-    labs(title = "Density plot of crew hours") +
-  theme_minimal() 
-  ) 
-```
-
-### **Density biomass** 
-```{r inv-density-biomass}
-ggplotly(
-  ggplot(sd_crew_vol, aes(x = Biomass_Removed_m3)) +
-    geom_density(aes(fill = Site), alpha = 0.5) + 
-    labs(title = "Density plot of Invasive Biomass Removed (m3)") +
-  theme_minimal() 
-  ) 
-```
 
 
  Map
