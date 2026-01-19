@@ -29,6 +29,28 @@ library(htmltools)
 library(summarywidget)
 ```
 
+```{css}
+/* Set font color of inactive tab to green */
+.nav-tabs-custom .nav-tabs > li > a {
+  color: green;
+} 
+
+/* Set font color of active tab to purple */
+.nav-tabs-custom .nav-tabs > li.active > a {
+  color: purple;
+} 
+
+/* To set color on hover */
+.nav-tabs-custom .nav-tabs > li.active > a:hover {
+  color: purple;
+}
+
+/* To set tab background colour 
+.nav-tabs-custom .nav-tabs  {
+  background-color: lightgray;
+}
+*/
+```
 
 ```{r data-download, include = FALSE}
 # Load Data
@@ -236,7 +258,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 06:37</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 06:48</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
