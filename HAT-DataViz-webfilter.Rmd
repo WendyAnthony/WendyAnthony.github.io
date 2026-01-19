@@ -1,0 +1,1669 @@
+---
+title: "Visualizing HAT Monitoring Data"
+output: 
+  flexdashboard::flex_dashboard:
+    css: flexbox-style.css
+    orientation: rows
+    vertical_layout: fill
+    theme: 
+      version: 4
+      bootswatch: flatly
+    source_code: embed
+---
+
+
+```{r include=FALSE}
+knitr::opts_chunk$set(
+	message = FALSE,
+	warning = FALSE
+)
+
+library(flexdashboard)
+library(DT)
+library(tidyverse)
+library(crosstalk)
+library(plotly)
+library(leaflet)
+library(htmltools)
+# devtools::install_github("kent37/summarywidget")
+library(summarywidget)
+```
+
+```{css}
+/* Set font color of inactive tab to green */
+.nav-tabs-custom .nav-tabs > li > a {
+  color: green;
+} 
+
+/* Set font color of active tab to purple */
+.nav-tabs-custom .nav-tabs > li.active > a {
+  color: purple;
+} 
+
+/* To set color on hover */
+.nav-tabs-custom .nav-tabs > li.active > a:hover {
+  color: purple;
+}
+
+/* To set tab background colour 
+.nav-tabs-custom .nav-tabs  {
+  background-color: lightgray;
+}
+*/
+```
+
+```{r data-download, include = FALSE}
+# Load Data
+################################# 
+# Sites Data
+HAT_sites_HAT <- read.csv("data/HAT-Sites-HAT.csv", fileEncoding="UTF-8")
+str(HAT_sites_HAT)
+head(HAT_sites_HAT)
+
+
+################################# 
+crew_data_sep_sub_1 <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
+
+# Crew Data
+crew_data_sep_sub_1 <- crew_data_sep_sub_1 %>% rename(Site = Work_Site)
+
+crew_data_sep_sub_1$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_1$Site)
+crew_data_sep_sub_1$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_1$Site)
+crew_data_sep_sub_1$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_1$Site)
+colnames(crew_data_sep_sub_1)
+
+# Date format
+str(crew_data_sep_sub_1)
+crew_data_sep_sub_1$Date <- as.Date(crew_data_sep_sub_1$Date)
+
+str(crew_data_sep_sub_1)
+# remove 3 rows with NA
+# Matson 2025-10-21
+# Matson 2024-11-14
+# Camas Hill 2025-09-04
+
+crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
+  filter(Date != "2025-10-21")
+crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
+  filter(Date != "2024-11-14")
+crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
+  filter(Date != "2025-09-04")
+
+# Crew Data
+crew_data_sep_sub_sum_by_group_site_1 <- read.csv("data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", fileEncoding="UTF-8")
+str(crew_data_sep_sub_sum_by_group_site_1)
+head(crew_data_sep_sub_sum_by_group_site_1)
+
+crew_data_sep_sub_sum_bio_inv <- read.csv("data/crew_data_sep_sub_sum_bio_inv.csv", fileEncoding="UTF-8")
+
+################################# 
+## Matson Field log volunteer 
+volunteer_data_matson <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-Field-Log-2022-2025.csv", fileEncoding="UTF-8")
+volunteer_data_matson$Date <- as.Date(volunteer_data_matson$Date)
+str(volunteer_data_matson)
+colnames(volunteer_data_matson)
+
+################################# 
+# Cover data
+cover_data <- read.csv("data/HAT_cover_mean.csv", fileEncoding="UTF-8")
+
+################################# 
+# Species counts
+species_count <- read.csv("data/species_counts.csv", fileEncoding="UTF-8")
+```
+
+
+```{r rename-site-location-worksite-columns-for-sd-group, include = FALSE}
+#############################################
+# Sites Data
+HAT_sites_HAT
+colnames(HAT_sites_HAT)
+HAT_sites_HAT$FullName <- HAT_sites_HAT$Site
+HAT_sites_HAT$Site <- gsub("Matson Conservation Area", "Matson", HAT_sites_HAT$Site)
+HAT_sites_HAT$Site <- gsub("Oak Haven Park", "Oak Haven", HAT_sites_HAT$Site)
+HAT_sites_HAT$Site <- gsub("Havenwood Park", "Havenwood", HAT_sites_HAT$Site)
+
+
+#############################################
+# Crew Data
+# Summary data totals per year per site
+crew_data_sep_sub_sum_by_group_site_rename_site <- crew_data_sep_sub_sum_by_group_site_1 %>%
+  rename(Site = Work_Site)
+
+crew_data_sep_sub_sum_by_group_site_rename_site$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_sum_by_group_site_rename_site$Site)
+crew_data_sep_sub_sum_by_group_site_rename_site$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_sum_by_group_site_rename_site$Site)
+crew_data_sep_sub_sum_by_group_site_rename_site$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_sum_by_group_site_rename_site$Site)
+
+crew_data_sep_sub_sum_bio_inv_rename_site <- crew_data_sep_sub_sum_bio_inv %>%
+  rename(Site = Work_Site)
+
+crew_data_sep_sub_sum_bio_inv_rename_site$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_sum_bio_inv_rename_site$Site)
+crew_data_sep_sub_sum_bio_inv_rename_site$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_sum_bio_inv_rename_site$Site)
+
+crew_data_sep_sub_sum_bio_inv_rename_site$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_sum_bio_inv_rename_site$Site)
+
+# Top 5 Invasive Species
+colnames(crew_data_sep_sub_sum_bio_inv_rename_site)
+unique(crew_data_sep_sub_sum_bio_inv_rename_site$Invasive_Species_Cleared)
+
+crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
+
+
+#############################################
+## Matson Field log volunteer 
+str(volunteer_data_matson)
+colnames(volunteer_data_matson)
+volunteer_data_matson_sub <- subset(volunteer_data_matson, select = -c(1,4,6,8,10,11,14,17:21))
+colnames(volunteer_data_matson_sub)
+
+
+# change column order to same as volunteer_data_matson
+colnames(crew_data_sep_sub_1_filtered)
+#crew_data_sep_sub_1_filtered <- subset(crew_data_sep_sub_1_filtered, select = -c(3))
+crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1_filtered %>%
+  relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer)
+
+#############################################
+# rbind work and volunteer
+crew_vol <- rbind(crew_data_sep_sub_1_filtered, volunteer_data_matson_sub)
+
+unique(crew_vol$Native_or_Invasive)
+crew_vol_grs <- crew_vol[crew_vol$Native_or_Invasive == "MixedGrass",]
+crew_vol_inv <- crew_vol[crew_vol$Native_or_Invasive == "Invasive",]
+
+
+crew_vol_inv_top5 <- crew_vol %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
+
+#############################################
+# Cover Data
+cover_data_rename_site <- cover_data %>%
+  rename(Site = Location)
+
+cover_data_rename_site$Site <- gsub("Matson Conservation Area", "Matson", cover_data_rename_site$Site)
+cover_data_rename_site$Site <- gsub("Oak Haven Park", "Oak Haven", cover_data_rename_site$Site)
+cover_data_rename_site$Site <- gsub("Havenwood Park", "Havenwood", cover_data_rename_site$Site)
+
+colnames(cover_data_rename_site)
+cover_data_rename_site_sub <- subset(cover_data_rename_site, select = -c(9,10,11))
+ 
+unique(cover_data_rename_site_sub$Native_or_Invasive)
+cover_data_rename_site_sub_grs <- cover_data_rename_site_sub[cover_data_rename_site_sub$Native_or_Invasive == "MixedGrass",]
+cover_data_rename_site_sub_inv <- cover_data_rename_site_sub[cover_data_rename_site_sub$Native_or_Invasive == "Invasive",]
+cover_data_rename_site_sub_nat <- cover_data_rename_site_sub[cover_data_rename_site_sub$Native_or_Invasive == "Native",]
+
+cover_data_rename_site_sub_nat_t <- cover_data_rename_site_sub_nat[cover_data_rename_site_sub_nat$Treated == "Treated",]
+cover_data_rename_site_sub_nat_u <- cover_data_rename_site_sub_nat[cover_data_rename_site_sub_nat$Treated == "Untreated",]
+cover_data_rename_site_sub_inv_t <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Treated",]
+cover_data_rename_site_sub_inv_u <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Untreated",]
+
+
+#############################################
+# drop unknown species
+species_count <- species_count[-c(25), ]
+species_count <- species_count %>%
+  rename(Site = Location)
+```
+
+```{r shared-data, include = FALSE}
+### Create sharable database using Crosstalk package
+
+#############################################
+# crew_data_sep_sub.csv 238 obs 9 variable
+# sd_crew_all <- SharedData$new(data = crew_data_sep_sub_1_filtered, group = "crew_all_group")
+#  sd_vol_mat <- SharedData$new(data = volunteer_data_matson_sub, group = "crew_all_group")
+# crew_vol = rbind with crew_data_sep_sub_1_filtered, volunteer_data_matson_sub
+sd_crew_vol <- SharedData$new(data = crew_vol, group = "crew_all_group")
+
+sd_crew_vol_grs <- SharedData$new(data = crew_vol_grs, group = "crew_all_group")
+sd_crew_vol_inv <- SharedData$new(data = crew_vol_inv, group = "crew_all_group")
+
+sd_crew_vol_inv_top5 <- SharedData$new(data = crew_vol_inv_top5, group = "top5_group_bar")
+
+sd_crew_data_sep_sub_sum_bio_inv_top5 <- SharedData$new(data = crew_data_sep_sub_sum_bio_inv_top5, group = "top5_group_facet")
+
+
+#############################################
+# Summary data totals per year per site
+# used in Invasive Biomass charts
+sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_rename_site, group = "crew_group")
+# crew_data_sep_sub_sum_bio_inv.csv
+sd_bio_inv <- SharedData$new(data = crew_data_sep_sub_sum_bio_inv_rename_site, group = "crew_group")
+# sd_bio_inv_top5 <- SharedData$new(data = crew_data_sep_sub_sum_bio_inv_top5, group = "crew_group")
+
+
+#############################################
+sd_cover <- SharedData$new(data = cover_data_rename_site_sub, group = "cover_group")
+
+sd_cover_grs <- SharedData$new(data = cover_data_rename_site_sub_grs, group = "cover_group")
+sd_cover_inv <- SharedData$new(data = cover_data_rename_site_sub_inv, group = "cover_group")
+sd_cover_nat <- SharedData$new(data = cover_data_rename_site_sub_nat, group = "cover_group")
+
+sd_cover_nat_t <- SharedData$new(data = cover_data_rename_site_sub_nat_t, group = "cover_group")
+sd_cover_nat_u <- SharedData$new(data = cover_data_rename_site_sub_nat_u, group = "cover_group")
+sd_cover_inv_t <- SharedData$new(data = cover_data_rename_site_sub_inv_t, group = "cover_group")
+sd_cover_inv_u <- SharedData$new(data = cover_data_rename_site_sub_inv_u, group = "cover_group")
+
+
+#############################################
+sd_count <- SharedData$new(data = species_count, group = "count_group")
+
+
+#############################################
+sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create sharable database using Crosstalk package
+```
+
+
+ About
+=====================================  
+
+ 
+```{r about}
+#htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 10:35</strong>")
+hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+# <h5>RNS Data Visualization Project</h5>
+HTML("
+  <br>This interactive data visualization tool was created as a final project for University of Victoria Restoration of Natural Ecosystems ER390, with HAT as a community partner, supervised by Nancy Shackelford
+     
+  <h5>Data</h5>
+     Three different data files, of 9 HAT-only-Managed-Sites were shared by HAT: <br>
+     1. Cover Data 2024-2025 (species richness, percent native/invasive)<br>
+     2. HAT Restoration Crew Data (invasive species removal)<br>
+     3. Matson Conservation Area -  Matson Mattocks Field Logs (volunteer invasive species removal)
+    
+  <h5>How to use this interactive data visualization tool</h5>
+  * Tabs in the top header host different data visualization charts and datatables<br>
+  * Data Visualizations and tables are responsive to data filters<br>
+  * each tab uses different data and different filters<br>
+  * filters must be cleared, using delete or backspace key in order to start new filter<br>
+  * all years and sites are shown until data is filtered<br>
+  * Filtered summary statistics accompany each data set<br>
+  * hover over data visualizations to view tooltips<br>
+  * data visualization can be focused by with a click-drag over a certain area; double-click within chart to return to original version - if all else fails, refresh webpage in browser
+  <br><br>
+  ")
+hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+HTML("<span style='font-size:75%';>wanthony@uvic.ca</span>")
+htmltools::br()
+```
+
+  Crew Data
+=====================================  
+
+Inputs {.sidebar data-width=250}
+-----------------------------------------------
+
+```{r filter-crew-hours-all}
+#############################################
+h4("Filtered Statistics")
+#p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours"))
+
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+
+#############################################
+h4("Filters")
+strong(em("Tip: Start by choosing a site"))
+p("Note: Density plots only respond to Site filter")
+# Create a filter input
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol, group = ~ Site, multiple = T)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol, group = ~ Year, allLevels = TRUE)
+filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_vol, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
+filter_select(id = "Work_Volunteer", label = "Choose Work or Volunteer", sharedData = sd_crew_vol, group = ~ Work_Volunteer, multiple = T)
+filter_select(id = "Native_or_Invasive", label = "Choose Invasive or MixedGrass", sharedData = sd_crew_vol, group = ~ Native_or_Invasive, multiple = T)
+
+#############################################
+htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
+```
+
+Row  {data-height=55}
+-----------------------------------------------
+
+### ***Crew Data***
+```{r}
+htmltools::HTML("
+  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. <em>Note: There is still some missing data for 2025</em> 
+  <br><strong><em>Tip: Start by choosing a site & drag to select a specific species</em></strong>")
+```
+
+Row  {.tabset .tabset-fade}
+-------------------------------------
+
+
+
+### **Hours per Year** 
+```{r inv-hours-scatter-year}
+ggplotly(
+  ggplot(sd_crew_vol_inv, aes(x = Date, y = Crew_Hours, color = Site, 
+                              text = paste("Year:", Year,
+                                           "\nDate:", Date,
+                                           "\nCrew Hours:", Crew_Hours,
+                                           "\nWork or Volunteer:", Work_Volunteer,
+                                           "\nSite:", Site,
+                                           "\nInvasive Species:", Invasive_Species_Cleared,
+                                           "\nBiomass Removed (m3):", Biomass_Removed_m3))) + 
+  geom_point() +
+#  geom_line(stat = "identity", position = "identity") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+  # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+   scale_color_manual(values = c("#b15928","#ffff99","#6a3d9a","#cab2d6","#ff7f00","#33a02c","#a6cee3","#b2df8a", "#cab2d6")) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Hours of Biomass removal by HAT Crew & Volunteers',
+          # subtitle='2025',
+#          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Biomass_Removed_m3",
+          x = "Date", y = "Crew Hours"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(
+      orientation = "h",
+      xanchor="center",
+      x = 0.5,
+      # gives some space between x axis label and legend
+      y = -0.2
+    ))
+```
+
+### **Biomass per Year** 
+```{r inv-biomass-scatter-year}
+ggplotly(
+  ggplot(sd_crew_vol_inv, aes(x = Date, y = Biomass_Removed_m3, color = Site, 
+                              text = paste("Year:", Year,
+                                           "\nDate:", Date,
+                                           "\nCrew Hours:", Crew_Hours,
+                                           "\nWork or Volunteer:", Work_Volunteer,
+                                           "\nSite:", Site,
+                                           "\nInvasive Species:", Invasive_Species_Cleared,
+                                           "\nBiomass Removed (m3):", Biomass_Removed_m3))) + 
+  geom_point() +
+#  geom_line(stat = "identity", position = "identity") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+  # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+   scale_color_manual(values = c("#b15928","#ffff99","#6a3d9a","#cab2d6","#ff7f00","#33a02c","#a6cee3","#b2df8a", "#cab2d6")) +
+    #scale_fill_manual(values = custom_colours_3) +
+        labs(title='Biomass removal (m3) by HAT Crew & Volunteers',
+          # subtitle='2025',
+#          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Biomass_Removed_m3",
+          x = "Date", y = "Biomass Removed (m3)"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(
+      orientation = "h",
+      xanchor="center",
+      x = 0.5,
+      # gives some space between x axis label and legend
+      y = -0.2
+    ))
+```
+
+### **Density Hours** 
+```{r inv-density-hours}
+ggplotly(
+  ggplot(sd_crew_vol, aes(x = Crew_Hours)) +
+    geom_density(aes(fill = Site), alpha = 0.5) + 
+    labs(title = "Density Distribution of Times Crew Worked Specific # Hours a Day",
+         caption = "test",
+         x = "Crew Work Hours") +
+  theme_minimal() 
+  ) 
+```
+
+### **Density Biomass** 
+```{r inv-density-biomass}
+ggplotly(
+  ggplot(sd_crew_vol, aes(x = Biomass_Removed_m3)) +
+    geom_density(aes(fill = Site), alpha = 0.5) + 
+    labs(title = "Density Distribution of Same Amounts of Invasive Biomass Removed Each Time",
+         x = "Biomass Removed (m3)") +
+  theme_minimal() 
+  ) 
+```
+
+
+
+```{r inv-biomass-widget-box-violin}
+# ### **Box/Violin Widgets**
+# ggplotly(
+#   ggplot(sd_crew_vol, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site))) + 
+#   geom_boxplot() +
+#   coord_flip() +
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+#   theme(axis.text.y = element_text(size = 9)) +  
+#           # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+# #  scale_fill_manual(values = custom_colours_3) +
+#   labs(
+#       title='Invasive Biomass Removed',
+#       fill = "",
+#       x = "", 
+#       y = "Biomass Removed (m3)"), 
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     )) %>%
+#   layout(title = list("Invasive Species Biomass Removed", x = 0),
+#          xaxis = list(title = "Biomass Removed (m3)"),
+#          yaxis = list(title = ""),
+#       #         width=900, height=620,
+#          updatemenus = list( # dropdown
+#            list(
+#              buttons = list(
+#                list(method = "restyle",
+#                     args = list("type", "box"),
+#                     label = "Boxplot"),
+#                list(method = "restyle",
+#                     args = list("type", "violin"),
+#                     label = "Violin Plot")
+#              )
+#            )
+#          ))
+```
+
+
+
+
+### Datatable All
+```{r data-table-combine-all}
+htmltools::h5("Crew amd Volunteer Hours & Biomass Datatable")
+htmltools::br()
+ datatable(sd_crew_vol, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE, 
+                    # centre contents of columns 4,5 8
+                         columnDefs = list(list(className = 'dt-center', targets = c(3,4,7))
+                            )
+           ))
+```
+
+
+  Top 5 Species Variance
+=====================================  
+
+Inputs {.sidebar data-width=250}
+-----------------------------------------------
+
+```{r filter-crew-hours-biomass-inv-sp-top5}
+
+#############################################
+h4("Filtered Statistics")
+#p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours"))
+
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+
+#############################################
+h4("Filters")
+strong(em("Tip: Start by choosing a site"))
+# Create a filter input
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol_inv_top5, group = ~ Site, multiple = T)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol_inv_top5, group = ~ Year, allLevels = TRUE)
+filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_vol_inv_top5, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
+
+
+#############################################
+htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
+```
+
+Row  {data-height=55}
+-----------------------------------------------
+
+### ***Top 5 Invasive Species Biomass***
+```{r}
+htmltools::HTML("
+  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. <em>Note: There is still some missing data for 2025</em> 
+  ")
+```
+
+Row  {.tabset .tabset-fade}
+-------------------------------------
+
+### **Top 5 Species Biomass** 
+```{r inv-biomass-box-inv-top5-test}
+# create custom colour-blind-friendly palette
+# custom_colours_3 <- c("Invasive" = "#fc8d62", 
+#                     "Native" = "#66c2a5", 
+#                     "MixedGrass" = "#8da0cb")
+ggplotly(
+  ggplot(sd_crew_vol_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = Site, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site))) + 
+  geom_boxplot() +
+  coord_flip() +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+  theme(axis.text.y = element_text(size = 9)) +  
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+#  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Top 5 Invasive Species Removed - Data Distribution Means, Variance and Outliers',
+      fill = "",
+      x = "", 
+      y = "Biomass Removed (m3)"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+  
+### Datatable
+```{r data-table-combine-top5}
+htmltools::h5("Crew amd Volunteer Hours & Top 5 Species Biomass Datatable")
+htmltools::br()
+ datatable(sd_crew_vol_inv_top5, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE, 
+                    # centre contents of columns 4,5 8
+                         columnDefs = list(list(className = 'dt-center', targets = c(0:8))
+                            )
+           ))
+```
+
+
+Top 5 Species by Site
+=====================================  
+
+Inputs {.sidebar data-width=250}
+-----------------------------------------------
+
+```{r filter-crew-hours-biomass-inv-sp-top5-facet}
+
+#############################################
+h4("Filtered Statistics")
+#p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+p(class = "container", class = "value", summarywidget(sd_crew_data_sep_sub_sum_bio_inv_top5, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
+p(class = "container", class = "value", summarywidget(sd_crew_data_sep_sub_sum_bio_inv_top5, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours"))
+
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+
+#############################################
+h4("Filters")
+strong(em("Tip: Start by choosing a site"))
+# Create a filter input
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_data_sep_sub_sum_bio_inv_top5, group = ~ Site, multiple = T)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_data_sep_sub_sum_bio_inv_top5, group = ~ Year, allLevels = TRUE)
+filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_data_sep_sub_sum_bio_inv_top5, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
+
+
+#############################################
+htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
+```
+
+Row  {data-height=55}
+-----------------------------------------------
+
+### ***Top 5 Invasive Species Biomass by Site***
+```{r}
+htmltools::HTML("
+  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. <em>Note: There is still some missing data for 2025</em> 
+  ")
+```
+
+Row  {.tabset .tabset-fade}
+-------------------------------------
+
+
+
+### **Top 5 Species by Site**
+```{r inv-sp-biomass-top5-facet-site}
+
+ggplotly(
+  ggplot(sd_crew_data_sep_sub_sum_bio_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Year), 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
+                                                          "\nCrew Hours:", Crew_Hours,
+                                                          "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+                                                          "\nArea Cleared (m2):", Area_Cleared_m2))) + 
+  geom_bar(stat = "identity", width = 0.9, position = "dodge") +
+  facet_wrap( ~ Site) +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+    # needs to be below first theme
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
+  theme(legend.position ="bottom") + 
+      labs(
+          title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
+          x = "",   
+          y = "Biomass Removed (m3)",   
+          fill = "Year"
+          ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+    scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90)), 
+  
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    # x = 1 # too far to right
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+  
+### Datatable
+```{r data-table-combine-top5-facet}
+htmltools::h5("Crew amd Volunteer Hours & Top 5 Species Biomass Datatable")
+htmltools::br()
+ datatable(sd_crew_data_sep_sub_sum_bio_inv_top5, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE, 
+                    # centre contents of columns 4,5 8
+                         columnDefs = list(list(className = 'dt-center', targets = c(0:5))
+                            )
+           ))
+```
+
+
+  Invasive Biomass
+=====================================  
+
+Inputs {.sidebar data-width=250}
+-----------------------------------------------
+
+```{r filter-crew-hours-biomass-inv-sp}
+
+h4("Filtered Statistics")
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 Biomass Removed"))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Bio_Hr_Ratio", statistic = "mean"), span(class = "caption", "= hours of labor/m3 biomass"))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Hr_Bio_Ratio", statistic = "mean"), span(class = "caption", "= m3 biomass/hours of labor"))
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+h4("Filters")
+# Create a filter input
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew, group = ~ Site, multiple = T)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew, group = ~ Year, allLevels = TRUE)
+htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
+```
+
+Row  {data-height=55}
+-----------------------------------------------
+
+### ***Crew Data Summarized***
+```{r}
+htmltools::HTML("
+  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed.<br>
+  <em>Note: There is still some missing data for 2025</em>")
+```
+
+Row  {.tabset .tabset-fade}
+-------------------------------------
+
+### Staff Hours 
+
+```{r crew-hrs-site, echo = FALSE, message = FALSE, warning = FALSE, height = 7}
+
+custom_colours_4b <- c("2022" = "#ffff33", 
+                    "2023" = "#4daf4a", 
+                    "2024" = "#984ea3", 
+                    "2025" = "#ff7f00")
+
+## NOTE  ggplot needs to be wrapped in ggplotly for crosstalk to work
+ggplotly(
+  ggplot(sd_crew, 
+   aes(x = reorder(Site, desc(Site)), y = Crew_Hours, fill = as.factor(Year), text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nCrew Hours:", Crew_Hours,      
+                                                          "\nBiomass Removed m3:", Biomass_Removed_m3,  
+                                                          "\nArea Cleared m2:", Area_Cleared_m2,
+                                                          "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
+                                                          "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
+                                                          "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
+  geom_bar(stat = "identity", width = 0.5, position = position_dodge2(padding = 0.2)) +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  scale_fill_manual(values = custom_colours_4b) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +  
+  labs(
+        title = "Staff Hours Removing Invasive Species by Site",
+        fill = "Year",
+        x = "", y = "Staff Hours"), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation="h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+### Biomass Removal 
+
+
+```{r crew-data-biomass, echo = FALSE, message = FALSE, warning = FALSE, height = "100%"}
+
+ggplotly(
+  ggplot(sd_crew, 
+   aes(x = reorder(Site, desc(Site)), y = Biomass_Removed_m3, fill = as.factor(Year), 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nCrew Hours:", Crew_Hours,      
+                                                          "\nBiomass Removed m3:", Biomass_Removed_m3,  
+                                                          "\nArea Cleared m2:", Area_Cleared_m2,
+                                                          "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
+                                                          "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
+                                                          "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
+  geom_bar(stat = "identity", width = 0.5, position = position_dodge2(padding = 0.2)) +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  scale_fill_manual(values = custom_colours_4b) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +  
+        labs(
+          title='Invasive Species Biomass (m3) Removal by Site',
+          fill = "Year",
+          x = "", y = "Biomass Removed (m3)"),
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation="h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+```{r crew-biomass-removed-per-hrs-ratio}
+### Biomass / Hours (Efficiency)
+# custom_colours_4b <- c("2022" = "#ffff33", 
+#                     "2023" = "#4daf4a", 
+#                     "2024" = "#984ea3", 
+#                     "2025" = "#ff7f00")
+# 
+# ggplotly(
+# ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Bio_Hr_Ratio, fill = as.factor(Year), 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nCrew Hours:", Crew_Hours,
+#                                                           "\nBiomass Removed m3:", Biomass_Removed_m3,  
+#                                                           "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
+#                                                           "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
+#                                                           "\nArea Cleared m2:", Area_Cleared_m2,
+#                                                           "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
+#   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+#   coord_flip() +    
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#     scale_fill_manual(values = custom_colours_4b) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
+#       # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+#   labs(
+#         title='Ratio of Total Biomass Removed to Work Crew Hours (efficiency)',
+#         fill = "Year",
+#         x = "", 
+#         y = "Ratio of Biomass m3 Removed per Labour Hour"
+#         ), 
+#     tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
+```
+
+
+### Hours / Biomass (Cost)
+```{r crew-hrs-per-biomass-removed-ratio}
+
+custom_colours_4b <- c("2022" = "#ffff33", 
+                    "2023" = "#4daf4a", 
+                    "2024" = "#984ea3", 
+                    "2025" = "#ff7f00")
+
+ggplotly(
+ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill = as.factor(Year), 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nCrew Hours:", Crew_Hours,
+                                                          "\nBiomass Removed m3:", Biomass_Removed_m3,  
+                                                          "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
+                                                          "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
+                                                          "\nArea Cleared m2:", Area_Cleared_m2,
+                                                          "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  coord_flip() +    
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+    scale_fill_manual(values = custom_colours_4b) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
+      # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+  labs(
+       title='Total Work Crew Hours Required to Remove each m3 Biomass (cost)',
+      fill = "Year",
+      x = "", 
+    y = "Ratio of Labour Hours per Biomass m3 Removed"
+    ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+```{r inv-sp-biomass-top5}
+# ### 1. Biomass / Top 5 Species
+# ggplotly(
+#   ggplot(sd_bio_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
+#                                                           "\nCrew Hours:", Crew_Hours,
+#                                                           "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+#                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
+#   geom_bar(stat = "identity", width = 0.9, position = "dodge") +
+#   coord_flip() + 
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#       labs(
+#           title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
+#           x = "",   
+#           y = "Biomass Removed (m3)",   
+#           fill = "Site"
+#           ) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#     # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+#     scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
+#   
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     # x = 1 # too far to right
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
+```
+
+
+```{r inv-sp-biomass-top5-facet-yr}
+### 2. Facet-year Top 5 Species
+# ggplotly(
+#   ggplot(sd_bio_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
+#                                                           "\nCrew Hours:", Crew_Hours,
+#                                                           "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+#                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
+#   geom_bar(stat = "identity", width = 0.9, position = "dodge") +
+#   facet_wrap( ~ Year) +
+#   coord_flip() + 
+#   theme_minimal() + #get rid of grey background and tick marks
+#     # needs to be below first theme
+#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
+#   theme(legend.position ="bottom") + 
+#       labs(
+#           title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
+#           x = "",   
+#           y = "Biomass Removed (m3)",   
+#           fill = "Site"
+#           ) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#     # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+#     scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90)), 
+#   
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     # x = 1 # too far to right
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
+```
+
+
+
+```{r inv-sp-biomass}
+### All Species
+# ggplotly(
+#   ggplot(sd_bio_inv, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Site), 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
+#                                                           "\nCrew Hours:", Crew_Hours,
+#                                                           "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+#                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
+#   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+#   coord_flip() + 
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#       labs(
+#           title = "Biomass m3 of All Invasive Species Cleared", 
+#           x = "",   
+#           y = "Biomass Removed (m3)",   
+#           fill = "Site"
+#           ) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#     # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+#     scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90)), 
+#   
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     # x = 1 # too far to right
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
+```
+
+
+### Datatable Crew 
+```{r data-table-crew}
+htmltools::h5("Crew Datatable")
+htmltools::br()
+ datatable(sd_crew, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(                        
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE, 
+             columnDefs = list(list(className = 'dt-center', targets = c(1:7))
+           )))
+```
+
+
+### Datatable Biomass  
+
+```{r data-table-biomass}
+htmltools::h5("Invasive Biomass Datatable")
+htmltools::br()
+ datatable(sd_bio_inv, 
+           rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(                        
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE,                         
+             columnDefs = list(list(className = 'dt-center', targets = c(1,3,4,5))
+           )))
+```
+
+
+Cover
+=====================================  
+
+Inputs {.sidebar data-width=255}
+-----------------------------------------------
+
+```{r filter-input-cover}
+htmltools::br()
+htmltools::br()
+h4("Filtered Statistics")
+p(class = "container", class = "value", summarywidget(sd_cover, column = "mean_value", statistic = "sum"), span(class = "caption", "= mean % cover"))
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+h4("Filters")
+
+# Create a filter input
+
+filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_cover, group = ~ Site, allLevels = TRUE)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
+filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, allLevels = TRUE)
+filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_cover, group = ~ Native_or_Invasive, allLevels = TRUE)
+filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, group = ~ Species, multiple = TRUE)
+htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
+
+```
+
+Row  {data-height=50}
+-----------------------------------------------
+
+### ***Mean % Species Cover Data***
+```{r}
+htmltools::HTML("
+  Cover data was collected using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful.")
+```
+
+
+Row {.tabset .tabset-fade}
+---------------------------------------------
+
+### Native Species
+```{r mean-cover-nat, echo = FALSE, message = FALSE, warning = FALSE}
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+ggplotly(
+  ggplot(sd_cover_nat, aes(x = reorder(Species, desc(Species)), y = mean_value, fill = as.factor(Site), 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean Value:", mean_value,
+                                                          "\nSD Value:", sd_value))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+      labs(
+          title = "Native Species Mean % Cover at Oak Haven & Matson 2024-2025", 
+          x = "",   
+          y = "Mean % cover",   
+          fill = "Site"
+          ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) , 
+  
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    # x = 1 # too far to right
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+
+### Invasive Species
+```{r mean-cover-inv, echo = FALSE, message = FALSE, warning = FALSE}
+# create custom colour-blind-friendly palette
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+ggplotly(
+  ggplot(sd_cover_inv, aes(x = reorder(Species, desc(Species)), y = mean_value, fill = as.factor(Site), 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean Value:", mean_value,
+                                                          "\nSD Value:", sd_value))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  coord_flip() +     
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  labs(
+        title = "Invasive Species Mean % Cover at Oak Haven & Matson 2024-2025",        
+        x = "",  
+        y = "Mean % cover", 
+        fill = "Site" 
+      ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+      # aligns title to left
+  theme(plot.title = element_text(hjust = 0)), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+### Mixed Grasses
+```{r mean-cover-grs, echo = FALSE, message = FALSE, warning = FALSE}
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+
+ggplotly(
+  ggplot(sd_cover_grs, aes(x = reorder(Species, desc(Species)), y = mean_value, fill = as.factor(Site), 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean Value:", mean_value,
+                                                          "\nSD Value:", sd_value))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  labs(
+        title = "Mixed Grasses Mean % Cover at Oak Haven & Matson 2024-2025",     
+        x = "",   
+        y = "Mean % cover",
+        fill = "Site"
+        ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
+      # aligns title to left
+  theme(plot.title = element_text(hjust = 0)), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+```{r}
+# ### All Species 
+# # create custom colour-blind-friendly palette
+# custom_colours_2 <- c("Treated" = "#b2df8a", 
+#                     "Untreated" = "#1f78b4")
+# 
+# ggplotly(
+#   ggplot(sd_cover, aes(reorder(Species, desc(Species)), mean_value, fill = Treated, 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nSpecies:", Species,      
+#                                                           "\nNative or Invasive:", Native_or_Invasive,  
+#                                                           "\nTreated:", Treated,
+#                                                           "\nMean % Value:", mean_value,
+#                                                           "\nSD Value:", sd_value))) + 
+#   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+#   coord_flip() + 
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#   scale_fill_manual(values = custom_colours_2) +
+#         labs(
+#           title='All Species Mean % Cover by Treatment',
+#           x = "", y = "Mean % Cover", fill = ""), 
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.1
+#     ))
+```
+
+### All Species by Site
+```{r}
+# create custom colour-blind-friendly palette
+custom_colours_2 <- c("Treated" = "#b2df8a", 
+                    "Untreated" = "#1f78b4")
+
+ggplotly(
+  ggplot(sd_cover, aes(reorder(Species, desc(Species)), mean_value, fill = Treated, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean % Value:", mean_value,
+                                                          "\nSD Value:", sd_value))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  facet_wrap( ~ Site) +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +  
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+  scale_fill_manual(values = custom_colours_2) +
+        labs(
+          title='All Species Mean % Cover by Treatment',
+          x = "", y = "Mean % Cover", fill = ""), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.1
+    ))
+```
+
+### Datatable
+```{r data-table-cover}
+htmltools::h5("Cover Datatable")
+htmltools::br()
+ datatable(sd_cover, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(                        
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE,                         
+             columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
+           )))
+```
+
+
+
+
+Species Richness
+=====================================  
+
+Inputs {.sidebar data-width=260}
+-----------------------------------------------
+
+```{r filter-input-count}
+htmltools::br()
+htmltools::br()
+h4("Filtered Statistics")
+p(class = "container", class = "value", summarywidget(sd_count, column = "Species_number", statistic = "sum"), span(class = "caption", "= different species"))
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+h4("Filters")
+
+# Create a filter input
+filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_count, group = ~ Site, allLevels = TRUE)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_count, group = ~ Year, allLevels = TRUE)
+filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_count, group = ~ Treated, allLevels = TRUE)
+filter_checkbox(id = "Native_or_Invasive", label = "Choose Native or Invasive", sharedData = sd_count, group = ~ Native_or_Invasive, allLevels = TRUE)
+
+htmltools::br()
+htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
+```
+
+Row  {data-height=120}
+-----------------------------------------------
+
+### ***Species Richness Unique Count @ Matson & Oak Haven***
+```{r}
+htmltools::HTML("
+  Cover data was collected, using quadrat-sampling methods in both treated and untreated areas, at Matson in July 2024 and 2025, and at Oak Haven in April 2024 and 2025. The mean % cover of each species is measured for each area. Species counts are the total numbers of each unique species found. Meadows species were sampled during different seasons, which may affect any meaningful comparison between sites. <br>
+  <strong>Example Analysis: </strong> Invasive species count is higher in treated areas ... Does invasive species removal create an environment for more invasive species to move in?")
+```
+
+
+Row {.tabset .tabset-fade}
+---------------------------------------------
+
+### **Species Counts** 
+```{r species-richness-count}
+# create custom colour-blind-friendly palette
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+ggplotly(
+  ggplot(sd_count, aes(x = Treated, y = Species_number, fill = Native_or_Invasive, 
+         text = paste("Year:", Year,
+                      "\nSite:", Site,
+                      "\nTreated:", Treated,
+                      "\nNative or Invasive", Native_or_Invasive,
+                      "\nSpecies Number", Species_number))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Species Richness Count at Oak Haven and Matson',
+      fill = "",
+      x = "Treatment", 
+      y = "Species Count") +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+### **Species Counts by Year** 
+```{r species-richness-count-facet-yr}
+# create custom colour-blind-friendly palette
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+ggplotly(
+  ggplot(sd_count, aes(x = Treated, y = Species_number, fill = Native_or_Invasive, 
+         text = paste("Year:", Year,
+                      "\nSite:", Site,
+                      "\nTreated:", Treated,
+                      "\nNative or Invasive", Native_or_Invasive,
+                      "\nSpecies Number", Species_number))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  facet_wrap( ~ Year) +
+
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Species Richness Count at Oak Haven and Matson',
+      fill = "",
+      x = "Treatment", 
+      y = "Species Count") +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+### **Species Counts by Site** 
+```{r species-richness-count-facet-site}
+# create custom colour-blind-friendly palette
+custom_colours_3 <- c("Invasive" = "#fc8d62", 
+                    "Native" = "#66c2a5", 
+                    "MixedGrass" = "#8da0cb")
+ggplotly(
+  ggplot(sd_count, aes(x = Treated, y = Species_number, fill = Native_or_Invasive, 
+         text = paste("Year:", Year,
+                      "\nSite:", Site,
+                      "\nTreated:", Treated,
+                      "\nNative or Invasive", Native_or_Invasive,
+                      "\nSpecies Number", Species_number))) + 
+  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  facet_wrap( ~ Site) +
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
+  theme(legend.position ="bottom") + 
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+          # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) +
+  scale_fill_manual(values = custom_colours_3) +
+  labs(
+      title='Species Richness Count at Oak Haven and Matson',
+      fill = "",
+      x = "Treatment", 
+      y = "Species Count") +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+### Datatable
+```{r data-table-count}
+htmltools::h5("Count Datatable")
+htmltools::br()
+ datatable(sd_count, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(                        
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE,                         
+             columnDefs = list(list(className = 'dt-center', targets = c(0,4)
+           ))))
+```
+
+ 
+
+ Map
+=====================================  
+
+Inputs {.sidebar data-width=250}
+-----------------------------------------------
+
+```{r filter-input-map}
+htmltools::br()
+htmltools::br()
+htmltools::em("Note: To reset filters, delete unwanted choices")
+htmltools::br()
+htmltools::br()
+
+filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
+
+# filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
+# 
+# filter_slider(id = "Size_ha", label = "Size in ha", sharedData = sd_sites, column = ~Size_ha, step = 1, min = 0, max = 20, post = "ha")
+# 
+# filter_select(id = "Partner_Code", label = "Partner", sharedData = sd_sites, group = ~Partner_Code)
+#   
+# filter_select(id = "FirstNations", label = "First Nations", sharedData = sd_sites, group = ~FirstNations)
+  
+htmltools::br()
+htmltools::br()
+HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+htmltools::em("HAT data source: ")
+htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://hat.bc.ca/community-based-restoration")
+htmltools::br()
+```
+
+Row  {data-height=30}
+-----------------------------------------------
+
+### ***Interactive Map***
+```{r}
+htmltools::HTML("
+This map shows 3 public sites listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>. Click map markers to open pop-up windows with information about each site
+                ")
+```
+
+Row
+---------------------------------------------
+
+### Map of HAT Managed Public GOE Sites
+```{r leaflet-all-sites, echo = FALSE, message = FALSE, include = TRUE}
+# Title control
+# (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
+     title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+     
+#     pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Central Saanich", "Esquimalt", "Colwood"))
+          pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
+
+leaflet(sd_sites) %>%
+      addProviderTiles("Esri.WorldImagery") %>%
+      addCircleMarkers(
+        ~ Lng, ~ Lat,
+        color = ~pal(Site),
+        weight = 1, # size of circle border
+        stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
+        radius = 5,
+        popup = paste0(
+        "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
+        # NOTE: popups need to refer to original data object, not shared sd
+          "<b>Site:</b> ", "<b>", HAT_sites_HAT$Site, "</b>",  "<br>",
+          "<b>FullName:</b> ", "<b>", HAT_sites_HAT$FullName, "</b>",  "<br>",
+          "<b>Municipality:</b> ", HAT_sites_HAT$Municipality, "<br>",
+          "<b>Size:</b> ", HAT_sites_HAT$Size_ha, " (ha)", "<br>",
+          "<b>First Nations:</b> ", HAT_sites_HAT$FirstNations, "<br>",
+          # "<b>Project id:</b> ", HAT_sites_HAT$ID, "<br>",
+          "<b>HAT Status:</b> ", HAT_sites_HAT$HAT_Status, "<br>",
+          "<b>Co-Covenant:</b> ", HAT_sites_HAT$Co_Covenant, " (", HAT_sites_HAT$Date, ")", "<br>",
+          "<b>Ecosystems:</b> ", HAT_sites_HAT$Ecosystems, "<br>",
+          "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br>"
+          ))  %>%
+      addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
+
+      setView(-123.44799, 48.52919, 10) %>%
+      # add controls
+      #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
+      addControl(title, position = "topright")
+```
+
+
+```{r session-info}
+# Session Info to document specific packages used to run this script at a specific point in time
+sessionInfo()
+```
+
+
