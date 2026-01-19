@@ -261,7 +261,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 10:35</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 11:01</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -618,7 +618,7 @@ htmltools::br()
                         # removed previous / next buttons
                          paging = FALSE, 
                     # centre contents of columns 4,5 8
-                         columnDefs = list(list(className = 'dt-center', targets = c(0:8))
+                         columnDefs = list(list(className = 'dt-center', targets = c(0,1,3,4,7))
                             )
            ))
 ```
@@ -735,7 +735,7 @@ htmltools::br()
                         # removed previous / next buttons
                          paging = FALSE, 
                     # centre contents of columns 4,5 8
-                         columnDefs = list(list(className = 'dt-center', targets = c(0:5))
+                         columnDefs = list(list(className = 'dt-center', targets = c(1,3:5))
                             )
            ))
 ```
