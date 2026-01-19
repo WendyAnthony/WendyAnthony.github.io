@@ -1589,7 +1589,7 @@ Row  {data-height=40}
 ### ***Density Plots***
 ```{r}
 htmltools::HTML("
-  Density plots show the distribution of a specific variablem e.g. number of times the work hours or biomass removed equal a certain amount. They do not respond to filters for Year, or Species, or Work/Volunteer")
+  Density plots show the distribution of a specific variable e.g. number of times the work hours or biomass removed equal a certain amount. They do not respond to filters for Year, or Species, or Work/Volunteer")
 ```
 
 
