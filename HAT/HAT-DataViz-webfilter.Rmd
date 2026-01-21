@@ -8,8 +8,11 @@ output:
     theme: 
       version: 4
       bootswatch: flatly
-    source_code: embed
+    #source_code: embed
 ---
+
+  <script src="https://cdn.plot.ly/plotly-3.3.0.min.js" charset="utf-8"></script>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
 
 
 ```{r include=FALSE}
@@ -134,6 +137,9 @@ crew_data_sep_sub_sum_by_group_site_rename_site$Site <- gsub("Matson Conservatio
 crew_data_sep_sub_sum_by_group_site_rename_site$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_sum_by_group_site_rename_site$Site)
 crew_data_sep_sub_sum_by_group_site_rename_site$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_sum_by_group_site_rename_site$Site)
 
+
+write.csv(crew_data_sep_sub_sum_by_group_site_rename_site, "data/crew_data_sep_sub_sum_by_group_site_rename_site.csv")
+
 crew_data_sep_sub_sum_bio_inv_rename_site <- crew_data_sep_sub_sum_bio_inv %>%
   rename(Site = Work_Site)
 
@@ -166,6 +172,8 @@ crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1_filtered %>%
 #############################################
 # rbind work and volunteer
 crew_vol <- rbind(crew_data_sep_sub_1_filtered, volunteer_data_matson_sub)
+
+write.csv(crew_vol, "data/crew_vol.csv")
 
 unique(crew_vol$Native_or_Invasive)
 crew_vol_grs <- crew_vol[crew_vol$Native_or_Invasive == "MixedGrass",]
@@ -261,7 +269,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-19 11:01</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-21 12:50</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -299,8 +307,8 @@ Inputs {.sidebar data-width=250}
 #############################################
 h4("Filtered Statistics")
 #p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
-p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
-p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Biomass_Removed_m3", statistic = "sum", digits = 2), span(class = "caption", "= Biomass Removed (cubic metres)"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours", digits = 2))
 
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
@@ -342,7 +350,6 @@ Row  {.tabset .tabset-fade}
 -------------------------------------
 
 
-
 ### **Hours per Year** 
 ```{r inv-hours-scatter-year}
 ggplotly(
@@ -353,7 +360,7 @@ ggplotly(
                                            "\nWork or Volunteer:", Work_Volunteer,
                                            "\nSite:", Site,
                                            "\nInvasive Species:", Invasive_Species_Cleared,
-                                           "\nBiomass Removed (m3):", Biomass_Removed_m3))) + 
+                                           "\nBiomass Removed (cubic metres):", Biomass_Removed_m3))) + 
   geom_point() +
 #  geom_line(stat = "identity", position = "identity") +
   theme_minimal() + #get rid of grey background and tick marks
@@ -390,7 +397,7 @@ ggplotly(
                                            "\nWork or Volunteer:", Work_Volunteer,
                                            "\nSite:", Site,
                                            "\nInvasive Species:", Invasive_Species_Cleared,
-                                           "\nBiomass Removed (m3):", Biomass_Removed_m3))) + 
+                                           "\nBiomass Removed (cubic metres):", Biomass_Removed_m3))) + 
   geom_point() +
 #  geom_line(stat = "identity", position = "identity") +
   theme_minimal() + #get rid of grey background and tick marks
@@ -401,10 +408,10 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
    scale_color_manual(values = c("#b15928","#ffff99","#6a3d9a","#cab2d6","#ff7f00","#33a02c","#a6cee3","#b2df8a", "#cab2d6")) +
     #scale_fill_manual(values = custom_colours_3) +
-        labs(title='Biomass removal (m3) by HAT Crew & Volunteers',
+        labs(title='Biomass removal (cubic metres) by HAT Crew & Volunteers',
           # subtitle='2025',
 #          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Biomass_Removed_m3",
-          x = "Date", y = "Biomass Removed (m3)"), 
+          x = "Date", y = "Biomass Removed (cubic metres)"), 
   tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
@@ -435,7 +442,7 @@ ggplotly(
   ggplot(sd_crew_vol, aes(x = Biomass_Removed_m3)) +
     geom_density(aes(fill = Site), alpha = 0.5) + 
     labs(title = "Density Distribution of Same Amounts of Invasive Biomass Removed Each Time",
-         x = "Biomass Removed (m3)") +
+         x = "Biomass Removed (cubic metres)") +
   theme_minimal() 
   ) 
 ```
@@ -461,7 +468,7 @@ ggplotly(
 #       title='Invasive Biomass Removed',
 #       fill = "",
 #       x = "", 
-#       y = "Biomass Removed (m3)"), 
+#       y = "Biomass Removed (cubic metres)"), 
 #   tooltip = "text",
 #   config = (displayModeBar = False) 
 #   ) %>%
@@ -472,7 +479,7 @@ ggplotly(
 #     y = -0.2
 #     )) %>%
 #   layout(title = list("Invasive Species Biomass Removed", x = 0),
-#          xaxis = list(title = "Biomass Removed (m3)"),
+#          xaxis = list(title = "Biomass Removed (cubic metres)"),
 #          yaxis = list(title = ""),
 #       #         width=900, height=620,
 #          updatemenus = list( # dropdown
@@ -494,7 +501,7 @@ ggplotly(
 
 ### Datatable All
 ```{r data-table-combine-all}
-htmltools::h5("Crew amd Volunteer Hours & Biomass Datatable")
+htmltools::h5("Crew and Volunteer Hours & Biomass Datatable")
 htmltools::br()
  datatable(sd_crew_vol, rownames = FALSE, class = 'compact',
            extensions = c("Buttons"),
@@ -525,15 +532,15 @@ Inputs {.sidebar data-width=250}
 #############################################
 h4("Filtered Statistics")
 #p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
-p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
-p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Biomass_Removed_m3", statistic = "sum", digits = 2), span(class = "caption", "= Biomass Removed (cubic metres)"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours", digits = 2))
 
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 
 #############################################
 h4("Filters")
-strong(em("Tip: Start by choosing a site"))
+strong(em("Tip: Start by choosing a Date"))
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol_inv_top5, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol_inv_top5, group = ~ Year, allLevels = TRUE)
@@ -588,7 +595,7 @@ ggplotly(
       title='Top 5 Invasive Species Removed - Data Distribution Means, Variance and Outliers',
       fill = "",
       x = "", 
-      y = "Biomass Removed (m3)"), 
+      y = "Biomass Removed (cubic metres)"), 
   tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
@@ -600,11 +607,10 @@ ggplotly(
     ))
 ```
 
-
   
 ### Datatable
 ```{r data-table-combine-top5}
-htmltools::h5("Crew amd Volunteer Hours & Top 5 Species Biomass Datatable")
+htmltools::h5("Crew and Volunteer Hours & Top 5 Species Biomass Datatable")
 htmltools::br()
  datatable(sd_crew_vol_inv_top5, rownames = FALSE, class = 'compact',
            extensions = c("Buttons"),
@@ -634,18 +640,17 @@ Inputs {.sidebar data-width=250}
 
 #############################################
 h4("Filtered Statistics")
-#p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
-p(class = "container", class = "value", summarywidget(sd_crew_data_sep_sub_sum_bio_inv_top5, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= Biomass Removed (m3)"))
-p(class = "container", class = "value", summarywidget(sd_crew_data_sep_sub_sum_bio_inv_top5, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours"))
+p(class = "container", class = "value", summarywidget(sd_crew_data_sep_sub_sum_bio_inv_top5, column = "Biomass_Removed_m3", statistic = "sum", digits = 2), span(class = "caption", "= Biomass Removed (cubic metres)"))
+p(class = "container", class = "value", summarywidget(sd_crew_data_sep_sub_sum_bio_inv_top5, column = "Crew_Hours", statistic = "sum", digits = 2), span(class = "caption", "= Crew Hours"))
 
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 
 #############################################
 h4("Filters")
-strong(em("Tip: Start by choosing a site"))
+
 # Create a filter input
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_data_sep_sub_sum_bio_inv_top5, group = ~ Site, multiple = T)
+#filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_data_sep_sub_sum_bio_inv_top5, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_data_sep_sub_sum_bio_inv_top5, group = ~ Year, allLevels = TRUE)
 filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_data_sep_sub_sum_bio_inv_top5, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
 
@@ -682,23 +687,24 @@ Row  {.tabset .tabset-fade}
 
 ggplotly(
   ggplot(sd_crew_data_sep_sub_sum_bio_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Year), 
+    # fill = as.factor(Year) gives legend a colour vs a continuous variable colour
                                                           text = paste("Year:", Year,
                                                           "\nSite:", Site,
                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
                                                           "\nCrew Hours:", Crew_Hours,
-                                                          "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+                                                          "\nBiomass Removed (cubic metres):", Biomass_Removed_m3,  
                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
   geom_bar(stat = "identity", width = 0.9, position = "dodge") +
-  facet_wrap( ~ Site) +
+  facet_wrap(vars(Site)) +
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
     # needs to be below first theme
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
   theme(legend.position ="bottom") + 
       labs(
-          title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
+          title = "Biomass (cubic metres) of Top 5 Invasive Species Cleared", 
           x = "",   
-          y = "Biomass Removed (m3)",   
+          y = "Biomass Removed (cubic metres)",   
           fill = "Year"
           ) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
@@ -708,20 +714,22 @@ ggplotly(
   
   tooltip = "text",
   config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    #x = 0.5 legend too close to x axis label
-    # x = 1 # too far to right
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
+  )
+# %>%
+#     layout(
+#       legend = list(orientation = "v",
+#       xanchor="center",
+#       #x = 0.5 legend too close to x axis label
+#       # x = 1 # too far to right
+#       x = 0.5,
+#       # gives some space between x axis label and legend
+#       y = -0.2
+#     ))
 ```
   
 ### Datatable
 ```{r data-table-combine-top5-facet}
-htmltools::h5("Crew amd Volunteer Hours & Top 5 Species Biomass Datatable")
+htmltools::h5("Crew and Volunteer Hours & Top 5 Species Biomass Datatable")
 htmltools::br()
  datatable(sd_crew_data_sep_sub_sum_bio_inv_top5, rownames = FALSE, class = 'compact',
            extensions = c("Buttons"),
@@ -750,10 +758,10 @@ Inputs {.sidebar data-width=250}
 ```{r filter-crew-hours-biomass-inv-sp}
 
 h4("Filtered Statistics")
-p(class = "container", class = "value", summarywidget(sd_crew, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
-p(class = "container", class = "value", summarywidget(sd_crew, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 Biomass Removed"))
-p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Bio_Hr_Ratio", statistic = "mean"), span(class = "caption", "= hours of labor/m3 biomass"))
-p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Hr_Bio_Ratio", statistic = "mean"), span(class = "caption", "= m3 biomass/hours of labor"))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor", digits = 2))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= cubic metres Biomass Removed", digits = 2))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Bio_Hr_Ratio", statistic = "mean"), span(class = "caption", "= hours of labor/cubic metres biomass", digits = 2))
+p(class = "container", class = "value", summarywidget(sd_crew, column = "Labour_Hr_Bio_Ratio", statistic = "mean"), span(class = "caption", "= cubic metres biomass/hours of labor", digits = 2))
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
@@ -799,8 +807,8 @@ ggplotly(
    aes(x = reorder(Site, desc(Site)), y = Crew_Hours, fill = as.factor(Year), text = paste("Year:", Year,
                                                           "\nSite:", Site,
                                                           "\nCrew Hours:", Crew_Hours,      
-                                                          "\nBiomass Removed m3:", Biomass_Removed_m3,  
-                                                          "\nArea Cleared m2:", Area_Cleared_m2,
+                                                          "\nBiomass Removed (cubic metres):", Biomass_Removed_m3,  
+                                                          "\nArea Cleared (square metres):", Area_Cleared_m2,
                                                           "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
                                                           "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
                                                           "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
@@ -839,8 +847,8 @@ ggplotly(
                                                           text = paste("Year:", Year,
                                                           "\nSite:", Site,
                                                           "\nCrew Hours:", Crew_Hours,      
-                                                          "\nBiomass Removed m3:", Biomass_Removed_m3,  
-                                                          "\nArea Cleared m2:", Area_Cleared_m2,
+                                                          "\nBiomass Removed (cubic metres):", Biomass_Removed_m3,  
+                                                          "\nArea Cleared (square metres):", Area_Cleared_m2,
                                                           "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
                                                           "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
                                                           "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
@@ -853,9 +861,9 @@ ggplotly(
     # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +  
         labs(
-          title='Invasive Species Biomass (m3) Removal by Site',
+          title='Invasive Species Biomass (cubic metres) Removal by Site',
           fill = "Year",
-          x = "", y = "Biomass Removed (m3)"),
+          x = "", y = "Biomass Removed (cubic metres)"),
   tooltip = "text",
   config = (displayModeBar = False) 
   ) %>%
@@ -880,10 +888,10 @@ ggplotly(
 #                                                           text = paste("Year:", Year,
 #                                                           "\nSite:", Site,
 #                                                           "\nCrew Hours:", Crew_Hours,
-#                                                           "\nBiomass Removed m3:", Biomass_Removed_m3,  
+#                                                           "\nBiomass Removed (cubic metres):", Biomass_Removed_m3,  
 #                                                           "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
 #                                                           "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
-#                                                           "\nArea Cleared m2:", Area_Cleared_m2,
+#                                                           "\nArea Cleared (square metres):", Area_Cleared_m2,
 #                                                           "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
 #   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
 #   coord_flip() +    
@@ -897,7 +905,7 @@ ggplotly(
 #         title='Ratio of Total Biomass Removed to Work Crew Hours (efficiency)',
 #         fill = "Year",
 #         x = "", 
-#         y = "Ratio of Biomass m3 Removed per Labour Hour"
+#         y = "Ratio of Biomass cubic metres Removed per Labour Hour"
 #         ), 
 #     tooltip = "text",
 #   config = (displayModeBar = False) 
@@ -924,10 +932,10 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
                                                           text = paste("Year:", Year,
                                                           "\nSite:", Site,
                                                           "\nCrew Hours:", Crew_Hours,
-                                                          "\nBiomass Removed m3:", Biomass_Removed_m3,  
+                                                          "\nBiomass Removed (cubic metres):", Biomass_Removed_m3,  
                                                           "\nLabour Hr Bio Ratio:", Labour_Hr_Bio_Ratio,
                                                           "\nLabour Bio Hr Ratio:", Labour_Bio_Hr_Ratio,
-                                                          "\nArea Cleared m2:", Area_Cleared_m2,
+                                                          "\nArea Cleared (square metres):", Area_Cleared_m2,
                                                           "\nArea Bio Ratio:", Area_Bio_Ratio))) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
   coord_flip() +    
@@ -938,10 +946,10 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
       # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
   labs(
-       title='Total Work Crew Hours Required to Remove each m3 Biomass (cost)',
+       title='Total Work Crew Hours Required to Remove each cubic metre of Biomass (cost)',
       fill = "Year",
       x = "", 
-    y = "Ratio of Labour Hours per Biomass m3 Removed"
+    y = "Ratio of Labour Hours per cubic metre Biomass Removed"
     ) +
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
   tooltip = "text",
@@ -964,16 +972,16 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
 #                                                           "\nSite:", Site,
 #                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
 #                                                           "\nCrew Hours:", Crew_Hours,
-#                                                           "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+#                                                           "\nBiomass Removed (cubic metres):", Biomass_Removed_m3,  
 #                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
 #   geom_bar(stat = "identity", width = 0.9, position = "dodge") +
 #   coord_flip() + 
 #   theme_minimal() + #get rid of grey background and tick marks
 #   theme(legend.position ="bottom") + 
 #       labs(
-#           title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
+#           title = "Biomass (cubic metres) of Top 5 Invasive Species Cleared", 
 #           x = "",   
-#           y = "Biomass Removed (m3)",   
+#           y = "Biomass Removed (cubic metres)",   
 #           fill = "Site"
 #           ) +
 #   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
@@ -1003,7 +1011,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
 #                                                           "\nSite:", Site,
 #                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
 #                                                           "\nCrew Hours:", Crew_Hours,
-#                                                           "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+#                                                           "\nBiomass Removed (cubic metres):", Biomass_Removed_m3,  
 #                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
 #   geom_bar(stat = "identity", width = 0.9, position = "dodge") +
 #   facet_wrap( ~ Year) +
@@ -1013,9 +1021,9 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
 #   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
 #   theme(legend.position ="bottom") + 
 #       labs(
-#           title = "Biomass (m3) of Top 5 Invasive Species Cleared", 
+#           title = "Biomass (cubic metres) of Top 5 Invasive Species Cleared", 
 #           x = "",   
-#           y = "Biomass Removed (m3)",   
+#           y = "Biomass Removed (cubic metres)",   
 #           fill = "Site"
 #           ) +
 #   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
@@ -1046,16 +1054,16 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
 #                                                           "\nSite:", Site,
 #                                                           "\nInvasive Species Cleared:", Invasive_Species_Cleared,      
 #                                                           "\nCrew Hours:", Crew_Hours,
-#                                                           "\nBiomass Removed (m3):", Biomass_Removed_m3,  
+#                                                           "\nBiomass Removed (cubic metres):", Biomass_Removed_m3,  
 #                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
 #   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
 #   coord_flip() + 
 #   theme_minimal() + #get rid of grey background and tick marks
 #   theme(legend.position ="bottom") + 
 #       labs(
-#           title = "Biomass m3 of All Invasive Species Cleared", 
+#           title = "Biomass cubic metres of All Invasive Species Cleared", 
 #           x = "",   
-#           y = "Biomass Removed (m3)",   
+#           y = "Biomass Removed (cubic metres)",   
 #           fill = "Site"
 #           ) +
 #   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
@@ -1129,7 +1137,7 @@ Inputs {.sidebar data-width=255}
 htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
-p(class = "container", class = "value", summarywidget(sd_cover, column = "mean_value", statistic = "sum"), span(class = "caption", "= mean % cover"))
+p(class = "container", class = "value", summarywidget(sd_cover, column = "mean_value", statistic = "sum", digits = 2), span(class = "caption", "= mean % cover"))
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
@@ -1399,7 +1407,7 @@ Inputs {.sidebar data-width=260}
 htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
-p(class = "container", class = "value", summarywidget(sd_count, column = "Species_number", statistic = "sum"), span(class = "caption", "= different species"))
+p(class = "container", class = "value", summarywidget(sd_count, column = "Species_number", statistic = "sum"), span(class = "caption", "= different species", digits = 2))
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
@@ -1434,6 +1442,7 @@ htmltools::HTML("
 
 Row {.tabset .tabset-fade}
 ---------------------------------------------
+
 
 ### **Species Counts** 
 ```{r species-richness-count}
