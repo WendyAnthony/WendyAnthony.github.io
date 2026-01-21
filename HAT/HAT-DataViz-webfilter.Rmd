@@ -269,7 +269,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-21 12:50</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-21 13:07</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -305,6 +305,7 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-crew-hours-all}
 #############################################
+htmltools::br()
 h4("Filtered Statistics")
 #p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
 p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Biomass_Removed_m3", statistic = "sum", digits = 2), span(class = "caption", "= Biomass Removed (cubic metres)"))
@@ -530,6 +531,8 @@ Inputs {.sidebar data-width=250}
 ```{r filter-crew-hours-biomass-inv-sp-top5}
 
 #############################################
+htmltools::br()
+htmltools::br()
 h4("Filtered Statistics")
 #p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
 p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Biomass_Removed_m3", statistic = "sum", digits = 2), span(class = "caption", "= Biomass Removed (cubic metres)"))
@@ -639,6 +642,8 @@ Inputs {.sidebar data-width=250}
 ```{r filter-crew-hours-biomass-inv-sp-top5-facet}
 
 #############################################
+htmltools::br()
+htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_crew_data_sep_sub_sum_bio_inv_top5, column = "Biomass_Removed_m3", statistic = "sum", digits = 2), span(class = "caption", "= Biomass Removed (cubic metres)"))
 p(class = "container", class = "value", summarywidget(sd_crew_data_sep_sub_sum_bio_inv_top5, column = "Crew_Hours", statistic = "sum", digits = 2), span(class = "caption", "= Crew Hours"))
@@ -756,7 +761,8 @@ Inputs {.sidebar data-width=250}
 -----------------------------------------------
 
 ```{r filter-crew-hours-biomass-inv-sp}
-
+htmltools::br()
+htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor", digits = 2))
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= cubic metres Biomass Removed", digits = 2))
