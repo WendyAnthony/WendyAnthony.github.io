@@ -1,4 +1,4 @@
-,country,year,gdpPercap,Crew_Hours,Area_Cleared_m2,Labour_Hr_Bio_Ratio,Labour_Bio_Hr_Ratio,Area_Bio_Ratio
+,country,year,BiomassRemovedm3,Crew_Hours,Area_Cleared_m2,Labour_Hr_Bio_Ratio,Labour_Bio_Hr_Ratio,Area_Bio_Ratio
 1,Bear Hill,2024,18,34,305,1.9,0.5,16.9
 2,Bear Hill,2025,15,34,424,2.3,0.4,28.3
 3,Calypso Woods,2023,3,30,594.8,10,0.1,198.3
