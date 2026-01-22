@@ -269,7 +269,7 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 #htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-21 13:13</strong>")
+HTML("<strong>Created and Coded for HAT by Wendy Anthony 2026-01-22 09:46</strong>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 # <h5>RNS Data Visualization Project</h5>
 HTML("
@@ -317,6 +317,8 @@ htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 #############################################
 h4("Filters")
 strong(em("Tip: Start by choosing a site"))
+br()
+br()
 p("Note: Density plots only respond to Site filter")
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol, group = ~ Site, multiple = T)
@@ -340,11 +342,12 @@ htmltools::br()
 Row  {data-height=55}
 -----------------------------------------------
 
-### ***Crew Data***
+### ***Crew (& Matson Volunteer) Data for hours worked, biomass cleared***
 ```{r}
 htmltools::HTML("
-  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. <em>Note: There is still some missing data for 2025</em> 
-  <br><strong><em>Tip: Start by choosing a site & drag to select a specific species</em></strong>")
+Crew data was collected for labour hours, invasive species and biomass removed. Density plots show highest concentration of values, and only respond to Site filter. <em>Note: There is still some missing data for 2025</em>.  
+<br><strong><em>Tip: Start by choosing a site</em></strong>. 
+")
 ```
 
 Row  {.tabset .tabset-fade}
@@ -372,7 +375,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
    scale_color_manual(values = c("#b15928","#ffff99","#6a3d9a","#cab2d6","#ff7f00","#33a02c","#a6cee3","#b2df8a", "#cab2d6")) +
     #scale_fill_manual(values = custom_colours_3) +
-        labs(title='Hours of Biomass removal by HAT Crew & Volunteers',
+        labs(title='Hours to Remove Biomass by HAT Crew & Volunteers',
           # subtitle='2025',
 #          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Biomass_Removed_m3",
           x = "Date", y = "Crew Hours"), 
@@ -409,7 +412,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
    scale_color_manual(values = c("#b15928","#ffff99","#6a3d9a","#cab2d6","#ff7f00","#33a02c","#a6cee3","#b2df8a", "#cab2d6")) +
     #scale_fill_manual(values = custom_colours_3) +
-        labs(title='Biomass removal (cubic metres) by HAT Crew & Volunteers',
+        labs(title='Biomass (cubic metres) Removed by HAT Crew & Volunteers',
           # subtitle='2025',
 #          caption = "Chart by Wendy Anthony \n 2025-11-29", fill = "Biomass_Removed_m3",
           x = "Date", y = "Biomass Removed (cubic metres)"), 
@@ -430,7 +433,7 @@ ggplotly(
 ggplotly(
   ggplot(sd_crew_vol, aes(x = Crew_Hours)) +
     geom_density(aes(fill = Site), alpha = 0.5) + 
-    labs(title = "Density Distribution of Times Crew Worked Specific # Hours a Day",
+    labs(title = "Distribution of hours crew worked each site visit",
          caption = "test",
          x = "Crew Work Hours") +
   theme_minimal() 
@@ -442,7 +445,7 @@ ggplotly(
 ggplotly(
   ggplot(sd_crew_vol, aes(x = Biomass_Removed_m3)) +
     geom_density(aes(fill = Site), alpha = 0.5) + 
-    labs(title = "Density Distribution of Same Amounts of Invasive Biomass Removed Each Time",
+    labs(title = "Distribution of amounts of biomass removed each site visit",
          x = "Biomass Removed (cubic metres)") +
   theme_minimal() 
   ) 
@@ -522,7 +525,7 @@ htmltools::br()
 ```
 
 
-  Top 5 Species Variance
+  Top Invasives Variance
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -568,14 +571,15 @@ Row  {data-height=55}
 ### ***Top 5 Invasive Species Biomass***
 ```{r}
 htmltools::HTML("
-  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. <em>Note: There is still some missing data for 2025</em> 
+Box plots show variation of biomass removed for top 5 invasive species at each site, including means, variance & outliers. <em>Note: There is still some missing data for 2025.</em> 
+<br><strong><em>Tip: Start by choosing a date</em></strong>. 
   ")
 ```
 
 Row  {.tabset .tabset-fade}
 -------------------------------------
 
-### **Top 5 Species Biomass** 
+### **Top 5 Invasives Biomass** 
 ```{r inv-biomass-box-inv-top5-test}
 # create custom colour-blind-friendly palette
 # custom_colours_3 <- c("Invasive" = "#fc8d62", 
@@ -595,7 +599,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
 #  scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Top 5 Invasive Species Removed - Data Distribution Means, Variance and Outliers',
+      title='Distribution Means, Variance & Outliers of Top 5 Invasive Species Removed',
       fill = "",
       x = "", 
       y = "Biomass Removed (cubic metres)"), 
@@ -633,7 +637,7 @@ htmltools::br()
 ```
 
 
-Top 5 Species by Site
+  Top Invasives by Site
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -678,7 +682,7 @@ Row  {data-height=55}
 ### ***Top 5 Invasive Species Biomass by Site***
 ```{r}
 htmltools::HTML("
-  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. <em>Note: There is still some missing data for 2025</em> 
+Multiple facets compare 8 sites for invasive species biomass removed (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: There is still some missing data for 2025</em> 
   ")
 ```
 
@@ -687,7 +691,7 @@ Row  {.tabset .tabset-fade}
 
 
 
-### **Top 5 Species by Site**
+### **Top 5 Invasives by Site**
 ```{r inv-sp-biomass-top5-facet-site}
 
 ggplotly(
@@ -707,7 +711,7 @@ ggplotly(
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +
   theme(legend.position ="bottom") + 
       labs(
-          title = "Biomass (cubic metres) of Top 5 Invasive Species Cleared", 
+          title = "Top 5 Invasive Species With Biomass Removed At Each Site", 
           x = "",   
           y = "Biomass Removed (cubic metres)",   
           fill = "Year"
@@ -754,7 +758,7 @@ htmltools::br()
 ```
 
 
-  Invasive Biomass
+  Site Summary
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -791,7 +795,7 @@ Row  {data-height=55}
 ### ***Crew Data Summarized***
 ```{r}
 htmltools::HTML("
-  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed.<br>
+  At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. The hours required per cubic metre of biomass shows the labour cost.<br>
   <em>Note: There is still some missing data for 2025</em>")
 ```
 
@@ -952,7 +956,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
       # aligns title to left
   theme(plot.title = element_text(hjust = 0)) +
   labs(
-       title='Total Work Crew Hours Required to Remove each cubic metre of Biomass (cost)',
+       title='Work Hours Required to Remove each cubic metre of Biomass (cost)',
       fill = "Year",
       x = "", 
     y = "Ratio of Labour Hours per cubic metre Biomass Removed"
@@ -1093,7 +1097,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
 
 ### Datatable Crew 
 ```{r data-table-crew}
-htmltools::h5("Crew Datatable")
+htmltools::h5("Summarized Crew Datatable")
 htmltools::br()
  datatable(sd_crew, rownames = FALSE, class = 'compact',
            extensions = c("Buttons"),
@@ -1114,7 +1118,7 @@ htmltools::br()
 ### Datatable Biomass  
 
 ```{r data-table-biomass}
-htmltools::h5("Invasive Biomass Datatable")
+htmltools::h5("Summarized Invasive Biomass Datatable")
 htmltools::br()
  datatable(sd_bio_inv, 
            rownames = FALSE, class = 'compact',
@@ -1173,7 +1177,7 @@ Row  {data-height=50}
 ### ***Mean % Species Cover Data***
 ```{r}
 htmltools::HTML("
-  Cover data was collected using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful.")
+  Cover data was collected using quadrat-sampling methods at Matson in July 2024 and 2025, and at Oak Haven, in April 2024 and 2025. As different seasonal meadows species were sampled, the comparison data between sites may not be as meaningful as if sampled during the same season in different years.")
 ```
 
 
@@ -1200,7 +1204,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
       labs(
-          title = "Native Species Mean % Cover at Oak Haven & Matson 2024-2025", 
+          title = "Native Species Mean % Cover at Oak Haven & Matson", 
           x = "",   
           y = "Mean % cover",   
           fill = "Site"
@@ -1245,7 +1249,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   labs(
-        title = "Invasive Species Mean % Cover at Oak Haven & Matson 2024-2025",        
+        title = "Invasive Species Mean % Cover at Oak Haven & Matson",        
         x = "",  
         y = "Mean % cover", 
         fill = "Site" 
@@ -1383,7 +1387,7 @@ ggplotly(
 
 ### Datatable
 ```{r data-table-cover}
-htmltools::h5("Cover Datatable")
+htmltools::h5("Cover Datatable - Native/Invasive & Treated/Untreated")
 htmltools::br()
  datatable(sd_cover, rownames = FALSE, class = 'compact',
            extensions = c("Buttons"),
@@ -1471,7 +1475,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Species Richness Count at Oak Haven and Matson',
+      title='Count of unique species at Oak Haven and Matson',
       fill = "",
       x = "Treatment", 
       y = "Species Count") +
@@ -1511,7 +1515,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Species Richness Count at Oak Haven and Matson',
+      title='Count of unique species at Oak Haven and Matson by year',
       fill = "",
       x = "Treatment", 
       y = "Species Count") +
@@ -1550,7 +1554,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Species Richness Count at Oak Haven and Matson',
+      title='Species Richness Count at Oak Haven and Matson by Site',
       fill = "",
       x = "Treatment", 
       y = "Species Count") +
@@ -1569,7 +1573,7 @@ ggplotly(
 
 ### Datatable
 ```{r data-table-count}
-htmltools::h5("Count Datatable")
+htmltools::h5("Species Count Datatable")
 htmltools::br()
  datatable(sd_count, rownames = FALSE, class = 'compact',
            extensions = c("Buttons"),
@@ -1627,7 +1631,7 @@ htmltools::br()
 Row  {data-height=30}
 -----------------------------------------------
 
-### ***Interactive Map***
+### ***Interactive Map of 3 HAT Managed Public GOE Sites***
 ```{r}
 htmltools::HTML("
 This map shows 3 public sites listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>. Click map markers to open pop-up windows with information about each site
@@ -1637,7 +1641,7 @@ This map shows 3 public sites listed on <a href='https://hat.bc.ca/community-bas
 Row
 ---------------------------------------------
 
-### Map of HAT Managed Public GOE Sites
+### Interactive Map
 ```{r leaflet-all-sites, echo = FALSE, message = FALSE, include = TRUE}
 # Title control
 # (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
