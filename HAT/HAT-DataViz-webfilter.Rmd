@@ -995,7 +995,7 @@ Row  {data-height=55}
 ### ***Top 5 Invasive Species Biomass Variation***
 ```{r}
 htmltools::HTML("
-Box plots show variation of biomass removed for top 5 invasive species at each site, including means, variance & outliers (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: There is still some missing data for 2025.</em> 
+Box plots show variation of biomass removed for top 5 invasive species at each site, including median, variance & outliers (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: There is still some missing data for 2025.</em> 
 <br><strong><em>Tip: Start by choosing a date</em></strong>. 
   ")
 ```
