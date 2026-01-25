@@ -404,7 +404,7 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=55}
+Row  {data-height=65}
 -----------------------------------------------
 
 ### ***Crew (& Matson Volunteer) Data for hours worked, biomass cleared***
@@ -1156,7 +1156,7 @@ htmltools::br()
 
 ```
 
-Row  {data-height=50}
+Row  {data-height=60}
 -----------------------------------------------
 
 ### ***Mean % Species Cover Data***
