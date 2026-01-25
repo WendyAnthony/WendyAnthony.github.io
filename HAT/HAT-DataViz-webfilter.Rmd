@@ -293,7 +293,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-25 13:00</span>")
+2026-01-25 13:31</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -304,7 +304,7 @@ hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 Row  {data-height=55}
 -----------------------------------------------
 
-### **About this Interactive Web Visualization Tool**
+### ***About this Interactive Web Visualization Tool***
 ```{r}
 HTML("
 <strong>Data visualization charts</strong> have been created for each type of data. <strong>Dataset tables</strong> are included with each dataset associated with tabs in header.
@@ -1098,9 +1098,6 @@ ggplotly(
 
 
 
-
-
-
   
 ### Datatable
 ```{r data-table-combine-top5}
@@ -1187,12 +1184,14 @@ ggplotly(
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  facet_wrap(vars(Site)) +
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) + 
     scale_fill_manual(values = custom_colours_Site_2) +
       labs(
-          title = "Native Species Mean % Cover at Oak Haven & Matson", 
+          title = "Native Species Mean % Cover at Matson & Oak Haven", 
           x = "",   
           y = "Mean % cover",   
           fill = "Site"
@@ -1233,12 +1232,14 @@ ggplotly(
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  facet_wrap(vars(Site)) +
   coord_flip() +     
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) +     
   scale_fill_manual(values = custom_colours_Site_2) +
   labs(
-        title = "Invasive Species Mean % Cover at Oak Haven & Matson",        
+        title = "Invasive Species Mean % Cover at Matson & Oak Haven",        
         x = "",  
         y = "Mean % cover", 
         fill = "Site" 
@@ -1274,12 +1275,14 @@ ggplotly(
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  facet_wrap(vars(Site)) +
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid")) + 
   scale_fill_manual(values = custom_colours_Site_2) +
   labs(
-        title = "Mixed Grasses Mean % Cover at Oak Haven & Matson 2024-2025",     
+        title = "Mixed Grasses Mean % Cover at Matson & Oak Haven 2024-2025",     
         x = "",   
         y = "Mean % cover",
         fill = "Site"
