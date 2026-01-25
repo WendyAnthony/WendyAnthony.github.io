@@ -293,7 +293,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-25 13:31</span>")
+2026-01-25 13:51</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -972,8 +972,8 @@ htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 h4("Filters")
 strong(em("Tip: Start by choosing a Date"))
 # Create a filter input
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol_inv_top5, group = ~ Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol_inv_top5, group = ~ Year, allLevels = TRUE)
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol_inv_top5, group = ~ Site, multiple = T)
 filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_vol_inv_top5, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
 
 
@@ -1036,7 +1036,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_Site_9) +
   labs(
-      title='Distribution Means, Variance & Outliers of Top 5 Invasive Species Removed',
+      title='Top 5 Invasive Species Removed Distribution Median, Variance & Outliers',
       fill = "",
       x = "", 
       y = "Biomass Removed (cubic metres)"), 
@@ -1081,7 +1081,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_Site_9) +
   labs(
-      title='Distribution Means, Variance & Outliers of Top 5 Invasive Species Removed',
+      title='Top 5 Invasive Species Removed Distribution Median, Variance & Outliers',
       fill = "",
       x = "", 
       y = "Biomass Removed (cubic metres)"), 
