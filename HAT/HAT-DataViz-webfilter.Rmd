@@ -404,7 +404,7 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=65}
+Row  {data-height=75}
 -----------------------------------------------
 
 ### ***Crew (& Matson Volunteer) Data for hours worked, biomass cleared***
@@ -1156,7 +1156,7 @@ htmltools::br()
 
 ```
 
-Row  {data-height=60}
+Row  {data-height=70}
 -----------------------------------------------
 
 ### ***Mean % Species Cover Data***
@@ -1397,7 +1397,7 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=130}
+Row  {data-height=140}
 -----------------------------------------------
 
 ### ***Species Richness Unique Count @ Matson & Oak Haven***
