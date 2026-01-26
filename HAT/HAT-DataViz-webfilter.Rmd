@@ -293,7 +293,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-25 19:13</span>")
+2026-01-25 19:45</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1033,7 +1033,7 @@ ggplotly(
   theme_minimal() + #get rid of grey background and tick marks
     # needs to be below first theme
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid")) +
-  theme(legend.position ="bottom") + 
+  # theme(legend.position ="bottom" + 
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
   theme(axis.text.y = element_text(size = 9)) +  
           # aligns title to left
@@ -1046,13 +1046,14 @@ ggplotly(
       y = "Biomass Removed (cubic metres)"), 
   tooltip = "text",
   config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.25
-    ))
+  ) 
+# %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.25
+#     ))
 ```
 
 ### **Top 5 Invasives Biomass (Box plot)** 
