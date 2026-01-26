@@ -3,6 +3,10 @@ title: "HAT GOEM DataViz"
 author: "Wendy Anthony"
 date: "2025/11/30"
 output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
+    toc_depth: '3'
   html_document:
     highlight: zenburn
     toc: yes
@@ -10,10 +14,7 @@ output:
     toc_float: yes
     number_sections: yes
     # highlight: textmate
-  pdf_document:
-    latex_engine: xelatex
-    toc: yes
-    toc_depth: '3'
+  word_document:
 # mainfont: "Arial"      # Your main font (serif or sans-serif)
 # sansfont: "Helvetica"  # The specific sans-serif font for sans-serif contexts
 # fontsize: 11pt
@@ -36,16 +37,15 @@ library(gridExtra) # combine plots
 
 # Data Import
 ```{r data-import-HAT}
-
+# Data Import
 ################################# 
 # Crew Hours and Amount Removed Data
 
 # To read and display Indigenous Languages save as CSV UTF-8
 # and use fileEncoding="UTF-8" to keep Aboriginal characters
-# crew_data <- read.csv("data/HATRestorationCrewData-2022-2025.csv", fileEncoding="UTF-8")
 crew_data <- read.csv("data/HATRestorationCrewData-2022-2025-sepsp.csv", fileEncoding="UTF-8")
 
-# Matson Field Logsm
+# Matson Field Logs
 matson_fieldlog_2022_2025 <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-Field-Log-2022-2025.csv", fileEncoding="UTF-8")
 matson_fieldlog_2024 <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-Field-Log-2024-NLM.csv", fileEncoding="UTF-8")
 #################################
@@ -112,8 +112,11 @@ str(matson_fieldlog_2024)
 ```
 
 # Data Wrangling
-## HAT Crew Dates 
+## Format HAT Crew Dates 
 ```{r data-wrangling-crew-data-dates}
+################################# 
+# Format HAT Crew Dates
+
 # separate values
 crew_data_sep <- crew_data %>% separate(Date, into = c("Day", "Month"), sep = "-")
 
@@ -131,6 +134,9 @@ crew_data_sep$Date <- as.Date(crew_data_sep$Date)
 str(crew_data_sep)
 
 
+################################# 
+# Format Matson Fieldlog Dates
+
 matson_fieldlog_2022_2025$Date <- as.Date(matson_fieldlog_2022_2025$Date)
 str(matson_fieldlog_2022_2025)
 
@@ -138,7 +144,7 @@ matson_fieldlog_2024$Date <- as.Date(matson_fieldlog_2024$Date)
 str(matson_fieldlog_2024)
 ```
 
-### Columns Change Names and Select
+### # Columns - Change Names and Select
 ```{r rename-cols-crew-data}
 colnames(crew_data_sep)
 # Rename columns
@@ -148,9 +154,13 @@ names(crew_data_sep)[names(crew_data_sep) == "Area.Cleared..m2."] <- "Area_Clear
 # names(crew_data_sep)[names(crew_data_sep) == "Invasive.Species.Cleared"] <- "Invasive_Species_Cleared"
 # names(crew_data_sep)[names(crew_data_sep) == "Crew.Hours"] <- "Crew_Hours"
 
-# Remove unneeded columns
+################################# 
+# Columns - Subset Selected Columns
+# Get column names
 colnames(crew_data_sep)
-crew_data_sep_sub <- subset(crew_data_sep, select = -c(1,3,4,5,7,8,10,12,13:15,20))
+
+# Remove unneeded columns
+crew_data_sep_sub <- subset(crew_data_sep, select = -c(1,3,4,5,7,8,10,13:15,20))
 colnames(crew_data_sep_sub)
 str(crew_data_sep_sub)
 
@@ -210,18 +220,20 @@ length(unique(crew_data_sep_sub$Invasive_Species_Cleared)) #23
 unique(crew_data_sep_sub$Invasive_Species_Cleared)
 ```
 
-### Biomass of Invasive Species Removed
+### Calculate Sums of Biomass and Hours
 ```{r}
 colnames(crew_data_sep_sub)
 
 crew_data_sep_sub_sum_bio_inv <- crew_data_sep_sub %>%
-  group_by(Work_Site, Year, Invasive_Species_Cleared) %>%
+  group_by(Work_Site, Year, Invasive_Species_Cleared, Data_Change_Assumptions, Work_Volunteer) %>%
   summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
             Crew_Hours = sum(Crew_Hours),
             Area_Cleared_m2 = sum(Area_Cleared_m2)
             )
 crew_data_sep_sub_sum_bio_inv
+# Check to ensure unique values of Invasive Species Cleared
 unique(crew_data_sep_sub_sum_bio_inv$Invasive_Species_Cleared)
+# Save Calculation subset
 write.csv(crew_data_sep_sub_sum_bio_inv, "data/crew_data_sep_sub_sum_bio_inv.csv", row.names = FALSE)
 
 ```
@@ -245,7 +257,7 @@ str(crew_data_sep_sub)
 
 
 crew_data_sep_sub_sum_by_group_site_hr_bio_ratio <- crew_data_sep_sub %>%
-  group_by(Work_Site, Year) %>%
+  group_by(Work_Site, Year, Work_Volunteer, Invasive_Species_Cleared) %>%
   summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
             Crew_Hours = sum(Crew_Hours),
             Area_Cleared_m2 = sum(Area_Cleared_m2),
@@ -254,6 +266,7 @@ crew_data_sep_sub_sum_by_group_site_hr_bio_ratio <- crew_data_sep_sub %>%
             Area_Bio_Ratio = round(sum(Area_Cleared_m2)/sum(Biomass_Removed_m3), digits = 1), 
             )
 crew_data_sep_sub_sum_by_group_site_hr_bio_ratio
+# Save Calculation subset
 write.csv(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, "data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", row.names = FALSE)
 ```
 
@@ -735,7 +748,8 @@ crew_data_sep_sub_OHP_2022 <- crew_data_sep_sub_OHP[crew_data_sep_sub_OHP$Year =
 
 crew_data_sep_sub_OHP_2025_plot <- 
   ggplot(crew_data_sep_sub_OHP_2025, aes(x = Date, y = Crew_Hours, fill = Biomass_Removed_m3)) + 
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  #geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_line() +
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = 7)) +
@@ -1368,6 +1382,147 @@ end
  ")
 ```
 
+## Data Flow
+```{r mermaid-data-flow, class.output="scroll-100"}
+mermaid("
+graph TB
+
+")
+```
+
+
+### Dataset Workflow
+
+```{r}
+mermaid("
+graph TD
+C[Crew Data] 
+CV[Cover Data]
+S[Site Data] 
+V[Volunteer Data] 
+
+S --> M(Map)
+M --> PU(Data Popups)
+
+C --> TIV(Top Inv Variance)
+C --> TIS(Top Inv Site)
+
+C --> DH(Crew Daily hours) 
+C --> DB(Crew Daily biomass) 
+
+V --> VB(Vol Daily biomass) 
+V --> VH(Vol Daily hours) 
+
+DH --> SPD(Scatter Plots)
+DB --> DPD(Density plots)
+TIV --> BXV(Box Plots)
+TIS --> BRS(Bar Plots)
+
+VH --> SPV(Scatter Plots)
+VB --> DPV(Density plots)
+
+C --> SH(Summary hours) 
+C --> SB(Summary biomass) 
+
+SH --> BRSH(Bar Plots)
+SB --> BRSB(Bar Plots)
+
+CV --> MC(% Mean Cover)
+CV --> SR(Species Richness)
+
+ MC --> BRMC(Bar Plots)
+SR --> BRSR(Bar Plots)
+")
+```
+
+***
+### Filter Workflow
+```{r}
+mermaid("
+graph TD
+
+
+FCD[Filter Crew Daily]
+FCSD[Filter Crew Summary]
+FCDD[Filter Crew Date]
+FCSD[Filter Crew Summary]
+FCSRD[Filter Species Richness]
+FCVD[Filter Cover]
+FSD[Filter Site]
+
+FCD --> SPD
+FCD --> DPD
+FCD --> DH
+FCD --> DB
+")
+```
+
+***
+### Crew Data Daily Workflow
+#### Original Data
+```{r}
+mermaid("
+graph TD
+CDOX[HATRestorationCrewData.xlsx] --> CDX[HATRestorationCrewData-2022-2025.xlsx]
+CDX --> CDSpX[HATRestorationCrewData-2022-2025-sepsp.xlsx]
+CDSpX --> CDSpC[HATRestorationCrewData-2022-2025-sepsp.csv]
+")
+```
+
+#### Separate Species & Subset Columns
+separate Day Month; month to number; new date col; paste Year-Month-Day; as.Date; rename columns
+
+```{r}
+mermaid("
+graph TD
+CDSpC[HATRestorationCrewData-2022-2025-sepsp.csv] --> CD(crew_data)
+CD--separate Day Month & month to number & new date col & paste Year-Month-Day & as.Date & rename columns--> CDsep(crew_data_sep)
+CDsep --> SC[subset columns]
+SC --> CDsepsub[crew_data_sep_sub]
+CDsepsub --> SA1(save as)
+SA1 --> CDsepsubC[crew_data_sep_sub.csv]
+")
+```
+
+#### Summarize Sums of Biomass Removed & Crew Hours 
+
+```{r}
+mermaid("
+graph TD
+CDsepsubC[crew_data_sep_sub.csv] --> Pr1{Sums of Biomass_Removed & Crew_Hours}
+Pr1 --> CDsepsubbio(crew_data_sep_sub_sum_bio_inv)
+CDsepsubbio --> SA2(save as)
+CDsepsubbio --> CDv1{Create dataviz}
+CDv1 --> DV[Biomass of Invasive Species per year]
+SA2 --> CDsepsubbioC[crew_data_sep_sub_sum_bio_inv.csv]
+")
+```
+
+#### Webfilter
+Shorten Site Names: Matson, Oak Haven, Havenwood
+```{r}
+mermaid("
+graph TD
+CDsepsubbioC[crew_data_sep_sub_sum_bio_inv.csv] --> Pr3{rename to Site with Shorter Names & rearrange column order}
+Pr3 --> CDsepsubbioR(crew_data_sep_sub_sum_bio_inv_rename_site)
+")
+```
+##### Shared Data Top5
+```{r}
+mermaid("
+graph TD
+CDsepsubbioR[crew_data_sep_sub_sum_bio_inv_rename_site] --> PF{Filter for top 5 Invasives by name}
+ PF --> T5[crew_data_sep_sub_sum_bio_inv_top5]
+ T5 --> SDT5(SharedData Top5)
+ SDT5 --> T5IS>sd_crew_data_sep_sub_sum_bio_inv_top5]
+ T5IS --> T5ISTb{Top Invasive Site Tab}
+ T5ISTb --> E1[END]
+ ")
+```
+ 
+***
+
+
 ---
 
 # Session info
@@ -1375,3 +1530,4 @@ end
 # to document specific packages used to run script
 sessionInfo()
 ```
+
