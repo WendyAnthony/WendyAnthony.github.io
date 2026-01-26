@@ -293,7 +293,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-25 13:51</span>")
+2026-01-25 14:51</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -321,12 +321,13 @@ HTML("
        <h5>HAT Data</h5>
      HAT shared 3 different data files, of 9 HAT-only-Managed-Sites: <br><br>
      
-     1. <strong>HAT Restoration Crew Data</strong> 
+     1. <strong>HAT Restoration Crew Site Data</strong> 
      <br> * daily crew hours
      <br> * daily invasive species removed (cubic metres)<br><br>
      2. <strong>Matson Mattocks Field Logs</strong> 
      <br> * volunteer work hours
-     <br> * volunteer invasive species removal<br><br>
+     <br> * volunteer invasive species removal
+     <br> * added to Matson Work Crew data<br><br>
      3. <strong>Cover Data 2024-2025</strong> 
      <br> * Mean % Cover
      <br> * For Native vs Invasive
@@ -411,7 +412,7 @@ Row  {data-height=75}
 ```{r}
 htmltools::HTML("
 <strong>Daily crew data</strong> was collected for labour hours, invasive species, and biomass removed.<br>
-<strong>Density plots</strong> show frequency distribution shape of highest concentration of values (like a smooth histogram); could be used to budget time i.e. how long crews usually spend at each site; only responds to Site filter. <em>Note: There is still some missing data for 2025</em>.  
+<strong>Density plots</strong> show frequency distribution shape of highest concentration of values (like a smooth histogram); could be used to budget time i.e. how long crews usually spend at each site; <strong><em>Density plots only respond to Site filter</em></strong>. <em>Note: There is still some missing data for 2025</em>.  
 <br><strong><em>Tip: Start by choosing a site</em></strong>. 
 ")
 ```
