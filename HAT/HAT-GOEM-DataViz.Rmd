@@ -20,7 +20,7 @@ output:
 # fontsize: 11pt
 ---
 
-Modified 2026-01-18 @ 12:01
+Modified 2026-01-26 @ 16:40
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -257,7 +257,7 @@ str(crew_data_sep_sub)
 
 
 crew_data_sep_sub_sum_by_group_site_hr_bio_ratio <- crew_data_sep_sub %>%
-  group_by(Work_Site, Year, Work_Volunteer, Invasive_Species_Cleared) %>%
+  group_by(Work_Site, Year, Work_Volunteer) %>%
   summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
             Crew_Hours = sum(Crew_Hours),
             Area_Cleared_m2 = sum(Area_Cleared_m2),

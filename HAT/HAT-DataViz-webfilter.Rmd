@@ -312,7 +312,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-26 15:00</span>")
+2026-01-26 16:45</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -342,6 +342,7 @@ HTML("
      1. <strong>HAT Restoration Crew Site Data</strong> 
      <br> * daily crew hours
      <br> * daily invasive species removed (cubic metres)
+     <br> * <strong>Sites</strong>: Bear Hill, Calypso Woods, Camas Hill, Funk, Havenwood, Matson, Oak Haven, Purple Sanicle, Yates, 
      <br> * <strong>Datasets</strong>: Sites Daily; Sites Summary; Top Invasives Variance; Top Invasives Site
      <br><br>
      2. <strong>Matson Mattocks Field Logs</strong> 
