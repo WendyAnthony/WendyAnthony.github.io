@@ -312,7 +312,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-26 16:45</span>")
+2026-01-27 03:51</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -340,18 +340,20 @@ HTML("
      HAT shared 3 different data files, of 9 HAT-only-Managed-Sites: <br><br>
      
      1. <strong>HAT Restoration Crew Site Data</strong> 
-     <br> * daily crew hours
-     <br> * daily invasive species removed (cubic metres)
+     <br> * <strong>Metrics</strong>: daily crew hours, daily invasive species removed (cubic metres)
      <br> * <strong>Sites</strong>: Bear Hill, Calypso Woods, Camas Hill, Funk, Havenwood, Matson, Oak Haven, Purple Sanicle, Yates, 
      <br> * <strong>Datasets</strong>: Sites Daily; Sites Summary; Top Invasives Variance; Top Invasives Site
      <br><br>
+     
      2. <strong>Matson Mattocks Field Logs</strong> 
-     <br> * volunteer work hours
-     <br> * volunteer invasive species removal
-     <br> * added to Matson Work Crew data
+     <br> * <strong>Metrics</strong>: volunteer work hours, volunteer invasive species removal
+     <br> * <strong>Sites</strong>: added to Matson Work Crew data
      <br> * <strong>Datasets</strong>: Sites Daily; Top Invasives Variance
      <br><br>
+     
      3. <strong>Cover Data 2024-2025</strong> 
+     <br> * <strong>Metrics</strong>: cover, species
+     <br> * <strong>Sites</strong>: Matson, Oak Haven
      <br> * <strong>Datasets</strong>: Cover Mean % (Native vs Invasive & Treated vs Untreated); Species Richness
      ")
 ```
@@ -382,32 +384,27 @@ HTML("
 ```{r}
 HTML("
 <strong>Background Research</strong><br> 
-* Comparing monitoring results from multiple restoration projects requires consistent measurements of vegetation composition (e.g. native and exotic species cover), which may help identify responses to stressors affecting already compromised and rare GOE.<br> 
-* Representing data in a visual manner can help make complex data more understandable than a tables of numbers, and may reveal patterns or trends resulting from different restoration management actions.<br> 
-* Data visualization can represent abstract information visually,  allow for data exploration and analysis, help model restoration management alternatives, create 'data-based story-telling', and communicate potential insights to help make effective restoration management decisions; RMarkdown-generated reports can help create reproducible research.
+* Comparing monitoring results from multiple restoration projects requires consistent measurements of vegetation composition (e.g. native and exotic species cover), and biomass removed, which may help identify responses to stressors affecting already compromised and rare GOE.<br> 
+* Representing data visuallly makes complex data more understandable, revealing patterns or trends from data exploration and analysis, create 'data-based story-telling', and communicate insights to help make effective restoration management decisions.<br> 
+* RMarkdown-generated reports can help create reproducible research.
 <br><br>
 
 <strong>Project Goals and Overall Purpose</strong><br>
-* I propose to create a customized coding and reporting tool for non-coders, with tutorial instructions, using open-source R packages to format and interactively visualize data collected at multiple sites for HAT Garry Oak Ecosystem Monitoring (GOEM) Program.<br> 
-* Based on questions HAT wants the tool to help answer about the data, it will provide an interactive way to communicate information about the data and help determine any patterns through analysis.<br> 
-* All parts of this project were created using R code in RMarkdown, to showcase some visualizations tools and reports. <br>
+* I propose to create a customized coding and reporting tool for non-coders, with tutorial instructions, using open-source R code packages to format and interactively visualize data collected at multiple sites for HAT Garry Oak Ecosystem Monitoring (GOEM) Program.<br> 
+* Based on HAT's needs, the tool will provide an interactive way to communicate data information, and help determine any patterns.<br> 
 * This may also be a method model to compare multiple GOEM Projects using the same measurement parameters.
 <br><br>
 
 <strong>Project Objectives</strong><br>
 * Analyze and transform collected data<br>
-* Write data visualization code<br>
-* Create interactive data visualization tools<br>
+* Write reproducible data visualization code<br>
 * Create interactive, browser-based Data Visualization Tool<br>
 * Analyze resulting patterns<br><br>
 
 <strong>RStudio-created Project Deliverables</strong><br>
 * RMarkdown Data Processing Document Tool<br>
-* Customizations<br>
-* Create Customized Functions for HAT<br>
-* Data Visualizations<br>
-* Interactive Browser-based Data Viz Tool<br>
-* Tutorials for using Data visualization Tools<br>
+* Interactive Browser-based Data Visualizations Tool<br>
+* Tutorials for using Data visualization Tool<br>
 * Best practises for data files<br>
 * Written Report: Due 2026-04-15; publish in online journal Ecorestoration: RNS Technical Series<br>
 * Project Presentation: By mid-May 
@@ -465,8 +462,8 @@ Row  {data-height=75}
 ```{r}
 htmltools::HTML("
 <strong>Daily crew data</strong> was collected for labour hours, invasive species, and biomass removed.<br>
-<strong>Density plots</strong> show frequency distribution shape of highest concentration of values (like a smooth histogram); could be used to budget time i.e. how long crews usually spend at each site; <strong><em>Density plots only respond to Site filter</em></strong>. <em>Note: There is still some missing data for 2022 & 2025</em>.  
-<br><strong><em>Tip: Start by choosing a site</em></strong>. 
+<strong>Density plots</strong> show frequency distribution shape of highest concentration of values (like a smooth histogram); could be used to budget time i.e. how long crews usually spend at each site; <em>Note: Some missing data for 2022 & 2025</em>.  
+<br><strong><em>Tip: Start by choosing a site</em> - Density plots only respond to Site filter</strong>.. 
 ")
 ```
 
@@ -523,7 +520,7 @@ ggplotly(
 ```
 
 
-### **Density Hours** 
+### **Hours Frequency** 
 ```{r inv-density-hours}
 custom_colours_Site_9 <- c(
 			"Matson" = "#f8766d", 
@@ -555,31 +552,6 @@ ggplotly(
   ) 
 ```
 
-### **Histogram Crew Hours** 
-```{r inv-density-hours-hist}
-custom_colours_Site_9 <- c(
-			"Matson" = "#f8766d", 
-      "Oak Haven" = "#619cff",
-			"Purple Sanicle" = "#db72fb",
-			"Yates" = "#ff61c3",
-			"Funk" = "#00ba38",
-			"Havenwood" = "#00c19f",
-			"Bear Hill" = "#00b9e3",
-			"Camas Hill" = "#93aa00",
-			"Calypso Woods" = "#f2cb0a"
-)
-
-ggplotly(
-  ggplot(sd_crew_vol) +
-    geom_histogram(bins = 70, aes(x = Crew_Hours, fill = Site), 
-                   alpha = 0.5, position = "identity") + 
-    labs(title = "Distribution of amounts of work hours each site visit",
-         x = "Work Hours",
-         fill ="") +
-    scale_fill_manual(values = custom_colours_Site_9) +
-  theme_minimal() 
-  ) 
-```
 
 ### **Biomass per Year** 
 ```{r inv-biomass-scatter-year}
@@ -630,7 +602,7 @@ ggplotly(
     ))
 ```
 
-### **Density Biomass** 
+### **Biomass Frequency** 
 ```{r inv-density-biomass}
 custom_colours_Site_9 <- c(
 			"Matson" = "#f8766d", 
@@ -661,7 +633,7 @@ ggplotly(
   ) 
 ```
 
-### **Histogram Biomass** 
+### **Biomass Histogram** 
 ```{r inv-density-biomass-hist}
 custom_colours_Site_9 <- c(
 			"Matson" = "#f8766d", 
@@ -687,7 +659,7 @@ ggplotly(
   ) 
 ```
 
-### Datatable All
+### Datatable
 ```{r data-table-combine-all}
 htmltools::h5("Crew and Volunteer Hours & Biomass Datatable")
 htmltools::br()
@@ -748,7 +720,7 @@ Row  {data-height=55}
 ```{r}
 htmltools::HTML("
   At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. The hours required per cubic metre of biomass shows the labour cost.<br>
-  <em>Note: There is still some missing data for 2022 & 2025</em>")
+  <em>Note: Some missing data for 2022 & 2025</em>")
 ```
 
 Row  {.tabset .tabset-fade}
@@ -843,7 +815,7 @@ ggplotly(
 
 
 
-### Hours / Biomass (Labour Cost)
+### Hours per Biomass (Labour Cost)
 ```{r crew-hrs-per-biomass-removed-ratio}
 
 custom_colours_years <- c("2022" = "#ffff33", 
@@ -888,7 +860,7 @@ ggplot(sd_crew, aes(x = reorder(Site, desc(Site)), y = Labour_Hr_Bio_Ratio, fill
 ```
 
 
-### Datatable Crew 
+### Datatable
 ```{r data-table-crew}
 htmltools::h5("Summarized Crew Datatable")
 htmltools::br()
@@ -953,7 +925,7 @@ Row  {data-height=55}
 ### ***Top 5 Invasive Species Biomass Variation***
 ```{r}
 htmltools::HTML("
-Box plots show variation of biomass removed for top 5 invasive species at each site, including median, variance & outliers (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: There is still some missing data for 2022 & 2025.</em> 
+Box plots show variation of biomass removed for top 5 invasive species at each site, including median, variance & outliers (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: Some missing data for 2022 & 2025.</em> 
 <br><strong><em>Tip: Start by choosing a date</em></strong>. 
   ")
 ```
@@ -1125,7 +1097,7 @@ Row  {data-height=55}
 ### ***Top 5 Invasive Species Biomass by Site***
 ```{r}
 htmltools::HTML("
-Multiple facets compare 8 sites for invasive species biomass removed (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: There is still some missing data for 2022 & 2025</em> 
+Multiple facets compare 8 sites for invasive species biomass removed (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: Some missing data for 2022 & 2025</em> 
   ")
 ```
 
