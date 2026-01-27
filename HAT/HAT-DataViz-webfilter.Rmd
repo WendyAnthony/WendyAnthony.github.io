@@ -312,7 +312,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-27 03:51</span>")
+2026-01-27 04:04</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -370,7 +370,7 @@ HTML("
   <strong>Filters</strong><br>
   * All years and sites are shown until data is filtered<br>
   * Filters must be cleared, using delete or backspace key in order to start new filter<br>
-  * Filtered summary statistics accompany each data set<br><br
+  * Filtered summary statistics accompany each data set<br><br>
 
   <strong>Interactive Visualizations</strong><br>
   * Hover over data visualizations to view tooltips<br>
@@ -384,8 +384,8 @@ HTML("
 ```{r}
 HTML("
 <strong>Background Research</strong><br> 
-* Comparing monitoring results from multiple restoration projects requires consistent measurements of vegetation composition (e.g. native and exotic species cover), and biomass removed, which may help identify responses to stressors affecting already compromised and rare GOE.<br> 
-* Representing data visuallly makes complex data more understandable, revealing patterns or trends from data exploration and analysis, create 'data-based story-telling', and communicate insights to help make effective restoration management decisions.<br> 
+* Comparing monitoring restoration projects results requires consistent measurements of vegetation composition and biomass removed, and may help identify responses to stressors affecting already compromised and rare GOE.<br> 
+* Representing data visuallly makes complex data more understandable, revealing patterns from data exploration and analysis, creating 'data-based story-telling', and communicating insights to help make effective management decisions.<br> 
 * RMarkdown-generated reports can help create reproducible research.
 <br><br>
 
