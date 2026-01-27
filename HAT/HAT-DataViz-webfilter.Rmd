@@ -312,7 +312,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-27 04:04</span>")
+2026-01-27 04:38</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -384,15 +384,13 @@ HTML("
 ```{r}
 HTML("
 <strong>Background Research</strong><br> 
-* Comparing monitoring restoration projects results requires consistent measurements of vegetation composition and biomass removed, and may help identify responses to stressors affecting already compromised and rare GOE.<br> 
-* Representing data visuallly makes complex data more understandable, revealing patterns from data exploration and analysis, creating 'data-based story-telling', and communicating insights to help make effective management decisions.<br> 
+* Comparing monitoring restoration projects using consistent measurements of vegetation composition and biomass removed, may help identify responses to stressors affecting already compromised and rare GOE.<br> 
+* Representing data visually helps make complex data understandable, revealing patterns, creating 'data-based story-telling', and communicating insights to help make effective management decisions.<br> 
 * RMarkdown-generated reports can help create reproducible research.
 <br><br>
 
 <strong>Project Goals and Overall Purpose</strong><br>
-* I propose to create a customized coding and reporting tool for non-coders, with tutorial instructions, using open-source R code packages to format and interactively visualize data collected at multiple sites for HAT Garry Oak Ecosystem Monitoring (GOEM) Program.<br> 
-* Based on HAT's needs, the tool will provide an interactive way to communicate data information, and help determine any patterns.<br> 
-* This may also be a method model to compare multiple GOEM Projects using the same measurement parameters.
+* I propose to create an interactive data visualization tool for non-coders, based on HAT's needs, with tutorial instructions, using open-source R code to format monitoring data collected at multiple HAT sites, to provide a way to communicate data information and patterns.
 <br><br>
 
 <strong>Project Objectives</strong><br>
@@ -403,11 +401,10 @@ HTML("
 
 <strong>RStudio-created Project Deliverables</strong><br>
 * RMarkdown Data Processing Document Tool<br>
-* Interactive Browser-based Data Visualizations Tool<br>
-* Tutorials for using Data visualization Tool<br>
-* Best practises for data files<br>
-* Written Report: Due 2026-04-15; publish in online journal Ecorestoration: RNS Technical Series<br>
-* Project Presentation: By mid-May 
+* Interactive Browser-based Data Visualizations Tool with Tutorial for Use<br>
+* Best practises for data<br>
+* Written Report: Due 2026-04-15; publish in online RNS Ecorestoration journal<br>
+* Project Presentation: By mid-May 2026
   ")
 ```
 
