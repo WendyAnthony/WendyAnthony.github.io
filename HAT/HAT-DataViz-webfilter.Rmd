@@ -310,7 +310,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-27 04:48</span>")
+2026-01-27 06:51</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1617,6 +1617,7 @@ htmltools::br()
 htmltools::br()
 
 filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
+filter_checkbox(id = "Top_5_Invasives", label = "Top 5 Invasives", sharedData = sd_sites, group = ~Top_5_Invasives)
 
 # filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
 # 
@@ -1680,7 +1681,11 @@ leaflet(sd_sites) %>%
           "<b>HAT Status:</b> ", HAT_sites_HAT$HAT_Status, "<br>",
           "<b>Co-Covenant:</b> ", HAT_sites_HAT$Co_Covenant, " (", HAT_sites_HAT$Date, ")", "<br>",
           "<b>Ecosystems:</b> ", HAT_sites_HAT$Ecosystems, "<br>",
-          "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br>"
+          "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br><br>",
+          '<table style="border: 0px solid black; "vertical-align: top;>',
+      '<tr style="vertical-align: top;"><td style="vertical-align: top;"><b>Top 5 Invasives: </b></td><td>', HAT_sites_HAT$Top_5_Invasives, '</td></tr>',
+      '<tr style="vertical-align: top;"><td style="vertical-align: top;"><b>Hours per Biomass (m3): </b></td><td>', HAT_sites_HAT$Hours_per_Biomass, '</td></tr>',
+    '</table>'
           ))  %>%
       addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
 
@@ -1688,6 +1693,59 @@ leaflet(sd_sites) %>%
       # add controls
       #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
       addControl(title, position = "topright")
+```
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+
+# popup_content <- lapply(seq_len(nrow(HAT_sites_HAT)), function(i) {
+#   # Use HTML table tags and concatenate data
+#   paste0(
+# '<img src = "https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w">',  '<br>','<br>',
+#     '<table style="border: 1px solid black;">',
+#       '<tr><td><b>Site</b></td><td>', HAT_sites_HAT[i, 'Site'], '</td></tr>',
+#       '<tr><td><b>Full Name</b></td><td>', HAT_sites_HAT[i, 'FullName'], '</td></tr>',
+#       '<tr><td><b>Municipality</b></td><td>', HAT_sites_HAT[i, 'Municipality'], '</td></tr>',
+#       '<tr><td><b>FirstNations</b></td><td>', HAT_sites_HAT[i, 'FirstNations'], '</td></tr>',
+#       '<tr><td><b>Size</b></td><td>', HAT_sites_HAT[i, 'Size_ha'], ' (ha)', '</td></tr>',      
+#       '<tr><td><b>HAT Status</b></td><td>', HAT_sites_HAT[i, 'HAT_Status'], '</td></tr>',
+#       '<tr><td><b>Co_Covenant</b></td><td>', HAT_sites_HAT[i, 'Co_Covenant'], ' (', HAT_sites_HAT$Date, ')', '</td></tr>',
+#       '<tr><td><b>Ecosystems</b></td><td>', HAT_sites_HAT[i, 'Ecosystems'], '</td></tr>',
+#       '<tr><td><b>Volunteer Stewardship</b></td><td>', HAT_sites_HAT[i, 'Volunteer_Stewardship'], '</td></tr>',
+#       '<tr><td><b>Top 5 Invasives</b></td><td>', HAT_sites_HAT[i, 'Top_5_Invasives'], '</td></tr>',
+#       '<tr><td><b>Hours per Biomass</b></td><td>', HAT_sites_HAT[i, 'Hours_per_Biomass'], '</td></tr>',
+#     '</table>'
+#   )
+# })
+# 
+#         popup_table <- lapply(popup_content, HTML) # Wrap the content in HTML()
+#         ### in leaflet(AddCircleMarkers(popup = popup_table) # but this seems to create a double table in popup ?????
+```
+
+
+
+```{r leaflet-all-sites-table, echo = FALSE, message = FALSE, include = TRUE}
+# ## Interactive Map Popup Table
+#      title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+# 
+#       pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
+# 
+# leaflet(sd_sites) %>%
+#       addProviderTiles("Esri.WorldImagery") %>%
+#       addCircleMarkers(
+#         ~ Lng, ~ Lat,
+#         color = ~pal(Site),
+#         weight = 1, # size of circle border
+#         stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
+#         radius = 5,
+#         popup = ~popup_table
+#         #popup = lapply(popup_content, HTML) # Wrap the content in HTML()
+#         )  %>%
+#       addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
+# 
+#       setView(-123.44799, 48.52919, 10) %>%
+#       # add controls
+#       #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
+#       addControl(title, position = "topright")
 ```
 
 
