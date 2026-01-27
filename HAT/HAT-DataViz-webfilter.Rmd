@@ -299,11 +299,9 @@ Inputs {.sidebar data-width=250}
 
  
 ```{r about-tabs}
-#htmltools::HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-# <h5>RNS Data Visualization Project</h5>
 HTML("
   <br>This interactive data visualization tool was created as a final project for University of Victoria Restoration of Natural Ecosystems ER390, with HAT as a community partner, and supervised by Nancy Shackelford.<br><br>
   ")
@@ -312,22 +310,17 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-27 04:38</span>")
+2026-01-27 04:48</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-# HTML("<span style='font-size:75%';>wanthony@uvic.ca</span>")
-# hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 ```
 
-Row  {data-height=5}
+Row  {data-height=1}
 -----------------------------------------------
 
 ### ***About this Interactive Web Visualization Tool***
-```{r}
-HTML("
-")
-```
+
 
 Row  {.tabset .tabset-fade}
 -------------------------------------
@@ -384,13 +377,14 @@ HTML("
 ```{r}
 HTML("
 <strong>Background Research</strong><br> 
-* Comparing monitoring restoration projects using consistent measurements of vegetation composition and biomass removed, may help identify responses to stressors affecting already compromised and rare GOE.<br> 
-* Representing data visually helps make complex data understandable, revealing patterns, creating 'data-based story-telling', and communicating insights to help make effective management decisions.<br> 
+* Comparing monitoring restoration projects using consistent vegetation measurements techniques, may help identify responses to stressors affecting already compromised and rare GOE.<br> 
+* Visually representing data helps make complex data understandable, reveals patterns, creates 'data-based story-telling', and communicates insights for making effective management decisions.<br> 
 * RMarkdown-generated reports can help create reproducible research.
 <br><br>
 
 <strong>Project Goals and Overall Purpose</strong><br>
-* I propose to create an interactive data visualization tool for non-coders, based on HAT's needs, with tutorial instructions, using open-source R code to format monitoring data collected at multiple HAT sites, to provide a way to communicate data information and patterns.
+* To create an interactive data visualization tool for non-coders, based on HAT's needs, with tutorial instructions<br>
+* Use open-source R code to format monitoring data collected at multiple HAT sites, to communicate data information and patterns.
 <br><br>
 
 <strong>Project Objectives</strong><br>
@@ -400,9 +394,8 @@ HTML("
 * Analyze resulting patterns<br><br>
 
 <strong>RStudio-created Project Deliverables</strong><br>
-* RMarkdown Data Processing Document Tool<br>
+* RMarkdown Data Processing Document Tool using best practises for data<br>
 * Interactive Browser-based Data Visualizations Tool with Tutorial for Use<br>
-* Best practises for data<br>
 * Written Report: Due 2026-04-15; publish in online RNS Ecorestoration journal<br>
 * Project Presentation: By mid-May 2026
   ")
