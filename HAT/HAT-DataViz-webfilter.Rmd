@@ -310,7 +310,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-27 06:51</span>")
+2026-01-28 13:13</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1618,8 +1618,7 @@ htmltools::br()
 
 filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
 filter_checkbox(id = "Top_5_Invasives", label = "Top 5 Invasives", sharedData = sd_sites, group = ~Top_5_Invasives)
-
-# filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
+filter_checkbox(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
 # 
 # filter_slider(id = "Size_ha", label = "Size in ha", sharedData = sd_sites, column = ~Size_ha, step = 1, min = 0, max = 20, post = "ha")
 # 
@@ -1645,7 +1644,7 @@ Row  {data-height=40}
 ### ***Interactive Map of 3 HAT Managed Public GOE Sites***
 ```{r}
 htmltools::HTML("
-This map shows 3 public sites listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other sites are on private, non-public land with location protected for privacy. Click map markers to open pop-up windows with information about each site
+This map shows 3 public sites listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other sites are on private, non-public land with location protected for privacy. Click map markers to open pop-up windows with information about each site. Images only work when used online.
                 ")
 ```
 
@@ -1656,7 +1655,9 @@ Row
 ```{r leaflet-all-sites, echo = FALSE, message = FALSE, include = TRUE}
 # Title control
 # (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
-     title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+# HAT IMAGE LOGO
+# <img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w">
+     title <- '<p style="text-align: center; height: 14px; "><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
      
 #     pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Central Saanich", "Esquimalt", "Colwood"))
           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
@@ -1682,10 +1683,47 @@ leaflet(sd_sites) %>%
           "<b>Co-Covenant:</b> ", HAT_sites_HAT$Co_Covenant, " (", HAT_sites_HAT$Date, ")", "<br>",
           "<b>Ecosystems:</b> ", HAT_sites_HAT$Ecosystems, "<br>",
           "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br><br>",
-          '<table style="border: 0px solid black; "vertical-align: top;>',
-      '<tr style="vertical-align: top;"><td style="vertical-align: top;"><b>Top 5 Invasives: </b></td><td>', HAT_sites_HAT$Top_5_Invasives, '</td></tr>',
-      '<tr style="vertical-align: top;"><td style="vertical-align: top;"><b>Hours per Biomass (m3): </b></td><td>', HAT_sites_HAT$Hours_per_Biomass, '</td></tr>',
-    '</table>'
+        "<b>Top 5 Invasives:</b> ", HAT_sites_HAT$Top_5_Invasives, "<br><br>",
+        
+    '<table style="border: 0px solid black; "vertical-align: top;>',
+      '<tr style="vertical-align: top;">
+        <th></th>        
+        <th>2022</th>
+        <th>2023</th>
+        <th>2024</th>
+        <th>2025</th>        
+      </tr>', 
+    
+    # Hours per Biomass (m3)
+      '<tr style="vertical-align: top;">',
+        '<td style="vertical-align: top;"><b>Hours per Biomass (m3): </b></td>',
+        '<td>', HAT_sites_HAT$Hours_per_Biomass_2022, '</td>',
+        '<td>', HAT_sites_HAT$Hours_per_Biomass_2023, '</td>',
+        '<td>', HAT_sites_HAT$Hours_per_Biomass_2024, '</td>',
+        '<td>', HAT_sites_HAT$Hours_per_Biomass_2025, '</td>',
+      '</tr>',
+    
+    # Staff Hours
+      '<tr style="vertical-align: top;">',
+        '<td style="vertical-align: top;"><b>Staff Hours: </b></td>',
+        '<td>', HAT_sites_HAT$Staff_Hours_2022, '</td>',
+        '<td>', HAT_sites_HAT$Staff_Hours_2023, '</td>',
+        '<td>', HAT_sites_HAT$Staff_Hours_2024, '</td>',
+        '<td>', HAT_sites_HAT$Staff_Hours_2025, '</td>',
+      '</tr>',
+    
+    #Biomass Removed (m3)
+      '<tr style="vertical-align: top;">',
+        '<td style="vertical-align: top;"><b>Biomass Removed (m3): </b></td>',
+        '<td>', HAT_sites_HAT$Biomass_2022, '</td>',
+        '<td>', HAT_sites_HAT$Biomass_2023, '</td>',
+        '<td>', HAT_sites_HAT$Biomass_2024, '</td>',
+        '<td>', HAT_sites_HAT$Biomass_2025, '</td>',
+      '</tr>',
+    '</table>',
+    "<br><br>",
+            "<figure><span style='text-align: center; font-style:italic; font-size: 9px'><img src = '", HAT_sites_HAT$Site_Image, "'> <figcaption>Image: https://hat.bc.ca/community-based-restoration </figcaption></span></figure>", "<br>"
+    
           ))  %>%
       addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
 
