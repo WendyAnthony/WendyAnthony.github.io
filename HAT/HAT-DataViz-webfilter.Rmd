@@ -197,7 +197,13 @@ HAT_sites_HAT$Biomass_2022 <- sprintf("%.1f", HAT_sites_HAT$Biomass_2022)
 HAT_sites_HAT$Biomass_2023 <- sprintf("%.1f", HAT_sites_HAT$Biomass_2023)
 HAT_sites_HAT$Biomass_2024 <- sprintf("%.1f", HAT_sites_HAT$Biomass_2024)
 HAT_sites_HAT$Biomass_2025 <- sprintf("%.1f", HAT_sites_HAT$Biomass_2025)
+HAT_sites_HAT$Area_2022 <- sprintf("%.1f", HAT_sites_HAT$Area_2022)
+HAT_sites_HAT$Area_2023 <- sprintf("%.1f", HAT_sites_HAT$Area_2023)
+HAT_sites_HAT$Area_2024 <- sprintf("%.1f", HAT_sites_HAT$Area_2024)
+HAT_sites_HAT$Area_2025 <- sprintf("%.1f", HAT_sites_HAT$Area_2025)
 str(HAT_sites_HAT)
+
+
 #############################################
 # Crew Data
 # Summary data totals per year per site
@@ -381,7 +387,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-29 13:53</span>")
+2026-01-29 15:51</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1159,7 +1165,7 @@ ggplotly(
                                                           "\nCrew Hours:", Crew_Hours,
                                                           "\nBiomass Removed (cubic metres):", Biomass_Removed_m3,  
                                                           "\nArea Cleared (m2):", Area_Cleared_m2))) + 
-  geom_bar(stat = "identity", width = 0.9, position = "dodge") +
+  geom_bar(stat = "identity", width = 0.6, position = position_dodge(0.7)) +
   facet_wrap(vars(Site)) +
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
@@ -1447,7 +1453,7 @@ ggplotly(
                                                           "\nTreated:", Treated,
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
   facet_wrap(vars(Site)) +
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
@@ -1457,7 +1463,7 @@ ggplotly(
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) + 
       labs(
-          title = "Native Species Mean % Cover at Matson & Oak Haven", 
+          title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
           x = "",   
           y = "Mean % cover",   
           fill = ""
@@ -1499,7 +1505,7 @@ ggplotly(
                                                           "\nTreated:", Treated,
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
   facet_wrap(vars(Site)) +
   coord_flip() +     
   theme_minimal() + #get rid of grey background and tick marks
@@ -1509,7 +1515,7 @@ ggplotly(
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) +
   labs(
-        title = "Invasive Species Mean % Cover at Matson & Oak Haven",        
+        title = "Invasive Species Mean % Cover at Matson & Oak Haven by Treatment",        
         x = "",  
         y = "Mean % cover", 
         fill = ""
@@ -1548,7 +1554,7 @@ ggplotly(
                                                           "\nTreated:", Treated,
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
   facet_wrap(vars(Site)) +
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
@@ -1558,7 +1564,7 @@ ggplotly(
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) +
   labs(
-        title = "Mixed Grasses Mean % Cover at Matson & Oak Haven",     
+        title = "Mixed Grasses Mean % Cover at Matson & Oak Haven by Treatment",     
         x = "",   
         y = "Mean % cover",
         fill = ""
@@ -1701,7 +1707,7 @@ ggplotly(
                       "\nTreated:", Treated,
                       "\nNative or Invasive", Native_or_Invasive,
                       "\nSpecies Number", Species_number))) + 
-  geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
   # geom_text(aes(label = Year), 
   #            position = position_dodge(),
   #            hjust = -0.5, vjust = -0.5, size = 2, 
@@ -1921,7 +1927,7 @@ leaflet(sd_sites) %>%
         
     '<table style="border: 0px solid black; "vertical-align: top;>',
       '<tr style="vertical-align: top;">
-        <th>BIOMASS REMOVED</th>        
+        <th>BIOMASS PULL</th>        
         <th align="right">2022</th>
         <th align="right">2023</th>
         <th align="right">2024</th>
@@ -1930,7 +1936,7 @@ leaflet(sd_sites) %>%
     
     # Hours per Biomass (m3)
       '<tr style="vertical-align: top;">',
-        '<td style="vertical-align: top;"><b>Hours per m3 Biomass:  </b></td>',
+        '<td style="vertical-align: top;"><b>Hours/Biomass (m3):  </b></td>',
         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2022, '</td>',
         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2023, '</td>',
         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2024, '</td>',
@@ -1948,12 +1954,22 @@ leaflet(sd_sites) %>%
     
     #Biomass Removed (m3)
       '<tr style="vertical-align: top;">',
-        '<td style="vertical-align: top;"><b>Biomass Removed (m3):  </b></td>',
+        '<td style="vertical-align: top;"><b>Biomass (m3):  </b></td>',
         '<td align="right">', HAT_sites_HAT$Biomass_2022, '</td>',
         '<td align="right">', HAT_sites_HAT$Biomass_2023, '</td>',
         '<td align="right">', HAT_sites_HAT$Biomass_2024, '</td>',
         '<td align="right">', HAT_sites_HAT$Biomass_2025, '</td>',
       '</tr>',
+    
+        #Area of Biomass Removed (m3)
+      '<tr style="vertical-align: top;">',
+        '<td style="vertical-align: top;"><b>Area (m2):  </b></td>',
+        '<td align="right">', HAT_sites_HAT$Area_2022, '</td>',
+        '<td align="right">', HAT_sites_HAT$Area_2023, '</td>',
+        '<td align="right">', HAT_sites_HAT$Area_2024, '</td>',
+        '<td align="right">', HAT_sites_HAT$Area_2025, '</td>',
+      '</tr>',
+
     '</table>'
     ## image makes popup window too long and top is missing
     # ,
