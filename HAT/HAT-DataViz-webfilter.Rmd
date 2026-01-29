@@ -381,7 +381,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-28 17:17</span>")
+2026-01-29 09:22</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -529,7 +529,7 @@ Row  {data-height=75}
 ```{r}
 htmltools::HTML("
 <strong>Daily crew data</strong> was collected for labour hours, invasive species, and biomass removed.<br>
-<strong>Density plots</strong> show frequency distribution shape of highest concentration of values (like a smooth histogram); could be used to budget time i.e. how long crews usually spend at each site; <em>Note: Some missing data for 2022 & 2025</em>.  
+<strong>Frequency plots</strong> show the distribution shape of the highest concentration of values (like a smooth histogram); could be used to budget time i.e. how long crews usually spend at each site; <em>Note: Some missing data for 2022 & 2025</em>.  
 <br><strong><em>Tip: Start by choosing a site</em> - Density plots only respond to Site filter</strong>.. 
 ")
 ```
@@ -1728,7 +1728,7 @@ htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://ha
 htmltools::br()
 ```
 
-Row  {data-height=40}
+Row  {data-height=45}
 -----------------------------------------------
 
 ### ***Interactive Map of 3 HAT Managed Public GOE Sites***
