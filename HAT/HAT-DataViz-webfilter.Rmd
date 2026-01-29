@@ -13,7 +13,7 @@ output:
 
   <script src="https://cdn.plot.ly/plotly-3.3.0.min.js" charset="utf-8"></script>
   <script src="https://d3js.org/d3.v3.min.js"></script>
-
+  
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(
@@ -381,7 +381,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-29 13:13</span>")
+2026-01-29 13:53</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -405,13 +405,13 @@ HTML("
      1. <strong>HAT Restoration Crew Site Data</strong> 
      <br> * <strong>Metrics</strong>: daily crew hours, daily invasive species removed (cubic metres)
      <br> * <strong>Sites</strong>: Bear Hill, Calypso Woods, Camas Hill, Funk, Havenwood, Matson, Oak Haven, Purple Sanicle, Yates, 
-     <br> * <strong>Datasets</strong>: <em>Restoration Crew Data.xlsx</em>: Sites Daily; Sites Summary; Top Invasives Variance; Top Invasives Site
+     <br> * <strong>Datasets</strong>: <em>Restoration Crew Data.xlsx</em>: Apr 2022-Sep 2025; Sites Daily; Sites Summary; Top Invasives Variance; Top Invasives Site
      <br><br>
      
      2. <strong>Matson Mattocks Field Logs</strong> 
      <br> * <strong>Metrics</strong>: volunteer work hours, volunteer invasive species removal
      <br> * <strong>Sites</strong>: added to Matson Work Crew data
-     <br> * <strong>Datasets</strong>: <em>Matson Mattocks Field Logs</em>:Sites Daily; Top Invasives Variance
+     <br> * <strong>Datasets</strong>: <em>Matson Mattocks Field Logs</em>: Apr 2022-Sep 2025; Sites Daily; Top Invasives Variance
      <br><br>
      
      3. <strong>Cover Data 2024-2025</strong>  
@@ -421,7 +421,7 @@ HTML("
      <br><br>
      
      4. <strong>Site Data</strong> 
-     <br> * <strong>Metrics</strong>: Top 5 invasives, Hours per m3 Biomass, staff hours, biomass removed
+     <br> * <strong>Metrics</strong>: Apr 2022-Sep 2025; Top 5 invasives, Hours per m3 Biomass, staff hours, biomass removed
      <br> * <strong>Sites</strong>: Havenwood, Matson, Oak Haven
      <br> * <strong>Data</strong>: <em>https://hat.bc.ca/community-based-restoration</em>
      <br><br>
@@ -506,6 +506,7 @@ p("Note: Density plots only respond to Site filter")
 # Create a filter input
 filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol, group = ~Site, multiple = T)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol, group = ~Year, allLevels = TRUE)
+# filter_slider(id = "Year", label = "Choose Date Span", sharedData = sd_crew_vol, column = ~Year,  step = 1)
 filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_vol, group = ~Invasive_Species_Cleared, allLevels = TRUE)
 filter_select(id = "Work_Volunteer", label = "Choose Work or Volunteer", sharedData = sd_crew_vol, group = ~Work_Volunteer, multiple = T)
 filter_select(id = "Native_or_Invasive", label = "Choose Invasive or MixedGrass", sharedData = sd_crew_vol, group = ~Native_or_Invasive, multiple = T)
@@ -529,7 +530,7 @@ Row  {data-height=75}
 ```{r}
 htmltools::HTML("
 <strong>Daily crew data</strong> was collected for labour hours, invasive species, and biomass removed.<br>
-<strong>Frequency plots</strong> show the distribution shape of the highest concentration of values (like a smooth histogram); could be used to budget time i.e. how long crews usually spend at each site; <em>Note: Some missing data for 2022 & 2025</em>.  
+<strong>Frequency plots</strong> show the distribution shape of the highest concentration of values (like a smooth histogram); could be used to budget time i.e. how long crews usually spend at each site; <em>Note: Some missing data for fall 2025</em>.  
 <br><strong><em>Tip: Start by choosing a site</em> - Density plots only respond to Site filter</strong>.. 
 ")
 ```
@@ -841,7 +842,7 @@ Row  {data-height=55}
 ```{r}
 htmltools::HTML("
   At 9 different HAT-managed sites, data was collected for labour hours, invasive species and biomass removed. The hours required per cubic metre of biomass shows the labour cost.<br>
-  <em>Note: Some missing data for 2022 & 2025</em>")
+  <em>Note: Some missing data for fall 2025</em>")
 ```
 
 Row  {.tabset .tabset-fade}
@@ -1133,7 +1134,7 @@ Row  {data-height=55}
 ### ***Top 5 Invasive Species Biomass by Site***
 ```{r}
 htmltools::HTML("
-Multiple facets compare 8 sites for invasive species biomass removed (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: Some missing data for 2022 & 2025</em> 
+Multiple facets compare 8 sites for invasive species biomass removed (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: Some missing data for fall 2025</em> 
   ")
 ```
 
@@ -1253,7 +1254,7 @@ Row  {data-height=55}
 ### ***Top 5 Invasive Species Biomass Variation***
 ```{r}
 htmltools::HTML("
-Box plots show variation of biomass removed for top 5 invasive species at each site, including median, variance & outliers (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: Some missing data for 2022 & 2025.</em> 
+Box plots show variation of biomass removed for top 5 invasive species at each site, including median, variance & outliers (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: Some missing data for fall 2025.</em> 
 <br><strong><em>Tip: Start by choosing a date</em></strong>. 
   ")
 ```
@@ -1701,6 +1702,10 @@ ggplotly(
                       "\nNative or Invasive", Native_or_Invasive,
                       "\nSpecies Number", Species_number))) + 
   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
+  # geom_text(aes(label = Year), 
+  #            position = position_dodge(),
+  #            hjust = -0.5, vjust = -0.5, size = 2, 
+  #            fontface = "bold") +
   facet_wrap( ~ Site) +
   theme_minimal() + #get rid of grey background and tick marks
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
@@ -1711,7 +1716,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Species Richness Count at Oak Haven and Matson by Site',
+      title='Species Richness Count at Oak Haven and Matson by Site, Year, Treatment & Type',
       fill = "",
       x = "Treatment", 
       y = "Species Count") +
