@@ -93,7 +93,7 @@ p {
   color: black; /* Change the main value font color */
   background-color: #95a5a6; /* #addacd  Light minty background */
   font-weight: bold;
-  width: 200px;
+  width: 220px;
   padding: 5px;
   margin: 5px;
   /* Borders */
