@@ -404,7 +404,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-30 09:57</span>")
+2026-01-30 10:10</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1918,7 +1918,7 @@ Row {.tabset .tabset-fade}
 # (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
 # HAT IMAGE LOGO
 # <img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w">
-     title <- '<p style="text-align: center; height: 14px; "><img src = "images/HAT-logo-ss.png", width = 100><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring HAT Covenant Sites Map</span></p>'
+title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
      
 #     pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Central Saanich", "Esquimalt", "Colwood"))
           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
@@ -1932,7 +1932,7 @@ leaflet(sd_sites) %>%
         stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
         radius = 5,
         popup = paste0(
-        "<img src = 'images/HAT-logo-ss.png', width = 100>",  "<br>","<br>",
+#        "<img src = 'images/HAT-logo-ss.png', width = 100>",  "<br>","<br>",
 #                "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
         # NOTE: popups need to refer to original data object, not shared sd
           "<b>Site:</b> ", "<b>", HAT_sites_HAT$Site, "</b>",  "<br>",
