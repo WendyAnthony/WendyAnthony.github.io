@@ -404,7 +404,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-30 10:21</span>")
+2026-01-30 10:39</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1871,6 +1871,9 @@ Inputs {.sidebar data-width=250}
 ```{r filter-input-map}
 htmltools::br()
 htmltools::br()
+HTML("<img src='images/HAT-logo-ss.png', width=150>")
+htmltools::br()
+htmltools::br()
 h4("Filter")
 htmltools::em("Note: To reset filters, delete unwanted choices")
 htmltools::br()
@@ -1886,10 +1889,10 @@ filter_checkbox(id = "Municipality", label = "Municipality", sharedData = sd_sit
 #   
 # filter_select(id = "FirstNations", label = "First Nations", sharedData = sd_sites, group = ~FirstNations)
   
-htmltools::br()
-htmltools::br()
+# htmltools::br()
+# htmltools::br()
 # HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-HTML("<img src='images/HAT-logo-ss.png', width = 100>")
+# HTML("<img src='images/HAT-logo-ss.png', width = 100>")
 htmltools::br()
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
