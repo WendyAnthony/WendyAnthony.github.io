@@ -387,7 +387,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-29 15:51</span>")
+2026-01-29 16:16</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1214,108 +1214,110 @@ htmltools::br()
 ```
 
 
-Top Invasives Variance
-=====================================  
-
-Inputs {.sidebar data-width=250}
------------------------------------------------
 
 ```{r filter-crew-hours-biomass-inv-sp-top5}
-
-#############################################
-htmltools::br()
-htmltools::br()
-h4("Filtered Statistics")
-#p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
-p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Biomass_Removed_m3", statistic = "sum", digits = 2), span(class = "caption", "= Biomass Removed (m3)"))
-p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours", digits = 2))
-
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-
-#############################################
-h4("Filters")
-strong(em("Tip: Start by choosing a Date"))
-# Create a filter input
-filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol_inv_top5, group = ~ Year, allLevels = TRUE)
-filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol_inv_top5, group = ~ Site, multiple = T)
-filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_vol_inv_top5, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
-
-
-#############################################
-htmltools::br()
-htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
-htmltools::br()
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-htmltools::br()
-htmltools::br()
+# Top Invasives Variance
+# =====================================  
+# 
+# Inputs {.sidebar data-width=250}
+# -----------------------------------------------
+# 
+# #############################################
+# htmltools::br()
+# htmltools::br()
+# h4("Filtered Statistics")
+# #p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
+# p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Biomass_Removed_m3", statistic = "sum", digits = 2), span(class = "caption", "= Biomass Removed (m3)"))
+# p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew Hours", digits = 2))
+# 
+# htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# 
+# #############################################
+# h4("Filters")
+# strong(em("Tip: Start by choosing a Date"))
+# # Create a filter input
+# filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol_inv_top5, group = ~ Year, allLevels = TRUE)
+# filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol_inv_top5, group = ~ Site, multiple = T)
+# filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_vol_inv_top5, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
+# 
+# 
+# #############################################
+# htmltools::br()
+# htmltools::HTML("<strong>Data Source:</strong> <em>HAT Restoration Crew Data.xlsx</em>")
+# htmltools::br()
+# htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# htmltools::br()
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# htmltools::br()
+# htmltools::br()
 ```
 
-Row  {data-height=55}
------------------------------------------------
 
-### ***Top 5 Invasive Species Biomass Variation***
 ```{r}
-htmltools::HTML("
-Box plots show variation of biomass removed for top 5 invasive species at each site, including median, variance & outliers (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: Some missing data for fall 2025.</em> 
-<br><strong><em>Tip: Start by choosing a date</em></strong>. 
-  ")
+# Row  {data-height=55}
+# -----------------------------------------------
+# 
+# ### ***Top 5 Invasive Species Biomass Variation***
+# htmltools::HTML("
+# Box plots show variation of biomass removed for top 5 invasive species at each site, including median, variance & outliers (Bear Hill didn't differentiate any species from 'mixed species', thus doesn't show). <em>Note: Some missing data for fall 2025.</em> 
+# <br><strong><em>Tip: Start by choosing a date</em></strong>. 
+#   ")
 ```
 
-Row  {.tabset .tabset-fade}
--------------------------------------
-
-### **Top 5 Invasives Biomass Distribution** 
 ```{r inv-biomass-box-inv-top5-facet}
-custom_colours_Site_9 <- c(
-			"Matson" = "#f8766d", 
-                    	"Oak Haven" = "#619cff",
-			"Purple Sanicle" = "#db72fb",
-			"Yates" = "#ff61c3",
-			"Funk" = "#00ba38",
-			"Havenwood" = "#00c19f",
-			"Bear Hill" = "#00b9e3",
-			"Camas Hill" = "#93aa00",
-			"Calypso Woods" = "#f2cb0a"
-)
-
-ggplotly(
-  ggplot(sd_crew_vol_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), 
-                                   y = Biomass_Removed_m3, 
-                                   fill = Site, 
-                                   text = paste("Year:", Year,
-                                        "\nSite:", Site))) + 
-  geom_boxplot() +
-  facet_wrap(vars(Site)) +  
-  coord_flip() +
-  theme_minimal() + #get rid of grey background and tick marks
-    # needs to be below first theme
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
-        strip.text = element_text(size = 11)) +
-  # theme(legend.position ="bottom" + 
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
-  theme(axis.text.y = element_text(size = 9)) +  
-          # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) +
-  scale_fill_manual(values = custom_colours_Site_9) +
-  labs(
-      title='Top 5 Invasive Species Removed Distribution Median, Variance & Outliers',
-      fill = "",
-      x = "", 
-      y = "Biomass Removed (cubic metres)"), 
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) 
-# %>%
-#     layout(legend = list(orientation = "h",
-#     xanchor="center",
-#     x = 0.5,
-#     # gives some space between x axis label and legend
-#     y = -0.25
-#     ))
+# Row  {.tabset .tabset-fade}
+# -------------------------------------
+# 
+# ### **Top 5 Invasives Biomass Distribution** 
+# 
+# custom_colours_Site_9 <- c(
+# 			"Matson" = "#f8766d", 
+#                     	"Oak Haven" = "#619cff",
+# 			"Purple Sanicle" = "#db72fb",
+# 			"Yates" = "#ff61c3",
+# 			"Funk" = "#00ba38",
+# 			"Havenwood" = "#00c19f",
+# 			"Bear Hill" = "#00b9e3",
+# 			"Camas Hill" = "#93aa00",
+# 			"Calypso Woods" = "#f2cb0a"
+# )
+# 
+# ggplotly(
+#   ggplot(sd_crew_vol_inv_top5, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), 
+#                                    y = Biomass_Removed_m3, 
+#                                    fill = Site, 
+#                                    text = paste("Year:", Year,
+#                                         "\nSite:", Site))) + 
+#   geom_boxplot() +
+#   facet_wrap(vars(Site)) +  
+#   coord_flip() +
+#   theme_minimal() + #get rid of grey background and tick marks
+#     # needs to be below first theme
+#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+#         strip.text = element_text(size = 11)) +
+#   # theme(legend.position ="bottom" + 
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
+#   theme(axis.text.y = element_text(size = 9)) +  
+#           # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) +
+#   scale_fill_manual(values = custom_colours_Site_9) +
+#   labs(
+#       title='Top 5 Invasive Species Removed Distribution Median, Variance & Outliers',
+#       fill = "",
+#       x = "", 
+#       y = "Biomass Removed (cubic metres)"), 
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) 
+# # %>%
+# #     layout(legend = list(orientation = "h",
+# #     xanchor="center",
+# #     x = 0.5,
+# #     # gives some space between x axis label and legend
+# #     y = -0.25
+# #     ))
 ```
 
 
