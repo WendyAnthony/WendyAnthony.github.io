@@ -404,7 +404,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-30 10:39</span>")
+2026-01-30 10:54</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1935,7 +1935,7 @@ leaflet(sd_sites) %>%
         color = ~pal(Site),
         weight = 1, # size of circle border
         stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
-        radius = 5,
+        radius = 6,
         popup = paste0(
 #        "<img src = 'images/HAT-logo-ss.png', width = 100>",  "<br>","<br>",
 #                "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
