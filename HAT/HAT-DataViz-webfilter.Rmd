@@ -21,6 +21,9 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
+# HAT Log offline
+knitr::include_graphics("images/HAT-logo-ss.png")
+
 library(flexdashboard)
 library(DT)
 library(tidyverse)
@@ -376,7 +379,9 @@ Inputs {.sidebar data-width=250}
 
  
 ```{r about-tabs}
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+HTML("<img src='images/HAT-logo-ss.png', width=150>")
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 HTML("
@@ -387,7 +392,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-29 16:16</span>")
+2026-01-30 07:27</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -524,7 +529,8 @@ htmltools::br()
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+HTML("<img src='images/HAT-logo-ss.png', width = 100>")
 htmltools::br()
 htmltools::br()
 ```
@@ -836,7 +842,8 @@ htmltools::br()
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+HTML("<img src='images/HAT-logo-ss.png', width = 100>")
 htmltools::br()
 htmltools::br()
 ```
@@ -1129,7 +1136,8 @@ htmltools::br()
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+HTML("<img src='images/HAT-logo-ss.png', width = 100>")
 htmltools::br()
 htmltools::br()
 ```
@@ -1414,7 +1422,8 @@ htmltools::br()
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+HTML("<img src='images/HAT-logo-ss.png', width = 100>")
 htmltools::br()
 htmltools::br()
 
@@ -1673,7 +1682,8 @@ htmltools::br()
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+HTML("<img src='images/HAT-logo-ss.png', width = 100>")
 htmltools::br()
 htmltools::br()
 ```
@@ -1866,7 +1876,8 @@ filter_checkbox(id = "Municipality", label = "Municipality", sharedData = sd_sit
   
 htmltools::br()
 htmltools::br()
-HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+HTML("<img src='images/HAT-logo-ss.png', width = 100>")
 htmltools::br()
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
@@ -1886,7 +1897,7 @@ This map shows 3 public sites listed on <a href='https://hat.bc.ca/community-bas
                 ")
 ```
 
-Row
+Row {.tabset .tabset-fade}
 ---------------------------------------------
 
 ### Interactive Map
@@ -1909,7 +1920,8 @@ leaflet(sd_sites) %>%
         stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
         radius = 5,
         popup = paste0(
-        "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
+        "<img src = 'images/HAT-logo-ss.png', width = 100>",  "<br>","<br>",
+#                "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
         # NOTE: popups need to refer to original data object, not shared sd
           "<b>Site:</b> ", "<b>", HAT_sites_HAT$Site, "</b>",  "<br>",
           "<b>FullName:</b> ", "<b>", HAT_sites_HAT$FullName, "</b>",  "<br>",
@@ -1923,7 +1935,7 @@ leaflet(sd_sites) %>%
           "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br><br>",
         "<b>Top 5 Invasives Species:</b> ", HAT_sites_HAT$Top_5_Invasives, "<br><br>",
         
-    '<table style="border: 0px solid black; "vertical-align: top;>',
+    '<table style="border: 0px solid black; vertical-align: top; font-size: 80%;">',
       '<tr style="vertical-align: top;">
         <th>BIOMASS PULL</th>        
         <th align="right">2022</th>
@@ -1981,6 +1993,25 @@ leaflet(sd_sites) %>%
       # add controls
       #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
       addControl(title, position = "topright")
+```
+
+### Datatable
+```{r data-table-map}
+htmltools::h5("HAT's 3 Public Sites Datatable")
+htmltools::br()
+ datatable(sd_sites, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(                        
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE,                         
+             columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
+           )))
 ```
 
 ```{r, echo = FALSE, message = FALSE, include = FALSE}
