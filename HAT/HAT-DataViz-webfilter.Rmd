@@ -450,7 +450,7 @@ HTML("
 
   <strong>Interactive Visualizations</strong><br>
   * Hover over data visualizations to view tooltips<br>
-  * Data visualization can be zoom-focused by with a click-drag over a certain area<br>
+  * Data visualization can be zoom-focused by using a 'click-drag' over a certain area<br>
   * Double-click within chart to return to original version<br>
   * If all else fails, refresh webpage in browser
      ")
@@ -1175,7 +1175,7 @@ ggplotly(
   theme(legend.position ="bottom") + 
     scale_fill_manual(values = custom_colours_years) +
       labs(
-          title = "Top 5 Invasive Species With Biomass Removed At Each Site", 
+          title = "Top 5 Invasive Species Biomass (m3) Removed At Each Site", 
           x = "",   
           y = "Biomass Removed (cubic metres)",   
           fill = ""
@@ -1190,9 +1190,29 @@ ggplotly(
   )
 ```
 
+### Datatable Daily
+```{r data-table-combine-top5}
+htmltools::h5("Crew and Volunteer Hours & Top 5 Species Biomass Datatable")
+htmltools::br()
+ datatable(sd_crew_vol_inv_top5, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = c(
+                        'colvis',
+                        'csv',
+                        'excel',
+                        'print'
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE, 
+                    # centre contents of columns 4,5 8
+                         columnDefs = list(list(className = 'dt-center', targets = c(0,1,3,4,7))
+                            )
+           ))
+```
 
   
-### Datatable
+### Datatable Yearly
 ```{r data-table-combine-top5-facet}
 htmltools::h5("Crew and Volunteer Hours & Top 5 Species Biomass Datatable")
 htmltools::br()
@@ -1365,30 +1385,6 @@ htmltools::br()
 #     y = -0.25
 #     ))
 ```
-
-  
-### Datatable
-```{r data-table-combine-top5}
-htmltools::h5("Crew and Volunteer Hours & Top 5 Species Biomass Datatable")
-htmltools::br()
- datatable(sd_crew_vol_inv_top5, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons"),
-           options = list(dom = 'Bfrtip',
-                         buttons = c(
-                        'colvis',
-                        'csv',
-                        'excel',
-                        'print'
-                          ),
-                        # removed previous / next buttons
-                         paging = FALSE, 
-                    # centre contents of columns 4,5 8
-                         columnDefs = list(list(className = 'dt-center', targets = c(0,1,3,4,7))
-                            )
-           ))
-```
-
-
 
 
 Cover Mean
