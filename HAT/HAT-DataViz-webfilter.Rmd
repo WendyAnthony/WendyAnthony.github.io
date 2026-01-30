@@ -404,7 +404,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-30 10:10</span>")
+2026-01-30 10:21</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1938,7 +1938,7 @@ leaflet(sd_sites) %>%
 #                "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
         # NOTE: popups need to refer to original data object, not shared sd
           "<b>Site:</b> ", "<b>", HAT_sites_HAT$Site, "</b>",  "<br>",
-          "<b>FullName:</b> ", "<b>", HAT_sites_HAT$FullName, "</b>",  "<br>",
+          "<b>FullName:</b> ", "<b>", HAT_sites_HAT$Site_Name, "</b>",  "<br>",
           "<b>Municipality:</b> ", HAT_sites_HAT$Municipality, "<br>",
           "<b>Size:</b> ", HAT_sites_HAT$Size_ha, " (ha)", "<br>",
           "<b>First Nations:</b> ", HAT_sites_HAT$FirstNations, "<br>",
