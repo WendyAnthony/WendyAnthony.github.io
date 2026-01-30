@@ -23,16 +23,6 @@ knitr::opts_chunk$set(
 
 # HAT Log offline
 knitr::include_graphics("images/HAT-logo-ss.png")
-
-library(flexdashboard)
-library(DT)
-library(tidyverse)
-library(crosstalk)
-library(plotly)
-library(leaflet)
-library(htmltools)
-# devtools::install_github("kent37/summarywidget")
-library(summarywidget)
 ```
 
 ```{css}
@@ -57,7 +47,6 @@ library(summarywidget)
 }
 */
   
-
 
 .section.sidebar {
   padding-left: 10px;
@@ -114,6 +103,29 @@ p {
   font-size: 85%;  
 }
 ```
+
+```{r  include=FALSE, load-libraries}
+# Load Libraries
+# uncomment install.packages("") to install a package, then replace comment #
+# install.packages("flexdashboard")
+library(flexdashboard) # dashboard
+# install.packages("htmltools")
+library(htmltools) # write HTML code in flexdashboard
+# install.packages("crosstalk")
+library(crosstalk) # shared data filters
+# devtools::install_github("kent37/summarywidget")
+library(summarywidget) # filtered data summary
+
+# install.packages("tidyverse")
+library(tidyverse) # includes ggplot2
+# install.packages("plotly")
+library(plotly) # interactive plots > ggplot2 requires plotly wrap for crosstalk
+# install.packages("DT")
+library(DT) # tables
+# install.packages("leaflet")
+library(leaflet) # interactive map
+```
+
 
 ```{r data-download, include = FALSE}
 # Load Data
@@ -392,7 +404,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-30 07:27</span>")
+2026-01-30 07:37</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
