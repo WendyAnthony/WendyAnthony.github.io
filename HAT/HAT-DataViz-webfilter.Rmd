@@ -409,15 +409,15 @@ HTML("
        <h5>HAT Data of 9 HAT-only-Managed-Sites</h5>
      
      1. <strong>HAT Restoration Crew Site Data</strong> 
-     <br> * <strong>Metrics</strong>: daily crew hours, daily invasive species removed (cubic metres)
+     <br> * <strong>Metrics</strong>: daily crew hours, daily invasive species removed (cubic metres); yearly crew hours, yearly invasive species removed (cubic metres)
      <br> * <strong>Sites</strong>: Bear Hill, Calypso Woods, Camas Hill, Funk, Havenwood, Matson, Oak Haven, Purple Sanicle, Yates, 
-     <br> * <strong>Datasets</strong>: <em>Restoration Crew Data.xlsx</em>: Apr 2022-Sep 2025; Sites Daily; Sites Summary; Top Invasives Variance; Top Invasives Site
+     <br> * <strong>Datasets</strong>: <em>Restoration Crew Data.xlsx</em>: Apr 2022-Sep 2025; Sites Daily; Sites Yearly; Top Invasives Site
      <br><br>
      
      2. <strong>Matson Mattocks Field Logs</strong> 
-     <br> * <strong>Metrics</strong>: volunteer work hours, volunteer invasive species removal
+     <br> * <strong>Metrics</strong>: daily volunteer work hours, daily volunteer invasive species removal
      <br> * <strong>Sites</strong>: added to Matson Work Crew data
-     <br> * <strong>Datasets</strong>: <em>Matson Mattocks Field Logs</em>: Apr 2022-Sep 2025; Sites Daily; Top Invasives Variance
+     <br> * <strong>Datasets</strong>: <em>Matson Mattocks Field Logs</em>: Apr 2022-Sep 2025; Sites Daily; Top Invasives Site
      <br><br>
      
      3. <strong>Cover Data 2024-2025</strong>  
@@ -427,7 +427,7 @@ HTML("
      <br><br>
      
      4. <strong>Site Data</strong> 
-     <br> * <strong>Metrics</strong>: Apr 2022-Sep 2025; Top 5 invasives, Hours per m3 Biomass, staff hours, biomass removed
+     <br> * <strong>Metrics</strong>: Map Location; Apr 2022-Sep 2025; Top 5 invasives, Hours per m3 Biomass, staff hours, biomass removed
      <br> * <strong>Sites</strong>: Havenwood, Matson, Oak Haven
      <br> * <strong>Data</strong>: <em>https://hat.bc.ca/community-based-restoration</em>
      <br><br>
