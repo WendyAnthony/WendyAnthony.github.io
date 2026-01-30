@@ -1918,7 +1918,9 @@ Row {.tabset .tabset-fade}
 # (Shackelford, et al., 2024). Global Restore Project. Restoration Futures Lab at the University of Victoria
 # HAT IMAGE LOGO
 # <img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w">
-title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+# title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+
+title <- '<p style="text-align: center;"><span style="font-size:14px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
      
 #     pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Central Saanich", "Esquimalt", "Colwood"))
           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
