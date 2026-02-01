@@ -404,7 +404,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-01-31 13:13</span>")
+2026-02-01 09:09</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -530,7 +530,7 @@ HTML("
   Sites Daily
 =====================================  
 
-Inputs {.sidebar data-width=250}
+Inputs {.sidebar data-width=245}
 -----------------------------------------------
 
 ```{r filter-crew-hours-all}
@@ -579,8 +579,7 @@ Row  {data-height=75}
 ```{r}
 htmltools::HTML("
 <strong>Daily crew data</strong> was collected for work hours, invasive species, and biomass removed.<br>
-<em>Note: Some missing data for fall 2025</em>.  
-<br><strong><em>Tip: Start by choosing a site</em></strong>.. 
+<em>Note: Some missing data for fall 2025</em>. <strong><em>Tip: Start by choosing a site</em></strong>.. 
 ")
 # <strong>Frequency plots</strong> show the distribution shape of the highest concentration of values (like a smooth histogram); could be used to budget time i.e. how long crews usually spend at each site; 
 #  - Density plots only respond to Site filter
@@ -617,6 +616,7 @@ ggplotly(
   geom_point() +
 #  geom_line(stat = "identity", position = "identity") +
   theme_minimal() + #get rid of grey background and tick marks
+  #theme_bw() + 
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 9)) +
   theme(axis.text.y = element_text(size = 9)) +  
@@ -905,8 +905,7 @@ Row  {data-height=55}
 ### ***Crew Data Summarized***
 ```{r}
 htmltools::HTML("
-  Data collected for crew hours, invasive species and biomass removed is summarized for full years. The hours required per cubic metre of biomass shows the labour cost.<br>
-  <em>Note: Some missing data for fall 2025</em>")
+  <strong>Yearly summary</strong> of daily data collected for crew hours, invasive species and biomass removed. Hours required per cubic metre of biomass shows labour cost. <em>Note: Some missing data for fall 2025</em>")
 ```
 
 Row  {.tabset .tabset-fade}
@@ -1162,7 +1161,7 @@ htmltools::br()
 
 
 
-  Top Invasives Sites
+  Top 5 Invasives Sites
 =====================================  
 
 Inputs {.sidebar data-width=250}
@@ -1244,7 +1243,7 @@ ggplotly(
   theme(legend.position ="bottom") + 
     scale_fill_manual(values = custom_colours_years) +
       labs(
-          title = "Top 5 Invasive Species Biomass (m3) Removed At Each Site", 
+          title = "Top 5 Invasive Species Biomass (m3) Removed", 
           x = "",   
           y = "Biomass Removed (cubic metres)",   
           fill = ""
@@ -1477,7 +1476,7 @@ htmltools::br()
 Cover Mean
 =====================================  
 
-Inputs {.sidebar data-width=255}
+Inputs {.sidebar data-width=235}
 -----------------------------------------------
 
 ```{r filter-input-cover}
@@ -1540,7 +1539,8 @@ ggplotly(
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
   geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
-  facet_wrap(vars(Site)) +
+  #facet_wrap(vars(Site)) +
+  facet_grid(Treated ~ Site) +
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
@@ -1592,7 +1592,8 @@ ggplotly(
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
   geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
-  facet_wrap(vars(Site)) +
+  #facet_wrap(vars(Site)) +
+  facet_grid(Treated ~ Site) +
   coord_flip() +     
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
@@ -1641,7 +1642,8 @@ ggplotly(
                                                           "\nMean Value:", mean_value,
                                                           "\nSD Value:", sd_value))) + 
   geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
-  facet_wrap(vars(Site)) +
+  # facet_wrap(vars(Site)) +
+  facet_grid(Treated ~ Site) +
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
   theme(legend.position ="bottom") + 
@@ -1782,8 +1784,7 @@ Row  {data-height=140}
 ### ***Species Richness Unique Count @ Matson & Oak Haven***
 ```{r}
 htmltools::HTML("
-  Cover data was collected, using quadrat-sampling methods in both treated and untreated areas, at Matson in July 2024 and 2025, and at Oak Haven in April 2024 and 2025. The mean % cover of each species is measured for each area. Species counts are the total numbers of each unique species found. Meadows species were sampled during different seasons, which may affect any meaningful comparison between sites. <br>
-  <strong>Example Analysis: </strong> Invasive species count is higher in treated areas ... Does invasive species removal create an environment for more invasive species to move in?")
+  Mean % cover data was collected using quadrat-sampling methods July 2024 and 2025 at Matson, and April 2024 and 2025 at Oak Haven. Species Richness counts each unique species found. When meadows species were sampled during different seasons, any meaningful comparison between sites may be affected. <strong>Example Analysis: </strong> Invasive species count is higher in treated areas ... Does invasive species removal create an environment for more invasive species to move in?")
 ```
 
 
@@ -1808,7 +1809,8 @@ ggplotly(
   #            position = position_dodge(),
   #            hjust = -0.5, vjust = -0.5, size = 2, 
   #            fontface = "bold") +
-  facet_wrap( ~ Site) +
+  # facet_wrap( ~ Site) +
+  facet_grid(Year ~ Site) +  
   theme_minimal() + #get rid of grey background and tick marks
   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) +
@@ -1964,9 +1966,11 @@ htmltools::em("Note: To reset filters, delete unwanted choices")
 htmltools::br()
 htmltools::br()
 
-filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
+# filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
+filter_select(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
 filter_checkbox(id = "Top_5_Invasives", label = "Top 5 Invasives", sharedData = sd_sites, group = ~Top_5_Invasives)
-filter_checkbox(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
+filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
+# filter_checkbox(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
 # 
 # filter_slider(id = "Size_ha", label = "Size in ha", sharedData = sd_sites, column = ~Size_ha, step = 1, min = 0, max = 20, post = "ha")
 # 
@@ -1987,13 +1991,13 @@ htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://ha
 htmltools::br()
 ```
 
-Row  {data-height=45}
+Row  {data-height=50}
 -----------------------------------------------
 
 ### ***Interactive Map of 3 HAT Managed Public GOE Sites***
 ```{r}
 htmltools::HTML("
-This map shows 3 public sites listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other sites are on private, non-public land with location protected for privacy. Click map markers to open pop-up windows with information about each site.
+3 public HAT sites listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other sites are on private, non-public land with location protected for privacy. Click map markers to open pop-up windows site-specific information.
                 ")
 ```
 
@@ -2037,7 +2041,7 @@ leaflet(sd_sites) %>%
           "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br><br>",
         "<b>Top 5 Invasives Species:</b> ", HAT_sites_HAT$Top_5_Invasives, "<br><br>",
         
-    '<table style="border: 0px solid black; vertical-align: top; font-size: 80%;">',
+    '<table style="border: 0px solid black; vertical-align: top; font-size: 85%;">',
       '<tr style="vertical-align: top;">
         <th>BIOMASS PULL</th>        
         <th align="right">2022</th>
