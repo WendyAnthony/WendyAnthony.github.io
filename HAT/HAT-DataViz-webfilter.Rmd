@@ -407,7 +407,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-02 04:40</span>")
+2026-02-02 06:36</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1391,66 +1391,7 @@ ggplotly(
     ))
 ```
 
-### Top 5 Native Nancy's Native Species
-```{r mean-cover-nat-nancy-top5, echo = FALSE, message = FALSE, warning = FALSE}
-#############################################
-# custom_colours_years <- c("2022" = "#ffff33", 
-#                     "2023" = "#4daf4a", 
-#                     "2024" = "#984ea3", 
-#                     "2025" = "#ff7f00")
 
-#############################################
-custom_colours_treat <- c("Untreated" = "#d8b365", 
-                    "Treated" = "#5ab4ac")
-# custom_colours_Site_2 <- c("Matson" = "#f8766d", 
-#                     "Oak Haven" = "#619cff")
-
-#############################################
-ggplotly(
-  ggplot(sd_cov_nat_top5, aes(x = reorder(Species, desc(Species)), y = mean_value,  fill = Treated, 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site,
-                                                          "\nSpecies:", Species,      
-                                                          "\nNative or Invasive:", Native_or_Invasive,  
-                                                          "\nTreated:", Treated,
-                                                          "\nMean Value:", mean_value,
-                                                          "\nSD Value:", sd_value))) + 
-  # geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
-  geom_point(size = 3, alpha = 0.75) +
-    
-  geom_errorbar(aes(ymin = lower, ymax = upper)) +
-  coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
-  #facet_wrap(vars(Site)) +
-  facet_grid(Year ~ Site) +
-  coord_flip() + 
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-    scale_fill_manual(values = custom_colours_treat) +
-    # scale_fill_manual(values = custom_colours_Site_2) +
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
-        strip.text = element_text(size = 11)) + 
-      labs(
-          title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
-          x = "",   
-          y = "Mean % cover",   
-          fill = ""
-          ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-    # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) , 
-  
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    #x = 0.5 legend too close to x axis label
-    # x = 1 # too far to right
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
-```
 
 
 ### Invasive Species
@@ -1584,6 +1525,181 @@ htmltools::br()
            )))
 ```
 
+
+Top 5 Cover
+=====================================  
+
+Inputs {.sidebar data-width=235}
+-----------------------------------------------
+
+```{r filter-input-cover-top5}
+#############################################
+htmltools::br()
+htmltools::br()
+
+#############################################
+h4("Filtered Statistics")
+p(class = "container", class = "value", summarywidget(sd_cover, column = "mean_value", statistic = "sum", digits = 2), span(class = "caption", "= mean % cover"))
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+
+#############################################
+# Create a filter input
+h4("Filters")
+filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_cov_nat_top5, group = ~ Site, allLevels = TRUE)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cov_nat_top5, group = ~ Year, allLevels = TRUE)
+filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_cov_nat_top5, group = ~ Treated, allLevels = TRUE)
+filter_select(id = "Species", label = "Choose Species", sharedData = sd_cov_nat_top5, group = ~ Species, multiple = TRUE)
+htmltools::br()
+
+#############################################
+htmltools::HTML("<strong>Data Source:</strong> <em>Cover Data 2024-2025</em>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+HTML("<img src='images/HAT-logo-ss.png', width = 100>")
+htmltools::br()
+htmltools::br()
+```
+
+Row  {data-height=25}
+-----------------------------------------------
+
+### ***Mean % Top 5 Native Species Cover Data***
+```{r}
+htmltools::HTML("
+Mean cover data is subset to view only top 5 Native Species. Error bars show the upper and lower ranges of the standard deviation from mean values.")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------
+
+
+### Top 5 Native Nancy's Native Species Site~Year
+```{r mean-cover-nat-nancy-top5-site-year, echo = FALSE, message = FALSE, warning = FALSE}
+#############################################
+# custom_colours_years <- c("2022" = "#ffff33", 
+#                     "2023" = "#4daf4a", 
+#                     "2024" = "#984ea3", 
+#                     "2025" = "#ff7f00")
+
+#############################################
+custom_colours_treat <- c("Untreated" = "#d8b365", 
+                    "Treated" = "#5ab4ac")
+# custom_colours_Site_2 <- c("Matson" = "#f8766d", 
+#                     "Oak Haven" = "#619cff")
+
+#############################################
+ggplotly(
+  ggplot(sd_cov_nat_top5, aes(x = reorder(Species, desc(Species)), y = mean_value,  fill = Treated, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean Value:", mean_value,
+                                                          "\nSD Value:", sd_value))) + 
+  # geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
+  geom_point(size = 3, alpha = 0.75) +
+    
+  geom_errorbar(aes(ymin = lower, ymax = upper)) +
+  coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
+  #facet_wrap(vars(Site)) +
+  facet_grid(Site ~ Year) +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+    scale_fill_manual(values = custom_colours_treat) +
+    # scale_fill_manual(values = custom_colours_Site_2) +
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+        strip.text = element_text(size = 11)) + 
+      labs(
+          title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
+          x = "",   
+          y = "Mean % cover",   
+          fill = ""
+          ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) , 
+  
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    # x = 1 # too far to right
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+### Top 5 Native Nancy's Native Species Year ~ Site
+```{r mean-cover-nat-nancy-top5-year-site, echo = FALSE, message = FALSE, warning = FALSE}
+#############################################
+# custom_colours_years <- c("2022" = "#ffff33", 
+#                     "2023" = "#4daf4a", 
+#                     "2024" = "#984ea3", 
+#                     "2025" = "#ff7f00")
+
+#############################################
+custom_colours_treat <- c("Untreated" = "#d8b365", 
+                    "Treated" = "#5ab4ac")
+# custom_colours_Site_2 <- c("Matson" = "#f8766d", 
+#                     "Oak Haven" = "#619cff")
+
+#############################################
+ggplotly(
+  ggplot(sd_cov_nat_top5, aes(x = reorder(Species, desc(Species)), y = mean_value,  fill = Treated, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean Value:", mean_value,
+                                                          "\nSD Value:", sd_value))) + 
+  # geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
+  geom_point(size = 3, alpha = 0.75) +
+    
+  geom_errorbar(aes(ymin = lower, ymax = upper)) +
+  coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
+  #facet_wrap(vars(Site)) +
+  facet_grid(Year ~ Site) +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+    scale_fill_manual(values = custom_colours_treat) +
+    # scale_fill_manual(values = custom_colours_Site_2) +
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+        strip.text = element_text(size = 11)) + 
+      labs(
+          title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
+          x = "",   
+          y = "Mean % cover",   
+          fill = ""
+          ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) , 
+  
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    # x = 1 # too far to right
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
 
 Species Richness
 =====================================  
