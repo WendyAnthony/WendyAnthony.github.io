@@ -1279,7 +1279,7 @@ htmltools::HTML("
 Row {.tabset .tabset-fade}
 ---------------------------------------------
 
-### Native Species
+### Native Species (bar)
 ```{r mean-cover-nat, echo = FALSE, message = FALSE, warning = FALSE}
 #############################################
 custom_colours_years <- c("2022" = "#ffff33", 
@@ -1332,7 +1332,7 @@ ggplotly(
     ))
 ```
 
-### Nancy's Native Species
+### Native Species (points with error)
 ```{r mean-cover-nat-nancy, echo = FALSE, message = FALSE, warning = FALSE}
 #############################################
 # custom_colours_years <- c("2022" = "#ffff33", 
@@ -1578,7 +1578,7 @@ Row {.tabset .tabset-fade}
 -----------------------------------------------
 
 
-### Top 5 Native Nancy's Native Species Site~Year
+### Top 5 Native Species Site~Year (Error bar)
 ```{r mean-cover-nat-nancy-top5-site-year, echo = FALSE, message = FALSE, warning = FALSE}
 #############################################
 # custom_colours_years <- c("2022" = "#ffff33", 
@@ -1640,65 +1640,66 @@ ggplotly(
 ```
 
 
-### Top 5 Native Nancy's Native Species Year ~ Site
+
 ```{r mean-cover-nat-nancy-top5-year-site, echo = FALSE, message = FALSE, warning = FALSE}
-#############################################
-# custom_colours_years <- c("2022" = "#ffff33", 
-#                     "2023" = "#4daf4a", 
-#                     "2024" = "#984ea3", 
-#                     "2025" = "#ff7f00")
-
-#############################################
-custom_colours_treat <- c("Untreated" = "#d8b365", 
-                    "Treated" = "#5ab4ac")
-# custom_colours_Site_2 <- c("Matson" = "#f8766d", 
-#                     "Oak Haven" = "#619cff")
-
-#############################################
-ggplotly(
-  ggplot(sd_cov_nat_top5, aes(x = reorder(Species, desc(Species)), y = mean_value,  fill = Treated, 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site,
-                                                          "\nSpecies:", Species,      
-                                                          "\nNative or Invasive:", Native_or_Invasive,  
-                                                          "\nTreated:", Treated,
-                                                          "\nMean Value:", mean_value,
-                                                          "\nSD Value:", sd_value))) + 
-  # geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
-  geom_point(size = 3, alpha = 0.75) +
-    
-  geom_errorbar(aes(ymin = lower, ymax = upper)) +
-  coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
-  #facet_wrap(vars(Site)) +
-  facet_grid(Year ~ Site) +
-  coord_flip() + 
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-    scale_fill_manual(values = custom_colours_treat) +
-    # scale_fill_manual(values = custom_colours_Site_2) +
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
-        strip.text = element_text(size = 11)) + 
-      labs(
-          title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
-          x = "",   
-          y = "Mean % cover",   
-          fill = ""
-          ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-    # aligns title to left
-  theme(plot.title = element_text(hjust = 0)) , 
-  
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    #x = 0.5 legend too close to x axis label
-    # x = 1 # too far to right
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
+# ### Top 5 Native Nancy's Native Species Year ~ Site
+# #############################################
+# # custom_colours_years <- c("2022" = "#ffff33", 
+# #                     "2023" = "#4daf4a", 
+# #                     "2024" = "#984ea3", 
+# #                     "2025" = "#ff7f00")
+# 
+# #############################################
+# custom_colours_treat <- c("Untreated" = "#d8b365", 
+#                     "Treated" = "#5ab4ac")
+# # custom_colours_Site_2 <- c("Matson" = "#f8766d", 
+# #                     "Oak Haven" = "#619cff")
+# 
+# #############################################
+# ggplotly(
+#   ggplot(sd_cov_nat_top5, aes(x = reorder(Species, desc(Species)), y = mean_value,  fill = Treated, 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nSpecies:", Species,      
+#                                                           "\nNative or Invasive:", Native_or_Invasive,  
+#                                                           "\nTreated:", Treated,
+#                                                           "\nMean Value:", mean_value,
+#                                                           "\nSD Value:", sd_value))) + 
+#   # geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
+#   geom_point(size = 3, alpha = 0.75) +
+#     
+#   geom_errorbar(aes(ymin = lower, ymax = upper)) +
+#   coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
+#   #facet_wrap(vars(Site)) +
+#   facet_grid(Year ~ Site) +
+#   coord_flip() + 
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#     scale_fill_manual(values = custom_colours_treat) +
+#     # scale_fill_manual(values = custom_colours_Site_2) +
+#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+#         strip.text = element_text(size = 11)) + 
+#       labs(
+#           title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
+#           x = "",   
+#           y = "Mean % cover",   
+#           fill = ""
+#           ) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#     # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)) , 
+#   
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     # x = 1 # too far to right
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
 ```
 
 Species Richness
@@ -1782,7 +1783,7 @@ ggplotly(
   theme(plot.title = element_text(hjust = 0)) +
   scale_fill_manual(values = custom_colours_3) +
   labs(
-      title='Species Richness Count at Oak Haven and Matson',
+      title='Species Richness Count at Matson and Oak Haven',
       fill = "",
       x = "Treatment", 
       y = "Species Count") +
