@@ -1,8 +1,8 @@
-﻿SortID,MonitorID,QUniqueID,Date,Year,Location,Treated,YearTreated,ExSpTabTitle,Baseline,Quadrat,QuadratLocation_m,Species,Native_or_Invasive,PercentCover,OriginalSpecies
+SortID,MonitorID,QUniqueID,Date,Year,Location,Treated,YearTreated,ExSpTabTitle,Baseline,Quadrat,QuadratLocation_m,Species,Native_or_Invasive,PercentCover,OriginalSpecies
 5,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,aster,Invasive,1,Unknown aster
-2,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,blue wildrye,Native,10,Blue Wildrye
-11,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q3,4,blue wildrye,Native,5,blue wildrye
-53,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q3,8,blue wildrye,Native,15,Blue wildrye
+2,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,blue wildrye,MixedGrass,10,Blue Wildrye
+11,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q3,4,blue wildrye,MixedGrass,5,blue wildrye
+53,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q3,8,blue wildrye,MixedGrass,15,Blue wildrye
 1,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,camas,Native,4,Camas
 55,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q3,8,camas,Native,5,Camas
 50,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q1,4,grass,MixedGrass,90,Grass
@@ -15,7 +15,7 @@
 9,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q3,4,Himalayan blackberry,Invasive,2,himalayan blackberry 
 49,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q1,4,Himalayan blackberry,Invasive,10,Himalayan Blackberry
 54,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q3,8,Himalayan blackberry,Invasive,10,Himalayan blackberry
-8,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q2,1,moss,Native,1,moss
+8,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q2,1,moss,MixedGrass,1,moss
 51,T-DH,,2025-07-28,2025,Matson,Treated,2024,,,Q2,1,oceanspray,Native,40,Oceanspray
 4,T-LJ,,2025-07-28,2025,Matson,Treated,2024,,,Q1,8,pickly wall lettuce ,Invasive,2,pickly wall lettuce 
 29,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,daphne,Invasive,1,daphne
@@ -36,7 +36,7 @@
 37,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,2,licorice fern,Native,1,Licorice fern
 40,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,4,licorice fern,Native,2,Licorice fern
 47,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q3,9,licorice fern,Native,2,Licorice fern
-23,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,moss,Native,20,moss
+23,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,moss,MixedGrass,20,moss
 15,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,4,orchard grass,MixedGrass,30,orchard grass
 22,U-LJ,,2025-07-28,2025,Matson,Untreated,NA,,,Q2,2,orchard grass ,MixedGrass,20,orchard grass 
 33,U-DH,,2025-07-28,2025,Matson,Untreated,NA,,,Q1,2,Oregon grape,Native,7,Oregon grape

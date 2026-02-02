@@ -1,11 +1,11 @@
-﻿SortID,MonitorID,QUniqueID,Date,Year,Location,Treated,YearTreated,ExSpTabTitle,Baseline,Quadrat,QuadratLocation_m,Species,Native_or_Invasive,PercentCover,OriginalSpecies
+SortID,MonitorID,QUniqueID,Date,Year,Location,Treated,YearTreated,ExSpTabTitle,Baseline,Quadrat,QuadratLocation_m,Species,Native_or_Invasive,PercentCover,OriginalSpecies
 1,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,shooting star,Native,10,shooting star
 2,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,Pacific sanicle,Native,3,Pacific sanicle
 3,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,camas,Native,10,camas
 4,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,herb robert geranium,Invasive,4,herb robert geranium
 5,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,shiny geranium,Invasive,10,shiny geranium
 6,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,fawn lily,Native,3,fawn lily
-7,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,moss,Native,25,moss
+7,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,moss,MixedGrass,25,moss
 8,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,Menzies larkspur,Native,9,Menzies larkspur
 9,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,saxifrage species,Native,1,saxifrage species
 10,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q1,4.3,mixed grass,MixedGrass,25,mixed invasive grasses
@@ -16,14 +16,14 @@
 15,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q2,3.3,camas,Native,10,camas
 16,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q2,3.3,shiny geranium,Invasive,20,shiny geranium
 17,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q2,3.3,herb robert geranium,Invasive,9,herb robert geranium
-18,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q2,3.3,moss,Native,8,moss
+18,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q2,3.3,moss,MixedGrass,8,moss
 19,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q2,3.3,mixed grass,MixedGrass,32,mixed invasive grasses
 20,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q3,8.3,Oregon grape,Native,8,Oregon grape
 21,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q3,8.3,snowberry,Native,19,snowberry
 22,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q3,8.3,Scotch broom,Invasive,1,Scotch broom
 23,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q3,8.3,shiny geranium,Invasive,35,shiny geranium
 24,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q3,8.3,mixed grass,MixedGrass,20,mixed invasive grasses
-25,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q3,8.3,moss,Native,15,moss
+25,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q3,8.3,moss,MixedGrass,15,moss
 26,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q3,8.3,fawn lily,Native,1,fawn lily
 27,T-DL,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #1,1,Q3,8.3,Pacific sanicle,Native,1,Pacific sanicle
 28,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q1,9,Oregon grape,Native,9,Oregon grape
@@ -31,7 +31,7 @@
 30,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q1,9,fawn lily,Native,5,fawn lily
 31,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q1,9,shooting star,Native,5,shooting star
 32,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q1,9,mixed grass,MixedGrass,50,mixed invasive grasses
-33,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q1,9,field chickweed,Native,2,field chickweed
+33,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q1,9,field chickweed,Invasive,2,field chickweed
 34,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q1,9,Menzies larkspur,Native,5,Menzies larkspur
 35,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q1,9,camas,Native,5,camas
 36,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q1,9,Scotch broom,Invasive,5,Scotch broom
@@ -41,8 +41,8 @@
 40,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q2,13.3,mixed grass,MixedGrass,62,mixed invasive grasses
 41,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q2,13.3,rose,Native,1,rose
 42,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q2,13.3,fawn lily,Native,1,fawn lily
-43,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q2,13.3,field chickweed,Native,1,field chickweed
-44,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q2,13.3,moss,Native,8,moss
+43,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q2,13.3,field chickweed,Invasive,1,field chickweed
+44,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q2,13.3,moss,MixedGrass,8,moss
 45,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q3,2.6,Menzies larkspur,Native,13,Menzies larkspur
 46,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q3,2.6,camas,Native,13,camas
 47,U-DL,,2025-04-03,2025,Oak Haven,Untreated,NA,2025 Oak Haven UnTreated #1,1,Q3,2.6,shooting star,Native,5,shooting star
@@ -80,7 +80,7 @@
 79,T-CH,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #2,1,Q3,8.3,Oregon grape,Native,35,Oregon grape
 80,T-CH,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #2,1,Q3,8.3,snowberry,Native,14,snowberry
 81,T-CH,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #2,1,Q3,8.3,Scotch broom,Invasive,3,Scotch broom
-82,T-CH,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #2,1,Q3,8.3,field chickweed,Native,3,field chickweed
+82,T-CH,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #2,1,Q3,8.3,field chickweed,Invasive,3,field chickweed
 83,T-CH,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #2,1,Q3,8.3,fawn lily,Native,1,fawn lily
 84,T-CH,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #2,1,Q3,8.3,shiny geranium,Invasive,12,shiny geranium
 85,T-CH,,2025-04-02,2025,Oak Haven,Treated,2024,2025 Oak Haven Treated #2,1,Q3,8.3,mixed moss and grass,MixedGrass,32,mixed moss and grass
