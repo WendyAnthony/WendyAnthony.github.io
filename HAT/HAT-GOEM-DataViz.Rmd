@@ -299,19 +299,21 @@ crew_data_site_stats_y <- crew_data_sep_sub_sum_by_group_site_hr_bio_ratio[crew_
 HAT_cover_OH_MM <- rbind(cover_OH_2024, cover_OH_2025, cover_MCA_2024, cover_MCA_2025)
 
 
-unique(HAT_cover_OH_MM$Species) #48
+unique(HAT_cover_OH_MM$Species) #47
 
 # trim trailing while spaces
 HAT_cover_OH_MM$Species <- trimws(HAT_cover_OH_MM$Species)
-species_unique <- unique(HAT_cover_OH_MM$Species) #40
+species_unique <- unique(HAT_cover_OH_MM$Species) #39
 
  
+# create a list of comma separated values for list of species names, but in no order
  comma_separated_sp_names <- paste(species_unique, collapse = ", ")
  comma_separated_sp_names
  str(comma_separated_sp_names)
- comma_separated_sp_names_sort <- as_tibble(comma_separated_sp_names) %>%
- arrange(comma_separated_sp_names)
-
+ # these did not sort in any order
+#  comma_separated_sp_names_sort <- as_tibble(comma_separated_sp_names) %>%
+#  arrange(comma_separated_sp_names)
+# comma_separated_sp_names_sort
 
 # update sort ID column
 HAT_cover_OH_MM$SortID <- 1:nrow(HAT_cover_OH_MM)
@@ -326,14 +328,14 @@ str(HAT_cover_OH_MM)
 colnames(HAT_cover_OH_MM)
 HAT_cover_OH_MM$QUniqueID <- paste(HAT_cover_OH_MM$MonitorID, HAT_cover_OH_MM$Quadrat, HAT_cover_OH_MM$QuadratLocation_m, sep = "_")
 
+# Replace hyphen with underscores in QUniqueID
+HAT_cover_OH_MM$QUniqueID <- gsub("-", "_", HAT_cover_OH_MM$QUniqueID)
+
 # remove excess coloumns not needed
 # including SortID column
 colnames(HAT_cover_OH_MM)
 HAT_cover_OH_MM_sub <- subset(HAT_cover_OH_MM, select = -c(1,2,9,10,11,12,16))
 HAT_cover_OH_MM_sub
-
-# Replace hyphen with underscores in QUniqueID
-HAT_cover_OH_MM_sub$QUniqueID <- gsub("-", "_", HAT_cover_OH_MM_sub$QUniqueID)
 
 # write csv
 write.csv(HAT_cover_OH_MM_sub, "data/HAT_cover_OH_MM_sub.csv", row.names = FALSE)
@@ -363,6 +365,7 @@ WORKS !!!!
 See function that creates this wide format
 ```{r cover-data-long-to-wide}
 colnames(HAT_cover_OH_MM_sub)
+unique(HAT_cover_OH_MM_sub$Location)
 # filter subset
 HAT_cover_OH_MM_sub_treat_OH <- HAT_cover_OH_MM_sub_treat[HAT_cover_OH_MM_sub_treat$Location == "Oak Haven",]
 HAT_cover_OH_MM_sub_treat_OH_2025 <- HAT_cover_OH_MM_sub_treat_OH[HAT_cover_OH_MM_sub_treat_OH$Year == "2025",]
@@ -371,12 +374,37 @@ HAT_cover_OH_MM_sub_untreat_OH <- HAT_cover_OH_MM_sub_untreat[HAT_cover_OH_MM_su
 HAT_cover_OH_MM_sub_untreat_OH_2025 <- HAT_cover_OH_MM_sub_untreat_OH[HAT_cover_OH_MM_sub_untreat_OH$Year == "2025",]
 HAT_cover_OH_MM_sub_untreat_OH_2024 <- HAT_cover_OH_MM_sub_untreat_OH[HAT_cover_OH_MM_sub_untreat_OH$Year == "2024",]
 
+HAT_cover_OH_MM_sub_treat_M <- HAT_cover_OH_MM_sub_treat[HAT_cover_OH_MM_sub_treat$Location == "Matson",]
+HAT_cover_OH_MM_sub_treat_M_2025 <- HAT_cover_OH_MM_sub_treat_M[HAT_cover_OH_MM_sub_treat_M$Year == "2025",]
+HAT_cover_OH_MM_sub_treat_M_2024 <- HAT_cover_OH_MM_sub_treat_M[HAT_cover_OH_MM_sub_treat_M$Year == "2024",]
+HAT_cover_OH_MM_sub_untreat_M <- HAT_cover_OH_MM_sub_untreat[HAT_cover_OH_MM_sub_untreat$Location == "Matson",]
+HAT_cover_OH_MM_sub_untreat_M_2025 <- HAT_cover_OH_MM_sub_untreat_M[HAT_cover_OH_MM_sub_untreat_M$Year == "2025",]
+HAT_cover_OH_MM_sub_untreat_M_2024 <- HAT_cover_OH_MM_sub_untreat_M[HAT_cover_OH_MM_sub_untreat_M$Year == "2024",]
+
 
 colnames(HAT_cover_OH_MM_sub_treat_OH_2025)
 
 # long to wide
 HAT_cover_OH_MM_sub_treat_OH_2025_wide <- HAT_cover_OH_MM_sub_treat_OH_2025 %>% 
 pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+HAT_cover_OH_MM_sub_treat_OH_2024_wide <- HAT_cover_OH_MM_sub_treat_OH_2024 %>% 
+pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+
+# HAT_cover_OH_MM_sub_untreat_OH_2025_wide <- HAT_cover_OH_MM_sub_untreat_OH_2025 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+# HAT_cover_OH_MM_sub_untreat_OH_2024_wide <- HAT_cover_OH_MM_sub_untreat_OH_2024 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+# 
+# HAT_cover_OH_MM_sub_treat_M_2025_wide <- HAT_cover_OH_MM_sub_treat_M_2025 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+# HAT_cover_OH_MM_sub_treat_M_2024_wide <- HAT_cover_OH_MM_sub_treat_M_2024 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+# 
+# HAT_cover_OH_MM_sub_untreat_M_2025_wide <- HAT_cover_OH_MM_sub_untreat_M_2025 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+# HAT_cover_OH_MM_sub_untreat_M_2024_wide <- HAT_cover_OH_MM_sub_untreat_M_2024 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+
 
 ### SOME PROBLEM WITH DUPLICATE DATA HAT_cover_OH_MM_sub_untreat_OH_2024
 # HAT_cover_OH_MM_sub_untreat_OH_2024_wide <- HAT_cover_OH_MM_sub_untreat_OH_2024 %>% 
@@ -477,8 +505,12 @@ HAT_cover_subset_fun_OH_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover
 HAT_cover_subset_fun_M_T_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2025")
 HAT_cover_subset_fun_M_U_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2025")
 HAT_cover_subset_fun_M_T_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2024")
+
+
 HAT_cover_subset_fun_M_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2024")
 ```
+
+
 
 
 ### Calculate Mean Cover Percentage from pivot wide function results

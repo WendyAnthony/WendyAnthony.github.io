@@ -324,6 +324,9 @@ cover_data_rename_site_sub_inv_t <- cover_data_rename_site_sub_inv[cover_data_re
 cover_data_rename_site_sub_inv_u <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Untreated",]
 
 
+# Top Invasive Species
+crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
+
 #############################################
 # drop unknown species
 species_count <- species_count[-c(25), ]
@@ -404,7 +407,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-01 17:44</span>")
+2026-02-01 18:18</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
