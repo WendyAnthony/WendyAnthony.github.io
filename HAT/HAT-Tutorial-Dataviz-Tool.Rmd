@@ -1,0 +1,181 @@
+---
+title: "Tutorial How to Use Interactive Dataviz Tool"
+author: "Wendy Anthony"
+date: "2026/02/02"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
+    toc_depth: '3'
+  html_document:
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: yes
+    # highlight: textmate
+  word_document: 
+    toc: no
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newpage
+
+
+***
+
+# Introduction to This Tool
+- This tool is basically an HTML file (webpage) that has all required the data converted to text (JSON), and hosted within the file, and kept within the computer memory (RAM), with the data being filtered within the browser (by javascript), and can be affected by computer speed (CPU) if too many browser tabs are open, or actively streaming data (e.g. video). All interactivity is handled within the user's browser window, without any need for a remote web server.
+
+## Purpose of Tool
+- Transforming raw data in a spreadsheet into insightful data visualizations, to analyze overall patterns, focused detail, for adaptive management decisions  
+- A command centre for looking at Restoration Monitoring Data  
+- Accessible to non-coders  
+
+## Tool Layout
+- Monitoring Metrics (Filtered Stastics) are located in top left corner   
+- Top Navigation Page Level in Header each use different shared subsets of HAT data, and respond to the same filters  
+- Sidebar Interactive Filters: All visualization Charts in Tabs of current Page are affected by filter choice; filter choices must be manually cleared  
+
+## Exploring the Data
+- Hover over data points to see specific values  
+- Datatable rows are interactively linked to specific data points in the same page charts  
+- Tables respond to shared data filters, and can be sorted, searched, and the resulting subset can be exported as print pdf, csv or excel  
+
+## Focus Zooming and Resetting
+- Zooming: can click and drag an area to focus
+- Reset: double-click the chart to return to original scale; if this doesn't work, or becomes unresponsive, refresh the browser webpage 
+
+## Downloading the Data
+- Charts respond to shared data filters, and can be exported as an image using the camera icon at the top right of each chart
+- Tables respond to shared data filters, and can be sorted, searched, and the resulting subset can be exported as print pdf, csv or excel, using the buttons above the tables  
+
+
+***
+
+# Tool Navigation
+
+
+## Top Header Pages Navigation
+```{r IMG_8491, out.width = "80%", echo = FALSE, fig.align = "center", fig.cap = "Figure 1: Every page uses a different dataset"}
+knitr::include_graphics("images/HAT-tool-tutorial-images/IMG_8491.jpg")
+```
+
+
+
+***
+
+## About
+
+### How To Use This Interactive Tool
+
+```{r IMG_8493, out.width = "80%", echo = FALSE, fig.align = "center", fig.cap = "Figure 2: About pages: How to use this interactive tool"}
+knitr::include_graphics("images/HAT-tool-tutorial-images/IMG_8493.jpg")
+```
+
+![Figure 3: About pages: How to use this interactive tool - embed - doesn't need Figure # given automatically for knitting pdf, but is needed for knitting HTML ... left justification](images/HAT-tool-tutorial-images/IMG_8493.jpg)
+
+
+
+***
+
+## Sites Daily
+
+```{r IMG_8494, out.width = "80%", echo = FALSE, fig.align = "center", fig.cap = "Figure 3: Sites Daily: Crew work Hours by Year. Each point represents one day worked at each site."}
+knitr::include_graphics("images/HAT-tool-tutorial-images/IMG_8494.jpg")
+```
+
+
+***
+
+### Sites Daily Filter
+
+```{r IMG_8495, out.width = "80%", echo = FALSE, fig.align = "center", fig.cap = "Figure 4: Sites Daily Filter: Choose Site: Oak Haven; Choose Species: shiny geranium; Filtered Statistics updates with filters"}
+knitr::include_graphics("images/HAT-tool-tutorial-images/IMG_8495.jpg")
+```
+
+
+```{r IMG_8496, out.width = "80%", echo = FALSE, fig.align = "center", fig.cap = "Figure 5: Sites Daily Filter: Choose Site: Oak Haven; Choose Year: 2025; Choose Species: shiny geranium; Hover over daily point to get all associated data; Filtered Statistics update with filters"}
+knitr::include_graphics("images/HAT-tool-tutorial-images/IMG_8496.jpg")
+```
+
+***
+
+## Sites Yearly
+
+
+***
+
+## Top 5 Invasives Sites
+
+
+***
+
+## Cover Mean
+
+### Filters for Cover Mean
+
+***
+
+## Species Richness
+
+### Filters for Species Richness
+
+***
+
+## Interactive Map
+
+### Filters for Map
+
+***
+
+## Filtered Statistics
+
+
+***
+
+### Hover for Tooltips
+- each chart has more information available by hovering over a data point or bar
+
+### Double-click to return to original Chart format
+- If this doesn't work, simply refresh the browser web page (a quirk of plotly)
+
+### Click+Drag to Zoom
+
+```{r IMG_8487, out.width = "80%", echo = FALSE, fig.align = "center", fig.cap = "Figure 6: Click-drag to zoom "}
+knitr::include_graphics("images/HAT-tool-tutorial-images/IMG_8487.jpg")
+```
+
+
+```{r IMG_8488, out.width = "80%", echo = FALSE, fig.align = "center", fig.cap = "Figure 7: Zoom results of Click-drag"}
+knitr::include_graphics("images/HAT-tool-tutorial-images/IMG_8488.jpg")
+```
+
+
+## Downloading Charts & Tables
+- Charts & Tables reflect Filter use  
+- Charts can be downloaded (need to be renamed from `newplot.png`) using the camera icon in the top right corner of the chart  
+- Datatables can be downloaded as csv or Excel files, or printed (saved as pdf).
+
+
+# Using Interactive Tool For Analysis
+
+## Sites Daily
+- What time of year are species being removed at each site?
+- How much work time should be budgeted for at each site, for each species?
+
+## Sites Yearly
+- Which site has the most biomass (area) per year?
+
+## Top 5 Invasives by Site
+- How much biomass was removed for each species, each year, at each site?
+
+## Mean Cover
+_ What is the average cover for each species?
+
+## Species Richness
+- how many different species were found at each site?
+
