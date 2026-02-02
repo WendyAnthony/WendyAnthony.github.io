@@ -310,6 +310,8 @@ cover_data_rename_site$Site <- gsub("Havenwood Park", "Havenwood", cover_data_re
 colnames(cover_data_rename_site)
 cover_data_rename_site_sub <- subset(cover_data_rename_site, select = -c(9,10,11))
 
+cover_data_rename_site_sub$Date <- as.Date(cover_data_rename_site_sub$Date)
+
 ## Add upper and lower bounds mean +/- sd
 
 cover_data_rename_site_sub <- cover_data_rename_site_sub %>% 
@@ -317,6 +319,17 @@ cover_data_rename_site_sub <- cover_data_rename_site_sub %>%
 
 cover_data_rename_site_sub <- cover_data_rename_site_sub %>% 
                                       mutate(upper = mean_value + sd_value)
+
+str(cover_data_rename_site_sub)
+
+## ROund all numbers to 2 decimals
+cover_data_rename_site_sub <- cover_data_rename_site_sub %>%
+  mutate(across(where(is.numeric), round, 2))
+
+
+## THis seems to mess up the charts ???
+# cover_data_rename_site_sub$upper <- sprintf("%.2f", cover_data_rename_site_sub$upper)
+# cover_data_rename_site_sub$lower <- sprintf("%.2f", cover_data_rename_site_sub$lower)
 
 #############################################
 cov_nat_top5 <- cover_data_rename_site_sub %>% filter(Species %in% c("camas", "delphinium",  "Pacific sanicle", "licorice fern", "Oregon grape"))
@@ -407,7 +420,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-02 06:36</span>")
+2026-02-02 07:17</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -1298,7 +1311,9 @@ ggplotly(
                                                           "\nNative or Invasive:", Native_or_Invasive,  
                                                           "\nTreated:", Treated,
                                                           "\nMean Value:", mean_value,
-                                                          "\nSD Value:", sd_value))) + 
+                                                          "\nSD Value:", sd_value,
+                                                          "\nUpper Mean Range:", upper,
+                                                          "\nLower Mean Range:", lower))) + 
   geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
   #facet_wrap(vars(Site)) +
   facet_grid(Treated ~ Site) +
@@ -1355,7 +1370,9 @@ ggplotly(
                                                           "\nNative or Invasive:", Native_or_Invasive,  
                                                           "\nTreated:", Treated,
                                                           "\nMean Value:", mean_value,
-                                                          "\nSD Value:", sd_value))) + 
+                                                          "\nSD Value:", sd_value,
+                                                          "\nUpper Mean Range:", upper,
+                                                          "\nLower Mean Range:", lower))) + 
   geom_point(size = 3, alpha = 0.75) +
   geom_errorbar(aes(ymin = lower, ymax = upper)) +
   coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
@@ -1414,7 +1431,9 @@ ggplotly(
                                                           "\nNative or Invasive:", Native_or_Invasive,  
                                                           "\nTreated:", Treated,
                                                           "\nMean Value:", mean_value,
-                                                          "\nSD Value:", sd_value))) + 
+                                                          "\nSD Value:", sd_value,
+                                                          "\nUpper Mean Range:", upper,
+                                                          "\nLower Mean Range:", lower))) + 
   geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
   #facet_wrap(vars(Site)) +
   facet_grid(Treated ~ Site) +
@@ -1465,7 +1484,9 @@ ggplotly(
                                                           "\nNative or Invasive:", Native_or_Invasive,  
                                                           "\nTreated:", Treated,
                                                           "\nMean Value:", mean_value,
-                                                          "\nSD Value:", sd_value))) + 
+                                                          "\nSD Value:", sd_value,
+                                                          "\nUpper Mean Range:", upper,
+                                                          "\nLower Mean Range:", lower))) + 
   geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
   # facet_wrap(vars(Site)) +
   facet_grid(Treated ~ Site) +
@@ -1601,7 +1622,9 @@ ggplotly(
                                                           "\nNative or Invasive:", Native_or_Invasive,  
                                                           "\nTreated:", Treated,
                                                           "\nMean Value:", mean_value,
-                                                          "\nSD Value:", sd_value))) + 
+                                                          "\nSD Value:", sd_value,
+                                                          "\nUpper Mean Range:", upper,
+                                                          "\nLower Mean Range:", lower))) + 
   # geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
   geom_point(size = 3, alpha = 0.75) +
     
@@ -1700,6 +1723,34 @@ ggplotly(
 #     # gives some space between x axis label and legend
 #     y = -0.2
 #     ))
+```
+
+### Datatable
+```{r data-table-cover-top5}
+htmltools::h5("Top 5 Mean Cover (Native/Invasive & Treated/Untreated) Datatable")
+htmltools::br()
+ datatable(sd_cov_nat_top5, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = list(                        
+                        'colvis',
+                        list(
+                          extend = 'csv',
+                          filename = paste0("HAT-Restoration-Site-Top5-Cover-Mean-Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'excel',
+                          filename = paste0("HAT-Restoration-Site-Top5-Cover-Mean-Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'print',
+                          title = 'HAT Restoration Mean Top 5 Cover Data' # Change title here
+                        )
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE,                         
+             columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
+           )))
 ```
 
 Species Richness
