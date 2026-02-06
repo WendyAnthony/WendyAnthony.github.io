@@ -197,6 +197,8 @@ OH_2024_ShinyG_Burning_Priorities <- st_read("data_spatial/OH_2024_ShinyG_Burnin
 OH_2024_Invasive_Species_Removed <- st_read("data_spatial/OH_2024_Invasive_Species_Removed/OH_2024_Invasive_Species_Removed.shp")
 OH_2024_Identified_Invasive_Species_Patches <- st_read("data_spatial/OH_2024_Identified_Invasive_Species_Patches/OH_2024_Identified_InvasiveSpecies_Patches.shp")
 OH_2024_Invasive_Species_Points <- st_read("data_spatial/OH_2024_Invasive_Species_Points/OH_2024_Invasive_Species_Points.shp")
+OHP_2025_Completed_polygons <- st_read("data_spatial/OHP_2025_Completed_polygons/OHP_2025_Completed polygons.shp")
+OHP_2025_Experimental_test_plots <- st_read("data_spatial/OHP_2025_Experimental_test_plots/OHP_2025_Experimental test plots.shp")
 ```
 
 
@@ -209,6 +211,8 @@ OH_2024_ShinyG_Burning_Priorities_dropz <- st_zm(OH_2024_ShinyG_Burning_Prioriti
 OH_2024_Invasive_Species_Removed_dropz <- st_zm(OH_2024_Invasive_Species_Removed, drop = T, what = "ZM")
 OH_2024_Identified_Invasive_Species_Patches_dropz <- st_zm(OH_2024_Identified_Invasive_Species_Patches, drop = T, what = "ZM")
 OH_2024_Invasive_Species_Points_dropz <- st_zm(OH_2024_Invasive_Species_Points, drop = T, what = "ZM")
+OHP_2025_Completed_polygons_dropz <- st_zm(OHP_2025_Completed_polygons, drop = T, what = "ZM")
+OHP_2025_Experimental_test_plots_dropz <- st_zm(OHP_2025_Experimental_test_plots, drop = T, what = "ZM")
 ```
 
 
@@ -442,7 +446,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-05 17:17</span>")
+2026-02-06 07:44</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -2026,25 +2030,25 @@ htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://ha
 htmltools::br()
 ```
 
-Row  {data-height=50}
+Row  {data-height=75}
 -----------------------------------------------
 
-### ***Interactive Map of 3 HAT Managed Public GOE Sites***
+### ***Interactive Maps of 3 HAT Managed Public GOE Sites***
 ```{r}
 htmltools::HTML("
-3 public HAT sites listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other sites are on private, non-public land with location protected for privacy. Click map markers to open pop-up windows site-specific information.
+3 public HAT sites listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other sites are on private, non-public land with location protected for privacy. Click map markers to open pop-up windows site-specific information. Spatial data maps for Oak Haven show polygons of work locations, but does Not respond to filters.
                 ")
 ```
 
 Row {.tabset .tabset-fade}
 ---------------------------------------------
 
-### Interactive Map
+### Interactive 3-Site Map
 ```{r leaflet-all-sites, echo = FALSE, message = FALSE, include = TRUE}
 #############################################
 # title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
 
-title <- '<p style="text-align: center;"><span style="font-size:14px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
+title <- '<p style="text-align: center; height: 12px;"><span style="font-size: 12px;font-weight: bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
      
           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
 
@@ -2132,8 +2136,10 @@ leaflet(sd_sites) %>%
 
 
 
-### Oak Haven Interactive Map spatial Data
-```{r}
+### Oak Haven Spatial Data
+```{r leaflet-OH-spatial, echo = FALSE, message = FALSE, include = TRUE}
+title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
+
 map_all <- leaflet() %>%
   # addTiles() %>%
   addProviderTiles("Esri.WorldImagery") %>%
@@ -2165,11 +2171,25 @@ map_all <- leaflet() %>%
               radius = 2,
               popup = paste0("Description: ", OH_2024_Invasive_Species_Points_dropz$Descript)
               ) %>%
+  addPolygons(data = OHP_2025_Completed_polygons_dropz,
+              group = "2025 Completed polygons",
+              color = "green",
+              #fillColor = "purple",
+              fillOpacity = 0.5,
+              popup = ~PopupInfo) %>%
+  addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
+              group = "2025 Experimental test plot points",
+              color = "yellow",
+              #fillColor = "purple",
+              fillOpacity = 0.5,
+              radius = 2,
+              popup = paste0("Description: ", OHP_2025_Experimental_test_plots_dropz$Descript)) %>%
   setView(-123.4471, 48.56419, 17) %>%
   addLayersControl(
-    overlayGroups = c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points"),
+    overlayGroups = c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "2025 Completed polygons", "2025 Experimental test plot points"),
     options = layersControlOptions(collapsed = FALSE) # Makes control box always visible
-  )
+  ) %>%
+  addControl(title, position = "bottomleft") 
 
 # Print the map
 map_all
@@ -2180,7 +2200,7 @@ map_all
 #############################################
 # title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
 
-title <- '<p style="text-align: center;"><span style="font-size:14px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
+title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
      
           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
 
@@ -2259,31 +2279,50 @@ leaflet(sd_sites) %>%
 #############################################
           ))  %>%
   addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
-            
+
   addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
+              # covers same area as Invasive_Species_Patches
               group = "2024 ShinyG Burning Priorities",
               color = "blue",
-              fillOpacity = 0.5,
+              #fillColor = "blue",
+              fillOpacity = 0.8,
               popup = paste0("Area Number: ", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber)) %>% # Optional: add popups
   addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
               group = "2024 Invasive Species Removed",
-              color = "red",
+              color = "yellow",
+              #fillColor = "yellow",
               fillOpacity = 0.5,
               popup = ~PopupInfo) %>%
   addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
+              # covers same area as Shiny g
               group = "2024 Invasive Species Patches",
-              color = "green",
-              fillOpacity = 0.5,
+              color = "orange",
+              #fillColor = "orange",
+              fillOpacity = 0.2,
               popup = ~PopupInfo) %>%
   addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
               group = "2024 Invasive Species Points",
-              color = "yellow",
+              color = "red",
+              #fillColor = "red",
               fillOpacity = 0.5,
-              radius = 1,
+              radius = 2,
               popup = paste0("Description: ", OH_2024_Invasive_Species_Points_dropz$Descript)
               ) %>%
+  addPolygons(data = OHP_2025_Completed_polygons_dropz,
+              group = "2025 Completed polygons",
+              color = "green",
+              #fillColor = "purple",
+              fillOpacity = 0.5,
+              popup = ~PopupInfo) %>%
+  addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
+              group = "2025 Experimental test plot points",
+              color = "yellow",
+              #fillColor = "purple",
+              fillOpacity = 0.5,
+              radius = 2,
+              popup = paste0("Description: ", OHP_2025_Experimental_test_plots_dropz$Descript)) %>%
   addLayersControl(
-    overlayGroups = c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points"),
+    overlayGroups = c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "2025 Completed polygons", "2025 Experimental test plot points"),                        
     options = layersControlOptions(collapsed = TRUE) # Makes control box always visible FALSE or closed TRUE
   ) %>%
 
