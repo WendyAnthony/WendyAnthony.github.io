@@ -524,7 +524,9 @@ sd_cover_inv_u <- SharedData$new(data = cover_data_rename_site_sub_inv_u, group 
 sd_count <- SharedData$new(data = species_count, group = "count_group")
 
 #############################################
-sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create sharable database using Crosstalk package
+sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create sharable database using Crosstalk packa
+
+#############################################
 ```
 
 
@@ -551,7 +553,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-07 10:10</span>")
+2026-02-07 11:11</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -2158,9 +2160,10 @@ title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12
           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
 
 #############################################        
-map_oh_sp <- leaflet(sd_sites) %>%
+map_oh_sp <- leaflet() %>%
       addProviderTiles("Esri.WorldImagery") %>%
       addCircleMarkers(
+        data = sd_sites,
         ~ Lng, ~ Lat,
         color = ~pal(Site),
         weight = 1, # size of circle border
@@ -2424,6 +2427,7 @@ map_all <- leaflet() %>%
 # Print the map
 map_all
 ```
+
 
 
 
