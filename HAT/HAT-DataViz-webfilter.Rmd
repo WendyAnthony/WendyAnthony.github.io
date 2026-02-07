@@ -128,6 +128,7 @@ library(DT) # tables
 # install.packages("leaflet")
 library(leaflet) # interactive map
 library(sf) # spatial data
+library(htmlwidgets) # save web map
 ```
 
 
@@ -446,7 +447,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-06 07:44</span>")
+2026-02-07 08:28</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -2131,7 +2132,7 @@ leaflet(sd_sites) %>%
       setView(-123.44799, 48.52919, 10) %>%
       # add controls
       #  addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
-      addControl(title, position = "topright")
+      addControl(title, position = "topright") 
 ```
 
 
@@ -2143,59 +2144,101 @@ title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12
 map_all <- leaflet() %>%
   # addTiles() %>%
   addProviderTiles("Esri.WorldImagery") %>%
+  addPolygons(data = OHP_2025_Completed_polygons_dropz,
+              group = "2025 Completed polygons",
+              color = "#AA4499", #AA4499 purple
+              #fillColor = "purple",
+              fillOpacity = 0.5,
+              popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>",
+                             "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>%
+  addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
+              group = "2025 Experimental test plot points",
+              color = "#EECC66", #EECC66 light yellow
+              #fillColor = "purple",
+              fillOpacity = 0.8,
+              weight = 1,
+              radius = 3,
+              popup = paste0("<b>Name: </b>", OHP_2025_Experimental_test_plots_dropz$Name, "<br>",
+                            "<b>Description: </b>", OHP_2025_Experimental_test_plots_dropz$Descript, "<br>",
+                            "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>%
   addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
               # covers same area as Invasive_Species_Patches
               group = "2024 ShinyG Burning Priorities",
-              color = "blue",
+              # use a lighter colour so lighter Shiny will show over Species patches
+              color = "#EE7733", #EE7733 orange
+              #color = "blue",
               #fillColor = "blue",
-              fillOpacity = 0.8,
-              popup = paste0("Area Number: ", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber)) %>% # Optional: add popups
+              fillOpacity = 0.3,
+              popup = paste0("<b>Name: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Name, "<br>",
+                             "<b>Priority: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Priority, "<br>",
+                             "<b>Description: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$PopupInfo, "<br>",
+                             "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>",
+                             "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups
   addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
               group = "2024 Invasive Species Removed",
-              color = "yellow",
+              color = "#EE3377", # magenta #EE3377
+              #color = "yellow",
               #fillColor = "yellow",
-              fillOpacity = 0.5,
-              popup = ~PopupInfo) %>%
+              fillOpacity = 0.6,
+              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Removed_dropz$Name, "<br>",
+                             "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>%
   addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
               # covers same area as Shiny g
               group = "2024 Invasive Species Patches",
-              color = "orange",
+              # use a darker colour so lighter Shiny will show
+              color = "#33BBEE", #cyan #33BBEE
               #fillColor = "orange",
-              fillOpacity = 0.2,
-              popup = ~PopupInfo) %>%
+              fillOpacity = 0.4,
+              popup = paste0("<b>Name: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$Name, "<br>",
+                             "<b>Description: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$PopupInfo, "<br>",
+                             "<b>Area: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$AreaNumber, "<br>",
+                             "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME)
+              ) %>%
   addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
               group = "2024 Invasive Species Points",
-              color = "red",
+              color = "#CC3311", # CC3311 red
               #fillColor = "red",
               fillOpacity = 0.5,
-              radius = 2,
-              popup = paste0("Description: ", OH_2024_Invasive_Species_Points_dropz$Descript)
+              radius = 3,
+              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Points_dropz$Name, "<br>",
+                            "<b>Description: </b>", OH_2024_Invasive_Species_Points_dropz$Descript, "<br>",
+                            "<b>Species: </b>", OH_2024_Invasive_Species_Points_dropz$INSVNAME, "<br>",
+                            "<b>Elevation: </b>", OH_2024_Invasive_Species_Points_dropz$Elevation, "<br>",
+                            "<b>Date: </b>", OH_2024_Invasive_Species_Points_dropz$DateTimeS)
               ) %>%
-  addPolygons(data = OHP_2025_Completed_polygons_dropz,
-              group = "2025 Completed polygons",
-              color = "green",
-              #fillColor = "purple",
-              fillOpacity = 0.5,
-              popup = ~PopupInfo) %>%
-  addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
-              group = "2025 Experimental test plot points",
-              color = "yellow",
-              #fillColor = "purple",
-              fillOpacity = 0.5,
-              radius = 2,
-              popup = paste0("Description: ", OHP_2025_Experimental_test_plots_dropz$Descript)) %>%
+  # add legend to overlay group toggled off
+  addLegend(
+              "bottomright",
+              colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
+              labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
+              title = "",
+              group = "Spatial Polygon Color Legend"
+              ) %>%
   setView(-123.4471, 48.56419, 17) %>%
+  addControl(title, position = "topright") %>% 
+  addMeasure(
+    position = "topleft",
+    primaryLengthUnit = "meters",
+    primaryAreaUnit = "sqmeters",
+    activeColor = "#DDAA33",
+    completedColor = "#BB5566") %>% 
   addLayersControl(
-    overlayGroups = c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "2025 Completed polygons", "2025 Experimental test plot points"),
-    options = layersControlOptions(collapsed = FALSE) # Makes control box always visible
+    overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points", "Spatial Polygon Color Legend"),
+    
+    # adding colored icons in front of overlay group stopped toggle on/off ???
+    # overlayGroups = unname(c("2025 Completed polygons <- <div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #AA4499;'></div> 2025 Completed polygons", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EECC66;'></div> 2025 Experimental test plot points", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EE3377;'></div> 2024 Invasive Species Removed", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #33BBEE;'></div> 2024 Invasive Species Patches", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EE7733;'></div> 2024 ShinyG Burning Priorities", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #CC3311;'></div> 2024 Invasive Species Points")),
+    options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
   ) %>%
-  addControl(title, position = "bottomleft") 
+  hideGroup(c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "Spatial Polygon Color Legend")) %>%
+  addScaleBar()  %>%
+      # add controls
+       addMiniMap(width = 100, height = 100, zoomLevelOffset = -4)
 
 # Print the map
 map_all
 ```
 
-### Interactive Map Both
+### 3-Site Map with Oak Haven Spatial Data
 ```{r leaflet-both-sites, echo = FALSE, message = FALSE, include = TRUE}
 #############################################
 # title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
@@ -2205,7 +2248,7 @@ title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12
           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
 
 #############################################        
-leaflet(sd_sites) %>%
+map_oh_sp <- leaflet(sd_sites) %>%
       addProviderTiles("Esri.WorldImagery") %>%
       addCircleMarkers(
         ~ Lng, ~ Lat,
@@ -2279,59 +2322,95 @@ leaflet(sd_sites) %>%
 #############################################
           ))  %>%
   addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
-
+  addControl(title, position = "topright") %>% 
+  addPolygons(data = OHP_2025_Completed_polygons_dropz,
+              group = "2025 Completed polygons",
+              color = "#AA4499", #AA4499 purple
+              #fillColor = "purple",
+              fillOpacity = 0.5,
+              popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>",
+                             "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>%
+  addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
+              group = "2025 Experimental test plot points",
+              color = "#EECC66", #EECC66 light yellow
+              #fillColor = "purple",
+              fillOpacity = 0.8,
+              weight = 1,
+              radius = 3,
+              popup = paste0("<b>Name: </b>", OHP_2025_Experimental_test_plots_dropz$Name, "<br>",
+                            "<b>Description: </b>", OHP_2025_Experimental_test_plots_dropz$Descript, "<br>",
+                            "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>%
   addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
               # covers same area as Invasive_Species_Patches
               group = "2024 ShinyG Burning Priorities",
-              color = "blue",
+              # use a lighter colour so lighter Shiny will show over Species patches
+              color = "#EE7733", #EE7733 orange
+              #color = "blue",
               #fillColor = "blue",
-              fillOpacity = 0.8,
-              popup = paste0("Area Number: ", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber)) %>% # Optional: add popups
+              fillOpacity = 0.3,
+              popup = paste0("<b>Name: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Name, "<br>",
+                             "<b>Priority: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Priority, "<br>",
+                             "<b>Description: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$PopupInfo, "<br>",
+                             "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>",
+                             "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups
   addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
               group = "2024 Invasive Species Removed",
-              color = "yellow",
+              color = "#EE3377", # magenta #EE3377
+              #color = "yellow",
               #fillColor = "yellow",
-              fillOpacity = 0.5,
-              popup = ~PopupInfo) %>%
+              fillOpacity = 0.6,
+              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Removed_dropz$Name, "<br>",
+                             "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>%
   addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
               # covers same area as Shiny g
               group = "2024 Invasive Species Patches",
-              color = "orange",
+              # use a darker colour so lighter Shiny will show
+              color = "#33BBEE", #cyan #33BBEE
               #fillColor = "orange",
-              fillOpacity = 0.2,
-              popup = ~PopupInfo) %>%
+              fillOpacity = 0.4,
+              popup = paste0("<b>Name: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$Name, "<br>",
+                             "<b>Description: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$PopupInfo, "<br>",
+                             "<b>Area: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$AreaNumber, "<br>",
+                             "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME)
+              ) %>%
   addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
               group = "2024 Invasive Species Points",
-              color = "red",
+              color = "#CC3311", # CC3311 red
               #fillColor = "red",
               fillOpacity = 0.5,
-              radius = 2,
-              popup = paste0("Description: ", OH_2024_Invasive_Species_Points_dropz$Descript)
+              radius = 3,
+              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Points_dropz$Name, "<br>",
+                            "<b>Description: </b>", OH_2024_Invasive_Species_Points_dropz$Descript, "<br>",
+                            "<b>Species: </b>", OH_2024_Invasive_Species_Points_dropz$INSVNAME, "<br>",
+                            "<b>Elevation: </b>", OH_2024_Invasive_Species_Points_dropz$Elevation, "<br>",
+                            "<b>Date: </b>", OH_2024_Invasive_Species_Points_dropz$DateTimeS)
               ) %>%
-  addPolygons(data = OHP_2025_Completed_polygons_dropz,
-              group = "2025 Completed polygons",
-              color = "green",
-              #fillColor = "purple",
-              fillOpacity = 0.5,
-              popup = ~PopupInfo) %>%
-  addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
-              group = "2025 Experimental test plot points",
-              color = "yellow",
-              #fillColor = "purple",
-              fillOpacity = 0.5,
-              radius = 2,
-              popup = paste0("Description: ", OHP_2025_Experimental_test_plots_dropz$Descript)) %>%
+  # add legend to overlay group toggled off
+  addLegend(
+              "bottomright",
+              colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
+              labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
+              title = "",
+              group = "OH Spatial Polygon Color Legend"
+              ) %>%
+  addMeasure(
+    position = "topleft",
+    primaryLengthUnit = "meters",
+    primaryAreaUnit = "sqmeters",
+    activeColor = "#DDAA33",
+    completedColor = "#BB5566") %>% 
   addLayersControl(
-    overlayGroups = c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "2025 Completed polygons", "2025 Experimental test plot points"),                        
-    options = layersControlOptions(collapsed = TRUE) # Makes control box always visible FALSE or closed TRUE
+    overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
+    options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
   ) %>%
+  hideGroup(c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
+  addScaleBar() %>%
+  setView(-123.44799, 48.52919, zoom = 10)
 
-      setView(-123.44799, 48.52919, zoom = 10) %>%
-      # add controls
-#       addMiniMap(width = 150, height = 150, zoomLevelOffset = -4) %>%
-      addControl(title, position = "bottomleft")
+map_oh_sp
 
 ```
+
 
 
 ### Datatable
@@ -2361,6 +2440,9 @@ htmltools::br()
              columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
            )))
 ```
+
+
+
 
 ```{r session-info}
 # Session Info to document specific packages used to run this script at a specific point in time
