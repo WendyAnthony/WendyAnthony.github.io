@@ -2518,7 +2518,7 @@ htmltools::br()
 
 
 
-```{r session-info}
+```{r session-info, include = FALSE}
 # Session Info to document specific packages used to run this script at a specific point in time
 #############################################
 sessionInfo()
