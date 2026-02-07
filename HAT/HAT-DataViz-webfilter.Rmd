@@ -218,6 +218,109 @@ OHP_2025_Experimental_test_plots_dropz <- st_zm(OHP_2025_Experimental_test_plots
 ```
 
 
+```{r spatial-subset-save, include = FALSE}
+### Subset and save spatial data for use in datatable
+# add new columns "Site"   "Year"      "Data"     
+
+################################# 
+colnames(OH_2024_ShinyG_Burning_Priorities_dropz)
+# [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
+# [11] "Shape_Area" "INSVNAME"   "AreaNumber" "Priority"   "geometry"
+OH_2024_ShinyG_Burning_Priorities_dropz$Site <- "Oak Haven"
+OH_2024_ShinyG_Burning_Priorities_dropz$Year <- "2024"
+OH_2024_ShinyG_Burning_Priorities_dropz$Data <- "OH_2024_ShinyG_Burning_Priorities"
+ncol(OH_2024_ShinyG_Burning_Priorities_dropz)
+
+# reorder names for priority so polygon data can be bound by row
+OH_2024_ShinyG_Burning_Priorities_dropz <- OH_2024_ShinyG_Burning_Priorities_dropz[, c("Name", "FolderPath", "SymbolID", "AltMode", "Base", "Clamped", "Extruded", "Snippet", "PopupInfo", "Shape_Leng", "Shape_Area", "INSVNAME", "AreaNumber", "geometry", "Site", "Year", "Data", "Priority" )]
+colnames(OH_2024_ShinyG_Burning_Priorities_dropz)
+ncol(OH_2024_ShinyG_Burning_Priorities_dropz)
+nrow(OH_2024_ShinyG_Burning_Priorities_dropz) #13
+#  [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
+# [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry"   "Site"       "Year"       "Data"       "Priority" 
+
+################################# 
+colnames(OH_2024_Invasive_Species_Removed_dropz)
+# [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
+# [11] "Shape_Area" "INSVNAME"   "geometry"   "Site"       "Year"       "Data"       "Priority" 
+OH_2024_Invasive_Species_Removed_dropz$Site <- "Oak Haven"
+OH_2024_Invasive_Species_Removed_dropz$Year <- "2024"
+OH_2024_Invasive_Species_Removed_dropz$Data <- "OH_2024_Invasive_Species_Removed"
+OH_2024_Invasive_Species_Removed_dropz$AreaNumber <- ""
+OH_2024_Invasive_Species_Removed_dropz$Priority <- "Priority"
+# reorder names for priority so polygon data can be bound by row
+OH_2024_Invasive_Species_Removed_dropz <- OH_2024_Invasive_Species_Removed_dropz[, c("Name", "FolderPath", "SymbolID", "AltMode", "Base", "Clamped", "Extruded", "Snippet", "PopupInfo", "Shape_Leng", "Shape_Area", "INSVNAME", "AreaNumber", "geometry", "Site", "Year", "Data", "Priority" )]
+ncol(OH_2024_Invasive_Species_Removed_dropz)
+nrow(OH_2024_Invasive_Species_Removed_dropz) #10
+
+################################# 
+colnames(OH_2024_Identified_Invasive_Species_Patches_dropz)
+# [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
+# [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry" 
+OH_2024_Identified_Invasive_Species_Patches_dropz$Site <- "Oak Haven"
+OH_2024_Identified_Invasive_Species_Patches_dropz$Year <- "2024"
+OH_2024_Identified_Invasive_Species_Patches_dropz$Data <- "OH_2024_Identified_Invasive_Species_Patches"
+OH_2024_Identified_Invasive_Species_Patches_dropz$Priority <- "Priority"
+ncol(OH_2024_Identified_Invasive_Species_Patches_dropz)
+nrow(OH_2024_Identified_Invasive_Species_Patches_dropz) #13
+
+################################# 
+colnames(OHP_2025_Completed_polygons_dropz)
+ #[1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
+#[11] "Shape_Area" "geometry"   "Site"       "Year"       "Data"       "Priority" "
+OHP_2025_Completed_polygons_dropz$Site <- "Oak Haven"
+OHP_2025_Completed_polygons_dropz$Year <- "2025"
+OHP_2025_Completed_polygons_dropz$Data <- "OHP_2025_Completed_polygons"
+OHP_2025_Completed_polygons_dropz$Priority <- "Priority"
+OHP_2025_Completed_polygons_dropz$INSVNAME <- ""
+OHP_2025_Completed_polygons_dropz$AreaNumber <- ""
+ncol(OHP_2025_Completed_polygons_dropz)
+nrow(OHP_2025_Completed_polygons_dropz) #7
+# reorder names for priority so polygon data can be bound by row
+OHP_2025_Completed_polygons_dropz <- OHP_2025_Completed_polygons_dropz[, c("Name", "FolderPath", "SymbolID", "AltMode", "Base", "Clamped", "Extruded", "Snippet", "PopupInfo", "Shape_Leng", "Shape_Area", "INSVNAME", "AreaNumber", "geometry", "Site", "Year", "Data", "Priority" )]
+
+################################# 
+# rbind polygons
+OH_spatial_polygons_all <- rbind(OH_2024_ShinyG_Burning_Priorities_dropz, OH_2024_Invasive_Species_Removed_dropz, OH_2024_Identified_Invasive_Species_Patches_dropz, OHP_2025_Completed_polygons_dropz)
+nrow(OH_spatial_polygons_all) #43
+
+colnames(OH_spatial_polygons_all)
+# remove unused columns
+OH_spatial_polygons_all_sub <- subset(OH_spatial_polygons_all, select = -c(2:8, 10, 11))
+colnames(OH_spatial_polygons_all_sub)
+################################# 
+################################# 
+
+colnames(OH_2024_Invasive_Species_Points_dropz)
+# [1] "Id"        "Name"      "Descript"  "Type"      "Comment"   "Symbol"    "DateTimeS" "Elevation" "INSVNAME"  "geometry" 
+OH_2024_Invasive_Species_Points_dropz$Site <- "Oak Haven"
+OH_2024_Invasive_Species_Points_dropz$Year <- "2024"
+OH_2024_Invasive_Species_Points_dropz$Data <- "OH_2024_Invasive_Species_Points"
+
+################################# 
+colnames(OHP_2025_Experimental_test_plots_dropz)
+# [1] "Id"        "Name"      "Descript"  "Type"      "Comment"   "Symbol"    "DateTimeS" "Elevation" "geometry"
+OHP_2025_Experimental_test_plots_dropz$Site <- "Oak Haven"
+OHP_2025_Experimental_test_plots_dropz$Year <- "2025"
+OHP_2025_Experimental_test_plots_dropz$Data <- "OHP_2025_Experimental_test_plots"
+OHP_2025_Experimental_test_plots_dropz$INSVNAME <- ""
+
+# reorder columns
+OHP_2025_Experimental_test_plots_dropz <- OHP_2025_Experimental_test_plots_dropz[, c("Id", "Name", "Descript", "Type", "Comment", "Symbol", "DateTimeS", "Elevation", "INSVNAME", "geometry", "Site", "Year", "Data")]
+
+colnames(OHP_2025_Experimental_test_plots_dropz)
+colnames(OH_2024_Invasive_Species_Points_dropz)
+
+################################# 
+# rbind points
+OH_spatial_points_all <- rbind(OHP_2025_Experimental_test_plots_dropz, OH_2024_Invasive_Species_Points_dropz)
+colnames(OH_spatial_points_all)
+OH_spatial_points_alll_sub <- subset(OH_spatial_points_all, select = -c(1,4,5,6))
+colnames(OH_spatial_points_alll_sub)
+```
+
+
+
 ```{r rename-site-location-worksite-columns-for-sd-group, include = FALSE}
 #############################################
 # Sites Data
@@ -448,7 +551,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-07 09:09</span>")
+2026-02-07 10:10</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -2350,6 +2453,66 @@ htmltools::br()
                          paging = FALSE,                         
              columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
            )))
+```
+
+### Datatable for OH Polygons
+```{r data-table-map-OH-poly}
+htmltools::h5("Oak Haven Polygons Datatable")
+htmltools::br()
+ datatable(OH_spatial_polygons_all_sub, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = list(                        
+                        'colvis',
+                        list(
+                          extend = 'csv',
+                          filename = paste0("OH-Polygons-Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'excel',
+                          filename = paste0("OH-Polygons-Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'print',
+                          title = 'OH Polygons Data' # Change title here
+                        )
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE
+           #              ,                         
+           #   columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
+           # )
+           ))
+```
+
+### Datatable for OH Points
+```{r data-table-map-OH-Points}
+htmltools::h5("Oak Haven Points Datatable")
+htmltools::br()
+ datatable(OH_spatial_points_alll_sub, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = list(                        
+                        'colvis',
+                        list(
+                          extend = 'csv',
+                          filename = paste0("OH Points Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'excel',
+                          filename = paste0("OH Points Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'print',
+                          title = 'OH Points Data' # Change title here
+                        )
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE
+           #              ,                         
+           #   columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
+           # )
+           ))
 ```
 
 
