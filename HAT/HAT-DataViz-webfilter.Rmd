@@ -447,7 +447,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-07 08:28</span>")
+2026-02-07 08:38</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -2211,7 +2211,7 @@ map_all <- leaflet() %>%
               "bottomright",
               colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
               labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
-              title = "",
+              title = "OH Spatial Data",
               group = "Spatial Polygon Color Legend"
               ) %>%
   setView(-123.4471, 48.56419, 17) %>%
@@ -2390,7 +2390,7 @@ map_oh_sp <- leaflet(sd_sites) %>%
               "bottomright",
               colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
               labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
-              title = "",
+              title = "OH Spatial Data",
               group = "OH Spatial Polygon Color Legend"
               ) %>%
   addMeasure(
