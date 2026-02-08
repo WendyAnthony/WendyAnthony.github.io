@@ -152,30 +152,52 @@ HAT_Restoration_Crew_Data_MS_all_test$Invasive_Species_Cleared_orig <-  HAT_Rest
 colnames(HAT_Restoration_Crew_Data_MS_all_test)
 str(HAT_Restoration_Crew_Data_MS_all_test)
 
+write.csv(HAT_Restoration_Crew_Data_MS_all_test, "data/HAT_Restoration_Crew_Data_MS_all_test.csv", row.names = FALSE, fileEncoding = "UTF-8")
+# `Area_Cleared_m2` & `Biomass_Removed_m3` *have non-numeric values in column which need to be dealt with - otherwise NA are introduced by coercion*
+
+
+# HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio.csv
+HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio <- read.csv("data/HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio.csv", fileEncoding="UTF-8")
+
+
+
+##################################################################################################################################
+##################################################################################################################################
+##################################################################################################################################
+##################################################################################################################################
+##################################################################################################################################
+
+
+
+
+
+
+
+
+
 # change character to numeric
-HAT_Restoration_Crew_Data_MS_all_test$Area_Cleared_m2 <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test$Area_Cleared_m2))
-HAT_Restoration_Crew_Data_MS_all_test$Biomass_Removed_m3 <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test$Biomass_Removed_m3))
-HAT_Restoration_Crew_Data_MS_all_test$Crew_Hours <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test$Crew_Hours))
-HAT_Restoration_Crew_Data_MS_all_test$Area_Cleared_m2_orig <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test$Area_Cleared_m2_orig))
-HAT_Restoration_Crew_Data_MS_all_test$Biomass_Removed_m3_orig <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test$Biomass_Removed_m3_orig))
-HAT_Restoration_Crew_Data_MS_all_test$Crew_Hours_orig <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test$Crew_Hours_orig))
-str(HAT_Restoration_Crew_Data_MS_all_test)
+HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio$Area_Cleared_m2 <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio$Area_Cleared_m2))
+HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio$Biomass_Removed_m3 <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio$Biomass_Removed_m3))
+HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio$Crew_Hours <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio$Crew_Hours))
+
+str(HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio)
 
 
 ##############################
 ### Fix dates first
 # make duplicate original date column
-HAT_Restoration_Crew_Data_MS_all_test$Date_orig <- HAT_Restoration_Crew_Data_MS_all_test$Date
-colnames(HAT_Restoration_Crew_Data_MS_all_test)
+HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio$Date_orig <- HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio$Date
+colnames(HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio)
 
 #  relocate columns
-HAT_Restoration_Crew_Data_MS_all_test <- HAT_Restoration_Crew_Data_MS_all_test %>%
-  relocate(Year, Date, Date_orig, Site,  Location, Polygon, Area_Cleared_m2, Biomass_Removed_m3,  Invasive_Species_Cleared,  Crew_Hours, Notes, Biomass_Removed_m3_orig, Area_Cleared_m2_orig, Crew_Hours_orig, Invasive_Species_Cleared_orig, Count)
-colnames(HAT_Restoration_Crew_Data_MS_all_test)
+HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio <- HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio %>%
+  relocate(Year, Date, Date_orig, Site,  Location, Polygon, Biomass_Removed_m3, Area_Cleared_m2, Invasive_Species_Cleared, Crew_Hours, Notes, Biomass_Removed_m3_orig, Area_Cleared_m2_orig, Crew_Hours_orig, Invasive_Species_Cleared_orig)
+colnames(HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio)
 
-write.csv(HAT_Restoration_Crew_Data_MS_all_test, "data/HAT_Restoration_Crew_Data_MS_all_test.csv")
+write.csv(HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio, "data/HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio_order.csv", row.names = FALSE, fileEncoding = "UTF-8")
 # fix dates in Excel
-HAT_Restoration_Crew_Data_MS_all_test_fixDate <- read.csv("data/HAT_Restoration_Crew_Data_MS_all_test.csv", fileEncoding="UTF-8")
+# First save with a new name
+HAT_Restoration_Crew_Data_MS_all_test_fixDate <- read.csv("data/HAT_Restoration_Crew_Data_MS_all_test_clean_area_bio_order_fixDate.csv", fileEncoding="UTF-8")
 
 # separate values
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep <- HAT_Restoration_Crew_Data_MS_all_test_fixDate %>% separate(Date, into = c("Day", "Month"), sep = "-")
@@ -196,33 +218,44 @@ str(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep)
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep$Date <- as.Date(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep$Date)
 str(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep)
 
-########################3
-
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep <- subset(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep, select = -c(1))
-
+########################
+colnames(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep)
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep <- subset(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep, select = -c(2,3,4))
+colnames(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep)
 #  relocate columns
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep %>%
-  relocate(Year, Date, Date_orig, Site,  Location, Polygon, Area_Cleared_m2, Biomass_Removed_m3,  Invasive_Species_Cleared,  Crew_Hours, Notes, Biomass_Removed_m3_orig, Area_Cleared_m2_orig, Crew_Hours_orig, Invasive_Species_Cleared_orig, Count)
+  relocate(Year, Date, Site,  Location, Polygon, Biomass_Removed_m3, Area_Cleared_m2, Crew_Hours, Invasive_Species_Cleared,  Notes, Biomass_Removed_m3_orig, Area_Cleared_m2_orig, Crew_Hours_orig, Invasive_Species_Cleared_orig)
 colnames(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep)
 
+################################################################################################
 
 # Count comma-separated values  # Split and count
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep$Count <- lengths(strsplit(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep$Invasive_Species_Cleared_orig, ","))
 
-# separate rows
+# separate rows for multiple species
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long <- separate_rows(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep, Invasive_Species_Cleared, sep = ",")
 str(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long)
 
+################################################################################################
 
-
-
-
+# make copy of biomass and area before splitting
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Biomass_Removed_m3_before_split <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Biomass_Removed_m3
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Area_Cleared_m2_before_split <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Area_Cleared_m2
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Crew_Hours_before_split <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Crew_Hours
+colnames(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long)
 
 # Calculate values after separating species
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Biomass_Removed_m3 <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Biomass_Removed_m3_orig / HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Count
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Area_Cleared_m2 <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Area_Cleared_m2_orig / HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Count
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Crew_Hours <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Crew_Hours_orig / HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Count
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Biomass_Removed_m3 <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Biomass_Removed_m3_before_split / HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Count
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Area_Cleared_m2 <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Area_Cleared_m2_before_split / HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Count
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Crew_Hours <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Crew_Hours_before_split / HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Count
 str(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long)
+colnames(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long)
+
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long %>%
+  relocate(Year, Date, Site,  Location, Polygon, Count, Biomass_Removed_m3, Biomass_Removed_m3_before_split, Area_Cleared_m2, Area_Cleared_m2_before_split, Crew_Hours, Crew_Hours_before_split, Invasive_Species_Cleared,  Notes, Biomass_Removed_m3_orig, Area_Cleared_m2_orig, Crew_Hours_orig, Invasive_Species_Cleared_orig)
+colnames(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep)
+
+
 
 ## change to one decimal
 # this changes back to character
@@ -232,8 +265,8 @@ HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Crew_Hours <- sprintf("%.
 str(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long)
 
 # needed again after calculation change character to numeric
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Area_Cleared_m2 <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Area_Cleared_m2))
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Biomass_Removed_m3 <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Biomass_Removed_m3))
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Area_Cleared_m2 <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Area_Cleared_m2))
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Crew_Hours <- as.numeric(as.character(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Crew_Hours))
 str(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long)
 
@@ -254,9 +287,9 @@ HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long$Site <- gsub("Havenwood P
 str(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long)
 
 
-# removed unnedded columns
+# removed unneeded columns
 colnames(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long)
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub <- subset(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long, select = -c(2,11,12,13,14,15,16,17))
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub <- subset(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long, select = -c(4,6,8,10,12,15:18))
 
 
 
@@ -277,8 +310,10 @@ HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Clea
 #  create column for Invasive MixedGrass
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Native_or_Invasive <- NA
 
+
+##############################
 ## change spelling and capitalization of species
-unique(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared)
+unique(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared) #55
 library(stringr)
 
 # sort Invasive_Species_Cleared column in R to see which values need to be made consistent
@@ -290,13 +325,12 @@ HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Clea
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Dead Nettle", "dead nettle")
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "English Hawthorn", "English hawthorn")
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "E ivy|english ivy|English Ivy|ivy|Ivy|some English Ivy", "English ivy")
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "English English ivy", "English ivy")
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Hanging sedge", "hanging sedge")
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "English English ivy", "English ivy") # not sure why this got doubled up after last str_replace
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Holly", "holly")
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Orchard grass|Orchardgrass", "orchard grass")
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Periwinkle|periwinkle.", "periwinkle")
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Privet", "privet")
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Sedges|invasive sedge|hanging sedge", "sedge")
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "European privet|Privet", "privet")
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Sedges|invasive sedge|Hanging sedge", "sedge")
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Shiny geranium|Shiny Geranium", "shiny geranium")
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Sweet Vernal Grass", "sweet vernal grass")
 HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared  <- str_replace(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared, "Thatch", "thatch")
@@ -307,12 +341,10 @@ HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Clea
 unique(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub$Invasive_Species_Cleared)
 
 
-## Populate Native Invasive
+
 colnames(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub)
 
-write.csv(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub, "data/HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub.csv")
-
-HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv <- read.csv("data/HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub.csv", fileEncoding="UTF-8")
+write.csv(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub, "data/HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub.csv", row.names = FALSE, fileEncoding = "UTF-8")
 
 # library(dplyr)
 # doing the second mutate cancels the first WTF ???
@@ -320,5 +352,17 @@ HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv <- read.csv("d
 #   mutate(Native_or_Invasive = ifelse(Invasive_Species_Cleared == "Himalayan blackberry", "Invasive", Native_or_Invasive))
 # HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_mut$Native_or_Invasive <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub %>%
 #   mutate(Native_or_Invasive = ifelse(Invasive_Species_Cleared == "periwinkle", "Invasive", Native_or_Invasive))
+
+
+## Populate Native Invasive in Excel --- tried and tried see above
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv <- read.csv("data/HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv.csv", fileEncoding="UTF-8")
+colnames(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv)
+HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv_sub <- subset(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv, select = -c(11,12))
+colnames(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv_sub)
+
+write.csv(HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv_sub, "data/HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv_sub.csv", row.names = FALSE, fileEncoding = "UTF-8")
+
+crew_data_repro <- HAT_Restoration_Crew_Data_MS_all_test_fixDate_sep_long_sub_natinv_sub
+
 
 
