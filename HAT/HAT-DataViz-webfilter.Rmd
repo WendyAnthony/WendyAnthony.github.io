@@ -557,7 +557,7 @@ HTML("
   <br>
 <span style='font-size:70%';>wanthony@uvic.ca 
 <br>
-Modified: 2026-02-18 17:21</span>")
+Modified: 2026-02-18 17:26</span>")
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 
@@ -600,7 +600,7 @@ These 3 public HAT sites are listed on <a href='https://hat.bc.ca/community-base
 Row {.tabset .tabset-fade}
 ---------------------------------------------
 
-### 3-Site Map with Oak Haven Spatial Data
+### 3-Site Map
 ```{r leaflet-both-sites, echo = FALSE, message = FALSE, include = TRUE}
 #############################################
 # title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
@@ -878,7 +878,7 @@ map_all <- leaflet() %>%
 map_all
 ```
 
-### Datatable for 3 HAT Sites
+### Datatable 3 HAT Sites
 ```{r data-table-map}
 htmltools::h5("HAT Public Sites Datatable")
 htmltools::br()
@@ -906,7 +906,7 @@ htmltools::br()
            )))
 ```
 
-### Datatable for OH Polygons
+### Datatable OH Polygons
 ```{r data-table-map-OH-poly}
 htmltools::h5("Oak Haven Polygons Datatable")
 htmltools::br()
@@ -936,7 +936,7 @@ htmltools::br()
            ))
 ```
 
-### Datatable for OH Points
+### Datatable OH Points
 ```{r data-table-map-OH-Points}
 htmltools::h5("Oak Haven Points Datatable")
 htmltools::br()
@@ -2421,7 +2421,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-18 17:21</span>")
+2026-02-18 17:26</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
