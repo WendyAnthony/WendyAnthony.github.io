@@ -452,7 +452,7 @@ str(cover_data_rename_site_sub)
 
 ## ROund all numbers to 2 decimals
 cover_data_rename_site_sub <- cover_data_rename_site_sub %>%
-  mutate(across(where(is.numeric), round, 2))
+  mutate(across(where(is.numeric), ~ round(.x, 2)))
 
 
 ## THis seems to mess up the charts ???
@@ -544,7 +544,7 @@ Inputs {.sidebar data-width=250}
 
 
 #############################################
-#htmltools::br()
+htmltools::br()
 htmltools::br()
 HTML("<img src='images/HAT-logo-ss.png', width=150>")
 # HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
@@ -557,7 +557,7 @@ HTML("
   <br>
 <span style='font-size:70%';>wanthony@uvic.ca 
 <br>
-Modified: 2026-02-18 17:26</span>")
+Modified: 2026-02-19 03:57</span>")
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 
@@ -574,14 +574,13 @@ filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites
 #############################################
 # HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 # HTML("<img src='images/HAT-logo-ss.png', width = 100>")
-
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-htmltools::br()
 HTML("
 <span style='font-size:80%; font-style:italic'>HAT data source: <a href='https://hat.bc.ca/community-based-restoration'>https://hat.bc.ca/community-based-restoration</a></span>
      ")
-
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
 # htmltools::em("HAT data source: ")
 # htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://hat.bc.ca/community-based-restoration")
 # htmltools::br()
@@ -977,6 +976,7 @@ Inputs {.sidebar data-width=245}
 ```{r filter-crew-hours-all}
 #############################################
 htmltools::br()
+htmltools::br()
 h4("Filtered Statistics")
 #p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= hours of labor"))
 p(class = "container", class = "value", summarywidget(sd_crew_vol, column = "Crew_Hours", statistic = "sum"), span(class = "caption", " = Crew Hours", digits = 2))
@@ -1219,6 +1219,7 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-crew-hours-biomass-inv-sp}
 #############################################
+htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew hours", digits = 2))
@@ -1519,7 +1520,7 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-crew-hours-biomass-inv-sp-top5-facet}
 #############################################
-#htmltools::br()
+htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(crew_vol_inv_top5_sum, column = "Crew_Hours", statistic = "sum", digits = 2), span(class = "caption", "= Crew Hours"))
@@ -1585,7 +1586,7 @@ ggplotly(
   coord_flip() + 
   theme_minimal() + #get rid of grey background and tick marks
     # needs to be below first theme
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) +
   theme(legend.position ="bottom") + 
     scale_fill_manual(values = custom_colours_years) +
@@ -1675,7 +1676,7 @@ Inputs {.sidebar data-width=235}
 
 ```{r filter-input-cover}
 #############################################
-#htmltools::br()
+htmltools::br()
 htmltools::br()
 
 #############################################
@@ -1749,7 +1750,7 @@ ggplotly(
   theme(legend.position ="bottom") + 
     scale_fill_manual(values = custom_colours_years) +
     # scale_fill_manual(values = custom_colours_Site_2) +
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) + 
       labs(
           title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
@@ -1810,7 +1811,7 @@ ggplotly(
   theme(legend.position ="bottom") + 
     scale_fill_manual(values = custom_colours_treat) +
     # scale_fill_manual(values = custom_colours_Site_2) +
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) + 
       labs(
           title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
@@ -1869,7 +1870,7 @@ ggplotly(
   theme(legend.position ="bottom") + 
     scale_fill_manual(values = custom_colours_years) +
     #scale_fill_manual(values = custom_colours_Site_2) +
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) +
   labs(
         title = "Invasive Species Mean % Cover at Matson & Oak Haven by Treatment",        
@@ -1922,7 +1923,7 @@ ggplotly(
   theme(legend.position ="bottom") + 
     scale_fill_manual(values = custom_colours_years) +
     #scale_fill_manual(values = custom_colours_Site_2) +
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) +
   labs(
         title = "Mixed Grasses Mean % Cover at Matson & Oak Haven by Treatment",     
@@ -1982,7 +1983,7 @@ Inputs {.sidebar data-width=235}
 
 ```{r filter-input-cover-top5}
 #############################################
-#htmltools::br()
+htmltools::br()
 htmltools::br()
 
 #############################################
@@ -2065,7 +2066,7 @@ ggplotly(
   theme(legend.position ="bottom") + 
     scale_fill_manual(values = custom_colours_treat) +
     # scale_fill_manual(values = custom_colours_Site_2) +
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) + 
       labs(
           title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
@@ -2130,7 +2131,7 @@ ggplotly(
 #   theme(legend.position ="bottom") + 
 #     scale_fill_manual(values = custom_colours_treat) +
 #     # scale_fill_manual(values = custom_colours_Site_2) +
-#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
 #         strip.text = element_text(size = 11)) + 
 #       labs(
 #           title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
@@ -2191,7 +2192,7 @@ Inputs {.sidebar data-width=260}
 
 ```{r filter-input-count}
 #############################################
-#htmltools::br()
+htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_count, column = "Species_number", statistic = "sum"), span(class = "caption", "= different species", digits = 2))
@@ -2256,7 +2257,7 @@ ggplotly(
   # facet_wrap( ~ Site) +
   facet_grid(Site ~ Year) +  
   theme_minimal() + #get rid of grey background and tick marks
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
         strip.text = element_text(size = 11)) +
   theme(legend.position ="bottom") + 
   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
@@ -2342,7 +2343,7 @@ ggplotly(
 #   facet_wrap( ~ Year) +
 # 
 #   theme_minimal() + #get rid of grey background and tick marks
-#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", size = 0.5, linetype = "solid"),
+#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
 #         strip.text = element_text(size = 11)) +
 #   theme(legend.position ="bottom") + 
 #   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
@@ -2406,6 +2407,7 @@ Inputs {.sidebar data-width=250}
 ```{r about-tabs}
 #############################################
 br()
+br()
 HTML("<img src='images/HAT-logo-ss.png', width=150>")
 # HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 
@@ -2421,7 +2423,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-18 17:26</span>")
+2026-02-19 03:57</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -2441,6 +2443,7 @@ Row  {.tabset .tabset-fade}
 HTML("
        <h5>HAT Data of 9 HAT-only-Managed-Sites</h5>
      
+     <span style='font-size:85%';>
      1. <strong>HAT Restoration Crew Site Data</strong> 
      <br> * <strong>Metrics</strong>: Daily and Yearly crew hours and biomass (metres<sup>3</sup>) and area (metres<sup>2</sup>) of invasive species removed; 
      <br> * <strong>Sites</strong>: Bear Hill, Calypso Woods, Camas Hill, Funk, Havenwood, Matson, Oak Haven, Purple Sanicle, Yates, 
@@ -2470,6 +2473,7 @@ HTML("
      <br> * <strong>Sites</strong>: Oak Haven
      <br> * <strong>Data</strong>: <em>Polygons and Points Shape files</em>
      <br><br>
+     </span>
      ")
 ```
 
