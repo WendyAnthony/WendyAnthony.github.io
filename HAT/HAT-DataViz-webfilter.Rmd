@@ -10,9 +10,6 @@ output:
       bootswatch: flatly
 #    source_code: embed
 ---
-
-  <script src="https://cdn.plot.ly/plotly-3.3.0.min.js" charset="utf-8"></script>
-  <script src="https://d3js.org/d3.v3.min.js"></script>
   
 
 ```{r include=FALSE}
@@ -530,6 +527,424 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 ```
 
 
+
+ Map
+=====================================  
+
+Inputs {.sidebar data-width=250}
+-----------------------------------------------
+
+```{r filter-input-map}
+#############################################
+htmltools::br()
+htmltools::br()
+HTML("<img src='images/HAT-logo-ss.png', width=150>")
+htmltools::br()
+htmltools::br()
+
+#############################################
+h4("Filter")
+htmltools::em("Note: To reset filters, delete unwanted choices")
+htmltools::br()
+htmltools::br()
+# filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
+filter_select(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
+#filter_checkbox(id = "Top_5_Invasives", label = "Top 5 Invasives", sharedData = sd_sites, group = ~Top_5_Invasives)
+filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
+
+#############################################
+# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
+# HTML("<img src='images/HAT-logo-ss.png', width = 100>")
+htmltools::br()
+htmltools::br()
+htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+htmltools::br()
+htmltools::em("HAT data source: ")
+htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://hat.bc.ca/community-based-restoration")
+htmltools::br()
+```
+
+Row  {data-height=75}
+-----------------------------------------------
+
+### ***Interactive Maps of 3 HAT Managed Public GOE Sites***
+```{r}
+htmltools::HTML("
+These 3 public HAT sites are listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other HAT sites are on private, non-public land with location protected for privacy. Click map markers to open pop-up windows site-specific information. The spatial data for Oak Haven show polygons of restoration and species locations, but this data does Not respond to filters (yet).
+                ")
+```
+
+Row {.tabset .tabset-fade}
+---------------------------------------------
+
+### 3-Site Map with Oak Haven Spatial Data
+```{r leaflet-both-sites, echo = FALSE, message = FALSE, include = TRUE}
+#############################################
+# title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+
+title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
+     
+          pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
+
+#############################################        
+map_oh_sp <- leaflet() %>%
+      addProviderTiles("Esri.WorldImagery") %>%
+      addCircleMarkers(
+        data = sd_sites,
+        ~ Lng, ~ Lat,
+        color = ~pal(Site),
+        weight = 1, # size of circle border
+        stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
+        radius = 8,
+        popup = paste0(
+#        "<img src = 'images/HAT-logo-ss.png', width = 100>",  "<br>","<br>",
+#                "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
+        # NOTE: popups need to refer to original data object, not shared sd
+          "<b>Site:</b> ", "<b>", HAT_sites_HAT$Site, "</b>",  "<br>",
+          "<b>FullName:</b> ", "<b>", HAT_sites_HAT$Site_Name, "</b>",  "<br>",
+          "<b>Municipality:</b> ", HAT_sites_HAT$Municipality, "<br>",
+          "<b>Size:</b> ", HAT_sites_HAT$Size_ha, " (ha)", "<br>",
+          "<b>First Nations:</b> ", HAT_sites_HAT$FirstNations, "<br>",
+          # "<b>Project id:</b> ", HAT_sites_HAT$ID, "<br>",
+          "<b>HAT Status:</b> ", HAT_sites_HAT$HAT_Status, "<br>",
+          "<b>Co-Covenant:</b> ", HAT_sites_HAT$Co_Covenant, " (", HAT_sites_HAT$Date, ")", "<br>",
+          "<b>Ecosystems:</b> ", HAT_sites_HAT$Ecosystems, "<br>",
+          "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br><br>",
+        "<b>Top 5 Invasives Species:</b> ", HAT_sites_HAT$Top_5_Invasives, "<br><br>",
+        
+#############################################        
+    '<table style="border: 0px solid black; vertical-align: top; font-size: 85%;">',
+      '<tr style="vertical-align: top;">
+        <th>BIOMASS PULL</th>        
+        <th align="right">2022</th>
+        <th align="right">2023</th>
+        <th align="right">2024</th>
+        <th align="right">2025</th>        
+      </tr>', 
+    
+    # Hours per Biomass (m3)
+      '<tr style="vertical-align: top;">',
+        '<td style="vertical-align: top;"><b>Hours/Biomass (m3):  </b></td>',
+        '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2022, '</td>',
+        '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2023, '</td>',
+        '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2024, '</td>',
+        '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2025, '</td>',
+      '</tr>',
+    
+    # Staff Hours
+      '<tr style="vertical-align: top;">',
+        '<td style="vertical-align: top;"><b>Crew Hours:  </b></td>',
+        '<td align="right">', HAT_sites_HAT$Crew_Hours_2022, '</td>',
+        '<td align="right">', HAT_sites_HAT$Crew_Hours_2023, '</td>',
+        '<td align="right">', HAT_sites_HAT$Crew_Hours_2024, '</td>',
+        '<td align="right">', HAT_sites_HAT$Crew_Hours_2025, '</td>',
+      '</tr>',
+    
+    #Biomass Removed (m3)
+      '<tr style="vertical-align: top;">',
+        '<td style="vertical-align: top;"><b>Biomass (m3):  </b></td>',
+        '<td align="right">', HAT_sites_HAT$Biomass_2022, '</td>',
+        '<td align="right">', HAT_sites_HAT$Biomass_2023, '</td>',
+        '<td align="right">', HAT_sites_HAT$Biomass_2024, '</td>',
+        '<td align="right">', HAT_sites_HAT$Biomass_2025, '</td>',
+      '</tr>',
+    
+        #Area of Biomass Removed (m3)
+      '<tr style="vertical-align: top;">',
+        '<td style="vertical-align: top;"><b>Area (m2):  </b></td>',
+        '<td align="right">', HAT_sites_HAT$Area_2022, '</td>',
+        '<td align="right">', HAT_sites_HAT$Area_2023, '</td>',
+        '<td align="right">', HAT_sites_HAT$Area_2024, '</td>',
+        '<td align="right">', HAT_sites_HAT$Area_2025, '</td>',
+      '</tr>',
+    '</table>'
+
+#############################################
+          ))  %>%
+  addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
+  addControl(title, position = "topright") %>% 
+  addPolygons(data = OHP_2025_Completed_polygons_dropz,
+              group = "2025 Completed polygons",
+              color = "#AA4499", #AA4499 purple
+              #fillColor = "purple",
+              fillOpacity = 0.5,
+              popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>",
+                             "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>%
+  addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
+              group = "2025 Experimental test plot points",
+              color = "#EECC66", #EECC66 light yellow
+              #fillColor = "purple",
+              fillOpacity = 0.8,
+              weight = 1,
+              radius = 3,
+              popup = paste0("<b>Name: </b>", OHP_2025_Experimental_test_plots_dropz$Name, "<br>",
+                            "<b>Description: </b>", OHP_2025_Experimental_test_plots_dropz$Descript, "<br>",
+                            "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>%
+  addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
+              # covers same area as Invasive_Species_Patches
+              group = "2024 ShinyG Burning Priorities",
+              # use a lighter colour so lighter Shiny will show over Species patches
+              color = "#EE7733", #EE7733 orange
+              #color = "blue",
+              #fillColor = "blue",
+              fillOpacity = 0.3,
+              popup = paste0("<b>Name: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Name, "<br>",
+                             "<b>Priority: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Priority, "<br>",
+                             "<b>Description: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$PopupInfo, "<br>",
+                             "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>",
+                             "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups
+  addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
+              group = "2024 Invasive Species Removed",
+              color = "#EE3377", # magenta #EE3377
+              #color = "yellow",
+              #fillColor = "yellow",
+              fillOpacity = 0.6,
+              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Removed_dropz$Name, "<br>",
+                             "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>%
+  addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
+              # covers same area as Shiny g
+              group = "2024 Invasive Species Patches",
+              # use a darker colour so lighter Shiny will show
+              color = "#33BBEE", #cyan #33BBEE
+              #fillColor = "orange",
+              fillOpacity = 0.4,
+              popup = paste0("<b>Name: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$Name, "<br>",
+                             "<b>Description: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$PopupInfo, "<br>",
+                             "<b>Area: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$AreaNumber, "<br>",
+                             "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME)
+              ) %>%
+  addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
+              group = "2024 Invasive Species Points",
+              color = "#CC3311", # CC3311 red
+              #fillColor = "red",
+              fillOpacity = 0.5,
+              radius = 3,
+              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Points_dropz$Name, "<br>",
+                            "<b>Description: </b>", OH_2024_Invasive_Species_Points_dropz$Descript, "<br>",
+                            "<b>Species: </b>", OH_2024_Invasive_Species_Points_dropz$INSVNAME, "<br>",
+                            "<b>Elevation: </b>", OH_2024_Invasive_Species_Points_dropz$Elevation, "<br>",
+                            "<b>Date: </b>", OH_2024_Invasive_Species_Points_dropz$DateTimeS)
+              ) %>%
+  # add legend to overlay group toggled off
+  addLegend(
+              "bottomright",
+              colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
+              labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
+              title = "OH Spatial Data",
+              group = "OH Spatial Polygon Color Legend"
+              ) %>%
+  addMeasure(
+    position = "topleft",
+    primaryLengthUnit = "meters",
+    primaryAreaUnit = "sqmeters",
+    activeColor = "#DDAA33",
+    completedColor = "#BB5566") %>% 
+  addLayersControl(
+    overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
+    options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
+  ) %>%
+  hideGroup(c("2025 Completed polygons", "2025 Experimental test plot points", "2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
+  addScaleBar() %>%
+  setView(-123.44799, 48.52919, zoom = 10)
+
+map_oh_sp
+
+```
+
+
+
+### Oak Haven Spatial Data
+```{r leaflet-OH-spatial, echo = FALSE, message = FALSE, include = TRUE}
+title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
+
+map_all <- leaflet() %>%
+  # addTiles() %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addPolygons(data = OHP_2025_Completed_polygons_dropz,
+              group = "2025 Completed polygons",
+              color = "#AA4499", #AA4499 purple
+              #fillColor = "purple",
+              fillOpacity = 0.5,
+              popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>",
+                             "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>%
+  addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
+              group = "2025 Experimental test plot points",
+              color = "#EECC66", #EECC66 light yellow
+              #fillColor = "purple",
+              fillOpacity = 0.8,
+              weight = 1,
+              radius = 3,
+              popup = paste0("<b>Name: </b>", OHP_2025_Experimental_test_plots_dropz$Name, "<br>",
+                            "<b>Description: </b>", OHP_2025_Experimental_test_plots_dropz$Descript, "<br>",
+                            "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>%
+  addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
+              # covers same area as Invasive_Species_Patches
+              group = "2024 ShinyG Burning Priorities",
+              # use a lighter colour so lighter Shiny will show over Species patches
+              color = "#EE7733", #EE7733 orange
+              #color = "blue",
+              #fillColor = "blue",
+              fillOpacity = 0.3,
+              popup = paste0("<b>Name: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Name, "<br>",
+                             "<b>Priority: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Priority, "<br>",
+                             "<b>Description: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$PopupInfo, "<br>",
+                             "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>",
+                             "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups
+  addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
+              group = "2024 Invasive Species Removed",
+              color = "#EE3377", # magenta #EE3377
+              #color = "yellow",
+              #fillColor = "yellow",
+              fillOpacity = 0.6,
+              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Removed_dropz$Name, "<br>",
+                             "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>%
+  addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
+              # covers same area as Shiny g
+              group = "2024 Invasive Species Patches",
+              # use a darker colour so lighter Shiny will show
+              color = "#33BBEE", #cyan #33BBEE
+              #fillColor = "orange",
+              fillOpacity = 0.4,
+              popup = paste0("<b>Name: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$Name, "<br>",
+                             "<b>Description: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$PopupInfo, "<br>",
+                             "<b>Area: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$AreaNumber, "<br>",
+                             "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME)
+              ) %>%
+  addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
+              group = "2024 Invasive Species Points",
+              color = "#CC3311", # CC3311 red
+              #fillColor = "red",
+              fillOpacity = 0.5,
+              radius = 3,
+              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Points_dropz$Name, "<br>",
+                            "<b>Description: </b>", OH_2024_Invasive_Species_Points_dropz$Descript, "<br>",
+                            "<b>Species: </b>", OH_2024_Invasive_Species_Points_dropz$INSVNAME, "<br>",
+                            "<b>Elevation: </b>", OH_2024_Invasive_Species_Points_dropz$Elevation, "<br>",
+                            "<b>Date: </b>", OH_2024_Invasive_Species_Points_dropz$DateTimeS)
+              ) %>%
+  # add legend to overlay group toggled off
+  addLegend(
+              "bottomright",
+              colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
+              labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
+              title = "OH Spatial Data",
+              group = "OH Spatial Polygon Color Legend"
+              ) %>%
+  setView(-123.4471, 48.56419, 17) %>%
+  addControl(title, position = "topright") %>% 
+  addMeasure(
+    position = "topleft",
+    primaryLengthUnit = "meters",
+    primaryAreaUnit = "sqmeters",
+    activeColor = "#DDAA33",
+    completedColor = "#BB5566") %>% 
+  addLayersControl(
+    overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
+    
+    # adding colored icons in front of overlay group stopped toggle on/off ???
+    # overlayGroups = unname(c("2025 Completed polygons <- <div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #AA4499;'></div> 2025 Completed polygons", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EECC66;'></div> 2025 Experimental test plot points", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EE3377;'></div> 2024 Invasive Species Removed", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #33BBEE;'></div> 2024 Invasive Species Patches", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EE7733;'></div> 2024 ShinyG Burning Priorities", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #CC3311;'></div> 2024 Invasive Species Points")),
+    options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
+  ) %>%
+  hideGroup(c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "Spatial Polygon Color Legend")) %>%
+  addScaleBar()  
+# %>%
+#       # add controls
+#        addMiniMap(width = 100, height = 100, zoomLevelOffset = -4)
+
+# Print the map
+map_all
+```
+
+### Datatable for 3 HAT Sites
+```{r data-table-map}
+htmltools::h5("HAT Public Sites Datatable")
+htmltools::br()
+ datatable(sd_sites, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = list(                        
+                        'colvis',
+                        list(
+                          extend = 'csv',
+                          filename = paste0("HAT-Restoration-Site-Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'excel',
+                          filename = paste0("HAT-Restoration-Site-Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'print',
+                          title = 'HAT Restoration Site Data' # Change title here
+                        )
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE,                         
+             columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
+           )))
+```
+
+### Datatable for OH Polygons
+```{r data-table-map-OH-poly}
+htmltools::h5("Oak Haven Polygons Datatable")
+htmltools::br()
+ datatable(OH_spatial_polygons_all_sub, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = list(                        
+                        'colvis',
+                        list(
+                          extend = 'csv',
+                          filename = paste0("OH-Polygons-Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'excel',
+                          filename = paste0("OH-Polygons-Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'print',
+                          title = 'OH Polygons Data' # Change title here
+                        )
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE
+           #              ,                         
+           #   columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
+           # )
+           ))
+```
+
+### Datatable for OH Points
+```{r data-table-map-OH-Points}
+htmltools::h5("Oak Haven Points Datatable")
+htmltools::br()
+ datatable(OH_spatial_points_alll_sub, rownames = FALSE, class = 'compact',
+           extensions = c("Buttons"),
+           options = list(dom = 'Bfrtip',
+                         buttons = list(                        
+                        'colvis',
+                        list(
+                          extend = 'csv',
+                          filename = paste0("OH Points Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'excel',
+                          filename = paste0("OH Points Data-", Sys.Date())
+                        ),
+                        list(
+                          extend = 'print',
+                          title = 'OH Points Data' # Change title here
+                        )
+                          ),
+                        # removed previous / next buttons
+                         paging = FALSE
+           #              ,                         
+           #   columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
+           # )
+           ))
+```
+
+
+
  About
 =====================================  
 
@@ -553,7 +968,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-07 11:11</span>")
+2026-02-18 16:22</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
@@ -574,27 +989,33 @@ HTML("
        <h5>HAT Data of 9 HAT-only-Managed-Sites</h5>
      
      1. <strong>HAT Restoration Crew Site Data</strong> 
-     <br> * <strong>Metrics</strong>: daily crew hours, daily invasive species removed (cubic metres); yearly crew hours, yearly invasive species removed (cubic metres)
+     <br> * <strong>Metrics</strong>: Daily and Yearly crew hours and biomass (metres<sup>3</sup>) and area (metres<sup>2</sup>) of invasive species removed; 
      <br> * <strong>Sites</strong>: Bear Hill, Calypso Woods, Camas Hill, Funk, Havenwood, Matson, Oak Haven, Purple Sanicle, Yates, 
      <br> * <strong>Datasets</strong>: <em>Restoration Crew Data.xlsx</em>: Apr 2022-Sep 2025; Sites Daily; Sites Yearly; Top Invasives Site
      <br><br>
      
      2. <strong>Matson Mattocks Field Logs</strong> 
-     <br> * <strong>Metrics</strong>: daily volunteer work hours, daily volunteer invasive species removal
+     <br> * <strong>Metrics</strong>: Daily volunteer work hours and invasive species removal
      <br> * <strong>Sites</strong>: added to Matson Work Crew data
      <br> * <strong>Datasets</strong>: <em>Matson Mattocks Field Logs</em>: Apr 2022-Sep 2025; Sites Daily; Top Invasives Site
      <br><br>
      
      3. <strong>Cover Data 2024-2025</strong>  
-     <br> * <strong>Metrics</strong>: cover, species
+     <br> * <strong>Metrics</strong>: Cover Mean % (Native/Invasive & Treated/Untreated); Species Richness
      <br> * <strong>Sites</strong>: Matson, Oak Haven
-     <br> * <strong>Datasets</strong>: <em>Cover Data 2024-2025</em>: Cover Mean % (Native/Invasive & Treated/Untreated); Species Richness
+     <br> * <strong>Datasets</strong>: <em>Cover Data 2024-2025</em> 
      <br><br>
      
      4. <strong>Site Data</strong> 
-     <br> * <strong>Metrics</strong>: Map Location; Apr 2022-Sep 2025; Top 5 invasives, Hours per m3 Biomass, staff hours, biomass removed
+     <br> * <strong>Metrics</strong>: Location; 2022-2025; Top 5 Invasive Species Removed, crew hours, biomass removed, hours per m<sup>3</sup>; 
      <br> * <strong>Sites</strong>: Havenwood, Matson, Oak Haven
      <br> * <strong>Data</strong>: <em>https://hat.bc.ca/community-based-restoration</em>
+     <br><br>
+     
+     5. <strong>Spatial Data</strong> 
+     <br> * <strong>Metrics</strong>: 2023-2025  Invasive Species Removed; shiny geranium priorities; test plots
+     <br> * <strong>Sites</strong>: Oak Haven
+     <br> * <strong>Data</strong>: <em>Polygons and Points Shape files</em>
      <br><br>
      ")
 ```
@@ -704,7 +1125,7 @@ filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol, gr
 # filter_slider(id = "Year", label = "Choose Date Span", sharedData = sd_crew_vol, column = ~Year,  step = 1)
 filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_vol, group = ~Invasive_Species_Cleared, allLevels = TRUE)
 filter_select(id = "Work_Volunteer", label = "Choose Work or Volunteer", sharedData = sd_crew_vol, group = ~Work_Volunteer, multiple = T)
-filter_select(id = "Native_or_Invasive", label = "Choose Invasive or MixedGrass", sharedData = sd_crew_vol, group = ~Native_or_Invasive, multiple = T)
+# filter_select(id = "Native_or_Invasive", label = "Choose Invasive or MixedGrass", sharedData = sd_crew_vol, group = ~Native_or_Invasive, multiple = T)
 
 #############################################
 htmltools::br()
@@ -1398,6 +1819,7 @@ filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_cover, group
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cover, group = ~ Year, allLevels = TRUE)
 filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_cover, group = ~ Treated, allLevels = TRUE)
 filter_select(id = "Species", label = "Choose Species", sharedData = sd_cover, group = ~ Species, multiple = TRUE)
+
 htmltools::br()
 
 #############################################
@@ -1700,6 +2122,7 @@ htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 #############################################
 # Create a filter input
 h4("Filters")
+
 filter_checkbox(id = "Site", label = "Choose Site", sharedData = sd_cov_nat_top5, group = ~ Site, allLevels = TRUE)
 filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_cov_nat_top5, group = ~ Year, allLevels = TRUE)
 filter_checkbox(id = "Treated", label = "Choose Treatment", sharedData = sd_cov_nat_top5, group = ~ Treated, allLevels = TRUE)
@@ -2101,423 +2524,420 @@ htmltools::br()
 ```
 
 
- Map
-=====================================  
+<!--  Map -->
+<!-- ===================================== -->
 
-Inputs {.sidebar data-width=250}
------------------------------------------------
+<!-- Inputs {.sidebar data-width=250} -->
+<!-- ----------------------------------------------- -->
 
-```{r filter-input-map}
-#############################################
-htmltools::br()
-htmltools::br()
-HTML("<img src='images/HAT-logo-ss.png', width=150>")
-htmltools::br()
-htmltools::br()
+<!-- ```{r filter-input-map} -->
+<!-- ############################################# -->
+<!-- htmltools::br() -->
+<!-- htmltools::br() -->
+<!-- HTML("<img src='images/HAT-logo-ss.png', width=150>") -->
+<!-- htmltools::br() -->
+<!-- htmltools::br() -->
 
-#############################################
-h4("Filter")
-htmltools::em("Note: To reset filters, delete unwanted choices")
-htmltools::br()
-htmltools::br()
-# filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
-filter_select(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
-filter_checkbox(id = "Top_5_Invasives", label = "Top 5 Invasives", sharedData = sd_sites, group = ~Top_5_Invasives)
-filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
+<!-- ############################################# -->
+<!-- h4("Filter") -->
+<!-- htmltools::em("Note: To reset filters, delete unwanted choices") -->
+<!-- htmltools::br() -->
+<!-- htmltools::br() -->
+<!-- # filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site) -->
+<!-- filter_select(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site) -->
+<!-- #filter_checkbox(id = "Top_5_Invasives", label = "Top 5 Invasives", sharedData = sd_sites, group = ~Top_5_Invasives) -->
+<!-- filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality) -->
 
-#############################################
-# HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
-# HTML("<img src='images/HAT-logo-ss.png', width = 100>")
-htmltools::br()
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-htmltools::br()
-htmltools::em("HAT data source: ")
-htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://hat.bc.ca/community-based-restoration")
-htmltools::br()
-```
+<!-- ############################################# -->
+<!-- # HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>") -->
+<!-- # HTML("<img src='images/HAT-logo-ss.png', width = 100>") -->
+<!-- htmltools::br() -->
+<!-- htmltools::br() -->
+<!-- htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;") -->
+<!-- htmltools::br() -->
+<!-- htmltools::em("HAT data source: ") -->
+<!-- htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://hat.bc.ca/community-based-restoration") -->
+<!-- htmltools::br() -->
+<!-- ``` -->
 
-Row  {data-height=75}
------------------------------------------------
+<!-- Row  {data-height=75} -->
+<!-- ----------------------------------------------- -->
 
-### ***Interactive Maps of 3 HAT Managed Public GOE Sites***
-```{r}
-htmltools::HTML("
-These 3 public HAT sites are listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other HAT sites are on private, non-public land with location protected for privacy. Click map markers to open pop-up windows site-specific information. The spatial data for Oak Haven show polygons of restoration and species locations, but this data does Not respond to filters (yet).
-                ")
-```
+<!-- ### ***Interactive Maps of 3 HAT Managed Public GOE Sites*** -->
+<!-- ```{r} -->
+<!-- htmltools::HTML(" -->
+<!-- These 3 public HAT sites are listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other HAT sites are on private, non-public land with location protected for privacy. Click map markers to open pop-up windows site-specific information. The spatial data for Oak Haven show polygons of restoration and species locations, but this data does Not respond to filters (yet). -->
+<!--                 ") -->
+<!-- ``` -->
 
-Row {.tabset .tabset-fade}
----------------------------------------------
+<!-- Row {.tabset .tabset-fade} -->
+<!-- --------------------------------------------- -->
 
-### 3-Site Map with Oak Haven Spatial Data
-```{r leaflet-both-sites, echo = FALSE, message = FALSE, include = TRUE}
-#############################################
-# title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+<!-- ### 3-Site Map with Oak Haven Spatial Data -->
+<!-- ```{r leaflet-both-sites, echo = FALSE, message = FALSE, include = TRUE} -->
+<!-- ############################################# -->
+<!-- # title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>' -->
 
-title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
-     
-          pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
+<!-- title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>' -->
 
-#############################################        
-map_oh_sp <- leaflet() %>%
-      addProviderTiles("Esri.WorldImagery") %>%
-      addCircleMarkers(
-        data = sd_sites,
-        ~ Lng, ~ Lat,
-        color = ~pal(Site),
-        weight = 1, # size of circle border
-        stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
-        radius = 8,
-        popup = paste0(
-#        "<img src = 'images/HAT-logo-ss.png', width = 100>",  "<br>","<br>",
-#                "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
-        # NOTE: popups need to refer to original data object, not shared sd
-          "<b>Site:</b> ", "<b>", HAT_sites_HAT$Site, "</b>",  "<br>",
-          "<b>FullName:</b> ", "<b>", HAT_sites_HAT$Site_Name, "</b>",  "<br>",
-          "<b>Municipality:</b> ", HAT_sites_HAT$Municipality, "<br>",
-          "<b>Size:</b> ", HAT_sites_HAT$Size_ha, " (ha)", "<br>",
-          "<b>First Nations:</b> ", HAT_sites_HAT$FirstNations, "<br>",
-          # "<b>Project id:</b> ", HAT_sites_HAT$ID, "<br>",
-          "<b>HAT Status:</b> ", HAT_sites_HAT$HAT_Status, "<br>",
-          "<b>Co-Covenant:</b> ", HAT_sites_HAT$Co_Covenant, " (", HAT_sites_HAT$Date, ")", "<br>",
-          "<b>Ecosystems:</b> ", HAT_sites_HAT$Ecosystems, "<br>",
-          "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br><br>",
-        "<b>Top 5 Invasives Species:</b> ", HAT_sites_HAT$Top_5_Invasives, "<br><br>",
-        
-#############################################        
-    '<table style="border: 0px solid black; vertical-align: top; font-size: 85%;">',
-      '<tr style="vertical-align: top;">
-        <th>BIOMASS PULL</th>        
-        <th align="right">2022</th>
-        <th align="right">2023</th>
-        <th align="right">2024</th>
-        <th align="right">2025</th>        
-      </tr>', 
-    
-    # Hours per Biomass (m3)
-      '<tr style="vertical-align: top;">',
-        '<td style="vertical-align: top;"><b>Hours/Biomass (m3):  </b></td>',
-        '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2022, '</td>',
-        '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2023, '</td>',
-        '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2024, '</td>',
-        '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2025, '</td>',
-      '</tr>',
-    
-    # Staff Hours
-      '<tr style="vertical-align: top;">',
-        '<td style="vertical-align: top;"><b>Crew Hours:  </b></td>',
-        '<td align="right">', HAT_sites_HAT$Crew_Hours_2022, '</td>',
-        '<td align="right">', HAT_sites_HAT$Crew_Hours_2023, '</td>',
-        '<td align="right">', HAT_sites_HAT$Crew_Hours_2024, '</td>',
-        '<td align="right">', HAT_sites_HAT$Crew_Hours_2025, '</td>',
-      '</tr>',
-    
-    #Biomass Removed (m3)
-      '<tr style="vertical-align: top;">',
-        '<td style="vertical-align: top;"><b>Biomass (m3):  </b></td>',
-        '<td align="right">', HAT_sites_HAT$Biomass_2022, '</td>',
-        '<td align="right">', HAT_sites_HAT$Biomass_2023, '</td>',
-        '<td align="right">', HAT_sites_HAT$Biomass_2024, '</td>',
-        '<td align="right">', HAT_sites_HAT$Biomass_2025, '</td>',
-      '</tr>',
-    
-        #Area of Biomass Removed (m3)
-      '<tr style="vertical-align: top;">',
-        '<td style="vertical-align: top;"><b>Area (m2):  </b></td>',
-        '<td align="right">', HAT_sites_HAT$Area_2022, '</td>',
-        '<td align="right">', HAT_sites_HAT$Area_2023, '</td>',
-        '<td align="right">', HAT_sites_HAT$Area_2024, '</td>',
-        '<td align="right">', HAT_sites_HAT$Area_2025, '</td>',
-      '</tr>',
-    '</table>'
+<!--           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven")) -->
 
-#############################################
-          ))  %>%
-  addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
-  addControl(title, position = "topright") %>% 
-  addPolygons(data = OHP_2025_Completed_polygons_dropz,
-              group = "2025 Completed polygons",
-              color = "#AA4499", #AA4499 purple
-              #fillColor = "purple",
-              fillOpacity = 0.5,
-              popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>",
-                             "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>%
-  addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
-              group = "2025 Experimental test plot points",
-              color = "#EECC66", #EECC66 light yellow
-              #fillColor = "purple",
-              fillOpacity = 0.8,
-              weight = 1,
-              radius = 3,
-              popup = paste0("<b>Name: </b>", OHP_2025_Experimental_test_plots_dropz$Name, "<br>",
-                            "<b>Description: </b>", OHP_2025_Experimental_test_plots_dropz$Descript, "<br>",
-                            "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>%
-  addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
-              # covers same area as Invasive_Species_Patches
-              group = "2024 ShinyG Burning Priorities",
-              # use a lighter colour so lighter Shiny will show over Species patches
-              color = "#EE7733", #EE7733 orange
-              #color = "blue",
-              #fillColor = "blue",
-              fillOpacity = 0.3,
-              popup = paste0("<b>Name: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Name, "<br>",
-                             "<b>Priority: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Priority, "<br>",
-                             "<b>Description: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$PopupInfo, "<br>",
-                             "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>",
-                             "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups
-  addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
-              group = "2024 Invasive Species Removed",
-              color = "#EE3377", # magenta #EE3377
-              #color = "yellow",
-              #fillColor = "yellow",
-              fillOpacity = 0.6,
-              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Removed_dropz$Name, "<br>",
-                             "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>%
-  addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
-              # covers same area as Shiny g
-              group = "2024 Invasive Species Patches",
-              # use a darker colour so lighter Shiny will show
-              color = "#33BBEE", #cyan #33BBEE
-              #fillColor = "orange",
-              fillOpacity = 0.4,
-              popup = paste0("<b>Name: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$Name, "<br>",
-                             "<b>Description: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$PopupInfo, "<br>",
-                             "<b>Area: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$AreaNumber, "<br>",
-                             "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME)
-              ) %>%
-  addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
-              group = "2024 Invasive Species Points",
-              color = "#CC3311", # CC3311 red
-              #fillColor = "red",
-              fillOpacity = 0.5,
-              radius = 3,
-              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Points_dropz$Name, "<br>",
-                            "<b>Description: </b>", OH_2024_Invasive_Species_Points_dropz$Descript, "<br>",
-                            "<b>Species: </b>", OH_2024_Invasive_Species_Points_dropz$INSVNAME, "<br>",
-                            "<b>Elevation: </b>", OH_2024_Invasive_Species_Points_dropz$Elevation, "<br>",
-                            "<b>Date: </b>", OH_2024_Invasive_Species_Points_dropz$DateTimeS)
-              ) %>%
-  # add legend to overlay group toggled off
-  addLegend(
-              "bottomright",
-              colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
-              labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
-              title = "OH Spatial Data",
-              group = "OH Spatial Polygon Color Legend"
-              ) %>%
-  addMeasure(
-    position = "topleft",
-    primaryLengthUnit = "meters",
-    primaryAreaUnit = "sqmeters",
-    activeColor = "#DDAA33",
-    completedColor = "#BB5566") %>% 
-  addLayersControl(
-    overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
-    options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
-  ) %>%
-  hideGroup(c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
-  addScaleBar() %>%
-  setView(-123.44799, 48.52919, zoom = 10)
+<!-- ############################################# -->
+<!-- map_oh_sp <- leaflet() %>% -->
+<!--       addProviderTiles("Esri.WorldImagery") %>% -->
+<!--       addCircleMarkers( -->
+<!--         data = sd_sites, -->
+<!--         ~ Lng, ~ Lat, -->
+<!--         color = ~pal(Site), -->
+<!--         weight = 1, # size of circle border -->
+<!--         stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5 -->
+<!--         radius = 8, -->
+<!--         popup = paste0( -->
+<!-- #        "<img src = 'images/HAT-logo-ss.png', width = 100>",  "<br>","<br>", -->
+<!-- #                "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>", -->
+<!--         # NOTE: popups need to refer to original data object, not shared sd -->
+<!--           "<b>Site:</b> ", "<b>", HAT_sites_HAT$Site, "</b>",  "<br>", -->
+<!--           "<b>FullName:</b> ", "<b>", HAT_sites_HAT$Site_Name, "</b>",  "<br>", -->
+<!--           "<b>Municipality:</b> ", HAT_sites_HAT$Municipality, "<br>", -->
+<!--           "<b>Size:</b> ", HAT_sites_HAT$Size_ha, " (ha)", "<br>", -->
+<!--           "<b>First Nations:</b> ", HAT_sites_HAT$FirstNations, "<br>", -->
+<!--           # "<b>Project id:</b> ", HAT_sites_HAT$ID, "<br>", -->
+<!--           "<b>HAT Status:</b> ", HAT_sites_HAT$HAT_Status, "<br>", -->
+<!--           "<b>Co-Covenant:</b> ", HAT_sites_HAT$Co_Covenant, " (", HAT_sites_HAT$Date, ")", "<br>", -->
+<!--           "<b>Ecosystems:</b> ", HAT_sites_HAT$Ecosystems, "<br>", -->
+<!--           "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br><br>", -->
+<!--         "<b>Top 5 Invasives Species:</b> ", HAT_sites_HAT$Top_5_Invasives, "<br><br>", -->
 
-map_oh_sp
+<!-- ############################################# -->
+<!--     '<table style="border: 0px solid black; vertical-align: top; font-size: 85%;">', -->
+<!--       '<tr style="vertical-align: top;"> -->
+<!--         <th>BIOMASS PULL</th> -->
+<!--         <th align="right">2022</th> -->
+<!--         <th align="right">2023</th> -->
+<!--         <th align="right">2024</th> -->
+<!--         <th align="right">2025</th> -->
+<!--       </tr>', -->
 
-```
+<!--     # Hours per Biomass (m3) -->
+<!--       '<tr style="vertical-align: top;">', -->
+<!--         '<td style="vertical-align: top;"><b>Hours/Biomass (m3):  </b></td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2022, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2023, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2024, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2025, '</td>', -->
+<!--       '</tr>', -->
 
+<!--     # Staff Hours -->
+<!--       '<tr style="vertical-align: top;">', -->
+<!--         '<td style="vertical-align: top;"><b>Crew Hours:  </b></td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Crew_Hours_2022, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Crew_Hours_2023, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Crew_Hours_2024, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Crew_Hours_2025, '</td>', -->
+<!--       '</tr>', -->
 
+<!--     #Biomass Removed (m3) -->
+<!--       '<tr style="vertical-align: top;">', -->
+<!--         '<td style="vertical-align: top;"><b>Biomass (m3):  </b></td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Biomass_2022, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Biomass_2023, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Biomass_2024, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Biomass_2025, '</td>', -->
+<!--       '</tr>', -->
 
-### Oak Haven Spatial Data
-```{r leaflet-OH-spatial, echo = FALSE, message = FALSE, include = TRUE}
-title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
+<!--         #Area of Biomass Removed (m3) -->
+<!--       '<tr style="vertical-align: top;">', -->
+<!--         '<td style="vertical-align: top;"><b>Area (m2):  </b></td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Area_2022, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Area_2023, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Area_2024, '</td>', -->
+<!--         '<td align="right">', HAT_sites_HAT$Area_2025, '</td>', -->
+<!--       '</tr>', -->
+<!--     '</table>' -->
 
-map_all <- leaflet() %>%
-  # addTiles() %>%
-  addProviderTiles("Esri.WorldImagery") %>%
-  addPolygons(data = OHP_2025_Completed_polygons_dropz,
-              group = "2025 Completed polygons",
-              color = "#AA4499", #AA4499 purple
-              #fillColor = "purple",
-              fillOpacity = 0.5,
-              popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>",
-                             "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>%
-  addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
-              group = "2025 Experimental test plot points",
-              color = "#EECC66", #EECC66 light yellow
-              #fillColor = "purple",
-              fillOpacity = 0.8,
-              weight = 1,
-              radius = 3,
-              popup = paste0("<b>Name: </b>", OHP_2025_Experimental_test_plots_dropz$Name, "<br>",
-                            "<b>Description: </b>", OHP_2025_Experimental_test_plots_dropz$Descript, "<br>",
-                            "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>%
-  addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
-              # covers same area as Invasive_Species_Patches
-              group = "2024 ShinyG Burning Priorities",
-              # use a lighter colour so lighter Shiny will show over Species patches
-              color = "#EE7733", #EE7733 orange
-              #color = "blue",
-              #fillColor = "blue",
-              fillOpacity = 0.3,
-              popup = paste0("<b>Name: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Name, "<br>",
-                             "<b>Priority: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Priority, "<br>",
-                             "<b>Description: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$PopupInfo, "<br>",
-                             "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>",
-                             "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups
-  addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
-              group = "2024 Invasive Species Removed",
-              color = "#EE3377", # magenta #EE3377
-              #color = "yellow",
-              #fillColor = "yellow",
-              fillOpacity = 0.6,
-              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Removed_dropz$Name, "<br>",
-                             "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>%
-  addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
-              # covers same area as Shiny g
-              group = "2024 Invasive Species Patches",
-              # use a darker colour so lighter Shiny will show
-              color = "#33BBEE", #cyan #33BBEE
-              #fillColor = "orange",
-              fillOpacity = 0.4,
-              popup = paste0("<b>Name: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$Name, "<br>",
-                             "<b>Description: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$PopupInfo, "<br>",
-                             "<b>Area: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$AreaNumber, "<br>",
-                             "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME)
-              ) %>%
-  addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
-              group = "2024 Invasive Species Points",
-              color = "#CC3311", # CC3311 red
-              #fillColor = "red",
-              fillOpacity = 0.5,
-              radius = 3,
-              popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Points_dropz$Name, "<br>",
-                            "<b>Description: </b>", OH_2024_Invasive_Species_Points_dropz$Descript, "<br>",
-                            "<b>Species: </b>", OH_2024_Invasive_Species_Points_dropz$INSVNAME, "<br>",
-                            "<b>Elevation: </b>", OH_2024_Invasive_Species_Points_dropz$Elevation, "<br>",
-                            "<b>Date: </b>", OH_2024_Invasive_Species_Points_dropz$DateTimeS)
-              ) %>%
-  # add legend to overlay group toggled off
-  addLegend(
-              "bottomright",
-              colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
-              labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
-              title = "OH Spatial Data",
-              group = "Spatial Polygon Color Legend"
-              ) %>%
-  setView(-123.4471, 48.56419, 17) %>%
-  addControl(title, position = "topright") %>% 
-  addMeasure(
-    position = "topleft",
-    primaryLengthUnit = "meters",
-    primaryAreaUnit = "sqmeters",
-    activeColor = "#DDAA33",
-    completedColor = "#BB5566") %>% 
-  addLayersControl(
-    overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
-    
-    # adding colored icons in front of overlay group stopped toggle on/off ???
-    # overlayGroups = unname(c("2025 Completed polygons <- <div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #AA4499;'></div> 2025 Completed polygons", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EECC66;'></div> 2025 Experimental test plot points", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EE3377;'></div> 2024 Invasive Species Removed", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #33BBEE;'></div> 2024 Invasive Species Patches", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EE7733;'></div> 2024 ShinyG Burning Priorities", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #CC3311;'></div> 2024 Invasive Species Points")),
-    options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
-  ) %>%
-  hideGroup(c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "Spatial Polygon Color Legend")) %>%
-  addScaleBar()  
-# %>%
-#       # add controls
-#        addMiniMap(width = 100, height = 100, zoomLevelOffset = -4)
+<!-- ############################################# -->
+<!--           ))  %>% -->
+<!--   addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>% -->
+<!--   addControl(title, position = "topright") %>% -->
+<!--   addPolygons(data = OHP_2025_Completed_polygons_dropz, -->
+<!--               group = "2025 Completed polygons", -->
+<!--               color = "#AA4499", #AA4499 purple -->
+<!--               #fillColor = "purple", -->
+<!--               fillOpacity = 0.5, -->
+<!--               popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>", -->
+<!--                              "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>% -->
+<!--   addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz, -->
+<!--               group = "2025 Experimental test plot points", -->
+<!--               color = "#EECC66", #EECC66 light yellow -->
+<!--               #fillColor = "purple", -->
+<!--               fillOpacity = 0.8, -->
+<!--               weight = 1, -->
+<!--               radius = 3, -->
+<!--               popup = paste0("<b>Name: </b>", OHP_2025_Experimental_test_plots_dropz$Name, "<br>", -->
+<!--                             "<b>Description: </b>", OHP_2025_Experimental_test_plots_dropz$Descript, "<br>", -->
+<!--                             "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>% -->
+<!--   addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz, -->
+<!--               # covers same area as Invasive_Species_Patches -->
+<!--               group = "2024 ShinyG Burning Priorities", -->
+<!--               # use a lighter colour so lighter Shiny will show over Species patches -->
+<!--               color = "#EE7733", #EE7733 orange -->
+<!--               #color = "blue", -->
+<!--               #fillColor = "blue", -->
+<!--               fillOpacity = 0.3, -->
+<!--               popup = paste0("<b>Name: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Name, "<br>", -->
+<!--                              "<b>Priority: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Priority, "<br>", -->
+<!--                              "<b>Description: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$PopupInfo, "<br>", -->
+<!--                              "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>", -->
+<!--                              "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups -->
+<!--   addPolygons(data = OH_2024_Invasive_Species_Removed_dropz, -->
+<!--               group = "2024 Invasive Species Removed", -->
+<!--               color = "#EE3377", # magenta #EE3377 -->
+<!--               #color = "yellow", -->
+<!--               #fillColor = "yellow", -->
+<!--               fillOpacity = 0.6, -->
+<!--               popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Removed_dropz$Name, "<br>", -->
+<!--                              "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>% -->
+<!--   addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz, -->
+<!--               # covers same area as Shiny g -->
+<!--               group = "2024 Invasive Species Patches", -->
+<!--               # use a darker colour so lighter Shiny will show -->
+<!--               color = "#33BBEE", #cyan #33BBEE -->
+<!--               #fillColor = "orange", -->
+<!--               fillOpacity = 0.4, -->
+<!--               popup = paste0("<b>Name: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$Name, "<br>", -->
+<!--                              "<b>Description: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$PopupInfo, "<br>", -->
+<!--                              "<b>Area: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$AreaNumber, "<br>", -->
+<!--                              "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME) -->
+<!--               ) %>% -->
+<!--   addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz, -->
+<!--               group = "2024 Invasive Species Points", -->
+<!--               color = "#CC3311", # CC3311 red -->
+<!--               #fillColor = "red", -->
+<!--               fillOpacity = 0.5, -->
+<!--               radius = 3, -->
+<!--               popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Points_dropz$Name, "<br>", -->
+<!--                             "<b>Description: </b>", OH_2024_Invasive_Species_Points_dropz$Descript, "<br>", -->
+<!--                             "<b>Species: </b>", OH_2024_Invasive_Species_Points_dropz$INSVNAME, "<br>", -->
+<!--                             "<b>Elevation: </b>", OH_2024_Invasive_Species_Points_dropz$Elevation, "<br>", -->
+<!--                             "<b>Date: </b>", OH_2024_Invasive_Species_Points_dropz$DateTimeS) -->
+<!--               ) %>% -->
+<!--   # add legend to overlay group toggled off -->
+<!--   addLegend( -->
+<!--               "bottomright", -->
+<!--               colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"), -->
+<!--               labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"), -->
+<!--               title = "OH Spatial Data", -->
+<!--               group = "OH Spatial Polygon Color Legend" -->
+<!--               ) %>% -->
+<!--   addMeasure( -->
+<!--     position = "topleft", -->
+<!--     primaryLengthUnit = "meters", -->
+<!--     primaryAreaUnit = "sqmeters", -->
+<!--     activeColor = "#DDAA33", -->
+<!--     completedColor = "#BB5566") %>% -->
+<!--   addLayersControl( -->
+<!--     overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend"), -->
+<!--     options = layersControlOptions(collapsed = TRUE) # Makes control box always visible -->
+<!--   ) %>% -->
+<!--   hideGroup(c("2025 Completed polygons", "2025 Experimental test plot points", "2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>% -->
+<!--   addScaleBar() %>% -->
+<!--   setView(-123.44799, 48.52919, zoom = 10) -->
 
-# Print the map
-map_all
-```
+<!-- map_oh_sp -->
+
+<!-- ``` -->
 
 
+<!-- ### Datatable for 3 HAT Sites -->
+<!-- ```{r data-table-map} -->
+<!-- htmltools::h5("HAT Public Sites Datatable") -->
+<!-- htmltools::br() -->
+<!--  datatable(sd_sites, rownames = FALSE, class = 'compact', -->
+<!--            extensions = c("Buttons"), -->
+<!--            options = list(dom = 'Bfrtip', -->
+<!--                          buttons = list( -->
+<!--                         'colvis', -->
+<!--                         list( -->
+<!--                           extend = 'csv', -->
+<!--                           filename = paste0("HAT-Restoration-Site-Data-", Sys.Date()) -->
+<!--                         ), -->
+<!--                         list( -->
+<!--                           extend = 'excel', -->
+<!--                           filename = paste0("HAT-Restoration-Site-Data-", Sys.Date()) -->
+<!--                         ), -->
+<!--                         list( -->
+<!--                           extend = 'print', -->
+<!--                           title = 'HAT Restoration Site Data' # Change title here -->
+<!--                         ) -->
+<!--                           ), -->
+<!--                         # removed previous / next buttons -->
+<!--                          paging = FALSE, -->
+<!--              columnDefs = list(list(className = 'dt-center', targets = c(0,6,7)) -->
+<!--            ))) -->
+<!-- ``` -->
+
+<!-- ### Oak Haven Spatial Data -->
+<!-- ```{r leaflet-OH-spatial, echo = FALSE, message = FALSE, include = TRUE} -->
+<!-- title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>' -->
+
+<!-- map_all <- leaflet() %>% -->
+<!--   # addTiles() %>% -->
+<!--   addProviderTiles("Esri.WorldImagery") %>% -->
+<!--   addPolygons(data = OHP_2025_Completed_polygons_dropz, -->
+<!--               group = "2025 Completed polygons", -->
+<!--               color = "#AA4499", #AA4499 purple -->
+<!--               #fillColor = "purple", -->
+<!--               fillOpacity = 0.5, -->
+<!--               popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>", -->
+<!--                              "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>% -->
+<!--   addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz, -->
+<!--               group = "2025 Experimental test plot points", -->
+<!--               color = "#EECC66", #EECC66 light yellow -->
+<!--               #fillColor = "purple", -->
+<!--               fillOpacity = 0.8, -->
+<!--               weight = 1, -->
+<!--               radius = 3, -->
+<!--               popup = paste0("<b>Name: </b>", OHP_2025_Experimental_test_plots_dropz$Name, "<br>", -->
+<!--                             "<b>Description: </b>", OHP_2025_Experimental_test_plots_dropz$Descript, "<br>", -->
+<!--                             "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>% -->
+<!--   addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz, -->
+<!--               # covers same area as Invasive_Species_Patches -->
+<!--               group = "2024 ShinyG Burning Priorities", -->
+<!--               # use a lighter colour so lighter Shiny will show over Species patches -->
+<!--               color = "#EE7733", #EE7733 orange -->
+<!--               #color = "blue", -->
+<!--               #fillColor = "blue", -->
+<!--               fillOpacity = 0.3, -->
+<!--               popup = paste0("<b>Name: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Name, "<br>", -->
+<!--                              "<b>Priority: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Priority, "<br>", -->
+<!--                              "<b>Description: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$PopupInfo, "<br>", -->
+<!--                              "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>", -->
+<!--                              "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups -->
+<!--   addPolygons(data = OH_2024_Invasive_Species_Removed_dropz, -->
+<!--               group = "2024 Invasive Species Removed", -->
+<!--               color = "#EE3377", # magenta #EE3377 -->
+<!--               #color = "yellow", -->
+<!--               #fillColor = "yellow", -->
+<!--               fillOpacity = 0.6, -->
+<!--               popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Removed_dropz$Name, "<br>", -->
+<!--                              "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>% -->
+<!--   addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz, -->
+<!--               # covers same area as Shiny g -->
+<!--               group = "2024 Invasive Species Patches", -->
+<!--               # use a darker colour so lighter Shiny will show -->
+<!--               color = "#33BBEE", #cyan #33BBEE -->
+<!--               #fillColor = "orange", -->
+<!--               fillOpacity = 0.4, -->
+<!--               popup = paste0("<b>Name: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$Name, "<br>", -->
+<!--                              "<b>Description: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$PopupInfo, "<br>", -->
+<!--                              "<b>Area: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$AreaNumber, "<br>", -->
+<!--                              "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME) -->
+<!--               ) %>% -->
+<!--   addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz, -->
+<!--               group = "2024 Invasive Species Points", -->
+<!--               color = "#CC3311", # CC3311 red -->
+<!--               #fillColor = "red", -->
+<!--               fillOpacity = 0.5, -->
+<!--               radius = 3, -->
+<!--               popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Points_dropz$Name, "<br>", -->
+<!--                             "<b>Description: </b>", OH_2024_Invasive_Species_Points_dropz$Descript, "<br>", -->
+<!--                             "<b>Species: </b>", OH_2024_Invasive_Species_Points_dropz$INSVNAME, "<br>", -->
+<!--                             "<b>Elevation: </b>", OH_2024_Invasive_Species_Points_dropz$Elevation, "<br>", -->
+<!--                             "<b>Date: </b>", OH_2024_Invasive_Species_Points_dropz$DateTimeS) -->
+<!--               ) %>% -->
+<!--   # add legend to overlay group toggled off -->
+<!--   addLegend( -->
+<!--               "bottomright", -->
+<!--               colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"), -->
+<!--               labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"), -->
+<!--               title = "OH Spatial Data", -->
+<!--               group = "OH Spatial Polygon Color Legend" -->
+<!--               ) %>% -->
+<!--   setView(-123.4471, 48.56419, 17) %>% -->
+<!--   addControl(title, position = "topright") %>% -->
+<!--   addMeasure( -->
+<!--     position = "topleft", -->
+<!--     primaryLengthUnit = "meters", -->
+<!--     primaryAreaUnit = "sqmeters", -->
+<!--     activeColor = "#DDAA33", -->
+<!--     completedColor = "#BB5566") %>% -->
+<!--   addLayersControl( -->
+<!--     overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend"), -->
+
+<!--     # adding colored icons in front of overlay group stopped toggle on/off ??? -->
+<!--     # overlayGroups = unname(c("2025 Completed polygons <- <div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #AA4499;'></div> 2025 Completed polygons", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EECC66;'></div> 2025 Experimental test plot points", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EE3377;'></div> 2024 Invasive Species Removed", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #33BBEE;'></div> 2024 Invasive Species Patches", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EE7733;'></div> 2024 ShinyG Burning Priorities", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #CC3311;'></div> 2024 Invasive Species Points")), -->
+<!--     options = layersControlOptions(collapsed = TRUE) # Makes control box always visible -->
+<!--   ) %>% -->
+<!--   hideGroup(c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "Spatial Polygon Color Legend")) %>% -->
+<!--   addScaleBar() -->
+<!-- # %>% -->
+<!-- #       # add controls -->
+<!-- #        addMiiMap(width = 100, height = 100, zoomLevelOffset = -4) -->
+
+<!-- # Print the map -->
+<!-- map_all -->
+<!-- ``` -->
 
 
-### Datatable for 3 HAT Sites
-```{r data-table-map}
-htmltools::h5("HAT Public Sites Datatable")
-htmltools::br()
- datatable(sd_sites, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons"),
-           options = list(dom = 'Bfrtip',
-                         buttons = list(                        
-                        'colvis',
-                        list(
-                          extend = 'csv',
-                          filename = paste0("HAT-Restoration-Site-Data-", Sys.Date())
-                        ),
-                        list(
-                          extend = 'excel',
-                          filename = paste0("HAT-Restoration-Site-Data-", Sys.Date())
-                        ),
-                        list(
-                          extend = 'print',
-                          title = 'HAT Restoration Site Data' # Change title here
-                        )
-                          ),
-                        # removed previous / next buttons
-                         paging = FALSE,                         
-             columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
-           )))
-```
+<!-- ### Datatable for OH Polygons -->
+<!-- ```{r data-table-map-OH-poly} -->
+<!-- htmltools::h5("Oak Haven Polygons Datatable") -->
+<!-- htmltools::br() -->
+<!--  datatable(OH_spatial_polygons_all_sub, rownames = FALSE, class = 'compact', -->
+<!--            extensions = c("Buttons"), -->
+<!--            options = list(dom = 'Bfrtip', -->
+<!--                          buttons = list( -->
+<!--                         'colvis', -->
+<!--                         list( -->
+<!--                           extend = 'csv', -->
+<!--                           filename = paste0("OH-Polygons-Data-", Sys.Date()) -->
+<!--                         ), -->
+<!--                         list( -->
+<!--                           extend = 'excel', -->
+<!--                           filename = paste0("OH-Polygons-Data-", Sys.Date()) -->
+<!--                         ), -->
+<!--                         list( -->
+<!--                           extend = 'print', -->
+<!--                           title = 'OH Polygons Data' # Change title here -->
+<!--                         ) -->
+<!--                           ), -->
+<!--                         # removed previous / next buttons -->
+<!--                          paging = FALSE -->
+<!--            #              , -->
+<!--            #   columnDefs = list(list(className = 'dt-center', targets = c(0,6,7)) -->
+<!--            # ) -->
+<!--            )) -->
+<!-- ``` -->
 
-### Datatable for OH Polygons
-```{r data-table-map-OH-poly}
-htmltools::h5("Oak Haven Polygons Datatable")
-htmltools::br()
- datatable(OH_spatial_polygons_all_sub, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons"),
-           options = list(dom = 'Bfrtip',
-                         buttons = list(                        
-                        'colvis',
-                        list(
-                          extend = 'csv',
-                          filename = paste0("OH-Polygons-Data-", Sys.Date())
-                        ),
-                        list(
-                          extend = 'excel',
-                          filename = paste0("OH-Polygons-Data-", Sys.Date())
-                        ),
-                        list(
-                          extend = 'print',
-                          title = 'OH Polygons Data' # Change title here
-                        )
-                          ),
-                        # removed previous / next buttons
-                         paging = FALSE
-           #              ,                         
-           #   columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
-           # )
-           ))
-```
-
-### Datatable for OH Points
-```{r data-table-map-OH-Points}
-htmltools::h5("Oak Haven Points Datatable")
-htmltools::br()
- datatable(OH_spatial_points_alll_sub, rownames = FALSE, class = 'compact',
-           extensions = c("Buttons"),
-           options = list(dom = 'Bfrtip',
-                         buttons = list(                        
-                        'colvis',
-                        list(
-                          extend = 'csv',
-                          filename = paste0("OH Points Data-", Sys.Date())
-                        ),
-                        list(
-                          extend = 'excel',
-                          filename = paste0("OH Points Data-", Sys.Date())
-                        ),
-                        list(
-                          extend = 'print',
-                          title = 'OH Points Data' # Change title here
-                        )
-                          ),
-                        # removed previous / next buttons
-                         paging = FALSE
-           #              ,                         
-           #   columnDefs = list(list(className = 'dt-center', targets = c(0,6,7))
-           # )
-           ))
-```
+<!-- ### Datatable for OH Points -->
+<!-- ```{r data-table-map-OH-Points} -->
+<!-- htmltools::h5("Oak Haven Points Datatable") -->
+<!-- htmltools::br() -->
+<!--  datatable(OH_spatial_points_alll_sub, rownames = FALSE, class = 'compact', -->
+<!--            extensions = c("Buttons"), -->
+<!--            options = list(dom = 'Bfrtip', -->
+<!--                          buttons = list( -->
+<!--                         'colvis', -->
+<!--                         list( -->
+<!--                           extend = 'csv', -->
+<!--                           filename = paste0("OH Points Data-", Sys.Date()) -->
+<!--                         ), -->
+<!--                         list( -->
+<!--                           extend = 'excel', -->
+<!--                           filename = paste0("OH Points Data-", Sys.Date()) -->
+<!--                         ), -->
+<!--                         list( -->
+<!--                           extend = 'print', -->
+<!--                           title = 'OH Points Data' # Change title here -->
+<!--                         ) -->
+<!--                           ), -->
+<!--                         # removed previous / next buttons -->
+<!--                          paging = FALSE -->
+<!--            #              , -->
+<!--            #   columnDefs = list(list(className = 'dt-center', targets = c(0,6,7)) -->
+<!--            # ) -->
+<!--            )) -->
+<!-- ``` -->
 
 
 
