@@ -544,7 +544,7 @@ Inputs {.sidebar data-width=250}
 
 
 #############################################
-htmltools::br()
+#htmltools::br()
 htmltools::br()
 HTML("<img src='images/HAT-logo-ss.png', width=150>")
 # HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
@@ -557,7 +557,7 @@ HTML("
   <br>
 <span style='font-size:70%';>wanthony@uvic.ca 
 <br>
-Modified: 2026-02-18 17:07</span>")
+Modified: 2026-02-18 17:21</span>")
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 
@@ -1220,7 +1220,6 @@ Inputs {.sidebar data-width=250}
 ```{r filter-crew-hours-biomass-inv-sp}
 #############################################
 htmltools::br()
-htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Crew_Hours", statistic = "sum"), span(class = "caption", "= Crew hours", digits = 2))
 p(class = "container", class = "value", summarywidget(sd_crew, column = "Biomass_Removed_m3", statistic = "sum"), span(class = "caption", "= m3 Biomass Removed", digits = 2))
@@ -1520,7 +1519,7 @@ Inputs {.sidebar data-width=250}
 
 ```{r filter-crew-hours-biomass-inv-sp-top5-facet}
 #############################################
-htmltools::br()
+#htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(crew_vol_inv_top5_sum, column = "Crew_Hours", statistic = "sum", digits = 2), span(class = "caption", "= Crew Hours"))
@@ -1676,7 +1675,7 @@ Inputs {.sidebar data-width=235}
 
 ```{r filter-input-cover}
 #############################################
-htmltools::br()
+#htmltools::br()
 htmltools::br()
 
 #############################################
@@ -1983,7 +1982,7 @@ Inputs {.sidebar data-width=235}
 
 ```{r filter-input-cover-top5}
 #############################################
-htmltools::br()
+#htmltools::br()
 htmltools::br()
 
 #############################################
@@ -2192,7 +2191,7 @@ Inputs {.sidebar data-width=260}
 
 ```{r filter-input-count}
 #############################################
-htmltools::br()
+#htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
 p(class = "container", class = "value", summarywidget(sd_count, column = "Species_number", statistic = "sum"), span(class = "caption", "= different species", digits = 2))
@@ -2406,6 +2405,7 @@ Inputs {.sidebar data-width=250}
 
 ```{r about-tabs}
 #############################################
+br()
 HTML("<img src='images/HAT-logo-ss.png', width=150>")
 # HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 
@@ -2421,7 +2421,7 @@ br()
 HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
 <span style='font-size:75%';>wanthony@uvic.ca
 <br>
-2026-02-18 17:07</span>")
+2026-02-18 17:21</span>")
 br()
 br()
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
