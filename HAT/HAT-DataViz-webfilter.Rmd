@@ -10,9 +10,20 @@ output:
     theme: 
       version: 4
       bootswatch: flatly
-#    source_code: embed
 ---
   
+```{r readme, include=FALSE}
+# HAT Interactive Data Visualization Dashboard Tool
+# 
+# Purpose: Interactive dashboard for visuzlizing GOE restoration monitoring data
+# Data sources: 
+#   - Site Data: data/HAT-Sites-HAT.csv
+#   - Crew activities: data/crew_data_sep_sub.csv
+#   - Spatial features: data_spatial/*.shp
+#
+# Last updated: 2026-02-21
+# Maintainer: Wendy Anthony wanthony@uvic.ca
+```
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(
@@ -25,6 +36,9 @@ knitr::include_graphics("images/HAT-logo-ss.png")
 ```
 
 ```{css}
+
+/* ************************************** */  
+/* **** Media queries screen size ***** */  
 
 /* xs */
 /* @media (min-width: 475px) {} */
@@ -45,7 +59,9 @@ knitr::include_graphics("images/HAT-logo-ss.png")
 /* @media (min-width: 1536px) {} */
   
   
-
+/* ************************************** */  
+/* **** Tab font colours ***** */  
+  
 /* Set font color of inactive tab to green */
 .nav-tabs-custom .nav-tabs > li > a {
   color: green;
@@ -67,6 +83,8 @@ knitr::include_graphics("images/HAT-logo-ss.png")
 }
 */
   
+/* ************************************** */  
+/* **** Sidebar padding ***** */  
 
 .section.sidebar {
   padding-left: 10px;
@@ -74,18 +92,27 @@ knitr::include_graphics("images/HAT-logo-ss.png")
 }
 
 
+/* ************************************** */  
+/* **** navbar colours ***** */  
+
 /* navbar colour  */
 .navbar-inverse {
   background-color: #fd7e14;
   border-color: #1967be;
 }
 
+/* ************************************** */  
+/* **** bold paragraph ***** */  
+
 p {
   font-weight: bold;
 }
 
+/* ************************************** */  
+/* **** contiainer ***** */  
+
 .container {
-    display: inline;
+    /* display: inline; */
     /* padding: 0.2em 0.6em 0.3em; */
     font-size: 70%;
     font-weight: bold;
@@ -99,6 +126,9 @@ p {
     vertical-align: baseline;
     border-radius: 0.25em;
 }
+
+/* ************************************** */  
+/* **** Filter Stats Value ***** */  
 
 .value {
   font-size: 95%;
@@ -118,6 +148,9 @@ p {
   box-sizing: border-box;
 }
 
+/* ************************************** */  
+/* **** Filter Stats Caption font size & colours ***** */  
+
 .caption {
   color: black; /* Change the caption font color */
   font-size: 85%;  
@@ -128,7 +161,9 @@ p {
 # Load Libraries
 #############################################
 # uncomment install.packages("") to install a package, then replace comment #
+#############################################
 
+# Load Core Package Libraries
 #############################################
 # install.packages("flexdashboard")
 library(flexdashboard) # dashboard
@@ -139,20 +174,23 @@ library(crosstalk) # shared data filters
 # devtools::install_github("kent37/summarywidget")
 library(summarywidget) # filtered data summary
 
+# Load Data Wrangling and Visualization Package Libraries
+#############################################
 # install.packages("tidyverse")
 library(tidyverse) # includes ggplot2
 # install.packages("plotly")
 library(plotly) # interactive plots > ggplot2 requires plotly wrap for crosstalk
 # install.packages("DT")
 library(DT) # tables
+
+# Load Map & Spatial Data Package Libraries 
+#############################################
 # install.packages("leaflet")
 library(leaflet) # interactive map
 library(sf) # spatial data
-library(htmlwidgets) # save web map
 ```
 
-
-```{r data-download, include = FALSE}
+```{r data-import-site, include = FALSE}
 # Load Data
 ################################# 
 # Sites Data
@@ -160,7 +198,11 @@ HAT_sites_HAT <- read.csv("data/HAT-Sites-HAT.csv", fileEncoding="UTF-8")
 str(HAT_sites_HAT)
 head(HAT_sites_HAT)
 colnames(HAT_sites_HAT)
+```
 
+```{r data-import-crew, include = FALSE}
+# Load Data
+# Crew Data
 ################################# 
 crew_data_sep_sub_1 <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
 
@@ -177,17 +219,15 @@ str(crew_data_sep_sub_1)
 crew_data_sep_sub_1$Date <- as.Date(crew_data_sep_sub_1$Date)
 
 str(crew_data_sep_sub_1)
-# remove 3 rows with NA
+
+# Filter 3 rows remove 3 rows with NA
 # Matson 2025-10-21
 # Matson 2024-11-14
 # Camas Hill 2025-09-04
-
 crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
-  filter(Date != "2025-10-21")
-crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
-  filter(Date != "2024-11-14")
-crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
-  filter(Date != "2025-09-04")
+  filter(Date != as.Date("2025-10-21"),
+         Date != as.Date("2024-11-14"),
+         Date != as.Date("2025-09-04"))
 
 # Crew Data
 crew_data_sep_sub_sum_by_group_site_1 <- read.csv("data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", fileEncoding="UTF-8")
@@ -195,6 +235,10 @@ str(crew_data_sep_sub_sum_by_group_site_1)
 head(crew_data_sep_sub_sum_by_group_site_1)
 
 crew_data_sep_sub_sum_bio_inv <- read.csv("data/crew_data_sep_sub_sum_bio_inv.csv", fileEncoding="UTF-8")
+```
+
+```{r data-import-volunteer, include = FALSE}
+# Load Data
 
 ################################# 
 ## Matson Field log volunteer 
@@ -202,18 +246,24 @@ volunteer_data_matson <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-
 volunteer_data_matson$Date <- as.Date(volunteer_data_matson$Date)
 str(volunteer_data_matson)
 colnames(volunteer_data_matson)
+```
 
+```{r data-import-cover, include = FALSE}
+# Load Data
 ################################# 
 # Cover data
 cover_data <- read.csv("data/HAT_cover_mean.csv", fileEncoding="UTF-8")
+```
 
+```{r data-import-species-count, include = FALSE}
+# Load Data
 ################################# 
 # Species counts
 species_count <- read.csv("data/species_counts.csv", fileEncoding="UTF-8")
 ```
 
 
-```{r data-import-st, data-download, include = FALSE}
+```{r data-import-st-data-download, include = FALSE, cache = TRUE}
 ## Import spatial Data
 OH_2024_ShinyG_Burning_Priorities <- st_read("data_spatial/OH_2024_ShinyG_Burning_Priorities/OH_2024_ShinyG_Burning_Priorities.shp")
 OH_2024_Invasive_Species_Removed <- st_read("data_spatial/OH_2024_Invasive_Species_Removed/OH_2024_Invasive_Species_Removed.shp")
@@ -224,7 +274,7 @@ OHP_2025_Experimental_test_plots <- st_read("data_spatial/OHP_2025_Experimental_
 ```
 
 
-```{r shape-data-dropz, include = FALSE}
+```{r shape-data-dropz, include = FALSE, cache = TRUE}
 ## Drop Z Dimension of Spatial Data to map
 # https://gis.stackexchange.com/questions/253898/adding-a-linestring-by-st-read-in-shiny-leaflet
 # When trying to create leaflet map Error in if (length(nms) != n || any(nms == "")) stop("'options' must be a fully named list, or have no names (NULL)") : missing value where TRUE/FALSE needed
@@ -239,11 +289,11 @@ OHP_2025_Experimental_test_plots_dropz <- st_zm(OHP_2025_Experimental_test_plots
 ```
 
 
-```{r spatial-subset-save, include = FALSE}
+```{r spatial-subset-save, include = FALSE, cache = TRUE}
 ### Subset and save spatial data for use in datatable
-# add new columns "Site"   "Year"      "Data"     
+# add new columns "Site"   "Year"      "Data"
 
-################################# 
+#################################
 colnames(OH_2024_ShinyG_Burning_Priorities_dropz)
 # [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
 # [11] "Shape_Area" "INSVNAME"   "AreaNumber" "Priority"   "geometry"
@@ -258,14 +308,14 @@ colnames(OH_2024_ShinyG_Burning_Priorities_dropz)
 ncol(OH_2024_ShinyG_Burning_Priorities_dropz)
 nrow(OH_2024_ShinyG_Burning_Priorities_dropz) #13
 #  [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
-# [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry"   "Site"       "Year"       "Data"       "Priority" 
+# [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry"   "Site"       "Year"       "Data"       "Priority"
 
 write.csv(OH_2024_ShinyG_Burning_Priorities_dropz, "data/OH_2024_ShinyG_Burning_Priorities_dropz.csv")
 
-################################# 
+#################################
 colnames(OH_2024_Invasive_Species_Removed_dropz)
 # [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
-# [11] "Shape_Area" "INSVNAME"   "geometry"   "Site"       "Year"       "Data"       "Priority" 
+# [11] "Shape_Area" "INSVNAME"   "geometry"   "Site"       "Year"       "Data"       "Priority"
 OH_2024_Invasive_Species_Removed_dropz$Site <- "Oak Haven"
 OH_2024_Invasive_Species_Removed_dropz$Year <- "2024"
 OH_2024_Invasive_Species_Removed_dropz$Data <- "OH_2024_Invasive_Species_Removed"
@@ -278,10 +328,10 @@ nrow(OH_2024_Invasive_Species_Removed_dropz) #10
 
 write.csv(OH_2024_Invasive_Species_Removed_dropz, "data/OH_2024_Invasive_Species_Removed_dropz.csv")
 
-################################# 
+#################################
 colnames(OH_2024_Identified_Invasive_Species_Patches_dropz)
 # [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
-# [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry" 
+# [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry"
 OH_2024_Identified_Invasive_Species_Patches_dropz$Site <- "Oak Haven"
 OH_2024_Identified_Invasive_Species_Patches_dropz$Year <- "2024"
 OH_2024_Identified_Invasive_Species_Patches_dropz$Data <- "OH_2024_Identified_Invasive_Species_Patches"
@@ -291,7 +341,7 @@ nrow(OH_2024_Identified_Invasive_Species_Patches_dropz) #13
 
 write.csv(OH_2024_Identified_Invasive_Species_Patches_dropz, "data/OH_2024_Identified_Invasive_Species_Patches_dropz.csv")
 
-################################# 
+#################################
 colnames(OHP_2025_Completed_polygons_dropz)
  #[1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
 #[11] "Shape_Area" "geometry"   "Site"       "Year"       "Data"       "Priority" "
@@ -308,7 +358,7 @@ OHP_2025_Completed_polygons_dropz <- OHP_2025_Completed_polygons_dropz[, c("Name
 
 write.csv(OHP_2025_Completed_polygons_dropz, "data/OHP_2025_Completed_polygons_dropz.csv")
 
-################################# 
+#################################
 # rbind polygons
 OH_spatial_polygons_all <- rbind(OH_2024_ShinyG_Burning_Priorities_dropz, OH_2024_Invasive_Species_Removed_dropz, OH_2024_Identified_Invasive_Species_Patches_dropz, OHP_2025_Completed_polygons_dropz)
 nrow(OH_spatial_polygons_all) #43
@@ -320,18 +370,18 @@ colnames(OH_spatial_polygons_all_sub)
 
 write.csv(OH_spatial_polygons_all_sub, "data/OH_spatial_polygons_all_sub.csv")
 
-################################# 
-################################# 
+#################################
+#################################
 
 colnames(OH_2024_Invasive_Species_Points_dropz)
-# [1] "Id"        "Name"      "Descript"  "Type"      "Comment"   "Symbol"    "DateTimeS" "Elevation" "INSVNAME"  "geometry" 
+# [1] "Id"        "Name"      "Descript"  "Type"      "Comment"   "Symbol"    "DateTimeS" "Elevation" "INSVNAME"  "geometry"
 OH_2024_Invasive_Species_Points_dropz$Site <- "Oak Haven"
 OH_2024_Invasive_Species_Points_dropz$Year <- "2024"
 OH_2024_Invasive_Species_Points_dropz$Data <- "OH_2024_Invasive_Species_Points"
 
 write.csv(OH_2024_Invasive_Species_Points_dropz, "data/OH_2024_Invasive_Species_Points_dropz.csv")
 
-################################# 
+#################################
 colnames(OHP_2025_Experimental_test_plots_dropz)
 # [1] "Id"        "Name"      "Descript"  "Type"      "Comment"   "Symbol"    "DateTimeS" "Elevation" "geometry"
 OHP_2025_Experimental_test_plots_dropz$Site <- "Oak Haven"
@@ -347,7 +397,7 @@ colnames(OH_2024_Invasive_Species_Points_dropz)
 
 write.csv(OHP_2025_Experimental_test_plots_dropz, "data/OHP_2025_Experimental_test_plots_dropz.csv")
 
-################################# 
+#################################
 # rbind points
 OH_spatial_points_all <- rbind(OHP_2025_Experimental_test_plots_dropz, OH_2024_Invasive_Species_Points_dropz)
 colnames(OH_spatial_points_all)
@@ -357,6 +407,22 @@ colnames(OH_spatial_points_all_sub)
 write.csv(OH_spatial_points_all_sub, "data/OH_spatial_points_all_sub.csv")
 
 ```
+
+```{r import-csv-sd, include = FALSE}
+## THIS DOES NOT WORK !!!
+# Spatial Data import
+# rror in read.table(file = file, header = header, sep = sep, quote = quote,  : more columns than column names
+#These won't read in
+# OHP_2025_Completed_polygons_dropz <- read.csv("data/OHP_2025_Completed_polygons_dropz.csv", fileEncoding="UTF-8")
+# OH_2024_ShinyG_Burning_Priorities_dropz <- read.csv("data/OH_2024_ShinyG_Burning_Priorities_dropz.csv", fileEncoding="UTF-8")
+#  OH_2024_Invasive_Species_Removed_dropz<- read.csv("data/OH_2024_Invasive_Species_Removed_dropz.csv", fileEncoding="UTF-8")
+#  OH_2024_Identified_Invasive_Species_Patches_dropz<- read.csv("data/OH_2024_Identified_Invasive_Species_Patches_dropz.csv", fileEncoding="UTF-8")
+#  OHP_2025_Experimental_test_plots_dropz<- read.csv("data/OHP_2025_Experimental_test_plots_dropz.csv", fileEncoding="UTF-8")
+#  OH_2024_Invasive_Species_Points_dropz<- read.csv("data/OH_2024_Invasive_Species_Points_dropz.csv", fileEncoding="UTF-8")
+#  OH_spatial_polygons_all_sub<- read.csv("data/OH_spatial_polygons_all_sub.csv", fileEncoding="UTF-8")
+#  OH_spatial_points_all_sub<- read.csv("data/OH_spatial_points_all_sub.csv", fileEncoding="UTF-8")
+```
+
 
 
 
@@ -440,6 +506,7 @@ volunteer_data_matson_sub <- volunteer_data_matson_sub %>% relocate(Year, Date, 
 colnames(volunteer_data_matson_sub)
 
 #############################################
+#   COMBINING CREW AND VOLUNTEER DATA
 # rbind work and volunteer
 crew_vol <- rbind(crew_data_sep_sub_1_filtered, volunteer_data_matson_sub)
 
@@ -540,7 +607,7 @@ sd_crew_vol_inv <- SharedData$new(data = crew_vol_inv, group = "crew_all_group")
 
 sd_crew_vol_inv_top5 <- SharedData$new(data = crew_vol_inv_top5, group = "top5_group_bar")
 
-crew_vol_inv_top5_sum <- SharedData$new(data = crew_vol_inv_top5_sum, group = "top5_group_facet")
+sd_crew_vol_inv_top5_sum <- SharedData$new(data = crew_vol_inv_top5_sum, group = "top5_group_facet")
 
 #############################################
 # Summary data totals per year per site
@@ -552,16 +619,17 @@ sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_rename_site
 #############################################
 sd_cover <- SharedData$new(data = cover_data_rename_site_sub, group = "cover_group")
 
-sd_cov_nat_top5 <- SharedData$new(data = cov_nat_top5, group = "cover_group")
-
 sd_cover_grs <- SharedData$new(data = cover_data_rename_site_sub_grs, group = "cover_group")
 sd_cover_inv <- SharedData$new(data = cover_data_rename_site_sub_inv, group = "cover_group")
 sd_cover_nat <- SharedData$new(data = cover_data_rename_site_sub_nat, group = "cover_group")
 
-sd_cover_nat_t <- SharedData$new(data = cover_data_rename_site_sub_nat_t, group = "cover_group")
-sd_cover_nat_u <- SharedData$new(data = cover_data_rename_site_sub_nat_u, group = "cover_group")
-sd_cover_inv_t <- SharedData$new(data = cover_data_rename_site_sub_inv_t, group = "cover_group")
-sd_cover_inv_u <- SharedData$new(data = cover_data_rename_site_sub_inv_u, group = "cover_group")
+sd_cov_nat_top5 <- SharedData$new(data = cov_nat_top5, group = "cover_group_top5")
+
+# not used
+# sd_cover_nat_t <- SharedData$new(data = cover_data_rename_site_sub_nat_t, group = "cover_group")
+# sd_cover_nat_u <- SharedData$new(data = cover_data_rename_site_sub_nat_u, group = "cover_group")
+# sd_cover_inv_t <- SharedData$new(data = cover_data_rename_site_sub_inv_t, group = "cover_group")
+# sd_cover_inv_u <- SharedData$new(data = cover_data_rename_site_sub_inv_u, group = "cover_group")
 
 #############################################
 sd_count <- SharedData$new(data = species_count, group = "count_group")
@@ -614,7 +682,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-21 @ 11:11</div>
+Modified: 2026-02-21 @ 12:12</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -1496,7 +1564,7 @@ Row  {data-height=55}
 ### ***Crew Data Summarized***
 ```{r}
 htmltools::HTML("
-  <strong>Yearly summary</strong> of daily data collected for crew hours, invasive species and biomass removed. Hours required per cubic metre of biomass shows labour cost. <em>Note: Some missing data for fall 2025</em>")
+  <strong>Yearly summary</strong> of daily data collected for crew hours, invasive species and biomass removed. Hours required per cubic metre of biomass shows labour cost. <em>Note: There is no volunteer data summarized</em>")
 ```
 
 Row  {.tabset .tabset-fade}
@@ -1767,9 +1835,9 @@ Inputs {.sidebar data-width=250}
 htmltools::br()
 htmltools::br()
 h4("Filtered Statistics")
-p(class = "container", class = "value", summarywidget(crew_vol_inv_top5_sum, column = "Crew_Hours", statistic = "sum", digits = 2), span(class = "caption", "= Crew Hours"))
-p(class = "container", class = "value", summarywidget(crew_vol_inv_top5_sum, column = "Biomass_Removed_m3", statistic = "sum", digits = 2), span(class = "caption", "= Biomass Removed (m3)"))
-p(class = "container", class = "value", summarywidget(crew_vol_inv_top5_sum, column = "Area_Cleared_m2", statistic = "sum", digits = 2), span(class = "caption", " = Area Cleared (m2)"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5_sum, column = "Crew_Hours", statistic = "sum", digits = 2), span(class = "caption", "= Crew Hours"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5_sum, column = "Biomass_Removed_m3", statistic = "sum", digits = 2), span(class = "caption", "= Biomass Removed (m3)"))
+p(class = "container", class = "value", summarywidget(sd_crew_vol_inv_top5_sum, column = "Area_Cleared_m2", statistic = "sum", digits = 2), span(class = "caption", " = Area Cleared (m2)"))
 
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
@@ -1777,9 +1845,9 @@ htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 #############################################
 h4("Filters")
 # Create a filter input
-filter_select(id = "Site", label = "Choose Site", sharedData = crew_vol_inv_top5_sum, group = ~ Site, multiple = T)
-filter_checkbox(id = "Year", label = "Choose Year", sharedData = crew_vol_inv_top5_sum, group = ~ Year, allLevels = TRUE)
-filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = crew_vol_inv_top5_sum, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
+filter_select(id = "Site", label = "Choose Site", sharedData = sd_crew_vol_inv_top5_sum, group = ~ Site, multiple = T)
+filter_checkbox(id = "Year", label = "Choose Year", sharedData = sd_crew_vol_inv_top5_sum, group = ~ Year, allLevels = TRUE)
+filter_select(id = "Invasive_Species_Cleared", label = "Choose Species", sharedData = sd_crew_vol_inv_top5_sum, group = ~ Invasive_Species_Cleared, allLevels = TRUE)
 
 #############################################
 htmltools::br()
@@ -1817,7 +1885,7 @@ custom_colours_years <- c("2022" = "#ffff33",
 
 #############################################
 ggplotly(
-  ggplot(crew_vol_inv_top5_sum, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Year), 
+  ggplot(sd_crew_vol_inv_top5_sum, aes(x = reorder(Invasive_Species_Cleared, desc(Invasive_Species_Cleared)), y = Biomass_Removed_m3, fill = as.factor(Year), 
     # fill = as.factor(Year) gives legend a colour vs a continuous variable colour
                                                           text = paste("Year:", Year,
                                                           "\nSite:", Site,
@@ -1885,7 +1953,7 @@ htmltools::br()
 ```{r data-table-combine-top5-facet}
 htmltools::h5("Yearly Crew Hours (& Volunteer) Hours & Top 5 Species Biomass Datatable")
 htmltools::br()
- datatable(crew_vol_inv_top5_sum, rownames = FALSE, class = 'compact',
+ datatable(sd_crew_vol_inv_top5_sum, rownames = FALSE, class = 'compact',
            extensions = c("Buttons"),
            options = list(dom = 'Bfrtip',
                          buttons = list(
@@ -2218,7 +2286,7 @@ htmltools::br()
 
 #############################################
 h4("Filtered Statistics")
-p(class = "container", class = "value", summarywidget(sd_cover, column = "mean_value", statistic = "sum", digits = 2), span(class = "caption", "= mean % cover"))
+p(class = "container", class = "value", summarywidget(sd_cov_nat_top5, column = "mean_value", statistic = "sum", digits = 2), span(class = "caption", "= mean % cover"))
 htmltools::br()
 htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
 
@@ -2499,7 +2567,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-21 @ 11:11</div>
+Modified: 2026-02-21 @ 12:12</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
