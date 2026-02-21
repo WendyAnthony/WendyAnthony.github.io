@@ -454,11 +454,6 @@ str(cover_data_rename_site_sub)
 cover_data_rename_site_sub <- cover_data_rename_site_sub %>%
   mutate(across(where(is.numeric), ~ round(.x, 2)))
 
-
-## THis seems to mess up the charts ???
-# cover_data_rename_site_sub$upper <- sprintf("%.2f", cover_data_rename_site_sub$upper)
-# cover_data_rename_site_sub$lower <- sprintf("%.2f", cover_data_rename_site_sub$lower)
-
 #############################################
 cov_nat_top5 <- cover_data_rename_site_sub %>% filter(Species %in% c("camas", "delphinium",  "Pacific sanicle", "licorice fern", "Oregon grape"))
 
@@ -542,7 +537,6 @@ Inputs {.sidebar data-width=250}
 # htmltools::br()
 # htmltools::br()
 
-
 #############################################
 htmltools::br()
 htmltools::br()
@@ -551,65 +545,99 @@ HTML("<img src='images/HAT-logo-ss.png', width=150>")
 
 #############################################
 h4("RNS ER390 Project for Visualizing HAT Monitoring Data")
-#hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 HTML("
   <br>This interactive data visualization tool was created by Wendy Anthony for HAT as a final project for University of Victoria Restoration of Natural Ecosystems ER390.
-  <br>
-<span style='font-size:70%';>wanthony@uvic.ca 
-<br>
-Modified: 2026-02-19 03:57</span>")
-br()
+
+  <br><br>
+  
+Each navigation link in the top header hosts a page of different data visualization charts and datatables, uses a different dataset, and  responds to a different set of filters.
+<br><br>")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 
+HTML("
+<div style='font-size:80%; text-align:center;'>
+<strong>Created and Coded for HAT <br>
+by Wendy Anthony</strong><br>
+wanthony@uvic.ca 
+<br>
+Modified: 2026-02-21 @ 07:07</div>
+")
+hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+br()
 #############################################
-h4("Filter")
-htmltools::em("Reset Filters: Delete choices")
-htmltools::br()
-htmltools::br()
-# filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
-filter_select(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
-#filter_checkbox(id = "Top_5_Invasives", label = "Top 5 Invasives", sharedData = sd_sites, group = ~Top_5_Invasives)
-filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
+# h4("Filter")
+# htmltools::em("Reset Filters: Delete choices")
+# htmltools::br()
+# htmltools::br()
+# # filter_checkbox(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
+# filter_select(id = "Site", label = "Site", sharedData = sd_sites, group = ~Site)
+# #filter_checkbox(id = "Top_5_Invasives", label = "Top 5 Invasives", sharedData = sd_sites, group = ~Top_5_Invasives)
+# filter_select(id = "Municipality", label = "Municipality", sharedData = sd_sites, group = ~Municipality)
 
 #############################################
 # HTML("<img src='https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>")
 # HTML("<img src='images/HAT-logo-ss.png', width = 100>")
-HTML("
-<span style='font-size:80%; font-style:italic'>HAT data source: <a href='https://hat.bc.ca/community-based-restoration'>https://hat.bc.ca/community-based-restoration</a></span>
-     ")
-htmltools::br()
-htmltools::br()
-htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
-htmltools::br()
+# HTML("
+# <span style='font-size:80%; font-style:italic'>HAT data source: <a href='https://hat.bc.ca/community-based-restoration'>https://hat.bc.ca/community-based-restoration</a></span>
+#      ")
+# htmltools::br()
+# htmltools::br()
+# htmltools::hr(style = "border: 0.5px solid grey; width: 250px; margin: auto;")
+# htmltools::br()
 # htmltools::em("HAT data source: ")
 # htmltools::a(href = "https://hat.bc.ca/community-based-restoration", "https://hat.bc.ca/community-based-restoration")
 # htmltools::br()
 ```
 
-Row  {data-height=75}
+Row  {data-height=80}
 -----------------------------------------------
 
 ### ***Interactive Maps of 3 HAT Managed Public GOE Sites***
 ```{r}
-htmltools::HTML("
-These 3 public HAT sites are listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other HAT sites are on private, non-public land with location protected for privacy. Click map markers to open pop-up windows site-specific information. The spatial data for Oak Haven show polygons of restoration and species locations, but this data does Not respond to filters (yet).
+htmltools::HTML("Interactive maps: Click map markers to open pop-up windows site-specific information. 
+The three public HAT sites are listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other HAT sites are on private, non-public land with location protected for privacy. The layer menu at the top right is used to toggle spatial data layers. 
+The spatial data for Oak Haven shows polygons of restoration and species locations, but does Not yet respond to filters.
+The measuring tool (under the zoom) can be used to measure distance between or within sites.
                 ")
 ```
 
 Row {.tabset .tabset-fade}
 ---------------------------------------------
 
-### 3-Site Map
-```{r leaflet-both-sites, echo = FALSE, message = FALSE, include = TRUE}
+### 3 HAT Site Map 
+```{r leaflet-both-sites-filter, echo = FALSE, message = FALSE, include = TRUE}
 #############################################
 # title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+
+
+Site_filter <- filter_select(id = "Site", label = "Choose a Site Filter", sharedData = sd_sites, group = ~Site)
+# Municipality_filter <- filter_select(id = "Municipality", label = "Choose a Municipality Filter", sharedData = sd_sites, group = ~Municipality)
+
+# Header
+# bscols(
+#   widths = c(1, 11),
+#   "",
+#   htmltools::strong("HAT GOE Monitoring Covenant 3-Sites Map")
+# )
+
+# bscols(widths = c(1,5,5,1),
+#   "",
+#   Site_filter, 
+#   Municipality_filter,
+#   "")
+
+bscols(widths = c(2,8,2),
+  "",
+  Site_filter, 
+  "")
 
 title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
      
           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
 
 #############################################        
-map_oh_sp <- leaflet() %>%
+map <- leaflet() %>%
       addProviderTiles("Esri.WorldImagery") %>%
       addCircleMarkers(
         data = sd_sites,
@@ -769,13 +797,11 @@ map_oh_sp <- leaflet() %>%
   addScaleBar() %>%
   setView(-123.44799, 48.52919, zoom = 10)
 
-map_oh_sp
+map
 
 ```
 
-
-
-### Oak Haven Spatial Data
+### Oak Haven Spatial Data Map
 ```{r leaflet-OH-spatial, echo = FALSE, message = FALSE, include = TRUE}
 title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
 
@@ -875,6 +901,181 @@ map_all <- leaflet() %>%
 
 # Print the map
 map_all
+```
+
+
+```{r leaflet-both-sites, echo = FALSE, message = FALSE, include = TRUE}
+# # ### 3-Site Map
+# #############################################
+# # title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
+# 
+# title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
+#      
+#           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
+# 
+# #############################################        
+# map_oh_sp <- leaflet() %>%
+#       addProviderTiles("Esri.WorldImagery") %>%
+#       addCircleMarkers(
+#         data = sd_sites,
+#         ~ Lng, ~ Lat,
+#         color = ~pal(Site),
+#         weight = 1, # size of circle border
+#         stroke = TRUE, fillOpacity = 1, #fillOpacity = 0.5
+#         radius = 8,
+#         popup = paste0(
+# #        "<img src = 'images/HAT-logo-ss.png', width = 100>",  "<br>","<br>",
+# #                "<img src = 'https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w'>",  "<br>","<br>",
+#         # NOTE: popups need to refer to original data object, not shared sd
+#           "<b>Site:</b> ", "<b>", HAT_sites_HAT$Site, "</b>",  "<br>",
+#           "<b>FullName:</b> ", "<b>", HAT_sites_HAT$Site_Name, "</b>",  "<br>",
+#           "<b>Municipality:</b> ", HAT_sites_HAT$Municipality, "<br>",
+#           "<b>Size:</b> ", HAT_sites_HAT$Size_ha, " (ha)", "<br>",
+#           "<b>First Nations:</b> ", HAT_sites_HAT$FirstNations, "<br>",
+#           # "<b>Project id:</b> ", HAT_sites_HAT$ID, "<br>",
+#           "<b>HAT Status:</b> ", HAT_sites_HAT$HAT_Status, "<br>",
+#           "<b>Co-Covenant:</b> ", HAT_sites_HAT$Co_Covenant, " (", HAT_sites_HAT$Date, ")", "<br>",
+#           "<b>Ecosystems:</b> ", HAT_sites_HAT$Ecosystems, "<br>",
+#           "<b>Volunteer Stewardship:</b> ", HAT_sites_HAT$Volunteer_Stewardship, "<br><br>",
+#         "<b>Top 5 Invasives Species:</b> ", HAT_sites_HAT$Top_5_Invasives, "<br><br>",
+#         
+# #############################################        
+#     '<table style="border: 0px solid black; vertical-align: top; font-size: 85%;">',
+#       '<tr style="vertical-align: top;">
+#         <th>BIOMASS PULL</th>        
+#         <th align="right">2022</th>
+#         <th align="right">2023</th>
+#         <th align="right">2024</th>
+#         <th align="right">2025</th>        
+#       </tr>', 
+#     
+#     # Hours per Biomass (m3)
+#       '<tr style="vertical-align: top;">',
+#         '<td style="vertical-align: top;"><b>Hours/Biomass (m3):  </b></td>',
+#         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2022, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2023, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2024, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Hours_per_Biomass_2025, '</td>',
+#       '</tr>',
+#     
+#     # Staff Hours
+#       '<tr style="vertical-align: top;">',
+#         '<td style="vertical-align: top;"><b>Crew Hours:  </b></td>',
+#         '<td align="right">', HAT_sites_HAT$Crew_Hours_2022, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Crew_Hours_2023, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Crew_Hours_2024, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Crew_Hours_2025, '</td>',
+#       '</tr>',
+#     
+#     #Biomass Removed (m3)
+#       '<tr style="vertical-align: top;">',
+#         '<td style="vertical-align: top;"><b>Biomass (m3):  </b></td>',
+#         '<td align="right">', HAT_sites_HAT$Biomass_2022, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Biomass_2023, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Biomass_2024, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Biomass_2025, '</td>',
+#       '</tr>',
+#     
+#         #Area of Biomass Removed (m3)
+#       '<tr style="vertical-align: top;">',
+#         '<td style="vertical-align: top;"><b>Area (m2):  </b></td>',
+#         '<td align="right">', HAT_sites_HAT$Area_2022, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Area_2023, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Area_2024, '</td>',
+#         '<td align="right">', HAT_sites_HAT$Area_2025, '</td>',
+#       '</tr>',
+#     '</table>'
+# 
+# #############################################
+#           ))  %>%
+#   addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
+#   addControl(title, position = "topright") %>% 
+#   addPolygons(data = OHP_2025_Completed_polygons_dropz,
+#               group = "2025 Completed polygons",
+#               color = "#AA4499", #AA4499 purple
+#               #fillColor = "purple",
+#               fillOpacity = 0.5,
+#               popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>",
+#                              "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>%
+#   addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
+#               group = "2025 Experimental test plot points",
+#               color = "#EECC66", #EECC66 light yellow
+#               #fillColor = "purple",
+#               fillOpacity = 0.8,
+#               weight = 1,
+#               radius = 3,
+#               popup = paste0("<b>Name: </b>", OHP_2025_Experimental_test_plots_dropz$Name, "<br>",
+#                             "<b>Description: </b>", OHP_2025_Experimental_test_plots_dropz$Descript, "<br>",
+#                             "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>%
+#   addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
+#               # covers same area as Invasive_Species_Patches
+#               group = "2024 ShinyG Burning Priorities",
+#               # use a lighter colour so lighter Shiny will show over Species patches
+#               color = "#EE7733", #EE7733 orange
+#               #color = "blue",
+#               #fillColor = "blue",
+#               fillOpacity = 0.3,
+#               popup = paste0("<b>Name: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Name, "<br>",
+#                              "<b>Priority: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Priority, "<br>",
+#                              "<b>Description: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$PopupInfo, "<br>",
+#                              "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>",
+#                              "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups
+#   addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
+#               group = "2024 Invasive Species Removed",
+#               color = "#EE3377", # magenta #EE3377
+#               #color = "yellow",
+#               #fillColor = "yellow",
+#               fillOpacity = 0.6,
+#               popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Removed_dropz$Name, "<br>",
+#                              "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>%
+#   addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
+#               # covers same area as Shiny g
+#               group = "2024 Invasive Species Patches",
+#               # use a darker colour so lighter Shiny will show
+#               color = "#33BBEE", #cyan #33BBEE
+#               #fillColor = "orange",
+#               fillOpacity = 0.4,
+#               popup = paste0("<b>Name: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$Name, "<br>",
+#                              "<b>Description: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$PopupInfo, "<br>",
+#                              "<b>Area: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$AreaNumber, "<br>",
+#                              "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME)
+#               ) %>%
+#   addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
+#               group = "2024 Invasive Species Points",
+#               color = "#CC3311", # CC3311 red
+#               #fillColor = "red",
+#               fillOpacity = 0.5,
+#               radius = 3,
+#               popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Points_dropz$Name, "<br>",
+#                             "<b>Description: </b>", OH_2024_Invasive_Species_Points_dropz$Descript, "<br>",
+#                             "<b>Species: </b>", OH_2024_Invasive_Species_Points_dropz$INSVNAME, "<br>",
+#                             "<b>Elevation: </b>", OH_2024_Invasive_Species_Points_dropz$Elevation, "<br>",
+#                             "<b>Date: </b>", OH_2024_Invasive_Species_Points_dropz$DateTimeS)
+#               ) %>%
+#   # add legend to overlay group toggled off
+#   addLegend(
+#               "bottomright",
+#               colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
+#               labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
+#               title = "OH Spatial Data",
+#               group = "OH Spatial Polygon Color Legend"
+#               ) %>%
+#   addMeasure(
+#     position = "topleft",
+#     primaryLengthUnit = "meters",
+#     primaryAreaUnit = "sqmeters",
+#     activeColor = "#DDAA33",
+#     completedColor = "#BB5566") %>% 
+#   addLayersControl(
+#     overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
+#     options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
+#   ) %>%
+#   hideGroup(c("2025 Completed polygons", "2025 Experimental test plot points", "2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
+#   addScaleBar() %>%
+#   setView(-123.44799, 48.52919, zoom = 10)
+# 
+# map_oh_sp
+
 ```
 
 ### Datatable 3 HAT Sites
@@ -1727,9 +1928,6 @@ custom_colours_years <- c("2022" = "#ffff33",
                     "2023" = "#4daf4a", 
                     "2024" = "#984ea3", 
                     "2025" = "#ff7f00")
-# custom_colours_Site_2 <- c("Matson" = "#f8766d", 
-#                     "Oak Haven" = "#619cff")
-
 #############################################
 ggplotly(
   ggplot(sd_cover_nat, aes(x = reorder(Species, desc(Species)), y = mean_value, fill = as.factor(Year), 
@@ -1776,18 +1974,11 @@ ggplotly(
 ```
 
 ### Native Species (points with error)
-```{r mean-cover-nat-nancy, echo = FALSE, message = FALSE, warning = FALSE}
-#############################################
-# custom_colours_years <- c("2022" = "#ffff33", 
-#                     "2023" = "#4daf4a", 
-#                     "2024" = "#984ea3", 
-#                     "2025" = "#ff7f00")
+```{r mean-cover-nat-error-points, echo = FALSE, message = FALSE, warning = FALSE}
 
 #############################################
 custom_colours_treat <- c("Untreated" = "#d8b365", 
                     "Treated" = "#5ab4ac")
-# custom_colours_Site_2 <- c("Matson" = "#f8766d", 
-#                     "Oak Haven" = "#619cff")
 
 #############################################
 ggplotly(
@@ -1847,8 +2038,6 @@ custom_colours_years <- c("2022" = "#ffff33",
                     "2023" = "#4daf4a", 
                     "2024" = "#984ea3", 
                     "2025" = "#ff7f00")
-# custom_colours_Site_2 <- c("Matson" = "#f8766d", 
-#                     "Oak Haven" = "#619cff")
 
 #############################################
 ggplotly(
@@ -1900,8 +2089,6 @@ custom_colours_years <- c("2022" = "#ffff33",
                     "2023" = "#4daf4a", 
                     "2024" = "#984ea3", 
                     "2025" = "#ff7f00")
-# custom_colours_Site_2 <- c("Matson" = "#f8766d", 
-#                     "Oak Haven" = "#619cff")
 
 #############################################
 ggplotly(
@@ -2029,18 +2216,10 @@ Row {.tabset .tabset-fade}
 
 
 ### Top 5 Native Species Site~Year (Error bar)
-```{r mean-cover-nat-nancy-top5-site-year, echo = FALSE, message = FALSE, warning = FALSE}
-#############################################
-# custom_colours_years <- c("2022" = "#ffff33", 
-#                     "2023" = "#4daf4a", 
-#                     "2024" = "#984ea3", 
-#                     "2025" = "#ff7f00")
-
+```{r mean-cover-nat-errorbar-top5-site-year, echo = FALSE, message = FALSE, warning = FALSE}
 #############################################
 custom_colours_treat <- c("Untreated" = "#d8b365", 
                     "Treated" = "#5ab4ac")
-# custom_colours_Site_2 <- c("Matson" = "#f8766d", 
-#                     "Oak Haven" = "#619cff")
 
 #############################################
 ggplotly(
@@ -2089,71 +2268,6 @@ ggplotly(
     # gives some space between x axis label and legend
     y = -0.2
     ))
-```
-
-
-
-
-
-```{r mean-cover-nat-nancy-top5-year-site, echo = FALSE, message = FALSE, warning = FALSE}
-# ### Top 5 Native Nancy's Native Species Year ~ Site
-# #############################################
-# # custom_colours_years <- c("2022" = "#ffff33", 
-# #                     "2023" = "#4daf4a", 
-# #                     "2024" = "#984ea3", 
-# #                     "2025" = "#ff7f00")
-# 
-# #############################################
-# custom_colours_treat <- c("Untreated" = "#d8b365", 
-#                     "Treated" = "#5ab4ac")
-# # custom_colours_Site_2 <- c("Matson" = "#f8766d", 
-# #                     "Oak Haven" = "#619cff")
-# 
-# #############################################
-# ggplotly(
-#   ggplot(sd_cov_nat_top5, aes(x = reorder(Species, desc(Species)), y = mean_value,  fill = Treated, 
-#                                                           text = paste("Year:", Year,
-#                                                           "\nSite:", Site,
-#                                                           "\nSpecies:", Species,      
-#                                                           "\nNative or Invasive:", Native_or_Invasive,  
-#                                                           "\nTreated:", Treated,
-#                                                           "\nMean Value:", mean_value,
-#                                                           "\nSD Value:", sd_value))) + 
-#   # geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
-#   geom_point(size = 3, alpha = 0.75) +
-#     
-#   geom_errorbar(aes(ymin = lower, ymax = upper)) +
-#   coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
-#   #facet_wrap(vars(Site)) +
-#   facet_grid(Year ~ Site) +
-#   coord_flip() + 
-#   theme_minimal() + #get rid of grey background and tick marks
-#   theme(legend.position ="bottom") + 
-#     scale_fill_manual(values = custom_colours_treat) +
-#     # scale_fill_manual(values = custom_colours_Site_2) +
-#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
-#         strip.text = element_text(size = 11)) + 
-#       labs(
-#           title = "Native Species Mean % Cover at Matson & Oak Haven by Treatment", 
-#           x = "",   
-#           y = "Mean % cover",   
-#           fill = ""
-#           ) +
-#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-#     # aligns title to left
-#   theme(plot.title = element_text(hjust = 0)) , 
-#   
-#   tooltip = "text",
-#   config = (displayModeBar = False) 
-#   ) %>%
-#     layout(legend = list(orientation = "h",
-#     xanchor="center",
-#     #x = 0.5 legend too close to x axis label
-#     # x = 1 # too far to right
-#     x = 0.5,
-#     # gives some space between x axis label and legend
-#     y = -0.2
-#     ))
 ```
 
 ### Datatable
@@ -2281,93 +2395,6 @@ ggplotly(
     ))
 ```
 
-
-```{r species-richness-count}
-# ### **Species Counts** 
-#############################################
-# # create custom colour-blind-friendly palette
-# custom_colours_3 <- c("Invasive" = "#fc8d62", 
-#                     "Native" = "#66c2a5", 
-#                     "MixedGrass" = "#8da0cb")
-#
-#############################################
-# ggplotly(
-#   ggplot(sd_count, aes(x = Treated, y = Species_number, fill = Native_or_Invasive, 
-#          text = paste("Year:", Year,
-#                       "\nSite:", Site,
-#                       "\nTreated:", Treated,
-#                       "\nNative or Invasive", Native_or_Invasive,
-#                       "\nSpecies Number", Species_number))) + 
-#   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
-#   theme_minimal() + #get rid of grey background and tick marks
-#   theme(legend.position ="bottom") + 
-#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-#           # aligns title to left
-#   theme(plot.title = element_text(hjust = 0)) +
-#   scale_fill_manual(values = custom_colours_3) +
-#   labs(
-#       title='Count of unique species at Oak Haven and Matson',
-#       fill = "",
-#       x = "Treatment", 
-#       y = "Species Count") +
-#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
-#   tooltip = "text",
-#   config = (displayModeBar = False) 
-#   ) %>%
-#     layout(legend = list(orientation = "h",
-#     xanchor="center",
-#     x = 0.5,
-#     # gives some space between x axis label and legend
-#     y = -0.2
-#     ))
-```
-
-
-```{r species-richness-count-facet-yr}
-### **Species Counts by Year** 
-#############################################
-# create custom colour-blind-friendly palette
-# custom_colours_3 <- c("Invasive" = "#fc8d62", 
-#                     "Native" = "#66c2a5", 
-#                     "MixedGrass" = "#8da0cb")
-#
-#############################################
-# ggplotly(
-#   ggplot(sd_count, aes(x = Treated, y = Species_number, fill = Native_or_Invasive, 
-#          text = paste("Year:", Year,
-#                       "\nSite:", Site,
-#                       "\nTreated:", Treated,
-#                       "\nNative or Invasive", Native_or_Invasive,
-#                       "\nSpecies Number", Species_number))) + 
-#   geom_bar(stat = "identity", width = 0.5, position = "dodge") +
-#   facet_wrap( ~ Year) +
-# 
-#   theme_minimal() + #get rid of grey background and tick marks
-#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
-#         strip.text = element_text(size = 11)) +
-#   theme(legend.position ="bottom") + 
-#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-#           # aligns title to left
-#   theme(plot.title = element_text(hjust = 0)) +
-#   scale_fill_manual(values = custom_colours_3) +
-#   labs(
-#       title='Count of unique species at Oak Haven and Matson by year',
-#       fill = "",
-#       x = "Treatment", 
-#       y = "Species Count") +
-#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)), 
-#   tooltip = "text",
-#   config = (displayModeBar = False) 
-#   ) %>%
-#     layout(legend = list(orientation = "h",
-#     xanchor="center",
-#     x = 0.5,
-#     # gives some space between x axis label and legend
-#     y = -0.2
-#     ))
-```
-
-
 ### Datatable
 ```{r data-table-count}
 htmltools::h5("Species Count Datatable")
@@ -2418,15 +2445,23 @@ HTML("
   <br>This interactive data visualization tool was created as a final project for University of Victoria Restoration of Natural Ecosystems ER390, with HAT as a community partner, and supervised by Nancy Shackelford.<br><br>
   ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
-br()
 #############################################
-HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
-<span style='font-size:75%';>wanthony@uvic.ca
+# HTML("<strong>Created and Coded for HAT by Wendy Anthony</strong><br>
+# <span style='font-size:75%';>wanthony@uvic.ca
+# <br>
+# Modified: 2026-02-21 @ 06:56</span>")
+
+HTML("
+<div style='font-size:80%; text-align:center;'>
+<strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
+wanthony@uvic.ca 
 <br>
-2026-02-19 03:57</span>")
-br()
-br()
+Modified: 2026-02-21 @ 07:07</div>
+")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
+br()
+br()
+
 ```
 
 Row  {data-height=1}
@@ -2434,16 +2469,15 @@ Row  {data-height=1}
 
 ### ***About this Interactive Web Visualization Tool***
 
-
 Row  {.tabset .tabset-fade}
 -------------------------------------
 
 ### HAT Datasets
-```{r}
+```{r about-datasets}
 HTML("
        <h5>HAT Data of 9 HAT-only-Managed-Sites</h5>
      
-     <span style='font-size:85%';>
+  <span style='font-size:85%';>
      1. <strong>HAT Restoration Crew Site Data</strong> 
      <br> * <strong>Metrics</strong>: Daily and Yearly crew hours and biomass (metres<sup>3</sup>) and area (metres<sup>2</sup>) of invasive species removed; 
      <br> * <strong>Sites</strong>: Bear Hill, Calypso Woods, Camas Hill, Funk, Havenwood, Matson, Oak Haven, Purple Sanicle, Yates, 
@@ -2473,13 +2507,13 @@ HTML("
      <br> * <strong>Sites</strong>: Oak Haven
      <br> * <strong>Data</strong>: <em>Polygons and Points Shape files</em>
      <br><br>
-     </span>
+  </span>
      ")
 ```
 
 
 ### How to Use This Interactive Tool
-```{r}
+```{r about-use-tool}
 HTML("
        <h5>How to use this interactive data visualization tool</h5>
   <strong>Top Header Navigation Pages</strong><br>
@@ -2500,7 +2534,7 @@ HTML("
 ```
 
 ### Tips for Analyzing Chart Visualizations
-```{r}
+```{r about-analysis-tips}
 HTML("
   <h5>What Story Is Being Told By The Data Visualizations</h5>
     <strong>Notice any Patterns Trends?</strong><br>
@@ -2524,7 +2558,7 @@ HTML("
 ```
 
 ### ER390 Project Proposal
-```{r}
+```{r about-proposal}
 HTML("
 <strong>Background Research</strong><br> 
 * Comparing monitoring restoration projects using consistent vegetation measurements techniques, may help identify responses to stressors affecting already compromised and rare GOE.<br> 
