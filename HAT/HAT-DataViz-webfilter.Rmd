@@ -2,6 +2,8 @@
 title: "Visualizing HAT Monitoring Data"
 output: 
   flexdashboard::flex_dashboard:
+    favicon: HAT-favicon-60.png
+    #HAT-favicon.png
     #css: flexbox-style.css
     orientation: rows
     vertical_layout: fill
@@ -23,6 +25,27 @@ knitr::include_graphics("images/HAT-logo-ss.png")
 ```
 
 ```{css}
+
+/* xs */
+/* @media (min-width: 475px) {} */
+
+/* sm */
+/* @media (min-width: 640px) {} */
+
+/* md */
+/* @media (min-width: 768px) {} */
+
+/* lg */
+/* @media (min-width: 1024px) {} */
+
+/* xl */
+/* @media (min-width: 1280px) {} */
+
+/* 2xl */
+/* @media (min-width: 1536px) {} */
+  
+  
+
 /* Set font color of inactive tab to green */
 .nav-tabs-custom .nav-tabs > li > a {
   color: green;
@@ -206,6 +229,7 @@ OHP_2025_Experimental_test_plots <- st_read("data_spatial/OHP_2025_Experimental_
 # https://gis.stackexchange.com/questions/253898/adding-a-linestring-by-st-read-in-shiny-leaflet
 # When trying to create leaflet map Error in if (length(nms) != n || any(nms == "")) stop("'options' must be a fully named list, or have no names (NULL)") : missing value where TRUE/FALSE needed
 
+## Drop Z Dimension of Spatial Data to map
 OH_2024_ShinyG_Burning_Priorities_dropz <- st_zm(OH_2024_ShinyG_Burning_Priorities, drop = T, what = "ZM")
 OH_2024_Invasive_Species_Removed_dropz <- st_zm(OH_2024_Invasive_Species_Removed, drop = T, what = "ZM")
 OH_2024_Identified_Invasive_Species_Patches_dropz <- st_zm(OH_2024_Identified_Invasive_Species_Patches, drop = T, what = "ZM")
@@ -236,6 +260,8 @@ nrow(OH_2024_ShinyG_Burning_Priorities_dropz) #13
 #  [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
 # [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry"   "Site"       "Year"       "Data"       "Priority" 
 
+write.csv(OH_2024_ShinyG_Burning_Priorities_dropz, "data/OH_2024_ShinyG_Burning_Priorities_dropz.csv")
+
 ################################# 
 colnames(OH_2024_Invasive_Species_Removed_dropz)
 # [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
@@ -250,6 +276,8 @@ OH_2024_Invasive_Species_Removed_dropz <- OH_2024_Invasive_Species_Removed_dropz
 ncol(OH_2024_Invasive_Species_Removed_dropz)
 nrow(OH_2024_Invasive_Species_Removed_dropz) #10
 
+write.csv(OH_2024_Invasive_Species_Removed_dropz, "data/OH_2024_Invasive_Species_Removed_dropz.csv")
+
 ################################# 
 colnames(OH_2024_Identified_Invasive_Species_Patches_dropz)
 # [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
@@ -260,6 +288,8 @@ OH_2024_Identified_Invasive_Species_Patches_dropz$Data <- "OH_2024_Identified_In
 OH_2024_Identified_Invasive_Species_Patches_dropz$Priority <- "Priority"
 ncol(OH_2024_Identified_Invasive_Species_Patches_dropz)
 nrow(OH_2024_Identified_Invasive_Species_Patches_dropz) #13
+
+write.csv(OH_2024_Identified_Invasive_Species_Patches_dropz, "data/OH_2024_Identified_Invasive_Species_Patches_dropz.csv")
 
 ################################# 
 colnames(OHP_2025_Completed_polygons_dropz)
@@ -276,6 +306,8 @@ nrow(OHP_2025_Completed_polygons_dropz) #7
 # reorder names for priority so polygon data can be bound by row
 OHP_2025_Completed_polygons_dropz <- OHP_2025_Completed_polygons_dropz[, c("Name", "FolderPath", "SymbolID", "AltMode", "Base", "Clamped", "Extruded", "Snippet", "PopupInfo", "Shape_Leng", "Shape_Area", "INSVNAME", "AreaNumber", "geometry", "Site", "Year", "Data", "Priority" )]
 
+write.csv(OHP_2025_Completed_polygons_dropz, "data/OHP_2025_Completed_polygons_dropz.csv")
+
 ################################# 
 # rbind polygons
 OH_spatial_polygons_all <- rbind(OH_2024_ShinyG_Burning_Priorities_dropz, OH_2024_Invasive_Species_Removed_dropz, OH_2024_Identified_Invasive_Species_Patches_dropz, OHP_2025_Completed_polygons_dropz)
@@ -285,6 +317,9 @@ colnames(OH_spatial_polygons_all)
 # remove unused columns
 OH_spatial_polygons_all_sub <- subset(OH_spatial_polygons_all, select = -c(2:8, 10, 11))
 colnames(OH_spatial_polygons_all_sub)
+
+write.csv(OH_spatial_polygons_all_sub, "data/OH_spatial_polygons_all_sub.csv")
+
 ################################# 
 ################################# 
 
@@ -293,6 +328,8 @@ colnames(OH_2024_Invasive_Species_Points_dropz)
 OH_2024_Invasive_Species_Points_dropz$Site <- "Oak Haven"
 OH_2024_Invasive_Species_Points_dropz$Year <- "2024"
 OH_2024_Invasive_Species_Points_dropz$Data <- "OH_2024_Invasive_Species_Points"
+
+write.csv(OH_2024_Invasive_Species_Points_dropz, "data/OH_2024_Invasive_Species_Points_dropz.csv")
 
 ################################# 
 colnames(OHP_2025_Experimental_test_plots_dropz)
@@ -308,12 +345,17 @@ OHP_2025_Experimental_test_plots_dropz <- OHP_2025_Experimental_test_plots_dropz
 colnames(OHP_2025_Experimental_test_plots_dropz)
 colnames(OH_2024_Invasive_Species_Points_dropz)
 
+write.csv(OHP_2025_Experimental_test_plots_dropz, "data/OHP_2025_Experimental_test_plots_dropz.csv")
+
 ################################# 
 # rbind points
 OH_spatial_points_all <- rbind(OHP_2025_Experimental_test_plots_dropz, OH_2024_Invasive_Species_Points_dropz)
 colnames(OH_spatial_points_all)
-OH_spatial_points_alll_sub <- subset(OH_spatial_points_all, select = -c(1,4,5,6))
-colnames(OH_spatial_points_alll_sub)
+OH_spatial_points_all_sub <- subset(OH_spatial_points_all, select = -c(1,4,5,6))
+colnames(OH_spatial_points_all_sub)
+
+write.csv(OH_spatial_points_all_sub, "data/OH_spatial_points_all_sub.csv")
+
 ```
 
 
@@ -407,10 +449,16 @@ unique(crew_vol$Native_or_Invasive)
 crew_vol_grs <- crew_vol[crew_vol$Native_or_Invasive == "MixedGrass",]
 crew_vol_inv <- crew_vol[crew_vol$Native_or_Invasive == "Invasive",]
 
+write.csv(crew_vol_grs, "data/crew_vol_grs.csv")
+write.csv(crew_vol_inv, "data/crew_vol_inv.csv")
+
+
+
 #############################################
 crew_vol_inv_top5 <- crew_vol %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
 
 colnames(crew_vol_inv_top5)
+write.csv(crew_vol_inv_top5, "data/crew_vol_inv_top5.csv")
 
 #############################################
   crew_vol_inv_top5_sum <- crew_vol_inv_top5 %>%
@@ -481,11 +529,13 @@ species_count <- species_count %>%
 
 ```{r shared-data, include = FALSE}
 ### Create sharable database using Crosstalk package
+
+# Crew Data
 #############################################
 # crew_data_sep_sub.csv 238 obs 9 variable
 sd_crew_vol <- SharedData$new(data = crew_vol, group = "crew_all_group")
 
-sd_crew_vol_grs <- SharedData$new(data = crew_vol_grs, group = "crew_all_group")
+# sd_crew_vol_grs <- SharedData$new(data = crew_vol_grs, group = "crew_all_group")
 sd_crew_vol_inv <- SharedData$new(data = crew_vol_inv, group = "crew_all_group")
 
 sd_crew_vol_inv_top5 <- SharedData$new(data = crew_vol_inv_top5, group = "top5_group_bar")
@@ -498,6 +548,7 @@ crew_vol_inv_top5_sum <- SharedData$new(data = crew_vol_inv_top5_sum, group = "t
 sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_rename_site, group = "crew_group")
 # crew_data_sep_sub_sum_bio_inv.csv
 
+# Cover Data
 #############################################
 sd_cover <- SharedData$new(data = cover_data_rename_site_sub, group = "cover_group")
 
@@ -563,7 +614,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-21 @ 08:50</div>
+Modified: 2026-02-21 @ 11:11</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -1071,7 +1122,7 @@ map_OH_sp
 
 ```
 
-### Datatable 3 HAT Sites
+### Datatable HAT 3-Sites
 ```{r data-table-map}
 htmltools::h5("HAT Public Sites Datatable")
 htmltools::br()
@@ -1133,7 +1184,7 @@ htmltools::br()
 ```{r data-table-map-OH-Points}
 htmltools::h5("Oak Haven Points Datatable")
 htmltools::br()
- datatable(OH_spatial_points_alll_sub, rownames = FALSE, class = 'compact',
+ datatable(OH_spatial_points_all_sub, rownames = FALSE, class = 'compact',
            extensions = c("Buttons"),
            options = list(dom = 'Bfrtip',
                          buttons = list(                        
@@ -1900,7 +1951,7 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=75}
+Row  {data-height=80}
 -----------------------------------------------
 
 ### ***Mean % Species Cover Data***
@@ -2326,7 +2377,7 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=100}
+Row  {data-height=105}
 -----------------------------------------------
 
 ### ***Species Richness Unique Count @ Matson & Oak Haven***
@@ -2448,7 +2499,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-21 @ 08:50</div>
+Modified: 2026-02-21 @ 11:11</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
