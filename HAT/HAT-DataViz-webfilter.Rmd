@@ -563,7 +563,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-21 @ 08:28</div>
+Modified: 2026-02-21 @ 08:50</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -1207,14 +1207,13 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=75}
+Row  {data-height=55}
 -----------------------------------------------
 
 ### ***Crew (& Matson Volunteer) Data for hours worked & biomass cleared***
 ```{r}
 htmltools::HTML("
-<strong>Daily crew data</strong> was collected for work hours, invasive species, and biomass removed.<br>
-<em>Note: Some missing data for fall 2025</em>. <strong><em>Tip: Start by choosing a site</em></strong>.. 
+<strong>Daily crew data</strong> was collected for work hours, invasive species, and biomass removed. <strong><em>Tip: Start by choosing a site</em></strong>.. 
 ")
 ```
 
@@ -2200,7 +2199,7 @@ Row  {data-height=25}
 ### ***Mean % Top 5 Native Species Cover Data***
 ```{r}
 htmltools::HTML("
-Mean cover data is subset to view only top 5 Native Species. Error bars show the upper and lower ranges of the standard deviation from mean values.")
+Mean cover data is subset to only top 5 Native Species. Error bars show upper and lower ranges of the standard deviation from mean values.")
 ```
 
 
@@ -2327,7 +2326,7 @@ htmltools::br()
 htmltools::br()
 ```
 
-Row  {data-height=140}
+Row  {data-height=100}
 -----------------------------------------------
 
 ### ***Species Richness Unique Count @ Matson & Oak Haven***
@@ -2449,7 +2448,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-21 @ 08:28</div>
+Modified: 2026-02-21 @ 08:50</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
