@@ -553,8 +553,8 @@ Each navigation link in the top header hosts a page of different data visualizat
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
-p("Filter 3 Site Map Only")
-filter_select(id = "Site", label = "Choose Site for 3 Sites Map", sharedData = sd_sites, group = ~Site)
+p("Filter for 3-Sites Map Only")
+filter_select(id = "Site", label = "Choose Site for 3-Sites Map", sharedData = sd_sites, group = ~Site)
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 HTML("
@@ -563,7 +563,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-21 @ 08:08</div>
+Modified: 2026-02-21 @ 08:28</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -592,22 +592,23 @@ br()
 # htmltools::br()
 ```
 
-Row  {data-height=100}
+Row  {data-height=80}
 -----------------------------------------------
 
 ### ***Interactive Maps of 3 HAT Managed Public GOE Sites***
 ```{r}
-htmltools::HTML("Interactive maps: Click map markers to open pop-up windows site-specific information. 
-The three public HAT sites are listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>, all other HAT sites are on private, non-public land with location protected for privacy. The layer menu at the top right is used to toggle spatial data layers. 
-The spatial data for Oak Haven shows polygons of restoration and species locations, but does not yet respond to filters.
-The measuring tool (under the zoom) can be used to measure distance between or within sites.
+htmltools::HTML("Click map markers to open pop-up windows for site information. 
+These three public HAT sites are listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>. 
+Spatial data for Oak Haven shows polygons of restoration and species locations, but does not yet respond to filters.
+The layer menu is used to toggle spatial data layers on. 
+The measuring tool can be used to measure distance between or within sites.
                 ")
 ```
 
 Row {.tabset .tabset-fade}
 ---------------------------------------------
 
-### 3 HAT Site Map 
+### HAT 3-Sites Map 
 ```{r leaflet-both-sites-filter, echo = FALSE, message = FALSE, include = TRUE}
 #############################################
 # title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
@@ -786,7 +787,8 @@ map_all <- leaflet() %>%
   addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
               
   addScaleBar("topleft") %>%
-  setView(-123.44799, 48.52919, zoom = 10)
+  # setView(-123.44799, 48.52919, zoom = 11)
+      setView(-123.45684, 48.49983, zoom = 11)
 map_all
           # this needs to go at bottom of map code or else map gets cut off at bottom
 
@@ -2447,7 +2449,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-21 @ 08:08</div>
+Modified: 2026-02-21 @ 08:28</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
