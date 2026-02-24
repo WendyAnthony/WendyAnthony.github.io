@@ -1,0 +1,41 @@
+---
+title: "HAT Monitoring Spatial Data"
+author: "Wendy Anthony for HAT"
+date: "23/02/2026"
+output:
+  html_document:
+    highlight: zenburn
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: yes
+    # highlight: textmate
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
+    toc_depth: '3'
+  word_document:
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r import-csv-sd, include = FALSE}
+## THIS DOES NOT WORK !!!
+# Spatial Data import
+# error in read.table(file = file, header = header, sep = sep, quote = quote,  : more columns than column names
+#These won't read in
+# OHP_2025_Completed_polygons_dropz <- read.csv("data/OHP_2025_Completed_polygons_dropz.csv", fileEncoding="UTF-8")
+# OH_2024_ShinyG_Burning_Priorities_dropz <- read.csv("data/OH_2024_ShinyG_Burning_Priorities_dropz.csv", fileEncoding="UTF-8")
+#  OH_2024_Invasive_Species_Removed_dropz<- read.csv("data/OH_2024_Invasive_Species_Removed_dropz.csv", fileEncoding="UTF-8")
+#  OH_2024_Identified_Invasive_Species_Patches_dropz<- read.csv("data/OH_2024_Identified_Invasive_Species_Patches_dropz.csv", fileEncoding="UTF-8")
+#  OHP_2025_Experimental_test_plots_dropz<- read.csv("data/OHP_2025_Experimental_test_plots_dropz.csv", fileEncoding="UTF-8")
+#  OH_2024_Invasive_Species_Points_dropz<- read.csv("data/OH_2024_Invasive_Species_Points_dropz.csv", fileEncoding="UTF-8")
+#  OH_spatial_polygons_all_sub<- read.csv("data/OH_spatial_polygons_all_sub.csv", fileEncoding="UTF-8")
+#  OH_spatial_points_all_sub<- read.csv("data/OH_spatial_points_all_sub.csv", fileEncoding="UTF-8")
+```
+

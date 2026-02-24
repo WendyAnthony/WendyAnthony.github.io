@@ -167,10 +167,13 @@ p {
 #############################################
 # install.packages("flexdashboard")
 library(flexdashboard) # dashboard
-# install.packages("htmltools")
-library(htmltools) # write HTML code in flexdashboard
 # install.packages("crosstalk")
 library(crosstalk) # shared data filters
+
+# tool libraries
+############################################# 
+# install.packages("htmltools")
+library(htmltools) # write HTML code in flexdashboard
 # devtools::install_github("kent37/summarywidget")
 library(summarywidget) # filtered data summary
 
@@ -188,78 +191,6 @@ library(DT) # tables
 # install.packages("leaflet")
 library(leaflet) # interactive map
 library(sf) # spatial data
-```
-
-```{r data-import-site, include = FALSE}
-# Load Data
-################################# 
-# Sites Data
-HAT_sites_HAT <- read.csv("data/HAT-Sites-HAT.csv", fileEncoding="UTF-8")
-str(HAT_sites_HAT)
-head(HAT_sites_HAT)
-colnames(HAT_sites_HAT)
-```
-
-```{r data-import-crew, include = FALSE}
-# Load Data
-# Crew Data
-################################# 
-crew_data_sep_sub_1 <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
-
-# Crew Data
-crew_data_sep_sub_1 <- crew_data_sep_sub_1 %>% rename(Site = Work_Site)
-
-crew_data_sep_sub_1$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_1$Site)
-crew_data_sep_sub_1$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_1$Site)
-crew_data_sep_sub_1$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_1$Site)
-colnames(crew_data_sep_sub_1)
-
-# Date format
-str(crew_data_sep_sub_1)
-crew_data_sep_sub_1$Date <- as.Date(crew_data_sep_sub_1$Date)
-
-str(crew_data_sep_sub_1)
-
-# Filter 3 rows remove 3 rows with NA
-# Matson 2025-10-21
-# Matson 2024-11-14
-# Camas Hill 2025-09-04
-crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
-  filter(Date != as.Date("2025-10-21"),
-         Date != as.Date("2024-11-14"),
-         Date != as.Date("2025-09-04"))
-
-# Crew Data
-crew_data_sep_sub_sum_by_group_site_1 <- read.csv("data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", fileEncoding="UTF-8")
-str(crew_data_sep_sub_sum_by_group_site_1)
-head(crew_data_sep_sub_sum_by_group_site_1)
-
-crew_data_sep_sub_sum_bio_inv <- read.csv("data/crew_data_sep_sub_sum_bio_inv.csv", fileEncoding="UTF-8")
-```
-
-```{r data-import-volunteer, include = FALSE}
-# Load Data
-
-################################# 
-## Matson Field log volunteer 
-volunteer_data_matson <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-Field-Log-2022-2025.csv", fileEncoding="UTF-8")
-volunteer_data_matson$Date <- as.Date(volunteer_data_matson$Date)
-str(volunteer_data_matson)
-colnames(volunteer_data_matson)
-```
-
-```{r data-import-cover, include = FALSE}
-# Load Data
-################################# 
-# Cover data
-cover_data <- read.csv("data/HAT_cover_mean.csv", fileEncoding="UTF-8")
-```
-
-```{r data-import-species-count, include = FALSE}
-# Load Data
-################################# 
-# Species counts
-species_count <- read.csv("data/species_counts.csv", fileEncoding="UTF-8")
 ```
 
 
@@ -408,54 +339,73 @@ write.csv(OH_spatial_points_all_sub, "data/OH_spatial_points_all_sub.csv")
 
 ```
 
-```{r import-csv-sd, include = FALSE}
-## THIS DOES NOT WORK !!!
-# Spatial Data import
-# rror in read.table(file = file, header = header, sep = sep, quote = quote,  : more columns than column names
-#These won't read in
-# OHP_2025_Completed_polygons_dropz <- read.csv("data/OHP_2025_Completed_polygons_dropz.csv", fileEncoding="UTF-8")
-# OH_2024_ShinyG_Burning_Priorities_dropz <- read.csv("data/OH_2024_ShinyG_Burning_Priorities_dropz.csv", fileEncoding="UTF-8")
-#  OH_2024_Invasive_Species_Removed_dropz<- read.csv("data/OH_2024_Invasive_Species_Removed_dropz.csv", fileEncoding="UTF-8")
-#  OH_2024_Identified_Invasive_Species_Patches_dropz<- read.csv("data/OH_2024_Identified_Invasive_Species_Patches_dropz.csv", fileEncoding="UTF-8")
-#  OHP_2025_Experimental_test_plots_dropz<- read.csv("data/OHP_2025_Experimental_test_plots_dropz.csv", fileEncoding="UTF-8")
-#  OH_2024_Invasive_Species_Points_dropz<- read.csv("data/OH_2024_Invasive_Species_Points_dropz.csv", fileEncoding="UTF-8")
-#  OH_spatial_polygons_all_sub<- read.csv("data/OH_spatial_polygons_all_sub.csv", fileEncoding="UTF-8")
-#  OH_spatial_points_all_sub<- read.csv("data/OH_spatial_points_all_sub.csv", fileEncoding="UTF-8")
+
+
+
+```{r data-import-crew, include = FALSE}
+# Load Data
+# Crew Data
+################################# 
+crew_data_sep_sub_1 <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
+
+# Crew Data
+crew_data_sep_sub_1 <- crew_data_sep_sub_1 %>% rename(Site = Work_Site)
+
+crew_data_sep_sub_1$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_1$Site)
+crew_data_sep_sub_1$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_1$Site)
+crew_data_sep_sub_1$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_1$Site)
+colnames(crew_data_sep_sub_1)
+
+# Date format
+str(crew_data_sep_sub_1)
+crew_data_sep_sub_1$Date <- as.Date(crew_data_sep_sub_1$Date)
+
+str(crew_data_sep_sub_1)
+
+# Filter 3 rows remove 3 rows with NA
+# Matson 2025-10-21
+# Matson 2024-11-14
+# Camas Hill 2025-09-04
+crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
+  filter(Date != as.Date("2025-10-21"),
+         Date != as.Date("2024-11-14"),
+         Date != as.Date("2025-09-04"))
+
+# Crew Data
+crew_data_sep_sub_sum_by_group_site_1 <- read.csv("data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", fileEncoding="UTF-8")
+str(crew_data_sep_sub_sum_by_group_site_1)
+head(crew_data_sep_sub_sum_by_group_site_1)
+
+crew_data_sep_sub_sum_bio_inv <- read.csv("data/crew_data_sep_sub_sum_bio_inv.csv", fileEncoding="UTF-8")
+```
+
+```{r data-import-volunteer, include = FALSE}
+# Load Data
+
+################################# 
+## Matson Field log volunteer 
+volunteer_data_matson <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-Field-Log-2022-2025.csv", fileEncoding="UTF-8")
+volunteer_data_matson$Date <- as.Date(volunteer_data_matson$Date)
+str(volunteer_data_matson)
+colnames(volunteer_data_matson)
+
+
+#############################################
+## Matson Field log volunteer 
+str(volunteer_data_matson)
+colnames(volunteer_data_matson)
+volunteer_data_matson_sub <- subset(volunteer_data_matson, select = -c(1,4,6,8,11,14,17:21))
+colnames(volunteer_data_matson_sub)
+
+volunteer_data_matson_sub <- volunteer_data_matson_sub %>% relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer, Data_Change_Assumptions)
+colnames(volunteer_data_matson_sub)
+
+
 ```
 
 
 
-
-```{r rename-site-location-worksite-columns-for-sd-group, include = FALSE}
-#############################################
-# Sites Data
-HAT_sites_HAT
-colnames(HAT_sites_HAT)
-HAT_sites_HAT$FullName <- HAT_sites_HAT$Site
-HAT_sites_HAT$Site <- gsub("Matson Conservation Area", "Matson", HAT_sites_HAT$Site)
-HAT_sites_HAT$Site <- gsub("Oak Haven Park", "Oak Haven", HAT_sites_HAT$Site)
-HAT_sites_HAT$Site <- gsub("Havenwood Park", "Havenwood", HAT_sites_HAT$Site)
-
-#############################################
-# Round metrics values to 1 decimal
-str(HAT_sites_HAT)
-HAT_sites_HAT$Hours_per_Biomass_2022 <- sprintf("%.1f", HAT_sites_HAT$Hours_per_Biomass_2022)
-HAT_sites_HAT$Hours_per_Biomass_2023 <- sprintf("%.1f", HAT_sites_HAT$Hours_per_Biomass_2023)
-HAT_sites_HAT$Hours_per_Biomass_2024 <- sprintf("%.1f", HAT_sites_HAT$Hours_per_Biomass_2024)
-HAT_sites_HAT$Hours_per_Biomass_2025 <- sprintf("%.1f", HAT_sites_HAT$Hours_per_Biomass_2025)
-HAT_sites_HAT$Crew_Hours_2022 <- sprintf("%.1f", HAT_sites_HAT$Crew_Hours_2022)
-HAT_sites_HAT$Crew_Hours_2023 <- sprintf("%.1f", HAT_sites_HAT$Crew_Hours_2023)
-HAT_sites_HAT$Crew_Hours_2024 <- sprintf("%.1f", HAT_sites_HAT$Crew_Hours_2024)
-HAT_sites_HAT$Crew_Hours_2025 <- sprintf("%.1f", HAT_sites_HAT$Crew_Hours_2025)
-HAT_sites_HAT$Biomass_2022 <- sprintf("%.1f", HAT_sites_HAT$Biomass_2022)
-HAT_sites_HAT$Biomass_2023 <- sprintf("%.1f", HAT_sites_HAT$Biomass_2023)
-HAT_sites_HAT$Biomass_2024 <- sprintf("%.1f", HAT_sites_HAT$Biomass_2024)
-HAT_sites_HAT$Biomass_2025 <- sprintf("%.1f", HAT_sites_HAT$Biomass_2025)
-HAT_sites_HAT$Area_2022 <- sprintf("%.1f", HAT_sites_HAT$Area_2022)
-HAT_sites_HAT$Area_2023 <- sprintf("%.1f", HAT_sites_HAT$Area_2023)
-HAT_sites_HAT$Area_2024 <- sprintf("%.1f", HAT_sites_HAT$Area_2024)
-HAT_sites_HAT$Area_2025 <- sprintf("%.1f", HAT_sites_HAT$Area_2025)
-str(HAT_sites_HAT)
+```{r crew-rename-site-location-worksite-columns-for-sd-group, include = FALSE}
 
 #############################################
 # Crew Data
@@ -486,13 +436,6 @@ crew_data_sep_sub_sum_bio_inv_rename_site <- crew_data_sep_sub_sum_bio_inv_renam
 
 crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
 
-#############################################
-## Matson Field log volunteer 
-str(volunteer_data_matson)
-colnames(volunteer_data_matson)
-volunteer_data_matson_sub <- subset(volunteer_data_matson, select = -c(1,4,6,8,11,14,17:21))
-colnames(volunteer_data_matson_sub)
-
 colnames(crew_data_sep_sub_sum_bio_inv_rename_site)
 
 # change column order to same as volunteer_data_matson
@@ -502,9 +445,10 @@ crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1_filtered %>%
   relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer, Data_Change_Assumptions)
 colnames(crew_data_sep_sub_1_filtered)
 
-volunteer_data_matson_sub <- volunteer_data_matson_sub %>% relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer, Data_Change_Assumptions)
-colnames(volunteer_data_matson_sub)
-
+#############################################
+#############################################
+#############################################
+#############################################
 #############################################
 #   COMBINING CREW AND VOLUNTEER DATA
 # rbind work and volunteer
@@ -541,6 +485,20 @@ crew_vol_inv_top5_sum
 # Save Calculation subset
 write.csv(crew_vol_inv_top5_sum, "data/crew_vol_inv_top5_sum.csv", row.names = FALSE)
 
+#############################################
+# Top Invasive Species
+crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
+
+```
+
+```{r data-import-cover, include = FALSE}
+# Load Data
+################################# 
+# Cover data
+cover_data <- read.csv("data/HAT_cover_mean.csv", fileEncoding="UTF-8")
+```
+
+```{r cover-rename-site-location-worksite-columns-for-sd-group, include = FALSE}
 #############################################
 # Cover Data
 cover_data_rename_site <- cover_data %>%
@@ -582,19 +540,29 @@ cover_data_rename_site_sub_nat_t <- cover_data_rename_site_sub_nat[cover_data_re
 cover_data_rename_site_sub_nat_u <- cover_data_rename_site_sub_nat[cover_data_rename_site_sub_nat$Treated == "Untreated",]
 cover_data_rename_site_sub_inv_t <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Treated",]
 cover_data_rename_site_sub_inv_u <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Untreated",]
-
-#############################################
-# Top Invasive Species
-crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
-
-#############################################
-# drop unknown species
-species_count <- species_count[-c(25), ]
-species_count <- species_count %>%
-  rename(Site = Location)
 ```
 
-```{r shared-data, include = FALSE}
+
+
+```{r import-wrangled-site-data-sd, include = FALSE}
+# Sites Data
+#############################################
+HAT_sites_HAT <- read.csv("data/HAT_sites_HAT_wrangled.csv", fileEncoding="UTF-8")
+# str(HAT_sites_HAT)
+#############################################
+sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create sharable database using Crosstalk packageå
+```
+
+```{r import-wrangled-species-count-data-sd, include = FALSE}
+# Species Count Data
+#############################################
+species_count <- read.csv("data/species_count_wrangled.csv", fileEncoding="UTF-8")
+#############################################
+sd_count <- SharedData$new(data = species_count, group = "count_group")
+```
+
+
+```{r crew-shared-data, include = FALSE}
 ### Create sharable database using Crosstalk package
 
 # Crew Data
@@ -615,6 +583,12 @@ sd_crew_vol_inv_top5_sum <- SharedData$new(data = crew_vol_inv_top5_sum, group =
 sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_rename_site, group = "crew_group")
 # crew_data_sep_sub_sum_bio_inv.csv
 
+```
+
+
+```{r cover-shared-data, include = FALSE}
+### Create sharable database using Crosstalk package
+
 # Cover Data
 #############################################
 sd_cover <- SharedData$new(data = cover_data_rename_site_sub, group = "cover_group")
@@ -630,12 +604,6 @@ sd_cov_nat_top5 <- SharedData$new(data = cov_nat_top5, group = "cover_group_top5
 # sd_cover_nat_u <- SharedData$new(data = cover_data_rename_site_sub_nat_u, group = "cover_group")
 # sd_cover_inv_t <- SharedData$new(data = cover_data_rename_site_sub_inv_t, group = "cover_group")
 # sd_cover_inv_u <- SharedData$new(data = cover_data_rename_site_sub_inv_u, group = "cover_group")
-
-#############################################
-sd_count <- SharedData$new(data = species_count, group = "count_group")
-
-#############################################
-sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create sharable database using Crosstalk packa
 
 #############################################
 ```
@@ -682,7 +650,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-21 @ 12:12</div>
+Modified: 2026-02-23 @ 16:39</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -913,7 +881,7 @@ map_all
 
 ```
 
-### Oak Haven Spatial Data Map
+ ### Oak Haven Spatial Data Map
 ```{r leaflet-OH-spatial, echo = FALSE, message = FALSE, include = TRUE}
 title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
 
@@ -2567,7 +2535,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-21 @ 12:12</div>
+Modified: 2026-02-23 @ 16:39</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
