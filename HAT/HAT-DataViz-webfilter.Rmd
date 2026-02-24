@@ -41,6 +41,7 @@ knitr::include_graphics("images/HAT-logo-ss.png")
 ```{css}
 
 /* ************************************** */  
+/* **** Flexbox css already has Media queries do I need these? ***** */  
 /* **** Media queries screen size ***** */  
 
 /* xs */
@@ -212,6 +213,7 @@ library(sf) # spatial data
 
 
 ```{r data-import-st-data-download, include = FALSE, cache = TRUE}
+# Data Import 
 ## Import spatial Data
 OH_2024_ShinyG_Burning_Priorities <- st_read("data_spatial/OH_2024_ShinyG_Burning_Priorities/OH_2024_ShinyG_Burning_Priorities.shp")
 OH_2024_Invasive_Species_Removed <- st_read("data_spatial/OH_2024_Invasive_Species_Removed/OH_2024_Invasive_Species_Removed.shp")
@@ -222,7 +224,7 @@ OHP_2025_Experimental_test_plots <- st_read("data_spatial/OHP_2025_Experimental_
 ```
 
 ```{r shape-data-dropz, include = FALSE, cache = TRUE}
-## Drop Z Dimension of Spatial Data to map
+## Drop Z Dimension to map in R
 # https://gis.stackexchange.com/questions/253898/adding-a-linestring-by-st-read-in-shiny-leaflet
 # When trying to create leaflet map Error in if (length(nms) != n || any(nms == "")) stop("'options' must be a fully named list, or have no names (NULL)") : missing value where TRUE/FALSE needed
 
@@ -235,8 +237,8 @@ OHP_2025_Completed_polygons_dropz <- st_zm(OHP_2025_Completed_polygons, drop = T
 OHP_2025_Experimental_test_plots_dropz <- st_zm(OHP_2025_Experimental_test_plots, drop = T, what = "ZM")
 ```
 
-
-```{r spatial-subset-save, include = FALSE, cache = TRUE}
+```{r spatial-subset-save-ShinyG_Burning_Priorities, include = FALSE, cache = TRUE}
+## Subset  OH_2024_ShinyG_Burning_Priorities
 ### Subset and save spatial data for use in datatable
 # add new columns "Site"   "Year"      "Data"
 
@@ -258,7 +260,10 @@ nrow(OH_2024_ShinyG_Burning_Priorities_dropz) #13
 # [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry"   "Site"       "Year"       "Data"       "Priority"
 
 write.csv(OH_2024_ShinyG_Burning_Priorities_dropz, "data/OH_2024_ShinyG_Burning_Priorities_dropz.csv")
+```
 
+```{r spatial-subset-save-OH_2024_Invasive_Species_Removed, include = FALSE, cache = TRUE}
+## Subset OH_2024_Invasive_Species_Removed
 #################################
 colnames(OH_2024_Invasive_Species_Removed_dropz)
 # [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
@@ -274,7 +279,10 @@ ncol(OH_2024_Invasive_Species_Removed_dropz)
 nrow(OH_2024_Invasive_Species_Removed_dropz) #10
 
 write.csv(OH_2024_Invasive_Species_Removed_dropz, "data/OH_2024_Invasive_Species_Removed_dropz.csv")
+```
 
+```{r spatial-subset-save-OH_2024_Identified_Invasive_Species_Patches, include = FALSE, cache = TRUE}
+# Subset ## OH_2024_Identified_Invasive_Species_Patches
 #################################
 colnames(OH_2024_Identified_Invasive_Species_Patches_dropz)
 # [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
@@ -287,7 +295,10 @@ ncol(OH_2024_Identified_Invasive_Species_Patches_dropz)
 nrow(OH_2024_Identified_Invasive_Species_Patches_dropz) #13
 
 write.csv(OH_2024_Identified_Invasive_Species_Patches_dropz, "data/OH_2024_Identified_Invasive_Species_Patches_dropz.csv")
+```
 
+```{r spatial-subset-save-OHP_2025_Completed_polygons, include = FALSE, cache = TRUE}
+# Subset ## OHP_2025_Completed_polygons
 #################################
 colnames(OHP_2025_Completed_polygons_dropz)
  #[1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
@@ -304,7 +315,10 @@ nrow(OHP_2025_Completed_polygons_dropz) #7
 OHP_2025_Completed_polygons_dropz <- OHP_2025_Completed_polygons_dropz[, c("Name", "FolderPath", "SymbolID", "AltMode", "Base", "Clamped", "Extruded", "Snippet", "PopupInfo", "Shape_Leng", "Shape_Area", "INSVNAME", "AreaNumber", "geometry", "Site", "Year", "Data", "Priority" )]
 
 write.csv(OHP_2025_Completed_polygons_dropz, "data/OHP_2025_Completed_polygons_dropz.csv")
+```
 
+```{r rbind-spatial-polygons, include = FALSE, cache = TRUE}
+## Bind spatial polygons for Datatable Display
 #################################
 # rbind polygons
 OH_spatial_polygons_all <- rbind(OH_2024_ShinyG_Burning_Priorities_dropz, OH_2024_Invasive_Species_Removed_dropz, OH_2024_Identified_Invasive_Species_Patches_dropz, OHP_2025_Completed_polygons_dropz)
@@ -316,7 +330,10 @@ OH_spatial_polygons_all_sub <- subset(OH_spatial_polygons_all, select = -c(2:8, 
 colnames(OH_spatial_polygons_all_sub)
 
 write.csv(OH_spatial_polygons_all_sub, "data/OH_spatial_polygons_all_sub.csv")
+```
 
+```{r spatial-subset-save-OH_2024_Invasive_Species_Points, include = FALSE, cache = TRUE}
+# Subset OH_2024_Invasive_Species_Points
 #################################
 #################################
 
@@ -327,7 +344,10 @@ OH_2024_Invasive_Species_Points_dropz$Year <- "2024"
 OH_2024_Invasive_Species_Points_dropz$Data <- "OH_2024_Invasive_Species_Points"
 
 write.csv(OH_2024_Invasive_Species_Points_dropz, "data/OH_2024_Invasive_Species_Points_dropz.csv")
+```
 
+```{r spatial-subset-save-OHP_2025_Experimental_test_plots, include = FALSE, cache = TRUE}
+# Subset OHP_2025_Experimental_test_plots
 #################################
 colnames(OHP_2025_Experimental_test_plots_dropz)
 # [1] "Id"        "Name"      "Descript"  "Type"      "Comment"   "Symbol"    "DateTimeS" "Elevation" "geometry"
@@ -343,7 +363,10 @@ colnames(OHP_2025_Experimental_test_plots_dropz)
 colnames(OH_2024_Invasive_Species_Points_dropz)
 
 write.csv(OHP_2025_Experimental_test_plots_dropz, "data/OHP_2025_Experimental_test_plots_dropz.csv")
+```
 
+```{r rbind-spatial-points, include = FALSE, cache = TRUE}
+## Bind spatial points for Datatable Display
 #################################
 # rbind points
 OH_spatial_points_all <- rbind(OHP_2025_Experimental_test_plots_dropz, OH_2024_Invasive_Species_Points_dropz)
@@ -352,8 +375,9 @@ OH_spatial_points_all_sub <- subset(OH_spatial_points_all, select = -c(1,4,5,6))
 colnames(OH_spatial_points_all_sub)
 
 write.csv(OH_spatial_points_all_sub, "data/OH_spatial_points_all_sub.csv")
-
 ```
+
+
 
 
 
@@ -404,8 +428,6 @@ crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site 
 
 colnames(crew_data_sep_sub_sum_bio_inv_rename_site)
 ```
-
-
 
 
 ```{r data-import-crew, include = FALSE}
@@ -484,7 +506,6 @@ write.csv(crew_data_sep_sub_1_filtered, "data/crew_data_sep_sub_1_filtered.csv")
 write.csv(volunteer_data_matson_sub, "data/volunteer_data_matson_sub.csv")
 ```
 
-
 ```{r combine-crew-vol, include = FALSE}
 #############################################
 #   COMBINING CREW AND VOLUNTEER DATA
@@ -499,7 +520,6 @@ crew_vol_inv <- crew_vol[crew_vol$Native_or_Invasive == "Invasive",]
 write.csv(crew_vol_grs, "data/crew_vol_grs.csv")
 write.csv(crew_vol_inv, "data/crew_vol_inv.csv")
 ```
-
 
 ```{r crew-vol-inv-top5, include = FALSE}
 #############################################
@@ -534,58 +554,6 @@ crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site 
 
 
 
-```{r data-import-cover, include = FALSE}
-# Load Data
-################################# 
-# Cover data
-cover_data <- read.csv("data/HAT_cover_mean.csv", fileEncoding="UTF-8")
-```
-
-```{r cover-rename-site-location-worksite-columns-for-sd-group, include = FALSE}
-#############################################
-# Cover Data
-cover_data_rename_site <- cover_data %>%
-  rename(Site = Location)
-
-cover_data_rename_site$Site <- gsub("Matson Conservation Area", "Matson", cover_data_rename_site$Site)
-cover_data_rename_site$Site <- gsub("Oak Haven Park", "Oak Haven", cover_data_rename_site$Site)
-cover_data_rename_site$Site <- gsub("Havenwood Park", "Havenwood", cover_data_rename_site$Site)
-
-colnames(cover_data_rename_site)
-cover_data_rename_site_sub <- subset(cover_data_rename_site, select = -c(9,10,11))
-
-cover_data_rename_site_sub$Date <- as.Date(cover_data_rename_site_sub$Date)
-
-## Add upper and lower bounds mean +/- sd
-
-cover_data_rename_site_sub <- cover_data_rename_site_sub %>% 
-                                      mutate(lower = mean_value - sd_value)
-
-cover_data_rename_site_sub <- cover_data_rename_site_sub %>% 
-                                      mutate(upper = mean_value + sd_value)
-
-str(cover_data_rename_site_sub)
-
-## ROund all numbers to 2 decimals
-cover_data_rename_site_sub <- cover_data_rename_site_sub %>%
-  mutate(across(where(is.numeric), ~ round(.x, 2)))
-
-#############################################
-cov_nat_top5 <- cover_data_rename_site_sub %>% filter(Species %in% c("camas", "delphinium",  "Pacific sanicle", "licorice fern", "Oregon grape"))
-
-#############################################
-unique(cover_data_rename_site_sub$Native_or_Invasive)
-cover_data_rename_site_sub_grs <- cover_data_rename_site_sub[cover_data_rename_site_sub$Native_or_Invasive == "MixedGrass",]
-cover_data_rename_site_sub_inv <- cover_data_rename_site_sub[cover_data_rename_site_sub$Native_or_Invasive == "Invasive",]
-cover_data_rename_site_sub_nat <- cover_data_rename_site_sub[cover_data_rename_site_sub$Native_or_Invasive == "Native",]
-
-cover_data_rename_site_sub_nat_t <- cover_data_rename_site_sub_nat[cover_data_rename_site_sub_nat$Treated == "Treated",]
-cover_data_rename_site_sub_nat_u <- cover_data_rename_site_sub_nat[cover_data_rename_site_sub_nat$Treated == "Untreated",]
-cover_data_rename_site_sub_inv_t <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Treated",]
-cover_data_rename_site_sub_inv_u <- cover_data_rename_site_sub_inv[cover_data_rename_site_sub_inv$Treated == "Untreated",]
-```
-
-
 
 ```{r import-wrangled-site-data-sd, include = FALSE}
 # Sites Data
@@ -596,13 +564,6 @@ HAT_sites_HAT <- read.csv("data/HAT_sites_HAT_wrangled.csv", fileEncoding="UTF-8
 sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create sharable database using Crosstalk packageå
 ```
 
-```{r import-wrangled-species-count-data-sd, include = FALSE}
-# Species Count Data
-#############################################
-species_count <- read.csv("data/species_count_wrangled.csv", fileEncoding="UTF-8")
-#############################################
-sd_count <- SharedData$new(data = species_count, group = "count_group")
-```
 
 
 ```{r crew-shared-data, include = FALSE}
@@ -621,7 +582,6 @@ sd_crew_vol_inv_top5 <- SharedData$new(data = crew_vol_inv_top5, group = "top5_g
 sd_crew_vol_inv_top5_sum <- SharedData$new(data = crew_vol_inv_top5_sum, group = "top5_group_facet")
 ```
 
-
 ```{r crew-summary-data-sd, include = FALSE}
 #############################################
 # Summary data totals per year per site
@@ -632,10 +592,21 @@ sd_crew <- SharedData$new(data = crew_data_sep_sub_sum_by_group_site_rename_site
 ```
 
 
-```{r cover-shared-data, include = FALSE}
-### Create sharable database using Crosstalk package
 
-# Cover Data
+
+
+```{r cover-shared-data, include = FALSE}
+# Import Cover Data
+#############################################
+cover_data_rename_site_sub <- read.csv("data/cover_data_rename_site_sub.csv", fileEncoding="UTF-8")
+
+cover_data_rename_site_sub_grs <- read.csv("data/cover_data_rename_site_sub_grs.csv", fileEncoding="UTF-8")
+cover_data_rename_site_sub_inv <- read.csv("data/cover_data_rename_site_sub_inv.csv", fileEncoding="UTF-8")
+cover_data_rename_site_sub_nat <- read.csv("data/cover_data_rename_site_sub_nat.csv", fileEncoding="UTF-8")
+
+cov_nat_top5 <- read.csv("data/cov_nat_top5.csv", fileEncoding="UTF-8")
+
+### Create sharable database using Crosstalk package
 #############################################
 sd_cover <- SharedData$new(data = cover_data_rename_site_sub, group = "cover_group")
 
@@ -653,6 +624,15 @@ sd_cov_nat_top5 <- SharedData$new(data = cov_nat_top5, group = "cover_group_top5
 
 #############################################
 ```
+
+```{r import-wrangled-species-count-data-sd, include = FALSE}
+# Species Count Data
+#############################################
+species_count <- read.csv("data/species_count_wrangled.csv", fileEncoding="UTF-8")
+#############################################
+sd_count <- SharedData$new(data = species_count, group = "count_group")
+```
+
 
 
 
@@ -696,7 +676,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-24 @ 06:06</div>
+Modified: 2026-02-24 @ 07:07</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -744,18 +724,6 @@ Row {.tabset .tabset-fade}
 ### HAT 3-Sites Map 
 ```{r leaflet-both-sites-filter, echo = FALSE, message = FALSE, include = TRUE}
 #############################################
-# title <- '<p style="text-align: center; height: 18px; "><img src="https://images.squarespace-cdn.com/content/v1/5e3c5b7e5460c55405a6d4d6/a8c2fb30-96fd-4042-925f-e76c7040dce6/Black+Logo+2.png?format=5w"><span style="font-size:9px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>GOE Monitoring Covenant Sites Map</span></p>'
-
-#filter_select(id = "Site", label = "Choose a Site Filter", sharedData = sd_sites, group = ~Site)
-
-# Municipality_filter <- filter_select(id = "Municipality", label = "Choose a Municipality Filter", sharedData = sd_sites, group = ~Municipality)
-
-# this needs to go at bottom of map code or else map gets cut off at bottom
-# bscols(widths = c(2,8,2),
-#   "",
-#   Site_filter,
-#   "")
-
 title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
      
           pal <- colorFactor(c("#1b9e77", "#7570b3", "#e7298a"), domain = c("Havenwood", "Matson", "Oak Haven"))
@@ -2578,7 +2546,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-24 @ 06:06</div>
+Modified: 2026-02-24 @ 07:07</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -2602,8 +2570,8 @@ HTML("
   <span style='font-size:85%';>
   
      1. <strong>HAT Restoration Crew Site Data</strong> 
-     <details>
-     <summary>Click open for Crew Site Data details</summary>
+     <details open>
+     <summary>Click to close/open Crew Site Data details</summary>
      <br> * <strong>Metrics</strong>: Daily and Yearly crew hours and biomass (metres<sup>3</sup>) and area (metres<sup>2</sup>) of invasive species removed; 
      <br> * <strong>Sites</strong>: Bear Hill, Calypso Woods, Camas Hill, Funk, Havenwood, Matson, Oak Haven, Purple Sanicle, Yates, 
      <br> * <strong>Datasets</strong>: <em>Restoration Crew Data.xlsx</em>: Apr 2022-Sep 2025; Sites Daily; Sites Yearly; Top Invasives Site
