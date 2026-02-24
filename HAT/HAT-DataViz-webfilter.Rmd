@@ -15,10 +15,11 @@ output:
 ```{r readme, include=FALSE}
 # HAT Interactive Data Visualization Dashboard Tool
 # 
-# Purpose: Interactive dashboard for visuzlizing GOE restoration monitoring data
+# Purpose: Interactive dashboard for visualizing GOE restoration monitoring data
 # Data sources: 
 #   - Site Data: data/HAT-Sites-HAT.csv
 #   - Crew activities: data/crew_data_sep_sub.csv
+#   - Volunteer data: data/
 #   - Spatial features: data_spatial/*.shp
 #
 # Last updated: 2026-02-21
@@ -204,7 +205,6 @@ OHP_2025_Completed_polygons <- st_read("data_spatial/OHP_2025_Completed_polygons
 OHP_2025_Experimental_test_plots <- st_read("data_spatial/OHP_2025_Experimental_test_plots/OHP_2025_Experimental test plots.shp")
 ```
 
-
 ```{r shape-data-dropz, include = FALSE, cache = TRUE}
 ## Drop Z Dimension of Spatial Data to map
 # https://gis.stackexchange.com/questions/253898/adding-a-linestring-by-st-read-in-shiny-leaflet
@@ -342,35 +342,10 @@ write.csv(OH_spatial_points_all_sub, "data/OH_spatial_points_all_sub.csv")
 
 
 
-```{r data-import-crew, include = FALSE}
-# Load Data
-# Crew Data
-################################# 
-crew_data_sep_sub_1 <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
 
-# Crew Data
-crew_data_sep_sub_1 <- crew_data_sep_sub_1 %>% rename(Site = Work_Site)
-
-crew_data_sep_sub_1$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_1$Site)
-crew_data_sep_sub_1$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_1$Site)
-crew_data_sep_sub_1$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_1$Site)
-colnames(crew_data_sep_sub_1)
-
-# Date format
-str(crew_data_sep_sub_1)
-crew_data_sep_sub_1$Date <- as.Date(crew_data_sep_sub_1$Date)
-
-str(crew_data_sep_sub_1)
-
-# Filter 3 rows remove 3 rows with NA
-# Matson 2025-10-21
-# Matson 2024-11-14
-# Camas Hill 2025-09-04
-crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
-  filter(Date != as.Date("2025-10-21"),
-         Date != as.Date("2024-11-14"),
-         Date != as.Date("2025-09-04"))
-
+```{r data-import-crew-bio, include = FALSE}
+#############################################
+#############################################
 # Crew Data
 crew_data_sep_sub_sum_by_group_site_1 <- read.csv("data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", fileEncoding="UTF-8")
 str(crew_data_sep_sub_sum_by_group_site_1)
@@ -378,31 +353,6 @@ head(crew_data_sep_sub_sum_by_group_site_1)
 
 crew_data_sep_sub_sum_bio_inv <- read.csv("data/crew_data_sep_sub_sum_bio_inv.csv", fileEncoding="UTF-8")
 ```
-
-```{r data-import-volunteer, include = FALSE}
-# Load Data
-
-################################# 
-## Matson Field log volunteer 
-volunteer_data_matson <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-Field-Log-2022-2025.csv", fileEncoding="UTF-8")
-volunteer_data_matson$Date <- as.Date(volunteer_data_matson$Date)
-str(volunteer_data_matson)
-colnames(volunteer_data_matson)
-
-
-#############################################
-## Matson Field log volunteer 
-str(volunteer_data_matson)
-colnames(volunteer_data_matson)
-volunteer_data_matson_sub <- subset(volunteer_data_matson, select = -c(1,4,6,8,11,14,17:21))
-colnames(volunteer_data_matson_sub)
-
-volunteer_data_matson_sub <- volunteer_data_matson_sub %>% relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer, Data_Change_Assumptions)
-colnames(volunteer_data_matson_sub)
-
-
-```
-
 
 
 ```{r crew-rename-site-location-worksite-columns-for-sd-group, include = FALSE}
@@ -437,23 +387,93 @@ crew_data_sep_sub_sum_bio_inv_rename_site <- crew_data_sep_sub_sum_bio_inv_renam
 crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
 
 colnames(crew_data_sep_sub_sum_bio_inv_rename_site)
+```
 
+
+
+
+```{r data-import-crew, include = FALSE}
+# Load Data
+# Crew Data
+################################# 
+crew_data_sep_sub_1 <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
+
+# Crew Data
+crew_data_sep_sub_1 <- crew_data_sep_sub_1 %>% rename(Site = Work_Site)
+
+crew_data_sep_sub_1$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_1$Site)
+crew_data_sep_sub_1$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_1$Site)
+crew_data_sep_sub_1$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_1$Site)
+colnames(crew_data_sep_sub_1)
+
+# Date format
+str(crew_data_sep_sub_1)
+crew_data_sep_sub_1$Date <- as.Date(crew_data_sep_sub_1$Date)
+
+str(crew_data_sep_sub_1)
+
+# Filter 3 rows remove 3 rows with NA
+# Matson 2025-10-21
+# Matson 2024-11-14
+# Camas Hill 2025-09-04
+crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
+  filter(Date != as.Date("2025-10-21"),
+         Date != as.Date("2024-11-14"),
+         Date != as.Date("2025-09-04"))
+```
+
+```{r crew-relocate-columns-for-sd-group, include = FALSE}
+#############################################
+#############################################
 # change column order to same as volunteer_data_matson
 colnames(crew_data_sep_sub_1_filtered)
 #crew_data_sep_sub_1_filtered <- subset(crew_data_sep_sub_1_filtered, select = -c(3))
 crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1_filtered %>%
   relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer, Data_Change_Assumptions)
 colnames(crew_data_sep_sub_1_filtered)
+## go to combine with volunteer_data_matson_sub crew-vol<-rbind()
+write.csv(crew_data_sep_sub_1_filtered, "data/crew_data_sep_sub_1_filtered.csv")
+```
+
+
+
+```{r data-import-volunteer, include = FALSE}
+# Load Data
+################################# 
+## Matson Field log volunteer 
+volunteer_data_matson <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-Field-Log-2022-2025.csv", fileEncoding="UTF-8")
+volunteer_data_matson$Date <- as.Date(volunteer_data_matson$Date)
+str(volunteer_data_matson)
+colnames(volunteer_data_matson)
 
 #############################################
+## Matson Field log volunteer 
+str(volunteer_data_matson)
+colnames(volunteer_data_matson)
+volunteer_data_matson_sub <- subset(volunteer_data_matson, select = -c(1,4,6,8,11,14,17:21))
+colnames(volunteer_data_matson_sub)
+
 #############################################
-#############################################
-#############################################
+# reorder columns to bind with crew data
+volunteer_data_matson_sub <- volunteer_data_matson_sub %>% relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer, Data_Change_Assumptions)
+colnames(volunteer_data_matson_sub)
+## go to combine crew-vol<-rbind()
+write.csv(volunteer_data_matson_sub, "data/volunteer_data_matson_sub.csv")
+```
+
+```{r save-crew-vol-before-combine, include = FALSE}
+## go to combine with volunteer_data_matson_sub crew-vol<-rbind()
+write.csv(crew_data_sep_sub_1_filtered, "data/crew_data_sep_sub_1_filtered.csv")
+## go to combine crew-vol<-rbind()
+write.csv(volunteer_data_matson_sub, "data/volunteer_data_matson_sub.csv")
+```
+
+
+```{r combine-crew-vol, include = FALSE}
 #############################################
 #   COMBINING CREW AND VOLUNTEER DATA
 # rbind work and volunteer
 crew_vol <- rbind(crew_data_sep_sub_1_filtered, volunteer_data_matson_sub)
-
 write.csv(crew_vol, "data/crew_vol.csv")
 
 unique(crew_vol$Native_or_Invasive)
@@ -462,9 +482,10 @@ crew_vol_inv <- crew_vol[crew_vol$Native_or_Invasive == "Invasive",]
 
 write.csv(crew_vol_grs, "data/crew_vol_grs.csv")
 write.csv(crew_vol_inv, "data/crew_vol_inv.csv")
+```
 
 
-
+```{r crew-vol-inv-top5, include = FALSE}
 #############################################
 crew_vol_inv_top5 <- crew_vol %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
 
@@ -484,12 +505,18 @@ crew_vol_inv_top5_sum
 #############################################
 # Save Calculation subset
 write.csv(crew_vol_inv_top5_sum, "data/crew_vol_inv_top5_sum.csv", row.names = FALSE)
+```
 
+
+```{r crew-bio-inv-filter-top5, include = FALSE}
 #############################################
 # Top Invasive Species
 crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
-
 ```
+
+
+
+
 
 ```{r data-import-cover, include = FALSE}
 # Load Data
@@ -576,7 +603,10 @@ sd_crew_vol_inv <- SharedData$new(data = crew_vol_inv, group = "crew_all_group")
 sd_crew_vol_inv_top5 <- SharedData$new(data = crew_vol_inv_top5, group = "top5_group_bar")
 
 sd_crew_vol_inv_top5_sum <- SharedData$new(data = crew_vol_inv_top5_sum, group = "top5_group_facet")
+```
 
+
+```{r crew-summary-data-sd, include = FALSE}
 #############################################
 # Summary data totals per year per site
 # used in Invasive Biomass charts
@@ -650,7 +680,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-23 @ 16:39</div>
+Modified: 2026-02-24 @ 05:50</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -790,14 +820,14 @@ map_all <- leaflet() %>%
 #############################################
           ))  %>%
   addPolygons(data = OHP_2025_Completed_polygons_dropz,
-              group = "2025 Completed polygons",
+              group = "OH 2025 Completed polygons",
               color = "#AA4499", #AA4499 purple
               #fillColor = "purple",
               fillOpacity = 0.5,
               popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>",
                              "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>%
   addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
-              group = "2025 Experimental test plot points",
+              group = "OH 2025 Experimental test plot points",
               color = "#EECC66", #EECC66 light yellow
               #fillColor = "purple",
               fillOpacity = 0.8,
@@ -808,7 +838,7 @@ map_all <- leaflet() %>%
                             "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>%
   addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
               # covers same area as Invasive_Species_Patches
-              group = "2024 ShinyG Burning Priorities",
+              group = "OH 2024 ShinyG Burning Priorities",
               # use a lighter colour so lighter Shiny will show over Species patches
               color = "#EE7733", #EE7733 orange
               #color = "blue",
@@ -820,7 +850,7 @@ map_all <- leaflet() %>%
                              "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>",
                              "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups
   addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
-              group = "2024 Invasive Species Removed",
+              group = "OH 2024 Invasive Species Removed",
               color = "#EE3377", # magenta #EE3377
               #color = "yellow",
               #fillColor = "yellow",
@@ -829,7 +859,7 @@ map_all <- leaflet() %>%
                              "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>%
   addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
               # covers same area as Shiny g
-              group = "2024 Invasive Species Patches",
+              group = "OH 2024 Invasive Species Patches",
               # use a darker colour so lighter Shiny will show
               color = "#33BBEE", #cyan #33BBEE
               #fillColor = "orange",
@@ -840,7 +870,7 @@ map_all <- leaflet() %>%
                              "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME)
               ) %>%
   addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
-              group = "2024 Invasive Species Points",
+              group = "OH 2024 Invasive Species Points",
               color = "#CC3311", # CC3311 red
               #fillColor = "red",
               fillOpacity = 0.5,
@@ -855,7 +885,7 @@ map_all <- leaflet() %>%
   addLegend(
               "bottomright",
               colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
-              labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
+              labels = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points"),
               title = "OH Spatial Data",
               group = "OH Spatial Polygon Color Legend"
               ) %>%
@@ -867,10 +897,10 @@ map_all <- leaflet() %>%
     completedColor = "#BB5566") %>% 
   addControl(title, position = "topright") %>%                         
   addLayersControl(
-    overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
+    overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
     options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
   ) %>%
-  hideGroup(c("2025 Completed polygons", "2025 Experimental test plot points", "2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
+  hideGroup(c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
   addLegend("bottomright", pal = pal, values = HAT_sites_HAT$Site, title = "Site") %>%
               
   addScaleBar("topleft") %>%
@@ -881,7 +911,7 @@ map_all
 
 ```
 
- ### Oak Haven Spatial Data Map
+### Oak Haven Spatial Data Map
 ```{r leaflet-OH-spatial, echo = FALSE, message = FALSE, include = TRUE}
 title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
 
@@ -889,14 +919,14 @@ map_OH_sp <- leaflet() %>%
   # addTiles() %>%
   addProviderTiles("Esri.WorldImagery") %>%
   addPolygons(data = OHP_2025_Completed_polygons_dropz,
-              group = "2025 Completed polygons",
+              group = "OH 2025 Completed polygons",
               color = "#AA4499", #AA4499 purple
               #fillColor = "purple",
               fillOpacity = 0.5,
               popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>",
                              "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>%
   addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
-              group = "2025 Experimental test plot points",
+              group = "OH 2025 Experimental test plot points",
               color = "#EECC66", #EECC66 light yellow
               #fillColor = "purple",
               fillOpacity = 0.8,
@@ -907,7 +937,7 @@ map_OH_sp <- leaflet() %>%
                             "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>%
   addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
               # covers same area as Invasive_Species_Patches
-              group = "2024 ShinyG Burning Priorities",
+              group = "OH 2024 ShinyG Burning Priorities",
               # use a lighter colour so lighter Shiny will show over Species patches
               color = "#EE7733", #EE7733 orange
               #color = "blue",
@@ -919,7 +949,7 @@ map_OH_sp <- leaflet() %>%
                              "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>",
                              "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups
   addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
-              group = "2024 Invasive Species Removed",
+              group = "OH 2024 Invasive Species Removed",
               color = "#EE3377", # magenta #EE3377
               #color = "yellow",
               #fillColor = "yellow",
@@ -928,7 +958,7 @@ map_OH_sp <- leaflet() %>%
                              "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>%
   addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
               # covers same area as Shiny g
-              group = "2024 Invasive Species Patches",
+              group = "OH 2024 Invasive Species Patches",
               # use a darker colour so lighter Shiny will show
               color = "#33BBEE", #cyan #33BBEE
               #fillColor = "orange",
@@ -939,7 +969,7 @@ map_OH_sp <- leaflet() %>%
                              "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME)
               ) %>%
   addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
-              group = "2024 Invasive Species Points",
+              group = "OH 2024 Invasive Species Points",
               color = "#CC3311", # CC3311 red
               #fillColor = "red",
               fillOpacity = 0.5,
@@ -954,7 +984,7 @@ map_OH_sp <- leaflet() %>%
   addLegend(
               "bottomright",
               colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
-              labels = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points"),
+              labels = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points"),
               title = "OH Spatial Data",
               group = "OH Spatial Polygon Color Legend"
               ) %>%
@@ -967,13 +997,10 @@ map_OH_sp <- leaflet() %>%
     activeColor = "#DDAA33",
     completedColor = "#BB5566") %>% 
   addLayersControl(
-    overlayGroups = c("2025 Completed polygons", "2025 Experimental test plot points", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 ShinyG Burning Priorities", "2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
-    
-    # adding colored icons in front of overlay group stopped toggle on/off ???
-    # overlayGroups = unname(c("2025 Completed polygons <- <div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #AA4499;'></div> 2025 Completed polygons", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EECC66;'></div> 2025 Experimental test plot points", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EE3377;'></div> 2024 Invasive Species Removed", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #33BBEE;'></div> 2024 Invasive Species Patches", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #EE7733;'></div> 2024 ShinyG Burning Priorities", "<div style = 'position: relative; display: inline-block; width: 10px; height: 10px; background-color: #CC3311;'></div> 2024 Invasive Species Points")),
+    overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
     options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
   ) %>%
-  hideGroup(c("2024 ShinyG Burning Priorities", "2024 Invasive Species Removed", "2024 Invasive Species Patches", "2024 Invasive Species Points", "Spatial Polygon Color Legend")) %>%
+  hideGroup(c("OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
   addScaleBar("topleft")  
 # %>%
 #       # add controls
@@ -2535,7 +2562,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-23 @ 16:39</div>
+Modified: 2026-02-24 @ 05:50</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -2557,35 +2584,52 @@ HTML("
        <h5>HAT Data of 9 HAT-only-Managed-Sites</h5>
      
   <span style='font-size:85%';>
+  
      1. <strong>HAT Restoration Crew Site Data</strong> 
+     <details>
+     <summary>Click open for Crew Site Data details</summary>
      <br> * <strong>Metrics</strong>: Daily and Yearly crew hours and biomass (metres<sup>3</sup>) and area (metres<sup>2</sup>) of invasive species removed; 
      <br> * <strong>Sites</strong>: Bear Hill, Calypso Woods, Camas Hill, Funk, Havenwood, Matson, Oak Haven, Purple Sanicle, Yates, 
      <br> * <strong>Datasets</strong>: <em>Restoration Crew Data.xlsx</em>: Apr 2022-Sep 2025; Sites Daily; Sites Yearly; Top Invasives Site
+     </details>
      <br><br>
      
-     2. <strong>Matson Mattocks Field Logs</strong> 
+     2. <strong>Matson Mattocks Volunteer Field Logs</strong> 
+     <details>
+     <summary>Click open for Volunteer Field Logs details</summary>
      <br> * <strong>Metrics</strong>: Daily volunteer work hours and invasive species removal
      <br> * <strong>Sites</strong>: added to Matson Work Crew data
      <br> * <strong>Datasets</strong>: <em>Matson Mattocks Field Logs</em>: Apr 2022-Sep 2025; Sites Daily; Top Invasives Site
+     </details>
      <br><br>
      
      3. <strong>Cover Data 2024-2025</strong>  
+     <details>
+     <summary>Click open for Cover Data details</summary>
      <br> * <strong>Metrics</strong>: Cover Mean % (Native/Invasive & Treated/Untreated); Species Richness
      <br> * <strong>Sites</strong>: Matson, Oak Haven
      <br> * <strong>Datasets</strong>: <em>Cover Data 2024-2025</em> 
+     </details>
      <br><br>
      
      4. <strong>Site Data</strong> 
+     <details>
+     <summary>Click open for Site Data details</summary>
      <br> * <strong>Metrics</strong>: Location; 2022-2025; Top 5 Invasive Species Removed, crew hours, biomass removed, hours per m<sup>3</sup>; 
      <br> * <strong>Sites</strong>: Havenwood, Matson, Oak Haven
      <br> * <strong>Data</strong>: <em>https://hat.bc.ca/community-based-restoration</em>
+     </details>
      <br><br>
      
      5. <strong>Spatial Data</strong> 
+     <details>
+     <summary>Click open for Spatial Data details</summary>
      <br> * <strong>Metrics</strong>: 2023-2025  Invasive Species Removed; shiny geranium priorities; test plots
      <br> * <strong>Sites</strong>: Oak Haven
      <br> * <strong>Data</strong>: <em>Polygons and Points Shape files</em>
+     </details>
      <br><br>
+     
   </span>
      ")
 ```
