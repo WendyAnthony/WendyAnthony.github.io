@@ -10,6 +10,7 @@ output:
     theme: 
       version: 4
       bootswatch: flatly
+    source_code: embed
 ---
   
 ```{r readme, include=FALSE}
@@ -20,6 +21,7 @@ output:
 #   - Site Data: data/HAT-Sites-HAT.csv
 #   - Crew activities: data/crew_data_sep_sub.csv
 #   - Volunteer data: data/
+#   - Cover Data: data/HAT_cover_mean.csv
 #   - Spatial features: data_spatial/*.shp
 #
 # Last updated: 2026-02-21
@@ -32,7 +34,7 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-# HAT Log offline
+# HAT Logo offline availability
 knitr::include_graphics("images/HAT-logo-ss.png")
 ```
 
@@ -59,6 +61,20 @@ knitr::include_graphics("images/HAT-logo-ss.png")
 /* 2xl */
 /* @media (min-width: 1536px) {} */
   
+/* ************************************** */  
+/* **** Navigation links font size ***** */  
+
+/* Adjust font size for navbar links */
+.navbar-nav a {
+  font-size: 14px !important;
+  /* Use font-size: 14px !important; - !important to ensure the style overrides existing ones */
+}
+
+/* Adjust font size of source code link */
+.navbar-right a {
+    font-size: 10px !important;
+}  
+
   
 /* ************************************** */  
 /* **** Tab font colours ***** */  
@@ -680,7 +696,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-24 @ 05:50</div>
+Modified: 2026-02-24 @ 06:06</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -2562,7 +2578,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-24 @ 05:50</div>
+Modified: 2026-02-24 @ 06:06</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
