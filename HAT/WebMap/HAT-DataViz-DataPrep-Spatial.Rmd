@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Load Libraries
 ```{r load-libraries}
-library(htmlwidgets) # to save leaflet map as html
+library(htmlwidgets) # to save leaflet map as html & render js
 ```
 
 
@@ -319,7 +319,7 @@ saveWidget(map_OH_sp, "output/HAT_spatial_site_map.html")
 ################################################################################
 # Interactive Geolocation map Developed by Wendy Anthony for HAT 2026-03-03
 ################################################################################
-library(leaflet.extras) # for addControlGPS
+library(leaflet.extras) # for addControlGPS() & addDrawToolbar()
 
 title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
 
@@ -427,7 +427,7 @@ map_OH_sp_geoloc <- leaflet() %>%
     editOptions = editToolbarOptions(selectedPathOptions = selectedPathOptions())
   ) %>%
   ##### this layer.getLatLng() function only works for points
-   onRender("
+   htmlwidgets::onRender("
     function(el, x) {
       this.on('draw:created', function(e) {
         var layer = e.layer;
