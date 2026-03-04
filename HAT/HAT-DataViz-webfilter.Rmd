@@ -3,8 +3,6 @@ title: "Visualizing HAT Monitoring Data"
 output: 
   flexdashboard::flex_dashboard:
     favicon: HAT-favicon-60.png
-    #HAT-favicon.png
-    #css: flexbox-style.css
     orientation: rows
     vertical_layout: fill
     theme: 
@@ -208,19 +206,24 @@ library(DT) # tables
 #############################################
 # install.packages("leaflet")
 library(leaflet) # interactive map
+# install.packages("sf")
 library(sf) # spatial data
+# install.packages("leaflet.extras")
+library(leaflet.extras) # for addControlGPS() & addDrawToolbar()
+# install.packages("htmlwidgets")
+library(htmlwidgets) # to save leaflet map as html & render js
 ```
 
 
 ```{r data-import-st-data-download, include = FALSE, cache = TRUE}
 # Data Import 
 ## Import spatial Data
-OH_2024_ShinyG_Burning_Priorities <- st_read("data_spatial/OH_2024_ShinyG_Burning_Priorities/OH_2024_ShinyG_Burning_Priorities.shp")
-OH_2024_Invasive_Species_Removed <- st_read("data_spatial/OH_2024_Invasive_Species_Removed/OH_2024_Invasive_Species_Removed.shp")
-OH_2024_Identified_Invasive_Species_Patches <- st_read("data_spatial/OH_2024_Identified_Invasive_Species_Patches/OH_2024_Identified_InvasiveSpecies_Patches.shp")
-OH_2024_Invasive_Species_Points <- st_read("data_spatial/OH_2024_Invasive_Species_Points/OH_2024_Invasive_Species_Points.shp")
-OHP_2025_Completed_polygons <- st_read("data_spatial/OHP_2025_Completed_polygons/OHP_2025_Completed polygons.shp")
-OHP_2025_Experimental_test_plots <- st_read("data_spatial/OHP_2025_Experimental_test_plots/OHP_2025_Experimental test plots.shp")
+OH_2024_ShinyG_Burning_Priorities <- st_read("data/data_spatial/OH_2024_ShinyG_Burning_Priorities/OH_2024_ShinyG_Burning_Priorities.shp")
+OH_2024_Invasive_Species_Removed <- st_read("data/data_spatial/OH_2024_Invasive_Species_Removed/OH_2024_Invasive_Species_Removed.shp")
+OH_2024_Identified_Invasive_Species_Patches <- st_read("data/data_spatial/OH_2024_Identified_Invasive_Species_Patches/OH_2024_Identified_InvasiveSpecies_Patches.shp")
+OH_2024_Invasive_Species_Points <- st_read("data/data_spatial/OH_2024_Invasive_Species_Points/OH_2024_Invasive_Species_Points.shp")
+OHP_2025_Completed_polygons <- st_read("data/data_spatial/OHP_2025_Completed_polygons/OHP_2025_Completed polygons.shp")
+OHP_2025_Experimental_test_plots <- st_read("data/data_spatial/OHP_2025_Experimental_test_plots/OHP_2025_Experimental test plots.shp")
 ```
 
 ```{r shape-data-dropz, include = FALSE, cache = TRUE}
@@ -259,7 +262,7 @@ nrow(OH_2024_ShinyG_Burning_Priorities_dropz) #13
 #  [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
 # [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry"   "Site"       "Year"       "Data"       "Priority"
 
-write.csv(OH_2024_ShinyG_Burning_Priorities_dropz, "data/OH_2024_ShinyG_Burning_Priorities_dropz.csv")
+write.csv(OH_2024_ShinyG_Burning_Priorities_dropz, "data/data_spatial//OH_2024_ShinyG_Burning_Priorities_dropz.csv")
 ```
 
 ```{r spatial-subset-save-OH_2024_Invasive_Species_Removed, include = FALSE, cache = TRUE}
@@ -278,7 +281,7 @@ OH_2024_Invasive_Species_Removed_dropz <- OH_2024_Invasive_Species_Removed_dropz
 ncol(OH_2024_Invasive_Species_Removed_dropz)
 nrow(OH_2024_Invasive_Species_Removed_dropz) #10
 
-write.csv(OH_2024_Invasive_Species_Removed_dropz, "data/OH_2024_Invasive_Species_Removed_dropz.csv")
+write.csv(OH_2024_Invasive_Species_Removed_dropz, "data/data_spatial/OH_2024_Invasive_Species_Removed_dropz.csv")
 ```
 
 ```{r spatial-subset-save-OH_2024_Identified_Invasive_Species_Patches, include = FALSE, cache = TRUE}
@@ -294,7 +297,7 @@ OH_2024_Identified_Invasive_Species_Patches_dropz$Priority <- "Priority"
 ncol(OH_2024_Identified_Invasive_Species_Patches_dropz)
 nrow(OH_2024_Identified_Invasive_Species_Patches_dropz) #13
 
-write.csv(OH_2024_Identified_Invasive_Species_Patches_dropz, "data/OH_2024_Identified_Invasive_Species_Patches_dropz.csv")
+write.csv(OH_2024_Identified_Invasive_Species_Patches_dropz, "data/data_spatial/OH_2024_Identified_Invasive_Species_Patches_dropz.csv")
 ```
 
 ```{r spatial-subset-save-OHP_2025_Completed_polygons, include = FALSE, cache = TRUE}
@@ -314,7 +317,7 @@ nrow(OHP_2025_Completed_polygons_dropz) #7
 # reorder names for priority so polygon data can be bound by row
 OHP_2025_Completed_polygons_dropz <- OHP_2025_Completed_polygons_dropz[, c("Name", "FolderPath", "SymbolID", "AltMode", "Base", "Clamped", "Extruded", "Snippet", "PopupInfo", "Shape_Leng", "Shape_Area", "INSVNAME", "AreaNumber", "geometry", "Site", "Year", "Data", "Priority" )]
 
-write.csv(OHP_2025_Completed_polygons_dropz, "data/OHP_2025_Completed_polygons_dropz.csv")
+write.csv(OHP_2025_Completed_polygons_dropz, "data/data_spatial/OHP_2025_Completed_polygons_dropz.csv")
 ```
 
 ```{r rbind-spatial-polygons, include = FALSE, cache = TRUE}
@@ -329,7 +332,7 @@ colnames(OH_spatial_polygons_all)
 OH_spatial_polygons_all_sub <- subset(OH_spatial_polygons_all, select = -c(2:8, 10, 11))
 colnames(OH_spatial_polygons_all_sub)
 
-write.csv(OH_spatial_polygons_all_sub, "data/OH_spatial_polygons_all_sub.csv")
+write.csv(OH_spatial_polygons_all_sub, "data/data_spatial/OH_spatial_polygons_all_sub.csv")
 ```
 
 ```{r spatial-subset-save-OH_2024_Invasive_Species_Points, include = FALSE, cache = TRUE}
@@ -343,7 +346,7 @@ OH_2024_Invasive_Species_Points_dropz$Site <- "Oak Haven"
 OH_2024_Invasive_Species_Points_dropz$Year <- "2024"
 OH_2024_Invasive_Species_Points_dropz$Data <- "OH_2024_Invasive_Species_Points"
 
-write.csv(OH_2024_Invasive_Species_Points_dropz, "data/OH_2024_Invasive_Species_Points_dropz.csv")
+write.csv(OH_2024_Invasive_Species_Points_dropz, "data/data_spatial/OH_2024_Invasive_Species_Points_dropz.csv")
 ```
 
 ```{r spatial-subset-save-OHP_2025_Experimental_test_plots, include = FALSE, cache = TRUE}
@@ -362,7 +365,7 @@ OHP_2025_Experimental_test_plots_dropz <- OHP_2025_Experimental_test_plots_dropz
 colnames(OHP_2025_Experimental_test_plots_dropz)
 colnames(OH_2024_Invasive_Species_Points_dropz)
 
-write.csv(OHP_2025_Experimental_test_plots_dropz, "data/OHP_2025_Experimental_test_plots_dropz.csv")
+write.csv(OHP_2025_Experimental_test_plots_dropz, "data/data_spatial/OHP_2025_Experimental_test_plots_dropz.csv")
 ```
 
 ```{r rbind-spatial-points, include = FALSE, cache = TRUE}
@@ -374,7 +377,7 @@ colnames(OH_spatial_points_all)
 OH_spatial_points_all_sub <- subset(OH_spatial_points_all, select = -c(1,4,5,6))
 colnames(OH_spatial_points_all_sub)
 
-write.csv(OH_spatial_points_all_sub, "data/OH_spatial_points_all_sub.csv")
+write.csv(OH_spatial_points_all_sub, "data/data_spatial/OH_spatial_points_all_sub.csv")
 ```
 
 
@@ -676,7 +679,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-24 @ 07:07</div>
+Modified: 2026-03-04 @ 04:04</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -705,17 +708,18 @@ br()
 # htmltools::br()
 ```
 
-Row  {data-height=80}
+Row  {data-height=95}
 -----------------------------------------------
 
 ### ***Interactive Maps of 3 HAT Managed Public GOE Sites***
 ```{r}
 htmltools::HTML("Click map markers to open pop-up windows for site information. 
 These three public HAT sites are listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>. 
-Spatial data for Oak Haven shows polygons of restoration and species locations, but does not yet respond to filters.
+Spatial data for Oak Haven shows polygons of restoration and species locations, but <em>does not respond to filters</em>.
 The layer menu is used to toggle spatial data layers on. 
-The measuring tool can be used to measure distance between or within sites.
-                ")
+The measuring tool can be used to measure distance between or within sites.  
+The geolocation map can toggle your location, though permission has to be given to browser to access location data. Points can be added and saved to the console (right-click map > Inspect > Console > copy coordinates). Hosted as <a href='https://wendyanthony.github.io/HAT/WebMap/HAT_spatial_site_map_geoloc_draw.html'>a stand-alone web map</a>
+")
 ```
 
 Row {.tabset .tabset-fade}
@@ -895,11 +899,116 @@ map_all
 
 ```
 
-### Oak Haven Spatial Data Map
+
 ```{r leaflet-OH-spatial, echo = FALSE, message = FALSE, include = TRUE}
+# ### Oak Haven Spatial Data Map
+# title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
+# 
+# map_OH_sp <- leaflet() %>%
+#   # addTiles() %>%
+#   addProviderTiles("Esri.WorldImagery") %>%
+#   addPolygons(data = OHP_2025_Completed_polygons_dropz,
+#               group = "OH 2025 Completed polygons",
+#               color = "#AA4499", #AA4499 purple
+#               #fillColor = "purple",
+#               fillOpacity = 0.5,
+#               popup = paste0("<b>Name: </b>", OHP_2025_Completed_polygons_dropz$Name, "<br>",
+#                              "<b>Description: </b>", OHP_2025_Completed_polygons_dropz$PopupInfo)) %>%
+#   addCircleMarkers(data = OHP_2025_Experimental_test_plots_dropz,
+#               group = "OH 2025 Experimental test plot points",
+#               color = "#EECC66", #EECC66 light yellow
+#               #fillColor = "purple",
+#               fillOpacity = 0.8,
+#               weight = 1,
+#               radius = 3,
+#               popup = paste0("<b>Name: </b>", OHP_2025_Experimental_test_plots_dropz$Name, "<br>",
+#                             "<b>Description: </b>", OHP_2025_Experimental_test_plots_dropz$Descript, "<br>",
+#                             "<b>Date: </b>", OHP_2025_Experimental_test_plots_dropz$DateTimeS)) %>%
+#   addPolygons(data = OH_2024_ShinyG_Burning_Priorities_dropz,
+#               # covers same area as Invasive_Species_Patches
+#               group = "OH 2024 ShinyG Burning Priorities",
+#               # use a lighter colour so lighter Shiny will show over Species patches
+#               color = "#EE7733", #EE7733 orange
+#               #color = "blue",
+#               #fillColor = "blue",
+#               fillOpacity = 0.3,
+#               popup = paste0("<b>Name: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Name, "<br>",
+#                              "<b>Priority: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$Priority, "<br>",
+#                              "<b>Description: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$PopupInfo, "<br>",
+#                              "<b>Area Number: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$AreaNumber, "<br>",
+#                              "<b>Species: </b>", OH_2024_ShinyG_Burning_Priorities_dropz$INSVNAME)) %>% # Optional: add popups
+#   addPolygons(data = OH_2024_Invasive_Species_Removed_dropz,
+#               group = "OH 2024 Invasive Species Removed",
+#               color = "#EE3377", # magenta #EE3377
+#               #color = "yellow",
+#               #fillColor = "yellow",
+#               fillOpacity = 0.6,
+#               popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Removed_dropz$Name, "<br>",
+#                              "<b>Description: </b>", OH_2024_Invasive_Species_Removed_dropz$PopupInfo)) %>%
+#   addPolygons(data = OH_2024_Identified_Invasive_Species_Patches_dropz,
+#               # covers same area as Shiny g
+#               group = "OH 2024 Invasive Species Patches",
+#               # use a darker colour so lighter Shiny will show
+#               color = "#33BBEE", #cyan #33BBEE
+#               #fillColor = "orange",
+#               fillOpacity = 0.4,
+#               popup = paste0("<b>Name: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$Name, "<br>",
+#                              "<b>Description: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$PopupInfo, "<br>",
+#                              "<b>Area: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$AreaNumber, "<br>",
+#                              "<b>Species: </b>", OH_2024_Identified_Invasive_Species_Patches_dropz$INSVNAME)
+#               ) %>%
+#   addCircleMarkers(data = OH_2024_Invasive_Species_Points_dropz,
+#               group = "OH 2024 Invasive Species Points",
+#               color = "#CC3311", # CC3311 red
+#               #fillColor = "red",
+#               fillOpacity = 0.5,
+#               radius = 3,
+#               popup = paste0("<b>Name: </b>", OH_2024_Invasive_Species_Points_dropz$Name, "<br>",
+#                             "<b>Description: </b>", OH_2024_Invasive_Species_Points_dropz$Descript, "<br>",
+#                             "<b>Species: </b>", OH_2024_Invasive_Species_Points_dropz$INSVNAME, "<br>",
+#                             "<b>Elevation: </b>", OH_2024_Invasive_Species_Points_dropz$Elevation, "<br>",
+#                             "<b>Date: </b>", OH_2024_Invasive_Species_Points_dropz$DateTimeS)
+#               ) %>%
+#   # add legend to overlay group toggled off
+#   addLegend(
+#               "bottomright",
+#               colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
+#               labels = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points"),
+#               title = "OH Spatial Data",
+#               group = "OH Spatial Polygon Color Legend"
+#               ) %>%
+#   setView(-123.4471, 48.56419, 17) %>%
+#   addControl(title, position = "topright") %>% 
+#   addMeasure(
+#     position = "topleft",
+#     primaryLengthUnit = "meters",
+#     primaryAreaUnit = "sqmeters",
+#     activeColor = "#DDAA33",
+#     completedColor = "#BB5566") %>% 
+#   addLayersControl(
+#     overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
+#     options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
+#   ) %>%
+#   hideGroup(c("OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
+#   addScaleBar("topleft")  
+# # %>%
+# #       # add controls
+# #        addMiniMap(width = 100, height = 100, zoomLevelOffset = -4)
+# 
+# # Print the map
+# map_OH_sp
+```
+
+### Oak Haven Spatial Data Geolocation Map
+```{r leaflet-OH-spatial_geoloc, echo = FALSE, message = FALSE, include = TRUE}
+################################################################################
+# Interactive Geolocation map Developed by Wendy Anthony for HAT 2026-03-03
+################################################################################
+# library(leaflet.extras) # for addControlGPS() & addDrawToolbar()
+
 title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
 
-map_OH_sp <- leaflet() %>%
+map_OH_sp_geoloc <- leaflet() %>%
   # addTiles() %>%
   addProviderTiles("Esri.WorldImagery") %>%
   addPolygons(data = OHP_2025_Completed_polygons_dropz,
@@ -973,25 +1082,77 @@ map_OH_sp <- leaflet() %>%
               group = "OH Spatial Polygon Color Legend"
               ) %>%
   setView(-123.4471, 48.56419, 17) %>%
+    # leaflet.extras
+  addControlGPS(
+    options = gpsOptions(
+      position = "topleft",
+      activate = TRUE,
+      autoCenter = TRUE,
+      maxZoom = 10,
+      setView = TRUE
+    )
+  ) %>%
   addControl(title, position = "topright") %>% 
   addMeasure(
     position = "topleft",
     primaryLengthUnit = "meters",
     primaryAreaUnit = "sqmeters",
     activeColor = "#DDAA33",
-    completedColor = "#BB5566") %>% 
-  addLayersControl(
-    overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
-    options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
-  ) %>%
+    completedColor = "#BB5566")  %>%
   hideGroup(c("OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
-  addScaleBar("topleft")  
-# %>%
-#       # add controls
-#        addMiniMap(width = 100, height = 100, zoomLevelOffset = -4)
+  addScaleBar("topleft")  %>%
+  addDrawToolbar(
+    targetGroup = "Points",
+    markerOptions = TRUE,
+    polylineOptions = FALSE,
+    polygonOptions = FALSE,
+    circleOptions = FALSE,
+    rectangleOptions = FALSE,
+    circleMarkerOptions = FALSE,
+    editOptions = editToolbarOptions(selectedPathOptions = selectedPathOptions())
+  ) %>%
+  ##### this layer.getLatLng() function only works for points
+   htmlwidgets::onRender("
+    function(el, x) {
+      this.on('draw:created', function(e) {
+        var layer = e.layer;
+        var coords = layer.getLatLng();
+        console.log('Lat: ' + coords.lat + ', Lng: ' + coords.lng);
+        // Add to a global variable or custom HTML element here
+        alert('Point Saved: ' + coords.lat + ', ' + coords.lng);
+      });
+    }
+    ") %>% 
+    addLayersControl(
+      overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend", "Points"),
+      options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
+    ) 
 
-# Print the map
-map_OH_sp
+################################################################################
+# lat long on click
+# these get in the way of drawing polygons
+# js_code <- "
+# function(el, x) {
+#   this.on('click', function(e) {
+#     var coords = e.latlng;
+#     var lat = coords.lat;
+#     var lng = coords.lng;
+#     var popup = L.popup()
+#       .setLatLng(coords)
+#       .setContent('Latitude: ' + lat.toFixed(4) + ', Longitude: ' + lng.toFixed(4))
+#       .openOn(this);
+#   });
+# }
+# "
+# 
+# map_OH_sp_geoloc <- map_OH_sp_geoloc %>%
+#   onRender(js_code)
+
+map_OH_sp_geoloc
+
+# Save map as webpage
+saveWidget(map_OH_sp_geoloc, "output/HAT_spatial_site_map_geoloc_draw_1.html")
+
 ```
 
 
@@ -2546,7 +2707,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-02-24 @ 07:07</div>
+Modified: 2026-03-04 @ 04:04</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -2702,6 +2863,7 @@ sessionInfo()
 
 <!-- Default Statcounter code for HAT Monitoring Dataviz
 Project
+** Remove code before handing over to HAT **
 https://wendyanthony.github.io/HAT/HAT-DataViz-webfilter.html
 -->
 <script type="text/javascript">
