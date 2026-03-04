@@ -679,7 +679,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-03-04 @ 04:04</div>
+Modified: 2026-03-04 @ 04:40</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -1102,7 +1102,7 @@ map_OH_sp_geoloc <- leaflet() %>%
   hideGroup(c("OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
   addScaleBar("topleft")  %>%
   addDrawToolbar(
-    targetGroup = "Points",
+    targetGroup = "Markers Added - Draw Tool",
     markerOptions = TRUE,
     polylineOptions = FALSE,
     polygonOptions = FALSE,
@@ -1124,7 +1124,7 @@ map_OH_sp_geoloc <- leaflet() %>%
     }
     ") %>% 
     addLayersControl(
-      overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend", "Points"),
+      overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend", "Markers Added - Draw Tool"),
       options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
     ) 
 
@@ -2707,7 +2707,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-03-04 @ 04:04</div>
+Modified: 2026-03-04 @ 04:40</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
