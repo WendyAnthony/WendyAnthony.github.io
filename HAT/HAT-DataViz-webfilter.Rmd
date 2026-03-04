@@ -714,11 +714,11 @@ Row  {data-height=115}
 ### ***Interactive Maps of 3 HAT Managed Public GOE Sites***
 ```{r}
 htmltools::HTML("Click map markers to open pop-up windows for site information. 
-These three public HAT sites are listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>. 
+Three public HAT sites are listed on <a href='https://hat.bc.ca/community-based-restoration'>HAT's webpage</a>. 
 Spatial data for Oak Haven shows polygons of restoration and species locations, but <em>does not respond to filters</em>.
-The layer menu is used to toggle spatial data layers on. 
-The measuring tool can be used to measure distance between or within sites.  
-The geolocation map can toggle your location, though permission has to be given to browser to access location data. Points can be added and saved to the console (right-click map > Inspect > Console > copy coordinates). Hosted as <a href='https://wendyanthony.github.io/HAT/WebMap/HAT_spatial_site_map_geoloc_draw.html'>a stand-alone web map</a>
+Use layer menu toggle spatial data layers on/off. 
+Measure distance between or within sites with measuring tool.  
+The geolocation map can toggle your location, after permission is given to browser to access location data. Points can be added and saved to the console (right-click map > Inspect > Console > copy coordinates). Also a <a href='https://wendyanthony.github.io/HAT/WebMap/HAT_spatial_site_map_geoloc_draw.html'>Stand-alone Webmap</a>
 ")
 ```
 
