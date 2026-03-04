@@ -295,7 +295,7 @@ map_OH_sp <- leaflet() %>%
               colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
               labels = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points"),
               title = "OH Spatial Data",
-              group = "OH Spatial Polygon Color Legend"
+              group = "LEGEND - OH Spatial Polygon Colour"
               ) %>%
   setView(-123.4471, 48.56419, 17) %>%
   addControl(title, position = "topright") %>% 
@@ -306,10 +306,10 @@ map_OH_sp <- leaflet() %>%
     activeColor = "#DDAA33",
     completedColor = "#BB5566") %>% 
   addLayersControl(
-    overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
+    overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "LEGEND - OH Spatial Polygon Colour"),
     options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
   ) %>%
-  hideGroup(c("OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
+  hideGroup(c("OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "LEGEND - OH Spatial Polygon Colour")) %>%
   addScaleBar("topleft")  
 # %>%
 #       # add controls
@@ -403,7 +403,7 @@ map_OH_sp_geoloc <- leaflet() %>%
               colors = c("#AA4499", "#EECC66", "#EE3377", "#33BBEE", "#EE7733", "#CC3311"),
               labels = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points"),
               title = "OH Spatial Data",
-              group = "OH Spatial Polygon Color Legend"
+              group = "LEGEND - OH Spatial Polygon Colour"
               ) %>%
   setView(-123.4471, 48.56419, 17) %>%
     # leaflet.extras
@@ -423,7 +423,11 @@ map_OH_sp_geoloc <- leaflet() %>%
     primaryAreaUnit = "sqmeters",
     activeColor = "#DDAA33",
     completedColor = "#BB5566")  %>%
-  hideGroup(c("OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
+  addLayersControl(
+    overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "LEGEND - OH Spatial Polygon Colour"),
+    options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
+  ) %>%
+  hideGroup(c("OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "LEGEND - OH Spatial Polygon Colour")) %>%
   addScaleBar("topleft")  %>%
   addDrawToolbar(
     targetGroup = "Markers Added - Draw Tool",
@@ -448,7 +452,7 @@ map_OH_sp_geoloc <- leaflet() %>%
     }
     ") %>% 
     addLayersControl(
-      overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend", "Markers Added - Draw Tool"),
+      overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "Markers Added - Draw Tool", "LEGEND - OH Spatial Polygon Colour"),
       options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
     ) 
 
