@@ -316,23 +316,16 @@ saveWidget(map_OH_sp, "output/HAT_spatial_site_map.html")
 
 ### Geolocate Oak Haven Park
 ```{r leaflet-OH-spatial_geoloc, echo = FALSE, message = FALSE, include = TRUE}
-
-library(leaflet.extras)
+################################################################################
+# Interactive Geolocation map Developed by Wendy Anthony for HAT 2026-03-03
+################################################################################
+library(leaflet.extras) # for addControlGPS
 
 title <- '<p style="text-align: center; height: 12px;"><span style="font-size:12px;font-weight:bold; background-color: rgba(255, 255, 255, 0.9;");>HAT GOE Monitoring Covenant Sites Map</span></p>'
 
 map_OH_sp_geoloc <- leaflet() %>%
   # addTiles() %>%
   addProviderTiles("Esri.WorldImagery") %>%
-  addControlGPS(
-    options = gpsOptions(
-      position = "bottomleft",
-      activate = TRUE,
-      autoCenter = TRUE,
-      maxZoom = 10,
-      setView = TRUE
-    )
-  ) %>%
   addPolygons(data = OHP_2025_Completed_polygons_dropz,
               group = "OH 2025 Completed polygons",
               color = "#AA4499", #AA4499 purple
@@ -404,53 +397,76 @@ map_OH_sp_geoloc <- leaflet() %>%
               group = "OH Spatial Polygon Color Legend"
               ) %>%
   setView(-123.4471, 48.56419, 17) %>%
+    # leaflet.extras
+  addControlGPS(
+    options = gpsOptions(
+      position = "topleft",
+      activate = TRUE,
+      autoCenter = TRUE,
+      maxZoom = 10,
+      setView = TRUE
+    )
+  ) %>%
   addControl(title, position = "topright") %>% 
   addMeasure(
     position = "topleft",
     primaryLengthUnit = "meters",
     primaryAreaUnit = "sqmeters",
     activeColor = "#DDAA33",
-    completedColor = "#BB5566") %>% 
-  addLayersControl(
-    overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend"),
-    options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
-  ) %>%
+    completedColor = "#BB5566")  %>%
   hideGroup(c("OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
-  addScaleBar("topleft")  
-# %>%
-#       # add controls
-#        addMiniMap(width = 100, height = 100, zoomLevelOffset = -4)
+  addScaleBar("topleft")  %>%
+  addDrawToolbar(
+    targetGroup = "Points",
+    markerOptions = TRUE,
+    polylineOptions = FALSE,
+    polygonOptions = FALSE,
+    circleOptions = FALSE,
+    rectangleOptions = FALSE,
+    circleMarkerOptions = FALSE,
+    editOptions = editToolbarOptions(selectedPathOptions = selectedPathOptions())
+  ) %>%
+  ##### this layer.getLatLng() function only works for points
+   onRender("
+    function(el, x) {
+      this.on('draw:created', function(e) {
+        var layer = e.layer;
+        var coords = layer.getLatLng();
+        console.log('Lat: ' + coords.lat + ', Lng: ' + coords.lng);
+        // Add to a global variable or custom HTML element here
+        alert('Point Saved: ' + coords.lat + ', ' + coords.lng);
+      });
+    }
+    ") %>% 
+    addLayersControl(
+      overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend", "Points"),
+      options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
+    ) 
 
-# Print the map
-# map_OH_sp_geoloc
-
-
-js_code <- "
-function(el, x) {
-  this.on('click', function(e) {
-    var coords = e.latlng;
-    var lat = coords.lat;
-    var lng = coords.lng;
-    var popup = L.popup()
-      .setLatLng(coords)
-      .setContent('Latitude: ' + lat.toFixed(4) + ', Longitude: ' + lng.toFixed(4))
-      .openOn(this);
-  });
-}
-"
-
-map_OH_sp_geoloc <- map_OH_sp_geoloc %>%
-  onRender(js_code)
+################################################################################
+# lat long on click
+# these get in the way of drawing polygons
+# js_code <- "
+# function(el, x) {
+#   this.on('click', function(e) {
+#     var coords = e.latlng;
+#     var lat = coords.lat;
+#     var lng = coords.lng;
+#     var popup = L.popup()
+#       .setLatLng(coords)
+#       .setContent('Latitude: ' + lat.toFixed(4) + ', Longitude: ' + lng.toFixed(4))
+#       .openOn(this);
+#   });
+# }
+# "
+# 
+# map_OH_sp_geoloc <- map_OH_sp_geoloc %>%
+#   onRender(js_code)
 
 map_OH_sp_geoloc
-# Save map as webpage
-#saveWidget(map_OH_sp_geoloc, "output/HAT_spatial_site_map_geoloc.html")
-saveWidget(map_OH_sp_geoloc, "output/HAT_spatial_site_map_geoloc-coord.html")
-
-
 
 # Save map as webpage
-saveWidget(map_OH_sp_geoloc, "output/HAT_spatial_site_map_geoloc.html")
+saveWidget(map_OH_sp_geoloc, "output/HAT_spatial_site_map_geoloc_draw.html")
 
 ```
 
