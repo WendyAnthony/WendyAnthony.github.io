@@ -708,7 +708,7 @@ br()
 # htmltools::br()
 ```
 
-Row  {data-height=95}
+Row  {data-height=115}
 -----------------------------------------------
 
 ### ***Interactive Maps of 3 HAT Managed Public GOE Sites***
