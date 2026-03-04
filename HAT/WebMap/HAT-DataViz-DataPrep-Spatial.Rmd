@@ -27,6 +27,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Load Libraries
 ```{r load-libraries}
+# Load Map & Spatial Data Package Libraries 
+#############################################
+# install.packages("leaflet")
+library(leaflet) # interactive map
+# install.packages("sf")
+library(sf) # spatial data
+# install.packages("leaflet.extras")
+library(leaflet.extras) # for addControlGPS() & addDrawToolbar()
+# install.packages("htmlwidgets")
 library(htmlwidgets) # to save leaflet map as html & render js
 ```
 
@@ -417,7 +426,7 @@ map_OH_sp_geoloc <- leaflet() %>%
   hideGroup(c("OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend")) %>%
   addScaleBar("topleft")  %>%
   addDrawToolbar(
-    targetGroup = "Points",
+    targetGroup = "Markers Added - Draw Tool",
     markerOptions = TRUE,
     polylineOptions = FALSE,
     polygonOptions = FALSE,
@@ -439,7 +448,7 @@ map_OH_sp_geoloc <- leaflet() %>%
     }
     ") %>% 
     addLayersControl(
-      overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend", "Points"),
+      overlayGroups = c("OH 2025 Completed polygons", "OH 2025 Experimental test plot points", "OH 2024 Invasive Species Removed", "OH 2024 Invasive Species Patches", "OH 2024 ShinyG Burning Priorities", "OH 2024 Invasive Species Points", "OH Spatial Polygon Color Legend", "Markers Added - Draw Tool"),
       options = layersControlOptions(collapsed = TRUE) # Makes control box always visible
     ) 
 
