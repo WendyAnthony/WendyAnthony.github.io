@@ -8,7 +8,7 @@ output:
     theme: 
       version: 4
       bootswatch: flatly
-    #source_code: embed
+    source_code: embed
 ---
   
 ```{r readme, include=FALSE}
@@ -535,7 +535,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-03-08 @ 13:13</div>
+Modified: 2026-03-08 @ 13:31</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -1757,8 +1757,9 @@ htmltools::HTML("
 Row {.tabset .tabset-fade}
 ---------------------------------------------
 
-### Native Species (bar)
+
 ```{r mean-cover-nat, echo = FALSE, message = FALSE, warning = FALSE}
+### Native Species (bar)
 #############################################
 custom_colours_years <- c("2022" = "#ffff33", 
                     "2023" = "#4daf4a", 
@@ -1829,7 +1830,7 @@ ggplotly(
                                                           "\nUpper Mean Range:", upper,
                                                           "\nLower Mean Range:", lower))) + 
   geom_point(size = 3, alpha = 0.75) +
-  geom_errorbar(aes(ymin = lower, ymax = upper)) +
+  geom_errorbar(aes(ymin = ifelse(lower < 0, 0, lower), ymax = upper)) +
   coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
   #facet_wrap(vars(Site)) +
   facet_grid(Year ~ Site) +
@@ -1866,56 +1867,57 @@ ggplotly(
 
 
 
-### Invasive Species
-```{r mean-cover-inv, echo = FALSE, message = FALSE, warning = FALSE}
-#############################################
-# create custom colour-blind-friendly palette
-custom_colours_years <- c("2022" = "#ffff33", 
-                    "2023" = "#4daf4a", 
-                    "2024" = "#984ea3", 
-                    "2025" = "#ff7f00")
 
-#############################################
-ggplotly(
-  ggplot(sd_cover_inv, aes(x = reorder(Species, desc(Species)), y = mean_value, fill = as.factor(Year), 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site,
-                                                          "\nSpecies:", Species,      
-                                                          "\nNative or Invasive:", Native_or_Invasive,  
-                                                          "\nTreated:", Treated,
-                                                          "\nMean Value:", mean_value,
-                                                          "\nSD Value:", sd_value,
-                                                          "\nUpper Mean Range:", upper,
-                                                          "\nLower Mean Range:", lower))) + 
-  geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
-  #facet_wrap(vars(Site)) +
-  facet_grid(Treated ~ Site) +
-  coord_flip() +     
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-    scale_fill_manual(values = custom_colours_years) +
-    #scale_fill_manual(values = custom_colours_Site_2) +
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
-        strip.text = element_text(size = 11)) +
-  labs(
-        title = "Invasive Species Mean % Cover at Matson & Oak Haven by Treatment",        
-        x = "",  
-        y = "Mean % cover", 
-        fill = ""
-      ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
-      # aligns title to left
-  theme(plot.title = element_text(hjust = 0)), 
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    #x = 0.5 legend too close to x axis label
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
+```{r mean-cover-inv, echo = FALSE, message = FALSE, warning = FALSE}
+# ### Invasive Species
+# #############################################
+# # create custom colour-blind-friendly palette
+# custom_colours_years <- c("2022" = "#ffff33", 
+#                     "2023" = "#4daf4a", 
+#                     "2024" = "#984ea3", 
+#                     "2025" = "#ff7f00")
+# 
+# #############################################
+# ggplotly(
+#   ggplot(sd_cover_inv, aes(x = reorder(Species, desc(Species)), y = mean_value, fill = as.factor(Year), 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nSpecies:", Species,      
+#                                                           "\nNative or Invasive:", Native_or_Invasive,  
+#                                                           "\nTreated:", Treated,
+#                                                           "\nMean Value:", mean_value,
+#                                                           "\nSD Value:", sd_value,
+#                                                           "\nUpper Mean Range:", upper,
+#                                                           "\nLower Mean Range:", lower))) + 
+#   geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
+#   #facet_wrap(vars(Site)) +
+#   facet_grid(Treated ~ Site) +
+#   coord_flip() +     
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#     scale_fill_manual(values = custom_colours_years) +
+#     #scale_fill_manual(values = custom_colours_Site_2) +
+#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
+#         strip.text = element_text(size = 11)) +
+#   labs(
+#         title = "Invasive Species Mean % Cover at Matson & Oak Haven by Treatment",        
+#         x = "",  
+#         y = "Mean % cover", 
+#         fill = ""
+#       ) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+#       # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)), 
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
 ```
 
 ### Invasive Species (points with error)
@@ -1938,7 +1940,7 @@ ggplotly(
                                                           "\nUpper Mean Range:", upper,
                                                           "\nLower Mean Range:", lower))) + 
   geom_point(size = 3, alpha = 0.75) +
-  geom_errorbar(aes(ymin = lower, ymax = upper)) +
+  geom_errorbar(aes(ymin = ifelse(lower < 0, 0, lower), ymax = upper)) +
   coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
   #facet_wrap(vars(Site)) +
   facet_grid(Year ~ Site) +
@@ -1972,55 +1974,56 @@ ggplotly(
     ))
 ```
 
-### Mixed Grasses
-```{r mean-cover-grs, echo = FALSE, message = FALSE, warning = FALSE}
-#############################################
-custom_colours_years <- c("2022" = "#ffff33", 
-                    "2023" = "#4daf4a", 
-                    "2024" = "#984ea3", 
-                    "2025" = "#ff7f00")
 
-#############################################
-ggplotly(
-  ggplot(sd_cover_grs, aes(x = reorder(Species, desc(Species)), y = mean_value, fill = as.factor(Year), 
-                                                          text = paste("Year:", Year,
-                                                          "\nSite:", Site,
-                                                          "\nSpecies:", Species,      
-                                                          "\nNative or Invasive:", Native_or_Invasive,  
-                                                          "\nTreated:", Treated,
-                                                          "\nMean Value:", mean_value,
-                                                          "\nSD Value:", sd_value,
-                                                          "\nUpper Mean Range:", upper,
-                                                          "\nLower Mean Range:", lower))) + 
-  geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
-  # facet_wrap(vars(Site)) +
-  facet_grid(Treated ~ Site) +
-  coord_flip() + 
-  theme_minimal() + #get rid of grey background and tick marks
-  theme(legend.position ="bottom") + 
-    scale_fill_manual(values = custom_colours_years) +
-    #scale_fill_manual(values = custom_colours_Site_2) +
-  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
-        strip.text = element_text(size = 11)) +
-  labs(
-        title = "Mixed Grasses Mean % Cover at Matson & Oak Haven by Treatment",     
-        x = "",   
-        y = "Mean % cover",
-        fill = ""
-        ) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
-      # aligns title to left
-  theme(plot.title = element_text(hjust = 0)), 
-  tooltip = "text",
-  config = (displayModeBar = False) 
-  ) %>%
-    layout(legend = list(orientation = "h",
-    xanchor="center",
-    #x = 0.5 legend too close to x axis label
-    x = 0.5,
-    # gives some space between x axis label and legend
-    y = -0.2
-    ))
+```{r mean-cover-grs, echo = FALSE, message = FALSE, warning = FALSE}
+# ### Mixed Grasses
+# #############################################
+# custom_colours_years <- c("2022" = "#ffff33", 
+#                     "2023" = "#4daf4a", 
+#                     "2024" = "#984ea3", 
+#                     "2025" = "#ff7f00")
+# 
+# #############################################
+# ggplotly(
+#   ggplot(sd_cover_grs, aes(x = reorder(Species, desc(Species)), y = mean_value, fill = as.factor(Year), 
+#                                                           text = paste("Year:", Year,
+#                                                           "\nSite:", Site,
+#                                                           "\nSpecies:", Species,      
+#                                                           "\nNative or Invasive:", Native_or_Invasive,  
+#                                                           "\nTreated:", Treated,
+#                                                           "\nMean Value:", mean_value,
+#                                                           "\nSD Value:", sd_value,
+#                                                           "\nUpper Mean Range:", upper,
+#                                                           "\nLower Mean Range:", lower))) + 
+#   geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
+#   # facet_wrap(vars(Site)) +
+#   facet_grid(Treated ~ Site) +
+#   coord_flip() + 
+#   theme_minimal() + #get rid of grey background and tick marks
+#   theme(legend.position ="bottom") + 
+#     scale_fill_manual(values = custom_colours_years) +
+#     #scale_fill_manual(values = custom_colours_Site_2) +
+#   theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
+#         strip.text = element_text(size = 11)) +
+#   labs(
+#         title = "Mixed Grasses Mean % Cover at Matson & Oak Haven by Treatment",     
+#         x = "",   
+#         y = "Mean % cover",
+#         fill = ""
+#         ) +
+#   theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) + 
+#       # aligns title to left
+#   theme(plot.title = element_text(hjust = 0)), 
+#   tooltip = "text",
+#   config = (displayModeBar = False) 
+#   ) %>%
+#     layout(legend = list(orientation = "h",
+#     xanchor="center",
+#     #x = 0.5 legend too close to x axis label
+#     x = 0.5,
+#     # gives some space between x axis label and legend
+#     y = -0.2
+#     ))
 ```
 
 
@@ -2044,7 +2047,7 @@ ggplotly(
                                                           "\nUpper Mean Range:", upper,
                                                           "\nLower Mean Range:", lower))) + 
   geom_point(size = 3, alpha = 0.75) +
-  geom_errorbar(aes(ymin = lower, ymax = upper)) +
+  geom_errorbar(aes(ymin = ifelse(lower < 0, 0, lower), ymax = upper)) +
   coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
   #facet_wrap(vars(Site)) +
   facet_grid(Year ~ Site) +
@@ -2181,7 +2184,7 @@ ggplotly(
   # geom_bar(stat = "identity", width = 0.5, position = position_dodge(0.7)) +
   geom_point(size = 3, alpha = 0.75) +
     
-  geom_errorbar(aes(ymin = lower, ymax = upper)) +
+  geom_errorbar(aes(ymin = ifelse(lower < 0, 0, lower), ymax = upper)) +
   coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
   #facet_wrap(vars(Site)) +
   facet_grid(Site ~ Year) +
@@ -2401,7 +2404,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-03-08 @ 13:13</div>
+Modified: 2026-03-08 @ 13:31</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
