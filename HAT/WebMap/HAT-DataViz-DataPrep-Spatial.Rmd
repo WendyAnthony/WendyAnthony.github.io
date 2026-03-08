@@ -1,7 +1,7 @@
 ---
 title: "HAT Monitoring Spatial Data"
 author: "Wendy Anthony for HAT"
-date: "23/02/2026"
+date: "2026-02-23"
 output:
   html_document:
     highlight: zenburn
@@ -46,6 +46,7 @@ library(htmlwidgets) # to save leaflet map as html & render js
 ```{r data-import-st-data-download, include = FALSE, cache = TRUE}
 ## Import spatial Data
 OH_2024_ShinyG_Burning_Priorities <- st_read("data/data_spatial/OH_2024_ShinyG_Burning_Priorities/OH_2024_ShinyG_Burning_Priorities.shp")
+# str(OH_2024_ShinyG_Burning_Priorities)  # Classes ‘sf’ and 'data.frame'
 OH_2024_Invasive_Species_Removed <- st_read("data/data_spatial/OH_2024_Invasive_Species_Removed/OH_2024_Invasive_Species_Removed.shp")
 OH_2024_Identified_Invasive_Species_Patches <- st_read("data/data_spatial/OH_2024_Identified_Invasive_Species_Patches/OH_2024_Identified_InvasiveSpecies_Patches.shp")
 OH_2024_Invasive_Species_Points <- st_read("data/data_spatial/OH_2024_Invasive_Species_Points/OH_2024_Invasive_Species_Points.shp")
@@ -62,6 +63,7 @@ OHP_2025_Experimental_test_plots <- st_read("data/data_spatial/OHP_2025_Experime
 
 ## Drop Z Dimension of Spatial Data to map
 OH_2024_ShinyG_Burning_Priorities_dropz <- st_zm(OH_2024_ShinyG_Burning_Priorities, drop = T, what = "ZM")
+# str(OH_2024_ShinyG_Burning_Priorities_dropz) # Classes ‘sf’ and 'data.frame'
 OH_2024_Invasive_Species_Removed_dropz <- st_zm(OH_2024_Invasive_Species_Removed, drop = T, what = "ZM")
 OH_2024_Identified_Invasive_Species_Patches_dropz <- st_zm(OH_2024_Identified_Invasive_Species_Patches, drop = T, what = "ZM")
 OH_2024_Invasive_Species_Points_dropz <- st_zm(OH_2024_Invasive_Species_Points, drop = T, what = "ZM")
@@ -94,8 +96,11 @@ ncol(OH_2024_ShinyG_Burning_Priorities_dropz)
 nrow(OH_2024_ShinyG_Burning_Priorities_dropz) #13
 #  [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
 # [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry"   "Site"       "Year"       "Data"       "Priority"
+# str(OH_2024_ShinyG_Burning_Priorities_dropz) # Classes ‘sf’ and 'data.frame':	
 
-write.csv(OH_2024_ShinyG_Burning_Priorities_dropz, "data/OH_2024_ShinyG_Burning_Priorities_dropz.csv")
+str(OH_2024_ShinyG_Burning_Priorities_dropz)
+
+st_write(OH_2024_ShinyG_Burning_Priorities_dropz, "data/data_spatial/OH_2024_ShinyG_Burning_Priorities_dropz/OH_2024_ShinyG_Burning_Priorities_dropz.shp")
 ```
 
 ## OH_2024_Invasive_Species_Removed
@@ -114,7 +119,9 @@ OH_2024_Invasive_Species_Removed_dropz <- OH_2024_Invasive_Species_Removed_dropz
 ncol(OH_2024_Invasive_Species_Removed_dropz)
 nrow(OH_2024_Invasive_Species_Removed_dropz) #10
 
-write.csv(OH_2024_Invasive_Species_Removed_dropz, "data/OH_2024_Invasive_Species_Removed_dropz.csv")
+str(OH_2024_Invasive_Species_Removed_dropz)
+
+st_write(OH_2024_Invasive_Species_Removed_dropz, "data/data_spatial/OH_2024_Invasive_Species_Removed_dropz/OH_2024_Invasive_Species_Removed_dropz.shp")
 ```
 
 ## OH_2024_Identified_Invasive_Species_Patches
@@ -130,12 +137,14 @@ OH_2024_Identified_Invasive_Species_Patches_dropz$Priority <- "Priority"
 ncol(OH_2024_Identified_Invasive_Species_Patches_dropz)
 nrow(OH_2024_Identified_Invasive_Species_Patches_dropz) #13
 
-write.csv(OH_2024_Identified_Invasive_Species_Patches_dropz, "data/OH_2024_Identified_Invasive_Species_Patches_dropz.csv")
+str(OH_2024_Identified_Invasive_Species_Patches_dropz)
+
+st_write(OH_2024_Identified_Invasive_Species_Patches_dropz, "data/data_spatial/OH_2024_Identified_Invasive_Species_Patches_dropz/OH_2024_Identified_Invasive_Species_Patches_dropz.shp")
 ```
 
 ## OHP_2025_Completed_polygons
 ```{r spatial-subset-save-OHP_2025_Completed_polygons, include = FALSE, cache = TRUE}
-
+### Data preparation in file: HAT-DataViz-DataPrep-Spatial.Rmd
 #################################
 colnames(OHP_2025_Completed_polygons_dropz)
  #[1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
@@ -151,11 +160,15 @@ nrow(OHP_2025_Completed_polygons_dropz) #7
 # reorder names for priority so polygon data can be bound by row
 OHP_2025_Completed_polygons_dropz <- OHP_2025_Completed_polygons_dropz[, c("Name", "FolderPath", "SymbolID", "AltMode", "Base", "Clamped", "Extruded", "Snippet", "PopupInfo", "Shape_Leng", "Shape_Area", "INSVNAME", "AreaNumber", "geometry", "Site", "Year", "Data", "Priority" )]
 
-write.csv(OHP_2025_Completed_polygons_dropz, "data/OHP_2025_Completed_polygons_dropz.csv")
+str(OHP_2025_Completed_polygons_dropz)
+
+st_write(OHP_2025_Completed_polygons_dropz, "data/data_spatial/OHP_2025_Completed_polygons_dropz/OHP_2025_Completed_polygons_dropz.shp")
 ```
 
 ## Bind spatial polygons for Datatable Display
+- NOTE: polygons need special treatment to be exported to csv, with multiple coordinates ...
 ```{r rbind-spatial-polygons, include = FALSE, cache = TRUE}
+### Data preparation for file: HAT-DataViz-webfilter.Rmd
 #################################
 # rbind polygons
 OH_spatial_polygons_all <- rbind(OH_2024_ShinyG_Burning_Priorities_dropz, OH_2024_Invasive_Species_Removed_dropz, OH_2024_Identified_Invasive_Species_Patches_dropz, OHP_2025_Completed_polygons_dropz)
@@ -165,8 +178,20 @@ colnames(OH_spatial_polygons_all)
 # remove unused columns
 OH_spatial_polygons_all_sub <- subset(OH_spatial_polygons_all, select = -c(2:8, 10, 11))
 colnames(OH_spatial_polygons_all_sub)
+str(OH_spatial_polygons_all_sub)
 
-write.csv(OH_spatial_polygons_all_sub, "data/OH_spatial_polygons_all_sub.csv")
+## Convert geometry to WKT format
+OH_spatial_polygons_all_sub$geometry_wkt <- st_as_text(OH_spatial_polygons_all_sub$geometry)
+colnames(OH_spatial_polygons_all_sub)
+str(OH_spatial_polygons_all_sub)
+
+# convert sf object to standard dataframe
+## drops geometry column
+OH_spatial_polygons_all_sub_df <- st_drop_geometry(OH_spatial_polygons_all_sub)
+str(OH_spatial_polygons_all_sub_df)
+
+# this file is imported for use in HAT-DataViz-webfilter.Rmd
+write.csv(OH_spatial_polygons_all_sub_df, "data/data_spatial/OH_spatial_polygons_all_sub_df.csv", row.names = FALSE)
 ```
 
 
@@ -185,7 +210,9 @@ OH_2024_Invasive_Species_Points_dropz$Site <- "Oak Haven"
 OH_2024_Invasive_Species_Points_dropz$Year <- "2024"
 OH_2024_Invasive_Species_Points_dropz$Data <- "OH_2024_Invasive_Species_Points"
 
-write.csv(OH_2024_Invasive_Species_Points_dropz, "data/OH_2024_Invasive_Species_Points_dropz.csv")
+str(OH_2024_Invasive_Species_Points_dropz)
+
+st_write(OH_2024_Invasive_Species_Points_dropz, "data/data_spatial/OH_2024_Invasive_Species_Points_dropz/OH_2024_Invasive_Species_Points_dropz.shp")
 ```
 
 # OHP_2025_Experimental_test_plots
@@ -204,7 +231,9 @@ OHP_2025_Experimental_test_plots_dropz <- OHP_2025_Experimental_test_plots_dropz
 colnames(OHP_2025_Experimental_test_plots_dropz)
 colnames(OH_2024_Invasive_Species_Points_dropz)
 
-write.csv(OHP_2025_Experimental_test_plots_dropz, "data/OHP_2025_Experimental_test_plots_dropz.csv")
+str(OHP_2025_Experimental_test_plots_dropz)
+
+st_write(OHP_2025_Experimental_test_plots_dropz, "data/data_spatial/OHP_2025_Experimental_test_plots_dropz/OHP_2025_Experimental_test_plots_dropz.shp")
 ```
 
 ## Bind spatial points for Datatable Display
@@ -215,8 +244,22 @@ OH_spatial_points_all <- rbind(OHP_2025_Experimental_test_plots_dropz, OH_2024_I
 colnames(OH_spatial_points_all)
 OH_spatial_points_all_sub <- subset(OH_spatial_points_all, select = -c(1,4,5,6))
 colnames(OH_spatial_points_all_sub)
+str(OH_spatial_points_all_sub)
 
-write.csv(OH_spatial_points_all_sub, "data/OH_spatial_points_all_sub.csv")
+
+## Convert geometry to WKT format
+OH_spatial_points_all_sub$geometry_wkt <- st_as_text(OH_spatial_points_all_sub$geometry)
+colnames(OH_spatial_points_all_sub)
+str(OH_spatial_points_all_sub)
+
+# convert sf object to standard dataframe
+## drops geometry column
+OH_spatial_points_all_sub_df <- st_drop_geometry(OH_spatial_points_all_sub)
+str(OH_spatial_points_all_sub_df)
+
+# this file is imported for use in HAT-DataViz-webfilter.Rmd
+write.csv(OH_spatial_points_all_sub_df, "data/data_spatial/OH_spatial_points_all_sub_df.csv", row.names = FALSE)
+
 ```
 
 # Leaflet Map with Spatial Layers
