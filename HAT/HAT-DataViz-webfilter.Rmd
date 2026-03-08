@@ -216,170 +216,26 @@ library(htmlwidgets) # to save leaflet map as html & render js
 
 
 ```{r data-import-st-data-download, include = FALSE, cache = TRUE}
-# Data Import 
+### Data preparation in file: HAT-DataViz-DataPrep-Spatial.Rmd
+#############################################
 ## Import spatial Data
-OH_2024_ShinyG_Burning_Priorities <- st_read("data/data_spatial/OH_2024_ShinyG_Burning_Priorities/OH_2024_ShinyG_Burning_Priorities.shp")
-OH_2024_Invasive_Species_Removed <- st_read("data/data_spatial/OH_2024_Invasive_Species_Removed/OH_2024_Invasive_Species_Removed.shp")
-OH_2024_Identified_Invasive_Species_Patches <- st_read("data/data_spatial/OH_2024_Identified_Invasive_Species_Patches/OH_2024_Identified_InvasiveSpecies_Patches.shp")
-OH_2024_Invasive_Species_Points <- st_read("data/data_spatial/OH_2024_Invasive_Species_Points/OH_2024_Invasive_Species_Points.shp")
-OHP_2025_Completed_polygons <- st_read("data/data_spatial/OHP_2025_Completed_polygons/OHP_2025_Completed polygons.shp")
-OHP_2025_Experimental_test_plots <- st_read("data/data_spatial/OHP_2025_Experimental_test_plots/OHP_2025_Experimental test plots.shp")
+OHP_2025_Experimental_test_plots_dropz <- st_read("data/data_spatial/OHP_2025_Experimental_test_plots_dropz/OHP_2025_Experimental_test_plots_dropz.shp")
+OH_2024_Invasive_Species_Points_dropz <- st_read("data/data_spatial/OH_2024_Invasive_Species_Points_dropz/OH_2024_Invasive_Species_Points_dropz.shp")
+OHP_2025_Completed_polygons_dropz <- st_read("data/data_spatial/OHP_2025_Completed_polygons_dropz/OHP_2025_Completed_polygons_dropz.shp")
+OH_2024_Identified_Invasive_Species_Patches_dropz <- st_read("data/data_spatial/OH_2024_Identified_Invasive_Species_Patches_dropz/OH_2024_Identified_Invasive_Species_Patches_dropz.shp")
+OH_2024_Invasive_Species_Removed_dropz <- st_read("data/data_spatial/OH_2024_Invasive_Species_Removed_dropz/OH_2024_Invasive_Species_Removed_dropz.shp")
+OH_2024_ShinyG_Burning_Priorities_dropz <- st_read("data/data_spatial/OH_2024_ShinyG_Burning_Priorities_dropz/OH_2024_ShinyG_Burning_Priorities_dropz.shp")
 ```
 
-```{r shape-data-dropz, include = FALSE, cache = TRUE}
-## Drop Z Dimension to map in R
-# https://gis.stackexchange.com/questions/253898/adding-a-linestring-by-st-read-in-shiny-leaflet
-# When trying to create leaflet map Error in if (length(nms) != n || any(nms == "")) stop("'options' must be a fully named list, or have no names (NULL)") : missing value where TRUE/FALSE needed
-
-## Drop Z Dimension of Spatial Data to map
-OH_2024_ShinyG_Burning_Priorities_dropz <- st_zm(OH_2024_ShinyG_Burning_Priorities, drop = T, what = "ZM")
-OH_2024_Invasive_Species_Removed_dropz <- st_zm(OH_2024_Invasive_Species_Removed, drop = T, what = "ZM")
-OH_2024_Identified_Invasive_Species_Patches_dropz <- st_zm(OH_2024_Identified_Invasive_Species_Patches, drop = T, what = "ZM")
-OH_2024_Invasive_Species_Points_dropz <- st_zm(OH_2024_Invasive_Species_Points, drop = T, what = "ZM")
-OHP_2025_Completed_polygons_dropz <- st_zm(OHP_2025_Completed_polygons, drop = T, what = "ZM")
-OHP_2025_Experimental_test_plots_dropz <- st_zm(OHP_2025_Experimental_test_plots, drop = T, what = "ZM")
+```{r import-rbind-spatial-polygons-points, include = FALSE, cache = TRUE}
+### Data preparation in file: HAT-DataViz-DataPrep-Spatial.Rmd
+#############################################
+## import Bind spatial polygons for Datatable Display
+OH_spatial_polygons_all_sub <- read.csv("data/data_spatial/OH_spatial_polygons_all_sub_df.csv", fileEncoding="UTF-8")
+#############################################
+## import Bind spatial points for Datatable Display
+OH_spatial_points_all_sub <- read.csv("data/data_spatial/OH_spatial_points_all_sub_df.csv", fileEncoding="UTF-8")
 ```
-
-```{r spatial-subset-save-ShinyG_Burning_Priorities, include = FALSE, cache = TRUE}
-## Subset  OH_2024_ShinyG_Burning_Priorities
-### Subset and save spatial data for use in datatable
-# add new columns "Site"   "Year"      "Data"
-
-#################################
-colnames(OH_2024_ShinyG_Burning_Priorities_dropz)
-# [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
-# [11] "Shape_Area" "INSVNAME"   "AreaNumber" "Priority"   "geometry"
-OH_2024_ShinyG_Burning_Priorities_dropz$Site <- "Oak Haven"
-OH_2024_ShinyG_Burning_Priorities_dropz$Year <- "2024"
-OH_2024_ShinyG_Burning_Priorities_dropz$Data <- "OH_2024_ShinyG_Burning_Priorities"
-ncol(OH_2024_ShinyG_Burning_Priorities_dropz)
-
-# reorder names for priority so polygon data can be bound by row
-OH_2024_ShinyG_Burning_Priorities_dropz <- OH_2024_ShinyG_Burning_Priorities_dropz[, c("Name", "FolderPath", "SymbolID", "AltMode", "Base", "Clamped", "Extruded", "Snippet", "PopupInfo", "Shape_Leng", "Shape_Area", "INSVNAME", "AreaNumber", "geometry", "Site", "Year", "Data", "Priority" )]
-colnames(OH_2024_ShinyG_Burning_Priorities_dropz)
-ncol(OH_2024_ShinyG_Burning_Priorities_dropz)
-nrow(OH_2024_ShinyG_Burning_Priorities_dropz) #13
-#  [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
-# [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry"   "Site"       "Year"       "Data"       "Priority"
-
-write.csv(OH_2024_ShinyG_Burning_Priorities_dropz, "data/data_spatial//OH_2024_ShinyG_Burning_Priorities_dropz.csv")
-```
-
-```{r spatial-subset-save-OH_2024_Invasive_Species_Removed, include = FALSE, cache = TRUE}
-## Subset OH_2024_Invasive_Species_Removed
-#################################
-colnames(OH_2024_Invasive_Species_Removed_dropz)
-# [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
-# [11] "Shape_Area" "INSVNAME"   "geometry"   "Site"       "Year"       "Data"       "Priority"
-OH_2024_Invasive_Species_Removed_dropz$Site <- "Oak Haven"
-OH_2024_Invasive_Species_Removed_dropz$Year <- "2024"
-OH_2024_Invasive_Species_Removed_dropz$Data <- "OH_2024_Invasive_Species_Removed"
-OH_2024_Invasive_Species_Removed_dropz$AreaNumber <- ""
-OH_2024_Invasive_Species_Removed_dropz$Priority <- "Priority"
-# reorder names for priority so polygon data can be bound by row
-OH_2024_Invasive_Species_Removed_dropz <- OH_2024_Invasive_Species_Removed_dropz[, c("Name", "FolderPath", "SymbolID", "AltMode", "Base", "Clamped", "Extruded", "Snippet", "PopupInfo", "Shape_Leng", "Shape_Area", "INSVNAME", "AreaNumber", "geometry", "Site", "Year", "Data", "Priority" )]
-ncol(OH_2024_Invasive_Species_Removed_dropz)
-nrow(OH_2024_Invasive_Species_Removed_dropz) #10
-
-write.csv(OH_2024_Invasive_Species_Removed_dropz, "data/data_spatial/OH_2024_Invasive_Species_Removed_dropz.csv")
-```
-
-```{r spatial-subset-save-OH_2024_Identified_Invasive_Species_Patches, include = FALSE, cache = TRUE}
-# Subset ## OH_2024_Identified_Invasive_Species_Patches
-#################################
-colnames(OH_2024_Identified_Invasive_Species_Patches_dropz)
-# [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
-# [11] "Shape_Area" "INSVNAME"   "AreaNumber" "geometry"
-OH_2024_Identified_Invasive_Species_Patches_dropz$Site <- "Oak Haven"
-OH_2024_Identified_Invasive_Species_Patches_dropz$Year <- "2024"
-OH_2024_Identified_Invasive_Species_Patches_dropz$Data <- "OH_2024_Identified_Invasive_Species_Patches"
-OH_2024_Identified_Invasive_Species_Patches_dropz$Priority <- "Priority"
-ncol(OH_2024_Identified_Invasive_Species_Patches_dropz)
-nrow(OH_2024_Identified_Invasive_Species_Patches_dropz) #13
-
-write.csv(OH_2024_Identified_Invasive_Species_Patches_dropz, "data/data_spatial/OH_2024_Identified_Invasive_Species_Patches_dropz.csv")
-```
-
-```{r spatial-subset-save-OHP_2025_Completed_polygons, include = FALSE, cache = TRUE}
-# Subset ## OHP_2025_Completed_polygons
-#################################
-colnames(OHP_2025_Completed_polygons_dropz)
- #[1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
-#[11] "Shape_Area" "geometry"   "Site"       "Year"       "Data"       "Priority" "
-OHP_2025_Completed_polygons_dropz$Site <- "Oak Haven"
-OHP_2025_Completed_polygons_dropz$Year <- "2025"
-OHP_2025_Completed_polygons_dropz$Data <- "OHP_2025_Completed_polygons"
-OHP_2025_Completed_polygons_dropz$Priority <- "Priority"
-OHP_2025_Completed_polygons_dropz$INSVNAME <- ""
-OHP_2025_Completed_polygons_dropz$AreaNumber <- ""
-ncol(OHP_2025_Completed_polygons_dropz)
-nrow(OHP_2025_Completed_polygons_dropz) #7
-# reorder names for priority so polygon data can be bound by row
-OHP_2025_Completed_polygons_dropz <- OHP_2025_Completed_polygons_dropz[, c("Name", "FolderPath", "SymbolID", "AltMode", "Base", "Clamped", "Extruded", "Snippet", "PopupInfo", "Shape_Leng", "Shape_Area", "INSVNAME", "AreaNumber", "geometry", "Site", "Year", "Data", "Priority" )]
-
-write.csv(OHP_2025_Completed_polygons_dropz, "data/data_spatial/OHP_2025_Completed_polygons_dropz.csv")
-```
-
-```{r rbind-spatial-polygons, include = FALSE, cache = TRUE}
-## Bind spatial polygons for Datatable Display
-#################################
-# rbind polygons
-OH_spatial_polygons_all <- rbind(OH_2024_ShinyG_Burning_Priorities_dropz, OH_2024_Invasive_Species_Removed_dropz, OH_2024_Identified_Invasive_Species_Patches_dropz, OHP_2025_Completed_polygons_dropz)
-nrow(OH_spatial_polygons_all) #43
-
-colnames(OH_spatial_polygons_all)
-# remove unused columns
-OH_spatial_polygons_all_sub <- subset(OH_spatial_polygons_all, select = -c(2:8, 10, 11))
-colnames(OH_spatial_polygons_all_sub)
-
-write.csv(OH_spatial_polygons_all_sub, "data/data_spatial/OH_spatial_polygons_all_sub.csv")
-```
-
-```{r spatial-subset-save-OH_2024_Invasive_Species_Points, include = FALSE, cache = TRUE}
-# Subset OH_2024_Invasive_Species_Points
-#################################
-#################################
-
-colnames(OH_2024_Invasive_Species_Points_dropz)
-# [1] "Id"        "Name"      "Descript"  "Type"      "Comment"   "Symbol"    "DateTimeS" "Elevation" "INSVNAME"  "geometry"
-OH_2024_Invasive_Species_Points_dropz$Site <- "Oak Haven"
-OH_2024_Invasive_Species_Points_dropz$Year <- "2024"
-OH_2024_Invasive_Species_Points_dropz$Data <- "OH_2024_Invasive_Species_Points"
-
-write.csv(OH_2024_Invasive_Species_Points_dropz, "data/data_spatial/OH_2024_Invasive_Species_Points_dropz.csv")
-```
-
-```{r spatial-subset-save-OHP_2025_Experimental_test_plots, include = FALSE, cache = TRUE}
-# Subset OHP_2025_Experimental_test_plots
-#################################
-colnames(OHP_2025_Experimental_test_plots_dropz)
-# [1] "Id"        "Name"      "Descript"  "Type"      "Comment"   "Symbol"    "DateTimeS" "Elevation" "geometry"
-OHP_2025_Experimental_test_plots_dropz$Site <- "Oak Haven"
-OHP_2025_Experimental_test_plots_dropz$Year <- "2025"
-OHP_2025_Experimental_test_plots_dropz$Data <- "OHP_2025_Experimental_test_plots"
-OHP_2025_Experimental_test_plots_dropz$INSVNAME <- ""
-
-# reorder columns
-OHP_2025_Experimental_test_plots_dropz <- OHP_2025_Experimental_test_plots_dropz[, c("Id", "Name", "Descript", "Type", "Comment", "Symbol", "DateTimeS", "Elevation", "INSVNAME", "geometry", "Site", "Year", "Data")]
-
-colnames(OHP_2025_Experimental_test_plots_dropz)
-colnames(OH_2024_Invasive_Species_Points_dropz)
-
-write.csv(OHP_2025_Experimental_test_plots_dropz, "data/data_spatial/OHP_2025_Experimental_test_plots_dropz.csv")
-```
-
-```{r rbind-spatial-points, include = FALSE, cache = TRUE}
-## Bind spatial points for Datatable Display
-#################################
-# rbind points
-OH_spatial_points_all <- rbind(OHP_2025_Experimental_test_plots_dropz, OH_2024_Invasive_Species_Points_dropz)
-colnames(OH_spatial_points_all)
-OH_spatial_points_all_sub <- subset(OH_spatial_points_all, select = -c(1,4,5,6))
-colnames(OH_spatial_points_all_sub)
-
-write.csv(OH_spatial_points_all_sub, "data/data_spatial/OH_spatial_points_all_sub.csv")
-```
-
 
 
 
@@ -679,7 +535,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-03-04 @ 09:09</div>
+Modified: 2026-03-08 @ 09:49</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -2436,7 +2292,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-03-04 @ 09:09</div>
+Modified: 2026-03-08 @ 09:49</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
