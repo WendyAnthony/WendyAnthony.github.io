@@ -8,7 +8,7 @@ output:
     theme: 
       version: 4
       bootswatch: flatly
-    source_code: embed
+    #source_code: embed
 ---
   
 ```{r readme, include=FALSE}
@@ -427,7 +427,6 @@ sd_sites <- SharedData$new(data = HAT_sites_HAT, group = "crew_group")### Create
 
 ```{r crew-shared-data, include = FALSE}
 ### Create sharable database using Crosstalk package
-
 # Crew Data
 #############################################
 # crew_data_sep_sub.csv 238 obs 9 variable
@@ -442,6 +441,7 @@ sd_crew_vol_inv_top5_sum <- SharedData$new(data = crew_vol_inv_top5_sum, group =
 ```
 
 ```{r crew-summary-data-sd, include = FALSE}
+### Create sharable database using Crosstalk package
 #############################################
 # Summary data totals per year per site
 # used in Invasive Biomass charts
@@ -535,7 +535,7 @@ HTML("
 by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-03-08 @ 09:49</div>
+Modified: 2026-03-08 @ 13:13</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
@@ -1918,6 +1918,60 @@ ggplotly(
     ))
 ```
 
+### Invasive Species (points with error)
+```{r mean-cover-inv-error-points, echo = FALSE, message = FALSE, warning = FALSE}
+
+#############################################
+custom_colours_treat <- c("Untreated" = "#d8b365", 
+                    "Treated" = "#5ab4ac")
+
+#############################################
+ggplotly(
+  ggplot(sd_cover_inv, aes(x = reorder(Species, desc(Species)), y = mean_value,  fill = Treated, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean Value:", mean_value,
+                                                          "\nSD Value:", sd_value,
+                                                          "\nUpper Mean Range:", upper,
+                                                          "\nLower Mean Range:", lower))) + 
+  geom_point(size = 3, alpha = 0.75) +
+  geom_errorbar(aes(ymin = lower, ymax = upper)) +
+  coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
+  #facet_wrap(vars(Site)) +
+  facet_grid(Year ~ Site) +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+    scale_fill_manual(values = custom_colours_treat) +
+    # scale_fill_manual(values = custom_colours_Site_2) +
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
+        strip.text = element_text(size = 11)) + 
+      labs(
+          title = "Invasive Species Mean % Cover at Matson & Oak Haven by Treatment", 
+          x = "",   
+          y = "Mean % cover",   
+          fill = ""
+          ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) , 
+  
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    # x = 1 # too far to right
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
 ### Mixed Grasses
 ```{r mean-cover-grs, echo = FALSE, message = FALSE, warning = FALSE}
 #############################################
@@ -1963,6 +2017,61 @@ ggplotly(
     layout(legend = list(orientation = "h",
     xanchor="center",
     #x = 0.5 legend too close to x axis label
+    x = 0.5,
+    # gives some space between x axis label and legend
+    y = -0.2
+    ))
+```
+
+
+### Mixed Grasses (points with error)
+```{r mean-cover-grs-error-points, echo = FALSE, message = FALSE, warning = FALSE}
+
+#############################################
+custom_colours_treat <- c("Untreated" = "#d8b365", 
+                    "Treated" = "#5ab4ac")
+
+#############################################
+ggplotly(
+  ggplot(sd_cover_grs, aes(x = reorder(Species, desc(Species)), y = mean_value,  fill = Treated, 
+                                                          text = paste("Year:", Year,
+                                                          "\nSite:", Site,
+                                                          "\nSpecies:", Species,      
+                                                          "\nNative or Invasive:", Native_or_Invasive,  
+                                                          "\nTreated:", Treated,
+                                                          "\nMean Value:", mean_value,
+                                                          "\nSD Value:", sd_value,
+                                                          "\nUpper Mean Range:", upper,
+                                                          "\nLower Mean Range:", lower))) + 
+  geom_point(size = 3, alpha = 0.75) +
+  geom_errorbar(aes(ymin = lower, ymax = upper)) +
+  coord_cartesian(ylim = c(0, NA)) + # This zooms the y-axis starting at 0, keeping all data  
+  #facet_wrap(vars(Site)) +
+  facet_grid(Year ~ Site) +
+  coord_flip() + 
+  theme_minimal() + #get rid of grey background and tick marks
+  theme(legend.position ="bottom") + 
+    scale_fill_manual(values = custom_colours_treat) +
+    # scale_fill_manual(values = custom_colours_Site_2) +
+  theme(strip.background = element_rect(color = "black", fill = "#b5c0c1", linewidth = 0.5, linetype = "solid"),
+        strip.text = element_text(size = 11)) + 
+      labs(
+          title = "Mixed Grasses Mean % Cover at Matson & Oak Haven by Treatment", 
+          x = "",   
+          y = "Mean % cover",   
+          fill = ""
+          ) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=1, size = 7)) +
+    # aligns title to left
+  theme(plot.title = element_text(hjust = 0)) , 
+  
+  tooltip = "text",
+  config = (displayModeBar = False) 
+  ) %>%
+    layout(legend = list(orientation = "h",
+    xanchor="center",
+    #x = 0.5 legend too close to x axis label
+    # x = 1 # too far to right
     x = 0.5,
     # gives some space between x axis label and legend
     y = -0.2
@@ -2292,7 +2401,7 @@ HTML("
 <strong>Created and Coded for HAT <br>by Wendy Anthony</strong><br>
 wanthony@uvic.ca 
 <br>
-Modified: 2026-03-08 @ 09:49</div>
+Modified: 2026-03-08 @ 13:13</div>
 ")
 hr(style = "border: 0.5px solid grey; width: 100%; margin: auto;")
 br()
