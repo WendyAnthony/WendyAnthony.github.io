@@ -1,7 +1,7 @@
 ---
 title: "HAT Monitoring Spatial Data"
 author: "Wendy Anthony for HAT"
-date: "2026-02-23"
+date: "2026-03-08"
 output:
   html_document:
     highlight: zenburn
@@ -43,7 +43,7 @@ library(htmlwidgets) # to save leaflet map as html & render js
 
 # Data Import 
 - st_read()  
-```{r data-import-st-data-download, include = FALSE, cache = TRUE}
+```{r data-import-st-data-download, include = TRUE, cache = TRUE}
 ## Import spatial Data
 OH_2024_ShinyG_Burning_Priorities <- st_read("data/data_spatial/OH_2024_ShinyG_Burning_Priorities/OH_2024_ShinyG_Burning_Priorities.shp")
 # str(OH_2024_ShinyG_Burning_Priorities)  # Classes ‘sf’ and 'data.frame'
@@ -56,7 +56,7 @@ OHP_2025_Experimental_test_plots <- st_read("data/data_spatial/OHP_2025_Experime
 
 ## Drop Z Dimension to map in R
 - st_zm()  
-```{r shape-data-dropz, include = FALSE, cache = TRUE}
+```{r shape-data-dropz, include = TRUE, cache = TRUE}
 ## Drop Z Dimension of Spatial Data to map
 # https://gis.stackexchange.com/questions/253898/adding-a-linestring-by-st-read-in-shiny-leaflet
 # When trying to create leaflet map Error in if (length(nms) != n || any(nms == "")) stop("'options' must be a fully named list, or have no names (NULL)") : missing value where TRUE/FALSE needed
@@ -73,10 +73,11 @@ OHP_2025_Experimental_test_plots_dropz <- st_zm(OHP_2025_Experimental_test_plots
 
 # Subset Polygon Data
 - rename Site  
-- reorder columns
+- reorder columns  
+- **NOTE:** ***once these data have been subset and saved as new spatial data, do not run this subset code again as the datasets already exist ... to run this again, you need to delete the newly formed folders that end in `_drop`***
 
 ## OH_2024_ShinyG_Burning_Priorities
-```{r spatial-subset-save-ShinyG_Burning_Priorities, include = FALSE, cache = TRUE}
+```{r spatial-subset-save-ShinyG_Burning_Priorities, include = TRUE, cache = TRUE}
 ### Subset and save spatial data for use in datatable
 # add new columns "Site"   "Year"      "Data"
 
@@ -100,11 +101,13 @@ nrow(OH_2024_ShinyG_Burning_Priorities_dropz) #13
 
 str(OH_2024_ShinyG_Burning_Priorities_dropz)
 
+dir.create("data/data_spatial/OH_2024_ShinyG_Burning_Priorities_dropz")
+
 st_write(OH_2024_ShinyG_Burning_Priorities_dropz, "data/data_spatial/OH_2024_ShinyG_Burning_Priorities_dropz/OH_2024_ShinyG_Burning_Priorities_dropz.shp")
 ```
 
 ## OH_2024_Invasive_Species_Removed
-```{r spatial-subset-save-OH_2024_Invasive_Species_Removed, include = FALSE, cache = TRUE}
+```{r spatial-subset-save-OH_2024_Invasive_Species_Removed, include = TRUE, cache = TRUE}
 #################################
 colnames(OH_2024_Invasive_Species_Removed_dropz)
 # [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
@@ -121,11 +124,13 @@ nrow(OH_2024_Invasive_Species_Removed_dropz) #10
 
 str(OH_2024_Invasive_Species_Removed_dropz)
 
+dir.create("data/data_spatial/OH_2024_Invasive_Species_Removed_dropz")
+
 st_write(OH_2024_Invasive_Species_Removed_dropz, "data/data_spatial/OH_2024_Invasive_Species_Removed_dropz/OH_2024_Invasive_Species_Removed_dropz.shp")
 ```
 
 ## OH_2024_Identified_Invasive_Species_Patches
-```{r spatial-subset-save-OH_2024_Identified_Invasive_Species_Patches, include = FALSE, cache = TRUE}
+```{r spatial-subset-save-OH_2024_Identified_Invasive_Species_Patches, include = TRUE, cache = TRUE}
 #################################
 colnames(OH_2024_Identified_Invasive_Species_Patches_dropz)
 # [1] "Name"       "FolderPath" "SymbolID"   "AltMode"    "Base"       "Clamped"    "Extruded"   "Snippet"    "PopupInfo"  "Shape_Leng"
@@ -139,11 +144,13 @@ nrow(OH_2024_Identified_Invasive_Species_Patches_dropz) #13
 
 str(OH_2024_Identified_Invasive_Species_Patches_dropz)
 
+dir.create("data/data_spatial/OH_2024_Identified_Invasive_Species_Patches_dropz")
+
 st_write(OH_2024_Identified_Invasive_Species_Patches_dropz, "data/data_spatial/OH_2024_Identified_Invasive_Species_Patches_dropz/OH_2024_Identified_Invasive_Species_Patches_dropz.shp")
 ```
 
 ## OHP_2025_Completed_polygons
-```{r spatial-subset-save-OHP_2025_Completed_polygons, include = FALSE, cache = TRUE}
+```{r spatial-subset-save-OHP_2025_Completed_polygons, include = TRUE, cache = TRUE}
 ### Data preparation in file: HAT-DataViz-DataPrep-Spatial.Rmd
 #################################
 colnames(OHP_2025_Completed_polygons_dropz)
@@ -162,12 +169,14 @@ OHP_2025_Completed_polygons_dropz <- OHP_2025_Completed_polygons_dropz[, c("Name
 
 str(OHP_2025_Completed_polygons_dropz)
 
+dir.create("data/data_spatial/OHP_2025_Completed_polygons_dropz")
+
 st_write(OHP_2025_Completed_polygons_dropz, "data/data_spatial/OHP_2025_Completed_polygons_dropz/OHP_2025_Completed_polygons_dropz.shp")
 ```
 
 ## Bind spatial polygons for Datatable Display
 - NOTE: polygons need special treatment to be exported to csv, with multiple coordinates ...
-```{r rbind-spatial-polygons, include = FALSE, cache = TRUE}
+```{r rbind-spatial-polygons, include = TRUE, cache = TRUE}
 ### Data preparation for file: HAT-DataViz-webfilter.Rmd
 #################################
 # rbind polygons
@@ -200,7 +209,7 @@ write.csv(OH_spatial_polygons_all_sub_df, "data/data_spatial/OH_spatial_polygons
 - reorder columns
 
 # OH_2024_Invasive_Species_Points
-```{r spatial-subset-save-OH_2024_Invasive_Species_Points, include = FALSE, cache = TRUE}
+```{r spatial-subset-save-OH_2024_Invasive_Species_Points, include = TRUE, cache = TRUE}
 #################################
 #################################
 
@@ -212,11 +221,13 @@ OH_2024_Invasive_Species_Points_dropz$Data <- "OH_2024_Invasive_Species_Points"
 
 str(OH_2024_Invasive_Species_Points_dropz)
 
+dir.create("data/data_spatial/OH_2024_Invasive_Species_Points_dropz")
+
 st_write(OH_2024_Invasive_Species_Points_dropz, "data/data_spatial/OH_2024_Invasive_Species_Points_dropz/OH_2024_Invasive_Species_Points_dropz.shp")
 ```
 
 # OHP_2025_Experimental_test_plots
-```{r spatial-subset-save-OHP_2025_Experimental_test_plots, include = FALSE, cache = TRUE}
+```{r spatial-subset-save-OHP_2025_Experimental_test_plots, include = TRUE, cache = TRUE}
 #################################
 colnames(OHP_2025_Experimental_test_plots_dropz)
 # [1] "Id"        "Name"      "Descript"  "Type"      "Comment"   "Symbol"    "DateTimeS" "Elevation" "geometry"
@@ -233,11 +244,13 @@ colnames(OH_2024_Invasive_Species_Points_dropz)
 
 str(OHP_2025_Experimental_test_plots_dropz)
 
+dir.create("data/data_spatial/OHP_2025_Experimental_test_plots_dropz")
+
 st_write(OHP_2025_Experimental_test_plots_dropz, "data/data_spatial/OHP_2025_Experimental_test_plots_dropz/OHP_2025_Experimental_test_plots_dropz.shp")
 ```
 
 ## Bind spatial points for Datatable Display
-```{r rbind-spatial-points, include = FALSE, cache = TRUE}
+```{r rbind-spatial-points, include = TRUE, cache = TRUE}
 #################################
 # rbind points
 OH_spatial_points_all <- rbind(OHP_2025_Experimental_test_plots_dropz, OH_2024_Invasive_Species_Points_dropz)
@@ -366,7 +379,7 @@ saveWidget(map_OH_sp, "output/HAT_spatial_site_map.html")
 
 ```
 
-### Geolocate Oak Haven Park
+### Added Geolocation Function to Oak Haven Park Spatial Map
 ```{r leaflet-OH-spatial_geoloc, echo = FALSE, message = FALSE, include = TRUE}
 ################################################################################
 # Interactive Geolocation map Developed by Wendy Anthony for HAT 2026-03-03
