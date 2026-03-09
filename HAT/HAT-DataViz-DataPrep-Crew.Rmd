@@ -1,7 +1,7 @@
 ---
 title: "HAT Monitoring Crew Data"
 author: "Wendy Anthony for HAT"
-date: "23/02/2026"
+date: "2026-03-08"
 output:
   html_document:
     highlight: zenburn
@@ -14,11 +14,407 @@ output:
     latex_engine: xelatex
     toc: yes
     toc_depth: '3'
-  word_document:
+# word_document:
+  # mainfont: "Arial"      # Your main font (serif or sans-serif)
+  # sansfont: "Helvetica"  # The specific sans-serif font for sans-serif contexts
+  # fontsize: 11pt
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Load Libraries
+```{r  include=FALSE, load-libraries}
+# Load Libraries
+#############################################
+# uncomment install.packages("") to install a package, then replace comment #
+#############################################
+
+# Load Data Wrangling and Visualization Package Libraries
+#############################################
+# install.packages("tidyverse")
+library(tidyverse) # includes ggplot2
+# install.packages("plotly")
+library(plotly) # interactive plots > ggplot2 requires plotly wrap for crosstalk
+# install.packages("DT")
+library(DT) # tables
+```
+
+# Clean and Wrangle Crew & Volunteer Data
+
+## Data Import
+
+### Crew Hours and Amount Removed Data
+- To read and display Indigenous Languages save as CSV UTF-8 and use fileEncoding="UTF-8" to keep Aboriginal characters
+```{r data-import-HAT}
+# Data Import
+################################# 
+# To read and display Indigenous Languages save as CSV UTF-8
+# and use fileEncoding="UTF-8" to keep Aboriginal characters
+crew_data <- read.csv("data/HATRestorationCrewData-2022-2025-sepsp.csv", fileEncoding="UTF-8")
+
+# Matson Field Logs
+matson_fieldlog_2022_2025 <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-Field-Log-2022-2025.csv", fileEncoding="UTF-8")
+```
+
+# Data Exploration
+
+## HAT Crew Data
+```{r explore-data-crew-data}
+glimpse(crew_data)
+
+colnames(crew_data)
+unique(crew_data$Work_Site)
+```
+
+<details>
+<summary>Click to view structure of `crew_data`</summary>
+```{r}
+str(crew_data)
+```
+</details>
+
+## Matson Volunteer Field log Data 2022-2025
+<details>
+<summary>Click to view structure of `matson_fieldlog_2022_2025`</summary>
+```{r explore-data-volunteer-data}
+str(matson_fieldlog_2022_2025)
+# need to change date
+```
+</details>
+
+
+
+# Data Wrangling
+
+## Format HAT Crew Dates 
+```{r data-wrangling-crew-data-dates}
+################################# 
+# Format HAT Crew Dates
+
+# separate values
+crew_data_sep <- crew_data %>% separate(Date, into = c("Day", "Month"), sep = "-")
+
+# convert month name to number
+crew_data_sep$Month <- match(crew_data_sep$Month, month.abb)
+
+# create new column for Date
+crew_data_sep$Date <- NA
+
+crew_data_sep$Date <- paste(crew_data_sep$Year, crew_data_sep$Month,crew_data_sep$Day,sep =  "-")
+str(crew_data_sep)
+
+crew_data_sep$Date <- as.Date(crew_data_sep$Date)
+str(crew_data_sep)
+```
+
+
+
+## Format Matson Fieldlog Dates
+```{r data-wrangling-maston-data-dates}
+################################# 
+# Format Matson Fieldlog Dates
+
+matson_fieldlog_2022_2025$Date <- as.Date(matson_fieldlog_2022_2025$Date)
+str(matson_fieldlog_2022_2025)
+```
+
+
+
+## HAT Crew Columns - Change Names and Select
+```{r rename-cols-crew-data}
+colnames(crew_data_sep)
+# Rename columns
+# names(crew_data_sep)[names(crew_data_sep) == "Work.Site"] <- "Work_Site"
+names(crew_data_sep)[names(crew_data_sep) == "Biomass.Removed..m3."] <- "Biomass_Removed_m3"
+names(crew_data_sep)[names(crew_data_sep) == "Area.Cleared..m2."] <- "Area_Cleared_m2"
+# names(crew_data_sep)[names(crew_data_sep) == "Invasive.Species.Cleared"] <- "Invasive_Species_Cleared"
+# names(crew_data_sep)[names(crew_data_sep) == "Crew.Hours"] <- "Crew_Hours"
+
+################################# 
+# Columns - Subset Selected Columns
+# Get column names
+colnames(crew_data_sep)
+
+# Remove unneeded columns
+crew_data_sep_sub <- subset(crew_data_sep, select = -c(1,3,4,6,7,9,12,13,14,19))
+colnames(crew_data_sep_sub)
+str(crew_data_sep_sub)
+```
+
+## Matson Volunteer Columns - Change Names and Select
+```{r rename-cols-vol-data}
+# Matson field log remove unneeded columns
+colnames(matson_fieldlog_2022_2025)
+matson_fieldlog_2022_2025_sub <- subset(matson_fieldlog_2022_2025, select = -c(1,4,6,8,10,11,14,17:21))
+```
+
+## Change Format Numeric 
+```{r change-numeric-format}
+# change to number format
+crew_data_sep_sub$Area_Cleared_m2 <- as.numeric(as.character(crew_data_sep_sub$Area_Cleared_m2))
+crew_data_sep_sub$Biomass_Removed_m3 <- as.numeric(as.character(crew_data_sep_sub$Biomass_Removed_m3))
+# Warning: NAs introduced by coercion May 6 2025 was a blank cell with no value
+str(crew_data_sep_sub)
+
+```
+
+## Save Crew Data subset
+```{r save-crew-subset}
+crew_data_sep_sub
+write.csv(crew_data_sep_sub, "data/crew_data_sep_sub.csv", row.names = FALSE)
+```
+
+## Filter by Site HAT Crew
+```{r crew-filter-site}
+colnames(crew_data_sep_sub)
+unique(crew_data_sep_sub$Work_Site)
+
+crew_data_sep_sub_matson <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Matson Conservation Area",]
+crew_data_sep_sub_OHP <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Oak Haven Park",]
+crew_data_sep_sub_yates <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Yates",]
+crew_data_sep_sub_funk <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Funk",]
+crew_data_sep_sub_ps <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Purple Sanicle",]
+crew_data_sep_sub_calypso <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Calypso Woods",]
+crew_data_sep_sub_camas <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Camas Hill",]
+crew_data_sep_sub_havenwood <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Havenwood Park",]
+crew_data_sep_sub_bear <- crew_data_sep_sub[crew_data_sep_sub$Work_Site == "Bear Hill",]
+```
+
+
+## Multiple Invasive Species Removed
+- will need to make a new column - too many errors to fix, different capitalization, space at end of name
+```{r}
+length(unique(crew_data_sep_sub$Invasive_Species_Cleared)) #23
+unique(crew_data_sep_sub$Invasive_Species_Cleared)
+```
+
+## Calculate Sums of Biomass and Hours
+```{r}
+colnames(crew_data_sep_sub)
+
+crew_data_sep_sub_sum_bio_inv <- crew_data_sep_sub %>%
+  group_by(Work_Site, Year, Invasive_Species_Cleared, Data_Change_Assumptions, Work_Volunteer) %>%
+  summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
+            Crew_Hours = sum(Crew_Hours),
+            Area_Cleared_m2 = sum(Area_Cleared_m2)
+            )
+crew_data_sep_sub_sum_bio_inv
+# Check to ensure unique values of Invasive Species Cleared
+unique(crew_data_sep_sub_sum_bio_inv$Invasive_Species_Cleared)
+# Save Calculation subset
+write.csv(crew_data_sep_sub_sum_bio_inv, "data/crew_data_sep_sub_sum_bio_inv.csv", row.names = FALSE)
+
+```
+
+## **** Calculations Group by Work Site and add work hours and biomass removed
+```{r}
+colnames(crew_data_sep_sub)
+str(crew_data_sep_sub)
+
+# aggregate(crew_data_sep_sub$Work_Site, by=list(Biomass_Removed_m3=crew_data_sep_sub$Biomass_Removed_m3), FUN=sum)
+## Error in FUN(X[[i]], ...) : invalid 'type' (character) of argument
+
+# crew_data_sep_sub_sum_by_group_site <- crew_data_sep_sub %>%
+#   group_by(Work_Site, Year) %>%
+#   summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
+#             Crew_Hours = sum(Crew_Hours),
+#             Area_Cleared_m2 = sum(Area_Cleared_m2))
+# crew_data_sep_sub_sum_by_group_site
+# write.csv(crew_data_sep_sub_sum_by_group_site, "data/crew_data_sep_sub_sum_by_group_site.csv", row.names = FALSE)
+
+
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio <- crew_data_sep_sub %>%
+  group_by(Work_Site, Year, Work_Volunteer) %>%
+  summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
+            Crew_Hours = sum(Crew_Hours),
+            Area_Cleared_m2 = sum(Area_Cleared_m2),
+            Labour_Hr_Bio_Ratio = round(sum(Crew_Hours)/sum(Biomass_Removed_m3), digits = 1),
+            Labour_Bio_Hr_Ratio = round(sum(Biomass_Removed_m3)/sum(Crew_Hours), digits = 1), 
+            Area_Bio_Ratio = round(sum(Area_Cleared_m2)/sum(Biomass_Removed_m3), digits = 1), 
+            )
+crew_data_sep_sub_sum_by_group_site_hr_bio_ratio
+# Save Calculation subset
+write.csv(crew_data_sep_sub_sum_by_group_site_hr_bio_ratio, "data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", row.names = FALSE)
+```
+
+
+
+
+
+# Data Summary Crew Data Import
+```{r data-import-crew-bio, include = TRUE}
+#############################################
+#############################################
+# Crew Data
+crew_data_sep_sub_sum_by_group_site_1 <- read.csv("data/crew_data_sep_sub_sum_by_group_site_hr_bio_ratio.csv", fileEncoding="UTF-8")
+str(crew_data_sep_sub_sum_by_group_site_1)
+head(crew_data_sep_sub_sum_by_group_site_1)
+
+crew_data_sep_sub_sum_bio_inv <- read.csv("data/crew_data_sep_sub_sum_bio_inv.csv", fileEncoding="UTF-8")
+```
+
+## Data Wrangling Summary Data - Rename site locations & Change column order
+```{r crew-rename-site-location-worksite-columns-for-sd-group, include = TRUE}
+
+#############################################
+# Crew Data
+# Summary data totals per year per site
+crew_data_sep_sub_sum_by_group_site_rename_site <- crew_data_sep_sub_sum_by_group_site_1 %>%
+  rename(Site = Work_Site)
+
+crew_data_sep_sub_sum_by_group_site_rename_site$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_sum_by_group_site_rename_site$Site)
+crew_data_sep_sub_sum_by_group_site_rename_site$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_sum_by_group_site_rename_site$Site)
+crew_data_sep_sub_sum_by_group_site_rename_site$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_sum_by_group_site_rename_site$Site)
+
+#############################################
+write.csv(crew_data_sep_sub_sum_by_group_site_rename_site, "data/crew_data_sep_sub_sum_by_group_site_rename_site.csv")
+
+crew_data_sep_sub_sum_bio_inv_rename_site <- crew_data_sep_sub_sum_bio_inv %>%
+  rename(Site = Work_Site)
+
+crew_data_sep_sub_sum_bio_inv_rename_site$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_sum_bio_inv_rename_site$Site)
+crew_data_sep_sub_sum_bio_inv_rename_site$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_sum_bio_inv_rename_site$Site)
+
+crew_data_sep_sub_sum_bio_inv_rename_site$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_sum_bio_inv_rename_site$Site)
+
+# Top 5 Invasive Species
+colnames(crew_data_sep_sub_sum_bio_inv_rename_site)
+unique(crew_data_sep_sub_sum_bio_inv_rename_site$Invasive_Species_Cleared)
+
+crew_data_sep_sub_sum_bio_inv_rename_site <- crew_data_sep_sub_sum_bio_inv_rename_site %>% relocate(Year, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Crew_Hours, Work_Volunteer, Data_Change_Assumptions)
+
+crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
+
+colnames(crew_data_sep_sub_sum_bio_inv_rename_site)
+```
+
+
+# Import Crew Data
+```{r data-import-crew, include = TRUE}
+# Load Data
+# Crew Data
+################################# 
+crew_data_sep_sub_1 <- read.csv("data/crew_data_sep_sub.csv", fileEncoding="UTF-8")
+
+# Crew Data
+crew_data_sep_sub_1 <- crew_data_sep_sub_1 %>% rename(Site = Work_Site)
+
+crew_data_sep_sub_1$Site <- gsub("Matson Conservation Area", "Matson", crew_data_sep_sub_1$Site)
+crew_data_sep_sub_1$Site <- gsub("Oak Haven Park", "Oak Haven", crew_data_sep_sub_1$Site)
+crew_data_sep_sub_1$Site <- gsub("Havenwood Park", "Havenwood", crew_data_sep_sub_1$Site)
+colnames(crew_data_sep_sub_1)
+
+# Date format
+str(crew_data_sep_sub_1)
+crew_data_sep_sub_1$Date <- as.Date(crew_data_sep_sub_1$Date)
+
+str(crew_data_sep_sub_1)
+
+# Filter 3 rows remove 3 rows with NA
+# Matson 2025-10-21
+# Matson 2024-11-14
+# Camas Hill 2025-09-04
+crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1 %>%
+  filter(Date != as.Date("2025-10-21"),
+         Date != as.Date("2024-11-14"),
+         Date != as.Date("2025-09-04"))
+```
+
+## Columns move for filtered crew data
+```{r crew-relocate-columns-for-sd-group, include = TRUE}
+#############################################
+#############################################
+# change column order to same as volunteer_data_matson
+colnames(crew_data_sep_sub_1_filtered)
+#crew_data_sep_sub_1_filtered <- subset(crew_data_sep_sub_1_filtered, select = -c(3))
+crew_data_sep_sub_1_filtered <- crew_data_sep_sub_1_filtered %>%
+  relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer, Data_Change_Assumptions)
+colnames(crew_data_sep_sub_1_filtered)
+## go to combine with volunteer_data_matson_sub crew-vol<-rbind()
+write.csv(crew_data_sep_sub_1_filtered, "data/crew_data_sep_sub_1_filtered.csv")
+```
+
+
+# Import Volunteer data
+```{r data-import-volunteer, include = TRUE}
+# Load Data
+################################# 
+## Matson Field log volunteer 
+volunteer_data_matson <- read.csv("data/MatsonMattocksFieldLog-2016-2024/Matson-Field-Log-2022-2025.csv", fileEncoding="UTF-8")
+volunteer_data_matson$Date <- as.Date(volunteer_data_matson$Date)
+colnames(volunteer_data_matson)
+
+#############################################
+## subset Matson Field log volunteer 
+volunteer_data_matson_sub <- subset(volunteer_data_matson, select = -c(1,4,6,8,11,14,17:21))
+colnames(volunteer_data_matson_sub)
+
+#############################################
+# reorder columns to bind with crew data
+volunteer_data_matson_sub <- volunteer_data_matson_sub %>% relocate(Year, Date, Site, Area_Cleared_m2, Biomass_Removed_m3, Invasive_Species_Cleared, Native_or_Invasive, Crew_Hours, Work_Volunteer, Data_Change_Assumptions)
+colnames(volunteer_data_matson_sub)
+## go to combine crew-vol<-rbind()
+write.csv(volunteer_data_matson_sub, "data/volunteer_data_matson_sub.csv")
+```
+
+## Save Crew data  before combining
+```{r save-crew-before-combine, include = TRUE}
+## go to combine with volunteer_data_matson_sub crew-vol<-rbind()
+write.csv(crew_data_sep_sub_1_filtered, "data/crew_data_sep_sub_1_filtered.csv")
+```
+
+## Save Volunteer data  before combining
+```{r save-vol-before-combine, include = TRUE}
+## go to combine crew-vol<-rbind()
+write.csv(volunteer_data_matson_sub, "data/volunteer_data_matson_sub.csv")
+```
+
+## Combine Crew and Volunteer data
+```{r combine-crew-vol, include = TRUE}
+#############################################
+#   COMBINING CREW AND VOLUNTEER DATA
+# rbind work and volunteer
+crew_vol <- rbind(crew_data_sep_sub_1_filtered, volunteer_data_matson_sub)
+write.csv(crew_vol, "data/crew_vol.csv")
+
+unique(crew_vol$Native_or_Invasive)
+crew_vol_grs <- crew_vol[crew_vol$Native_or_Invasive == "MixedGrass",]
+crew_vol_inv <- crew_vol[crew_vol$Native_or_Invasive == "Invasive",]
+
+write.csv(crew_vol_grs, "data/crew_vol_grs.csv")
+write.csv(crew_vol_inv, "data/crew_vol_inv.csv")
+```
+
+## Top 5 Invasive Species from Crew Data `crew_vol_inv_top5`
+```{r crew-vol-inv-top5, include = TRUE}
+#############################################
+crew_vol_inv_top5 <- crew_vol %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
+
+colnames(crew_vol_inv_top5)
+write.csv(crew_vol_inv_top5, "data/crew_vol_inv_top5.csv")
+
+#############################################
+  crew_vol_inv_top5_sum <- crew_vol_inv_top5 %>%
+  group_by(Site, Year, Invasive_Species_Cleared) %>%
+  summarise(Biomass_Removed_m3 = sum(Biomass_Removed_m3), 
+            Crew_Hours = sum(Crew_Hours),
+            Area_Cleared_m2 = sum(Area_Cleared_m2)
+            )
+crew_vol_inv_top5_sum
+# Check to ensure unique values of Invasive Species Cleared
+
+#############################################
+# Save Calculation subset
+write.csv(crew_vol_inv_top5_sum, "data/crew_vol_inv_top5_sum.csv", row.names = FALSE)
+```
+
+
+### `crew_data_sep_sub_sum_bio_inv_top5`
+```{r crew-bio-inv-filter-top5, include = TRUE}
+#############################################
+# Top Invasive Species
+crew_data_sep_sub_sum_bio_inv_top5 <- crew_data_sep_sub_sum_bio_inv_rename_site %>% filter(Invasive_Species_Cleared %in% c("daphne", "English ivy",  "Himalayan blackberry", "Scotch broom", "shiny geranium"))
+```
 

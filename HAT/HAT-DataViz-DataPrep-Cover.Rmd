@@ -1,7 +1,7 @@
 ---
 title: "HAT Monitoring Cover Data"
 author: "Wendy Anthony for HAT"
-date: "23/02/2026"
+date: "2026-03-08"
 output:
   html_document:
     highlight: zenburn
@@ -24,6 +24,401 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Load Libraries
+```{r load-libraries}
+# install.packages("tidyverse")
+library(tidyverse)
+```
+
+## Import Cover Data 
+- Oak Haven 2024, 2025  
+- Matson 2024, 2025
+```{r import-cover-data}
+## Cover data from original Meadow Monitoring Spreadsheet 2025.xlsx & Meadow Monitoring Spreadsheet 2024.xlsx
+# separated by year and site
+# Oak Haven Cover data 2025
+## change invasive grass to mixed grass
+cover_OH_2024 <- read.csv("data/HAT-MeadowMonitoring-2024-OakHaven.csv", fileEncoding="UTF-8")
+cover_OH_2025 <- read.csv("data/HAT-MeadowMonitoring-2025-OakHaven.csv", fileEncoding="UTF-8")
+cover_MCA_2024 <- read.csv("data/HAT-MeadowMonitoring-2024-Matson.csv", fileEncoding="UTF-8")
+cover_MCA_2025 <- read.csv("data/HAT-MeadowMonitoring-2025-Matson.csv", fileEncoding="UTF-8")
+```
+
+
+
+## HAT Cover Data
+### rbind 4 file ojbects into 1 in long format
+```{r rbind-cover-data}
+HAT_cover_OH_MM <- rbind(cover_OH_2024, cover_OH_2025, cover_MCA_2024, cover_MCA_2025)
+
+
+unique(HAT_cover_OH_MM$Species) #47
+
+# trim trailing while spaces
+HAT_cover_OH_MM$Species <- trimws(HAT_cover_OH_MM$Species)
+species_unique <- unique(HAT_cover_OH_MM$Species) #39
+
+ 
+# create a list of comma separated values for list of species names, but in no order
+ comma_separated_sp_names <- paste(species_unique, collapse = ", ")
+ comma_separated_sp_names
+ str(comma_separated_sp_names)
+ # these did not sort in any order
+#  comma_separated_sp_names_sort <- as_tibble(comma_separated_sp_names) %>%
+#  arrange(comma_separated_sp_names)
+# comma_separated_sp_names_sort
+
+# update sort ID column
+HAT_cover_OH_MM$SortID <- 1:nrow(HAT_cover_OH_MM)
+
+
+# as.Date
+str(HAT_cover_OH_MM)
+HAT_cover_OH_MM$Date <- as.Date(HAT_cover_OH_MM$Date)
+str(HAT_cover_OH_MM)
+
+# Concatenate QUniqueID
+colnames(HAT_cover_OH_MM)
+HAT_cover_OH_MM$QUniqueID <- paste(HAT_cover_OH_MM$MonitorID, HAT_cover_OH_MM$Quadrat, HAT_cover_OH_MM$QuadratLocation_m, sep = "_")
+
+# Replace hyphen with underscores in QUniqueID
+HAT_cover_OH_MM$QUniqueID <- gsub("-", "_", HAT_cover_OH_MM$QUniqueID)
+
+# remove excess coloumns not needed
+# including SortID column
+colnames(HAT_cover_OH_MM)
+HAT_cover_OH_MM_sub <- subset(HAT_cover_OH_MM, select = -c(1,2,9,10,11,12,16))
+
+# write csv
+write.csv(HAT_cover_OH_MM_sub, "data/HAT_cover_OH_MM_sub.csv", row.names = FALSE)
+```
+<details>
+<summary>Click to view `HAT_cover_OH_MM_sub`</summary>
+```{r}
+HAT_cover_OH_MM_sub
+```
+</details>
+
+
+
+### Filter Subset
+#### Native vs Invasive vs MixedGrass
+```{r filter-inv-nat-subset}
+unique(HAT_cover_OH_MM_sub$Native_or_Invasive)
+HAT_cover_OH_MM_sub_nat <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Native_or_Invasive == "Native",]
+
+HAT_cover_OH_MM_sub_inv <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Native_or_Invasive == "Invasive",]
+
+HAT_cover_OH_MM_sub_mix <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Native_or_Invasive == "MixedGrass",]
+```
+
+#### Treated vs Untreated
+```{r filter-treat-untreat-subset}
+unique(HAT_cover_OH_MM_sub$Treated)
+HAT_cover_OH_MM_sub_treat <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Treated == "Treated",]
+HAT_cover_OH_MM_sub_untreat <- HAT_cover_OH_MM_sub[HAT_cover_OH_MM_sub$Treated == "Untreated",]
+```
+
+### *** Convert long format to wide format and group by Species
+WORKS !!!!
+See function that creates this wide format
+```{r cover-data-long-to-wide}
+colnames(HAT_cover_OH_MM_sub)
+unique(HAT_cover_OH_MM_sub$Location)
+# filter subset
+HAT_cover_OH_MM_sub_treat_OH <- HAT_cover_OH_MM_sub_treat[HAT_cover_OH_MM_sub_treat$Location == "Oak Haven",]
+HAT_cover_OH_MM_sub_treat_OH_2025 <- HAT_cover_OH_MM_sub_treat_OH[HAT_cover_OH_MM_sub_treat_OH$Year == "2025",]
+HAT_cover_OH_MM_sub_treat_OH_2024 <- HAT_cover_OH_MM_sub_treat_OH[HAT_cover_OH_MM_sub_treat_OH$Year == "2024",]
+HAT_cover_OH_MM_sub_untreat_OH <- HAT_cover_OH_MM_sub_untreat[HAT_cover_OH_MM_sub_untreat$Location == "Oak Haven",]
+HAT_cover_OH_MM_sub_untreat_OH_2025 <- HAT_cover_OH_MM_sub_untreat_OH[HAT_cover_OH_MM_sub_untreat_OH$Year == "2025",]
+HAT_cover_OH_MM_sub_untreat_OH_2024 <- HAT_cover_OH_MM_sub_untreat_OH[HAT_cover_OH_MM_sub_untreat_OH$Year == "2024",]
+
+HAT_cover_OH_MM_sub_treat_M <- HAT_cover_OH_MM_sub_treat[HAT_cover_OH_MM_sub_treat$Location == "Matson",]
+HAT_cover_OH_MM_sub_treat_M_2025 <- HAT_cover_OH_MM_sub_treat_M[HAT_cover_OH_MM_sub_treat_M$Year == "2025",]
+HAT_cover_OH_MM_sub_treat_M_2024 <- HAT_cover_OH_MM_sub_treat_M[HAT_cover_OH_MM_sub_treat_M$Year == "2024",]
+HAT_cover_OH_MM_sub_untreat_M <- HAT_cover_OH_MM_sub_untreat[HAT_cover_OH_MM_sub_untreat$Location == "Matson",]
+HAT_cover_OH_MM_sub_untreat_M_2025 <- HAT_cover_OH_MM_sub_untreat_M[HAT_cover_OH_MM_sub_untreat_M$Year == "2025",]
+HAT_cover_OH_MM_sub_untreat_M_2024 <- HAT_cover_OH_MM_sub_untreat_M[HAT_cover_OH_MM_sub_untreat_M$Year == "2024",]
+
+
+colnames(HAT_cover_OH_MM_sub_treat_OH_2025)
+
+# long to wide
+HAT_cover_OH_MM_sub_treat_OH_2025_wide <- HAT_cover_OH_MM_sub_treat_OH_2025 %>% 
+pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+HAT_cover_OH_MM_sub_treat_OH_2024_wide <- HAT_cover_OH_MM_sub_treat_OH_2024 %>% 
+pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+
+# HAT_cover_OH_MM_sub_untreat_OH_2025_wide <- HAT_cover_OH_MM_sub_untreat_OH_2025 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+# HAT_cover_OH_MM_sub_untreat_OH_2024_wide <- HAT_cover_OH_MM_sub_untreat_OH_2024 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+# 
+# HAT_cover_OH_MM_sub_treat_M_2025_wide <- HAT_cover_OH_MM_sub_treat_M_2025 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+# HAT_cover_OH_MM_sub_treat_M_2024_wide <- HAT_cover_OH_MM_sub_treat_M_2024 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+# 
+# HAT_cover_OH_MM_sub_untreat_M_2025_wide <- HAT_cover_OH_MM_sub_untreat_M_2025 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+# HAT_cover_OH_MM_sub_untreat_M_2024_wide <- HAT_cover_OH_MM_sub_untreat_M_2024 %>%
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+
+
+### SOME PROBLEM WITH DUPLICATE DATA HAT_cover_OH_MM_sub_untreat_OH_2024
+# HAT_cover_OH_MM_sub_untreat_OH_2024_wide <- HAT_cover_OH_MM_sub_untreat_OH_2024 %>% 
+# pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)
+
+# colnames(HAT_cover_OH_MM_sub_untreat_OH_2024_wide)
+
+# sum all percentage cover per species over all Quadrats
+HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg <- HAT_cover_OH_MM_sub_treat_OH_2025_wide %>% 
+group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>% 
+  summarise(across(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3), sum))
+ 
+colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg)
+
+```
+
+
+
+### *** Calculate Mean Cover Percent
+WORKS !!!!
+```{r cover-mean}
+### *** Calculate Mean Cover Percent
+HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg_mean <- HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg %>%
+   group_by(Year, Date, Location, Treated, Species) %>%
+  summarise(mean_value = mean(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3)), 
+            sd_value = sd(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3))) %>%  
+  # round
+  mutate_if(is.numeric, round, 2)
+
+ HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg_mean
+ 
+colnames(HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg_mean)
+
+write.csv(HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg_mean, "data/HAT_cover_OH_MM_sub_treat_OH_2025_wide_agg_mean.csv", row.names = FALSE)
+
+```
+
+
+## Function Cover Subset
+- in preparation for creating average mean percentage cover
+```{r fun-cover-sub}
+
+unique(HAT_cover_OH_MM_sub$Location)
+
+
+HAT_cover_subset_fun <- function(data, col_name, location, col_name_2, treat, col_name_3, year){
+   
+  data  <- data %>% dplyr::filter(
+    {{col_name}} == location,
+    {{col_name_2}} == treat,
+    {{col_name_3}} == year)
+  
+  return(data)
+  data_location_treat_year
+  
+}
+HAT_cover_subset_fun_OH_T_2025 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Treated", Year, "2025")
+HAT_cover_subset_fun_OH_U_2025 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Untreated", Year, "2025")
+HAT_cover_subset_fun_OH_T_2024 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Treated", Year, "2024")
+HAT_cover_subset_fun_OH_U_2024 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Untreated", Year, "2024")
+HAT_cover_subset_fun_M_T_2025 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2025")
+HAT_cover_subset_fun_M_U_2025 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2025")
+HAT_cover_subset_fun_M_T_2024 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2024")
+HAT_cover_subset_fun_M_U_2024 <- HAT_cover_subset_fun(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2024")
+```
+
+## Function Cover Subset pivot wide
+- in preparation for creating average mean percentage cover
+```{r fun-cover-sub-pivot-wide, echo=F, results='hide'}
+
+#unique(HAT_cover_OH_MM_sub$Location)
+
+
+HAT_cover_subset_fun_pivot_wide <- function(data, col_name, location, col_name_2, treat, col_name_3, year){
+   
+  data  <- data %>% dplyr::filter(
+    {{col_name}} == location,
+    {{col_name_2}} == treat,
+    {{col_name_3}} == year) %>% 
+    pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)  
+}
+#    pivot_wider(names_from = QUniqueID, values_from = PercentCover, values_fill = 0)  
+## Error in `pivot_wider()`:
+# ! Can't convert `fill` <double> to <list>.
+# # HAT_cover_subset_fun_pivot_wide()
+```
+
+
+### Populate pivot wide using function Cover Subset pivot wide
+```{r fun-subset-pivot-wide}
+HAT_cover_subset_fun_OH_T_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Treated", Year, "2025")
+HAT_cover_subset_fun_OH_U_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Untreated", Year, "2025")
+HAT_cover_subset_fun_OH_T_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Treated", Year, "2024")
+
+## unable to pivot wide and fill to 0 ## ????????? had to wrangle some duplicate values and quadrat ID
+HAT_cover_subset_fun_OH_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Oak Haven", Treated, "Untreated", Year, "2024")
+
+HAT_cover_subset_fun_M_T_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2025")
+HAT_cover_subset_fun_M_U_2025_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2025")
+HAT_cover_subset_fun_M_T_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Treated", Year, "2024")
+
+
+HAT_cover_subset_fun_M_U_2024_wide <- HAT_cover_subset_fun_pivot_wide(HAT_cover_OH_MM_sub, Location, "Matson", Treated, "Untreated", Year, "2024")
+```
+
+
+
+
+### Calculate Mean Cover Percentage from pivot wide function results
+```{r fun-col-names}
+# gather column names for each data object to paste the UniqueID values into mean calculations 
+comma_separated_col_names <- function(data){
+  col  <- data
+
+cols <- colnames(col)
+
+comma_separated_col_names <- paste(cols, collapse = ", ")
+
+print(comma_separated_col_names)
+
+}
+
+##### COPY COLUMN SEPARATED NAMES FOR UNIQUE QUADRATS OT REPLACE C() VALUES
+# HAT_cover_subset_fun_OH_T_2025_wide
+comma_separated_col_names(HAT_cover_subset_fun_OH_T_2025_wide)
+HAT_cover_subset_fun_OH_T_2025_wide_mean <- HAT_cover_subset_fun_OH_T_2025_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3, T_CH_Q3_8.3)), 
+            sd_value = sd(c(T_DL_Q1_4.3, T_DL_Q2_3.3, T_DL_Q3_8.3, T_CH_Q1_4.3, T_CH_Q2_3.3, T_CH_Q3_8.3))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_OH_U_2025_wide
+comma_separated_col_names(HAT_cover_subset_fun_OH_U_2025_wide)
+HAT_cover_subset_fun_OH_U_2025_wide_mean <- HAT_cover_subset_fun_OH_U_2025_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(U_DL_Q1_9, U_DL_Q2_13.3, U_DL_Q3_2.6, U_CH_Q1_9, U_CH_Q2_13.3, U_CH_Q3_2.6)), 
+            sd_value = sd(c(U_DL_Q1_9, U_DL_Q2_13.3, U_DL_Q3_2.6, U_CH_Q1_9, U_CH_Q2_13.3, U_CH_Q3_2.6))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_OH_T_2024_wide
+comma_separated_col_names(HAT_cover_subset_fun_OH_T_2024_wide)
+HAT_cover_subset_fun_OH_T_2024_wide_mean <- HAT_cover_subset_fun_OH_T_2024_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(T_CL_Q2_3.3, T_CL_Q1_4.3, T_HD_Q1_4.3, T_HD_Q3_8.3, T_HD_Q2_3.3, T_CL_Q3_8.3)), 
+            sd_value = sd(c(T_CL_Q2_3.3, T_CL_Q1_4.3, T_HD_Q1_4.3, T_HD_Q3_8.3, T_HD_Q2_3.3, T_CL_Q3_8.3))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_OH_U_2024_wide
+comma_separated_col_names(HAT_cover_subset_fun_OH_U_2024_wide)
+HAT_cover_subset_fun_OH_U_2024_wide_mean <- HAT_cover_subset_fun_OH_U_2024_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(U_CL_Q1_9, U_CL_Q3_2.6, U_CL2_Q3_2.6, U_CL2_Q1_9, U_CL2_Q2_13.3, U_CL_Q2_13.3)), 
+            sd_value = sd(c(U_CL_Q1_9, U_CL_Q3_2.6, U_CL2_Q3_2.6, U_CL2_Q1_9, U_CL2_Q2_13.3, U_CL_Q2_13.3))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_M_T_2025_wide
+comma_separated_col_names(HAT_cover_subset_fun_M_T_2025_wide)
+HAT_cover_subset_fun_M_T_2025_wide_mean <- HAT_cover_subset_fun_M_T_2025_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(T_LJ_Q1_8, T_LJ_Q3_4, T_DH_Q3_8, T_DH_Q1_4, T_LJ_Q2_1, T_DH_Q2_1)), 
+            sd_value = sd(c(T_LJ_Q1_8, T_LJ_Q3_4, T_DH_Q3_8, T_DH_Q1_4, T_LJ_Q2_1, T_DH_Q2_1))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_M_U_2025_wide
+comma_separated_col_names(HAT_cover_subset_fun_M_U_2025_wide)
+HAT_cover_subset_fun_M_U_2025_wide_mean <- HAT_cover_subset_fun_M_U_2025_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(U_LJ_Q3_9, U_LJ_Q2_2, U_DH_Q1_2, U_DH_Q2_4, U_DH_Q3_9, U_LJ_Q1_4)), 
+            sd_value = sd(c(U_LJ_Q3_9, U_LJ_Q2_2, U_DH_Q1_2, U_DH_Q2_4, U_DH_Q3_9, U_LJ_Q1_4))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_M_T_2024_wide
+comma_separated_col_names(HAT_cover_subset_fun_M_T_2024_wide)
+HAT_cover_subset_fun_M_T_2024_wide_mean <- HAT_cover_subset_fun_M_T_2024_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(T_HCDD_Q3_8, T_HCDD_Q1_2, T_HCDD_Q2_5)), 
+            sd_value = sd(c(T_HCDD_Q3_8, T_HCDD_Q1_2, T_HCDD_Q2_5))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+# HAT_cover_subset_fun_OH_U_2025_wide
+comma_separated_col_names(HAT_cover_subset_fun_M_U_2024_wide)
+HAT_cover_subset_fun_M_U_2024_wide_mean <- HAT_cover_subset_fun_M_U_2024_wide %>%
+   group_by(Year, Date, Location, Treated, Species, Native_or_Invasive) %>%
+  summarise(mean_value = mean(c(U_HCDD_Q1_3.66, U_HCDD_Q2_5.7, U_HCDD_Q3_7.3)), 
+            sd_value = sd(c(U_HCDD_Q1_3.66, U_HCDD_Q2_5.7, U_HCDD_Q3_7.3))) %>%  
+  mutate_if(is.numeric, round, 2) # round
+
+```
+
+
+### Rbind mean cover data
+```{r mean-cover-merge}
+HAT_cover_mean <- rbind(HAT_cover_subset_fun_OH_T_2025_wide_mean, HAT_cover_subset_fun_OH_U_2025_wide_mean, HAT_cover_subset_fun_OH_T_2024_wide_mean, HAT_cover_subset_fun_OH_U_2024_wide_mean, HAT_cover_subset_fun_M_T_2025_wide_mean, HAT_cover_subset_fun_M_U_2025_wide_mean, HAT_cover_subset_fun_M_T_2024_wide_mean, HAT_cover_subset_fun_M_U_2024_wide_mean)
+
+write.csv(HAT_cover_mean, "data/HAT_cover_mean.csv", row.names = FALSE)
+```
+
+
+## Report: Species Richness Values
+```{r mean-cover-merge-species-richness, results = TRUE, echo = FALSE}
+# colnames(HAT_cover_mean)
+# unique(HAT_cover_mean$Native_or_Invasive)
+
+## Native vs Invasive
+nat_cover_mean <- subset(HAT_cover_mean, Native_or_Invasive == "Native")
+inv_cover_mean <- subset(HAT_cover_mean, Native_or_Invasive == "Invasive")  
+
+nat_cover_mean_OH <- subset(nat_cover_mean, Location == "Oak Haven")
+inv_cover_mean_OH <- subset(inv_cover_mean, Location == "Oak Haven")
+nat_cover_mean_M <- subset(nat_cover_mean, Location == "Matson")
+inv_cover_mean_M <- subset(inv_cover_mean, Location == "Matson")
+
+# Treated vs Untreated
+nat_cover_T_mean <- subset(nat_cover_mean, Treated == "Treated")
+nat_cover_U_mean <- subset(nat_cover_mean, Treated == "Untreated")  
+inv_cover_T_mean <- subset(inv_cover_mean, Treated == "Treated")
+inv_cover_U_mean <- subset(inv_cover_mean, Treated == "Untreated")  
+
+
+nat_cover_T_mean_OH <- subset(nat_cover_T_mean, Location == "Oak Haven")
+nat_cover_U_mean_OH <- subset(nat_cover_U_mean, Location == "Oak Haven")
+inv_cover_T_mean_OH <- subset(inv_cover_T_mean, Location == "Oak Haven")
+inv_cover_U_mean_OH <- subset(inv_cover_U_mean, Location == "Oak Haven")
+
+nat_cover_T_mean_M <- subset(nat_cover_T_mean, Location == "Matson")
+nat_cover_U_mean_M <- subset(nat_cover_U_mean, Location == "Matson")
+inv_cover_T_mean_M <- subset(inv_cover_T_mean, Location == "Matson")
+inv_cover_U_mean_M <- subset(inv_cover_U_mean, Location == "Matson")
+```
+
+### In Oak Haven
+- There are `r length(unique(nat_cover_mean_OH$Species))` unique native plant species, and `r   length(unique(inv_cover_mean_OH$Species))` invasive Plant species   
+- `r length(unique(nat_cover_T_mean_OH$Species))` unique native plant species in the Treated, and `r length(unique(nat_cover_U_mean_OH$Species))` unique native plant species in the Untreated monitoring locations
+- `r length(unique(inv_cover_T_mean_OH$Species))` unique invasive plant species in the Treated, and `r length(unique(inv_cover_U_mean_OH$Species))` unique invasive plant species in the Untreated monitoring locations
+- The **native plant species** are: `r unique(nat_cover_mean_OH$Species)`  
+- The **invasive plant species** are: `r unique(inv_cover_mean_OH$Species)`  
+
+### In Matson
+- There are `r length(unique(nat_cover_mean_M$Species))` unique native plant species, and `r   length(unique(inv_cover_mean_M$Species))` invasive Plant species   
+- `r length(unique(nat_cover_T_mean_M$Species))` unique native plant species in the Treated, and `r length(unique(nat_cover_U_mean_M$Species))` unique native plant species in the Untreated monitoring locations
+- `r length(unique(inv_cover_T_mean_M$Species))` unique invasive plant species in the Treated, and `r length(unique(inv_cover_U_mean_M$Species))` unique invasive plant species in the Untreated monitoring locations
+- The **native plant species** are: `r unique(nat_cover_mean_M$Species)`  
+- The **invasive plant species** are: `r unique(inv_cover_mean_M$Species)`  
+
+```{r add-values-to-report, results = FALSE, echo = TRUE}
+"- There are `r length(unique(HAT_cover_mean$Species))` unique native plant species, 
+and `r length(unique(HAT_cover_mean$Species))` invasive Plant species 
+found in both the Treated and Untreated monitoring locations at Oak Haven Park"
+"- The **native plant species** are: `r unique(HAT_cover_mean$Species)`  "
+"- The **invasive plant species** are: `r unique(HAT_cover_mean$Species)`  "
+```
+
+
+---
+
 # Prepare Cover Data to be imported into Webfilter
 
 ## Import Cover Data
@@ -34,11 +429,57 @@ knitr::opts_chunk$set(echo = TRUE)
 cover_data <- read.csv("data/HAT_cover_mean.csv", fileEncoding="UTF-8")
 ```
 
-
 ### Explore Cover Data
 ```{r explore-cover-data}
 str(cover_data)
 ```
+
+## Prepare Cover Data
+```{r cover-rename-site-location-worksite-columns-for-sd-group, include = FALSE}
+#############################################
+# Cover Data
+cover_data_rename_site <- cover_data %>%
+  rename(Site = Location)
+
+cover_data_rename_site$Site <- gsub("Matson Conservation Area", "Matson", cover_data_rename_site$Site)
+cover_data_rename_site$Site <- gsub("Oak Haven Park", "Oak Haven", cover_data_rename_site$Site)
+cover_data_rename_site$Site <- gsub("Havenwood Park", "Havenwood", cover_data_rename_site$Site)
+
+colnames(cover_data_rename_site)
+cover_data_rename_site_sub <- subset(cover_data_rename_site, select = -c(9,10,11))
+
+cover_data_rename_site_sub$Date <- as.Date(cover_data_rename_site_sub$Date)
+
+## Add upper and lower bounds mean +/- sd
+
+cover_data_rename_site_sub <- cover_data_rename_site_sub %>% 
+                                      mutate(lower = mean_value - sd_value)
+
+cover_data_rename_site_sub <- cover_data_rename_site_sub %>% 
+                                      mutate(upper = mean_value + sd_value)
+
+str(cover_data_rename_site_sub)
+
+## ROund all numbers to 2 decimals
+cover_data_rename_site_sub <- cover_data_rename_site_sub %>%
+  mutate(across(where(is.numeric), ~ round(.x, 2)))
+write.csv(cover_data_rename_site_sub, "data/cover_data_rename_site_sub.csv")
+
+#############################################
+cov_nat_top5 <- cover_data_rename_site_sub %>% filter(Species %in% c("camas", "delphinium",  "Pacific sanicle", "licorice fern", "Oregon grape"))
+write.csv(cov_nat_top5, "data/cov_nat_top5.csv")
+#############################################
+unique(cover_data_rename_site_sub$Native_or_Invasive)
+cover_data_rename_site_sub_grs <- cover_data_rename_site_sub[cover_data_rename_site_sub$Native_or_Invasive == "MixedGrass",]
+cover_data_rename_site_sub_inv <- cover_data_rename_site_sub[cover_data_rename_site_sub$Native_or_Invasive == "Invasive",]
+cover_data_rename_site_sub_nat <- cover_data_rename_site_sub[cover_data_rename_site_sub$Native_or_Invasive == "Native",]
+
+write.csv(cover_data_rename_site_sub_grs, "data/cover_data_rename_site_sub_grs.csv")
+write.csv(cover_data_rename_site_sub_inv, "data/cover_data_rename_site_sub_inv.csv")
+write.csv(cover_data_rename_site_sub_nat, "data/cover_data_rename_site_sub_nat.csv")
+```
+
+
 
 
 ## Import Species Count
@@ -46,7 +487,7 @@ str(cover_data)
 # Load Data
 ################################# 
 # Species counts
-species_count <- read.csv("data/species_counts.csv", fileEncoding="UTF-8")
+species_count <- read.csv("data/species_counts.csv", fileEncoding = "UTF-8")
 
 #############################################
 # drop unknown species
