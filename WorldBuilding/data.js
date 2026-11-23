@@ -1,8 +1,8 @@
 var APP_DATA = {
   "scenes": [
     {
-      "id": "0-img_20261103_134408_00_561",
-      "name": "Gorge Park Slump 2026-11-03",
+      "id": "0-gorge-park-slump-2026-11-03-img_20261103_134408_00_561",
+      "name": "Gorge Park Slump 2026-11-03 (IMG_20261103_134408_00_561)",
       "levels": [
         {
           "tileSize": 256,
@@ -24,61 +24,50 @@ var APP_DATA = {
       ],
       "faceSize": 1520,
       "initialViewParameters": {
-        "yaw": 0.4602941398959892,
-        "pitch": 1.1100876311081826,
+        "yaw": 0.1261194180906564,
+        "pitch": 0.5912718505959766,
         "fov": 1.3246452866335776
       },
+      "linkHotspots": [],
       "infoHotspots": [
         {
-          "yaw": 0.5202846847740048,
-          "pitch": 0.6190950071045442,
+          "yaw": -1.9160290803213869,
+          "pitch": 0.07722548343270574,
+          "title": "Split-rail Fence",
+          "text": "Decommissioned trail due to multiple fallen Arbutus and Douglas-fir trees fallen across trail"
+        },
+        {
+          "yaw": -1.5011147644289728,
+          "pitch": 0.30495892964646387,
+          "title": "Saskatoon (Amelanchier)",
+          "text": "Deep rooted native shrub is stabilizing slope from water runoff"
+        },
+        {
+          "yaw": 0.4526224587058927,
+          "pitch": 0.4123867891199744,
           "title": "Slump",
-          "text": "Is this eroding from the bottom or the top, or both?"
+          "text": "Pit recently formed, slope is being held from above by invasive Gorse roots"
         },
         {
-          "yaw": -1.366806522393496,
-          "pitch": 0.2925702434220998,
-          "title": "Saskatoon Shrub",
-          "text": "Deep rooted native shrub stabilizing the slope"
+          "yaw": 0.9091965266153501,
+          "pitch": 1.3424413835672144,
+          "title": "Eroding Sediment",
+          "text": "Eroding from bottom of slump, as well as trail down from either side"
         },
         {
-          "yaw": 1.8518612714989464,
-          "pitch": 0.684321038299375,
+          "yaw": 2.116326798998795,
+          "pitch": 0.778600217271622,
           "title": "Gorge Waterway",
-          "text": "Tidal"
-        },
-        {
-          "yaw": 2.2903861204009734,
-          "pitch": 1.295810557341797,
-          "title": "Sediment",
-          "text": "<span style=\"font-size: 16px; background-color: rgba(103, 115, 131, 0.8);\">Eroding from base of slump and also trail leading down</span>"
-        },
-        {
-          "yaw": 2.544949590942129,
-          "pitch": -0.032802942108038025,
-          "title": "Tillicum Bridge",
-          "text": "crosses the Gorge"
-        },
-        {
-          "yaw": 2.556745260996289,
-          "pitch": 0.0656174261648097,
-          "title": "Reversing Falls",
-          "text": "Sacred area to Lekwungen First Nations"
-        },
-        {
-          "yaw": -1.8393341498992086,
-          "pitch": 0.06177232175745928,
-          "title": "Split Rail Fence",
-          "text": "Decommissioned trail due to multiple tree falls"
+          "text": "Tidal waters may also be contributing to slump eroding from base, especially at high, and King tides"
         }
       ]
     }
   ],
-  "name": "Gorge Park Slump 2026-11-03",
+  "name": "Gorge Park Slump 2026-11-03 360°",
   "settings": {
     "mouseViewMode": "drag",
     "autorotateEnabled": false,
     "fullscreenButton": true,
-    "viewControlButtons": true
+    "viewControlButtons": false
   }
 };

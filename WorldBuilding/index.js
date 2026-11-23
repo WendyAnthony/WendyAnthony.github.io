@@ -179,7 +179,7 @@
   controls.registerMethod('outElement',   new Marzipano.ElementPressControlMethod(viewOutElement, 'zoom',  velocity, friction), true);
 
   function sanitize(s) {
-    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   function switchScene(scene) {
@@ -265,7 +265,10 @@
 
     // Add click event handler.
     wrapper.addEventListener('click', function() {
-      switchScene(findSceneById(hotspot.target));
+      var target = findSceneById(hotspot.target);
+      if (target) {
+        switchScene(target);
+      }
     });
 
     // Prevent touch and scroll events from reaching the parent element.
@@ -273,10 +276,11 @@
     stopTouchAndScrollEventPropagation(wrapper);
 
     // Create tooltip element.
+    var targetData = findSceneDataById(hotspot.target);
     var tooltip = document.createElement('div');
     tooltip.classList.add('hotspot-tooltip');
     tooltip.classList.add('link-hotspot-tooltip');
-    tooltip.innerHTML = findSceneDataById(hotspot.target).name;
+    tooltip.innerHTML = targetData ? sanitize(targetData.name) : '';
 
     wrapper.appendChild(icon);
     wrapper.appendChild(tooltip);
@@ -358,7 +362,7 @@
   }
 
   // Prevent touch and scroll events from reaching the parent element.
-  function stopTouchAndScrollEventPropagation(element, eventList) {
+  function stopTouchAndScrollEventPropagation(element) {
     var eventList = [ 'touchstart', 'touchmove', 'touchend', 'touchcancel',
                       'wheel', 'mousewheel' ];
     for (var i = 0; i < eventList.length; i++) {
