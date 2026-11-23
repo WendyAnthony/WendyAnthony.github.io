@@ -59,6 +59,12 @@ var APP_DATA = {
           "pitch": 0.778600217271622,
           "title": "Gorge Waterway",
           "text": "Tidal waters may also be contributing to slump eroding from base, especially at high, and King tides"
+        },
+        {
+          "yaw": 2.496631038604784,
+          "pitch": 0.09947818759373384,
+          "title": "Reversing Falls",
+          "text": "Sacred location for Lekwungen First Nations"
         }
       ]
     }
