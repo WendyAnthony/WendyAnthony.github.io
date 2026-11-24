@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <title>Gorge Park Slump 360° View</title>  
+  </head>
+    <style>
+    /* Reset default browser margins and set container to full screen height */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100dvh; /* Dynamic viewport height works well on both desktop and mobile */
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* Prevents outer page scrollbars */
+    }
+
+    h3 {
+      margin: 0;
+      padding: 16px 20px;
+      flex-shrink: 0; /* Ensures the heading keeps its exact height */
+    }
+
+    p {
+      margin: 16px;;
+    }
+    iframe {
+      flex-grow: 1; /* Automatically fills all remaining vertical space */
+      width: 100%;
+      border: none; /* Removes default iframe border */
+    }
+  </style>
+  <body>
+
+<p><span style="font-size: 1.25rem;"><b>Gorge Park Slump 360° View 2026-11-03</b></span><br>	
+<b>Desktop Browser:</b> Drag image to interact with 360° View > slump is to your left.<br>
+<b>Mobile Device VR:</b> Ask for mobile version; move device as if were your eyes</p>
+  <iframe 
+  src="https://wendyanthony.github.io/WorldBuilding/GorgeParkSlump-2026-11-03-360.html" 
+  title="Gorge Park Slum 2026-11-03"
+  allowfullscreen>
+</iframe>
+</body>
+</html>
