@@ -1,0 +1,44 @@
+<!--
+Source - https://stackoverflow.com/a/77778591
+Posted by Jaydip Vasoya
+Retrieved 2026-11-22, License - CC BY-SA 4.0
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <title>Gorge Park Slump 360° View</title>
+    
+  </head>
+  <body>
+<div>
+    <script>
+        window.addEventListener("wheel", (event) => {
+          const delta = event.wheelDelta / 120 / 10;
+          var mycam = document.getElementById("cam").getAttribute("camera");
+          var finalZoom =
+            document.getElementById("cam").getAttribute("camera").zoom + delta;
+      
+          // limiting the zoom
+          if (finalZoom < 0.5) finalZoom = 0.5;
+          if (finalZoom > 2) finalZoom = 2;
+          mycam.zoom = finalZoom;
+      
+          document.getElementById("cam").setAttribute("camera", mycam);
+        });
+      </script>
+      <a-scene>
+        <a-entity
+          id="cam"
+          camera="zoom: 1"
+          look-controls="reverseMouseDrag: true"
+        ></a-entity>
+        <a-assets>
+          <img id="skyTexture" crossorigin="anonymous"src="https://wendyanthony.github.io/WorldBuilding/IMG_20261127_103330_796.JPG" />
+        </a-assets>
+        <a-sky src="#skyTexture" rotation="0 0 0"></a-sky>
+      </a-scene>
+  </div>
+  </body>
+</html>
