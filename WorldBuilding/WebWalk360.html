@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>360° Nature Stroll</title>
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script>
+    const ENABLE_COORD_HELPER = true;
+    let isMuted = false;
+    let activeTrackId = '#sound-bench';
+
+    function fadeAudio(soundEl, targetVol, duration = 1200) {
+      if (!soundEl || !soundEl.components.sound) return;
+      const startVol = soundEl.getAttribute('sound').volume || 0;
+      const startTime = performance.now();
+
+      if (targetVol > 0 && !soundEl.components.sound.isPlaying) {
+        soundEl.components.sound.playSound();
+      }
+
+      function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const currentVol = startVol + (targetVol - startVol) * progress;
+        soundEl.setAttribute('sound', 'volume', currentVol);
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else if (targetVol === 0) {
+          soundEl.components.sound.pauseSound();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      const btn = document.getElementById('mute-btn');
+      btn.textContent = isMuted ? 'Sound: Off' : 'Sound: On';
+      btn.style.opacity = isMuted ? '0.65' : '1';
+
+      const currentTrack = document.querySelector(activeTrackId);
+      if (isMuted) {
+        document.querySelectorAll('.ambient-track').forEach(t => fadeAudio(t, 0, 500));
+      } else if (currentTrack) {
+        fadeAudio(currentTrack, 0.45, 800);
+      }
+    }
+
+    function startStroll() {
+      document.getElementById('welcome-overlay').style.display = 'none';
+      document.getElementById('mute-btn').style.display = 'block';
+      fadeAudio(document.querySelector(activeTrackId), 0.45, 1500);
+    }
+
+    AFRAME.registerComponent('spot-link', {
+      schema: {
+        targetSky: { type: 'string' },
+        targetGroup: { type: 'string' },
+        targetSound: { type: 'string' },
+        skyRotation: { type: 'string', default: '0 0 0' }
+      },
+      init: function () {
+        const el = this.el;
+        const data = this.data;
+
+        el.addEventListener('mouseenter', () => el.setAttribute('scale', '1.08 1.08 1.08'));
+        el.addEventListener('mouseleave', () => el.setAttribute('scale', '1 1 1'));
+
+        el.addEventListener('click', (evt) => {
+          if (evt.detail.mouseEvent && evt.detail.mouseEvent.shiftKey) return;
+
+          const sky = document.querySelector('#main-sky');
+          const fader = document.querySelector('#fade-sphere');
+
+          if (data.targetSound) activeTrackId = data.targetSound;
+
+          document.querySelectorAll('.ambient-track').forEach(track => {
+            if (`#${track.id}` !== activeTrackId) fadeAudio(track, 0, 1000);
+          });
+
+          if (!isMuted && activeTrackId) {
+            fadeAudio(document.querySelector(activeTrackId), 0.45, 1500);
+          }
+
+          fader.emit('fadeOut');
+          setTimeout(() => {
+            sky.setAttribute('src', data.targetSky);
+            sky.setAttribute('rotation', data.skyRotation);
+
+            const marker = document.querySelector('#preview-marker');
+            if (marker) marker.setAttribute('visible', false);
+
+            document.querySelectorAll('.spot-group').forEach(group => {
+              group.setAttribute('visible', false);
+              group.querySelectorAll('.clickable').forEach(c => c.classList.remove('active-ray'));
+            });
+
+            const nextGroup = document.querySelector(data.targetGroup);
+            if (nextGroup) {
+              nextGroup.setAttribute('visible', true);
+              nextGroup.querySelectorAll('.clickable').forEach(c => c.classList.add('active-ray'));
+            }
+
+            fader.emit('fadeIn');
+          }, 650);
+        });
+      }
+    });
+
+    AFRAME.registerComponent('info-note', {
+      schema: { noteId: { type: 'string' } },
+      init: function () {
+        this.el.addEventListener('mouseenter', () => this.el.setAttribute('scale', '1.05 1.05 1.05'));
+        this.el.addEventListener('mouseleave', () => this.el.setAttribute('scale', '1 1 1'));
+
+        this.el.addEventListener('click', (evt) => {
+          if (evt.detail.mouseEvent && evt.detail.mouseEvent.shiftKey) return;
+          const panel = document.querySelector(this.data.noteId);
+          if (panel) panel.setAttribute('visible', !panel.getAttribute('visible'));
+        });
+      }
+    });
+
+    AFRAME.registerComponent('coord-picker', {
+      init: function () {
+        if (!ENABLE_COORD_HELPER) return;
+        const marker = document.querySelector('#preview-marker');
+        const hud = document.querySelector('#coord-hud');
+        const readout = document.querySelector('#coord-readout');
+
+        this.el.addEventListener('click', (evt) => {
+          if (!evt.detail.mouseEvent || !evt.detail.mouseEvent.shiftKey) return;
+
+          const pt = evt.detail.intersection.point;
+          const x = pt.x.toFixed(2);
+          const y = pt.y.toFixed(2);
+          const z = pt.z.toFixed(2);
+
+          marker.setAttribute('position', `${x} ${y} ${z}`);
+          marker.setAttribute('visible', true);
+          marker.object3D.lookAt(0, 1.6, 0);
+
+          const rot = marker.object3D.rotation;
+          const rx = THREE.MathUtils.radToDeg(rot.x).toFixed(1);
+          const ry = THREE.MathUtils.radToDeg(rot.y).toFixed(1);
+          const rz = THREE.MathUtils.radToDeg(rot.z).toFixed(1);
+
+          const snippet = `position="${x} ${y} ${z}" rotation="${rx} ${ry} ${rz}"`;
+
+          hud.style.display = 'block';
+          readout.textContent = `Copied: ${snippet}`;
+          if (navigator.clipboard) navigator.clipboard.writeText(snippet);
+        });
+      }
+    });
+  </script>
+  <style>
+    #welcome-overlay {
+      position: fixed; inset: 0; background: rgba(20, 28, 23, 0.88);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #f4f7f2; font-family: Georgia, serif; z-index: 999; text-align: center; padding: 20px;
+    }
+    #welcome-overlay h2 { margin-bottom: 8px; font-weight: normal; }
+    #welcome-overlay p { max-width: 420px; color: #c9d8cd; line-height: 1.5; }
+    #welcome-overlay button {
+      margin-top: 18px; padding: 12px 28px; font-size: 16px; cursor: pointer;
+      background: #2f4f3a; color: #f4f7f2; border: 1px solid #8fb399; border-radius: 6px;
+      font-family: Georgia, serif;
+    }
+    #mute-btn {
+      position: fixed; top: 16px; right: 16px; z-index: 998; display: none;
+      background: rgba(20, 28, 23, 0.65); color: #f4f7f2;
+      border: 1px solid rgba(143, 179, 153, 0.5); border-radius: 20px;
+      padding: 8px 14px; font-family: Georgia, serif; font-size: 13px; cursor: pointer;
+    }
+    #coord-hud {
+      position: fixed; bottom: 16px; left: 16px; z-index: 997; display: none;
+      background: rgba(20, 28, 23, 0.9); color: #f4f7f2;
+      font-family: monospace; font-size: 13px; padding: 10px 14px;
+      border: 1px solid #8fb399; border-radius: 6px; max-width: 90vw;
+    }
+    #coord-hud small { display: block; color: #b7cbbd; margin-bottom: 4px; font-family: sans-serif; }
+  </style>
+</head>
+<body>
+
+  <div id="welcome-overlay">
+    <h2>Winter Garden &amp; Woodland Stroll</h2>
+    <p>Take a slow look around. Click signposts to move between spots, or open field notes along the path.</p>
+    <button onclick="startStroll()">Begin Stroll (Sound On)</button>
+  </div>
+
+<!-- Subtle Corner Mute Button -->
+  <button id="mute-btn" onclick="toggleMute()" aria-label="Toggle ambient audio">Sound: On</button>
+
+
+  <!-- Coordinate Helper Readout (appears when you Shift + Click anywhere) -->
+  <div id="coord-hud">
+    <small>Coordinates copied to clipboard (Shift + Click any spot to update):</small>
+    <div id="coord-readout"></div>
+  </div>
+
+<!-- Note: raycaster listens to both active buttons (.active-ray) and the placement dome (.picker-dome) -->
+  <a-scene cursor="rayOrigin: mouse" raycaster="objects: .active-ray, .picker-dome">
+
+    <a-assets>
+      <img id="bench-img" src="bench.jpg" crossorigin="anonymous">
+      <img id="oak-img" src="oak.jpg" crossorigin="anonymous">
+      <audio id="rain-audio" src="garden-rain.mp3" preload="auto" crossorigin="anonymous"></audio>
+      <audio id="birds-audio" src="oak-birds.mp3" preload="auto" crossorigin="anonymous"></audio>
+    </a-assets>
+
+    <a-sound id="sound-bench" class="ambient-track" src="#rain-audio" loop="true" volume="0" positional="false"></a-sound>
+    <a-sound id="sound-oak" class="ambient-track" src="#birds-audio" loop="true" volume="0" positional="false"></a-sound>
+
+    <a-sky id="main-sky" src="#bench-img" rotation="0 -90 0"></a-sky>
+
+    <a-sphere class="picker-dome" position="0 1.6 0" radius="4" material="side: back; visible: false" coord-picker></a-sphere>
+
+    <a-entity id="preview-marker" visible="false">
+      <a-plane width="2.2" height="0.55" color="#4a3728" opacity="0.9" material="shader: flat"></a-plane>
+      <a-text value="New Spot Marker" align="center" color="#f4f7f2" width="3.8" position="0 0 0.02"></a-text>
+    </a-entity>
+
+    <a-entity id="rig" position="0 1.6 0">
+      <a-camera look-controls="reverseMouseDrag: true">
+        <a-sphere id="fade-sphere" radius="0.5" material="color: #141c17; shader: flat; side: back; transparent: true; opacity: 0"
+                  animation__out="property: material.opacity; from: 0; to: 1; dur: 600; startEvents: fadeOut"
+                  animation__in="property: material.opacity; from: 1; to: 0; dur: 600; startEvents: fadeIn">
+        </a-sphere>
+      </a-camera>
+    </a-entity>
+
+    <!-- VIEWPOINT 1: GARDEN BENCH -->
+    <a-entity id="bench-spots" class="spot-group" visible="true">
+      <a-entity position="0 1.5 -4" rotation="0 0 0" class="clickable active-ray"
+                spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetSound: #sound-oak; skyRotation: 0 45 0">
+        <a-plane width="2.4" height="0.65" color="#1f3326" opacity="0.88" material="shader: flat"></a-plane>
+        <a-plane width="2.46" height="0.71" position="0 0 -0.01" color="#8fb399" material="shader: flat"></a-plane>
+        <a-text value="Walk to the Garry Oak ->" align="center" color="#f4f7f2" width="4.2" position="0 0 0.02"></a-text>
+      </a-entity>
+
+      <a-entity position="3.1 1.7 -2.5" rotation="0 -50 0">
+        <a-plane width="1.65" height="0.45" color="#3b4d3e" class="clickable active-ray"
+                 material="shader: flat" info-note="noteId: #bench-note-card">
+          <a-text value="[+] Garden Note" align="center" color="#ffffff" width="3.2" position="0 0 0.02"></a-text>
+        </a-plane>
+        <a-entity id="bench-note-card" position="0 -0.85 0" visible="false">
+          <a-plane width="2.6" height="1.1" color="#f7f5ee" opacity="0.95" material="shader: flat"></a-plane>
+          <a-text value="Winter Dormancy:
+Licorice ferns stay bright green on the damp mossy bark all winter."
+                  color="#222b24" align="center" width="2.3" wrap-count="28" position="0 0 0.02"></a-text>
+        </a-entity>
+      </a-entity>
+    </a-entity>
+
+    <!-- VIEWPOINT 2: UNDER THE GARRY OAK -->
+    <a-entity id="oak-spots" class="spot-group" visible="false">
+      <a-entity position="-3 1.4 2.5" rotation="0 135 0" class="clickable"
+                spot-link="targetSky: #bench-img; targetGroup: #bench-spots; targetSound: #sound-bench; skyRotation: 0 -90 0">
+        <a-plane width="2.4" height="0.65" color="#1f3326" opacity="0.88" material="shader: flat"></a-plane>
+        <a-plane width="2.46" height="0.71" position="0 0 -0.01" color="#8fb399" material="shader: flat"></a-plane>
+        <a-text value="<- Return to Bench" align="center" color="#f4f7f2" width="4.2" position="0 0 0.02"></a-text>
+      </a-entity>
+    </a-entity>
+
+  </a-scene>
+</body>
+</html>
