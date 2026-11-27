@@ -9,7 +9,77 @@
     let isMuted = false;
     let activeAudioId = 'rain-audio';
 
-    // 1. Reliable HTML5 Audio Cross-Fade
+    // 1. Draw crisp text onto an HTML5 Canvas and apply it as a texture (Zero external font dependencies)
+    AFRAME.registerComponent('sign-label', {
+      schema: {
+        text: { type: 'string', default: '' },
+        bgColor: { type: 'string', default: '#1f3326' },
+        borderColor: { type: 'string', default: '#8fb399' },
+        textColor: { type: 'string', default: '#f4f7f2' },
+        fontSize: { type: 'number', default: 44 },
+        width: { type: 'number', default: 1024 },
+        height: { type: 'number', default: 256 }
+      },
+      init: function () {
+        this.renderCanvas();
+      },
+      update: function () {
+        this.renderCanvas();
+      },
+      renderCanvas: function () {
+        const d = this.data;
+        const canvas = document.createElement('canvas');
+        canvas.width = d.width;
+        canvas.height = d.height;
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = d.bgColor;
+        ctx.fillRect(0, 0, d.width, d.height);
+
+        // Border
+        if (d.borderColor) {
+          ctx.strokeStyle = d.borderColor;
+          ctx.lineWidth = 10;
+          ctx.strokeRect(5, 5, d.width - 10, d.height - 10);
+        }
+
+        // Typography using system sans-serif / Georgia
+        ctx.fillStyle = d.textColor;
+        ctx.font = `bold ${d.fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Support multi-line text separated by "\n"
+        const lines = d.text.split('\n');
+        const lineHeight = d.fontSize * 1.3;
+        const startY = (d.height / 2) - ((lines.length - 1) * lineHeight) / 2;
+
+        lines.forEach((line, i) => {
+          ctx.fillText(line.trim(), d.width / 2, startY + i * lineHeight);
+        });
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.needsUpdate = true;
+
+        const applyTexture = () => {
+          const mesh = this.el.getObject3D('mesh');
+          if (mesh) {
+            mesh.material.map = texture;
+            mesh.material.color.set('#ffffff');
+            mesh.material.needsUpdate = true;
+          }
+        };
+
+        if (this.el.getObject3D('mesh')) {
+          applyTexture();
+        } else {
+          this.el.addEventListener('object3dset', applyTexture, { once: true });
+        }
+      }
+    });
+
+    // 2. Reliable HTML5 Audio Cross-Fade
     function fadeHtmlAudio(audioId, targetVol, duration = 1200) {
       const audioEl = document.getElementById(audioId);
       if (!audioEl) return;
@@ -34,7 +104,7 @@
       requestAnimationFrame(step);
     }
 
-    // 2. Corner Mute / Unmute Toggle
+    // 3. Corner Mute / Unmute Toggle
     function toggleMute() {
       isMuted = !isMuted;
       const btn = document.getElementById('mute-btn');
@@ -48,14 +118,14 @@
       }
     }
 
-    // 3. Begin Stroll
+    // 4. Begin Stroll
     function startStroll() {
       document.getElementById('welcome-overlay').style.display = 'none';
       document.getElementById('mute-btn').style.display = 'block';
       fadeHtmlAudio(activeAudioId, 0.45, 1500);
     }
 
-    // 4. Component: Switch viewpoints + cross-fade audio
+    // 5. Switch viewpoints + cross-fade audio
     AFRAME.registerComponent('spot-link', {
       schema: {
         targetSky: { type: 'string' },
@@ -111,7 +181,7 @@
       }
     });
 
-    // 5. Component: Toggle Garden Note Card
+    // 6. Toggle Garden Note Card
     AFRAME.registerComponent('info-note', {
       schema: { noteId: { type: 'string' } },
       init: function () {
@@ -126,7 +196,7 @@
       }
     });
 
-    // 6. Component: Shift + Click Coordinate Helper
+    // 7. Shift + Click Coordinate Helper
     AFRAME.registerComponent('coord-picker', {
       init: function () {
         if (!ENABLE_COORD_HELPER) return;
@@ -205,7 +275,6 @@
 
   <a-scene cursor="rayOrigin: mouse" raycaster="objects: .active-ray, .picker-dome">
 
-
     <a-assets>
       <img id="bench-img" src="IMG_20261103_134408_00_561.jpg" crossorigin="anonymous">
       <img id="oak-img" src="IMG_20261127_103330_796.JPG" crossorigin="anonymous">
@@ -217,11 +286,9 @@
 
     <a-sphere class="picker-dome" position="0 1.6 0" radius="4.5" material="side: back; transparent: true; opacity: 0" coord-picker></a-sphere>
 
-    <!-- Preview Marker: Uses sibling <a-text> with zOffset and font="mozillavr" so text always renders cleanly -->
-    <a-entity id="preview-marker" visible="false">
-      <a-plane width="2.2" height="0.55" color="#4a3728" opacity="0.92" material="shader: flat"></a-plane>
-      <a-text value="New Spot Marker" font="mozillavr" align="center" color="#f4f7f2" width="3.8" position="0 0 0.05" z-offset="0.05"></a-text>
-    </a-entity>
+    <!-- Preview Marker -->
+    <a-plane id="preview-marker" visible="false" width="2.2" height="0.55" material="shader: flat"
+             sign-label="text: New Spot Marker; bgColor: #4a3728; borderColor: #d9c3b0; textColor: #f4f7f2"></a-plane>
 
     <a-entity id="rig" position="0 1.6 0">
       <a-camera look-controls="reverseMouseDrag: true">
@@ -234,34 +301,33 @@
 
     <!-- VIEWPOINT 1: GARDEN BENCH -->
     <a-entity id="bench-spots" class="spot-group" visible="true">
-      <a-entity position="0 1.5 -4" rotation="0 0 0">
-        <a-plane class="clickable active-ray" width="2.4" height="0.65" color="#1f3326" opacity="0.92" material="shader: flat"
-                 spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetAudio: birds-audio; skyRotation: 0 45 0"></a-plane>
-        <a-plane width="2.46" height="0.71" position="0 0 -0.02" color="#8fb399" material="shader: flat"></a-plane>
-        <a-text value="Walk to the Garry Oak ->" font="mozillavr" align="center" color="#f4f7f2" width="4.2" position="0 0 0.05" z-offset="0.05"></a-text>
-      </a-entity>
+      <a-plane position="0 1.5 -4" rotation="0 0 0" width="2.4" height="0.65" material="shader: flat"
+               class="clickable active-ray"
+               sign-label="text: Walk to the Garry Oak ->; bgColor: #1f3326; borderColor: #8fb399; textColor: #f4f7f2"
+               spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetAudio: birds-audio; skyRotation: 0 45 0">
+      </a-plane>
 
       <a-entity position="3.1 1.7 -2.5" rotation="0 -50 0">
-        <a-plane class="clickable active-ray" width="1.75" height="0.48" color="#3b4d3e" opacity="0.92" material="shader: flat"
-                 info-note="noteId: #bench-note-card"></a-plane>
-        <a-text value="[+] Garden Note" font="mozillavr" align="center" color="#ffffff" width="3.4" position="0 0 0.05" z-offset="0.05"></a-text>
-        <a-entity id="bench-note-card" position="0 -0.85 0" visible="false">
-          <a-plane width="2.6" height="1.15" color="#f7f5ee" opacity="0.96" material="shader: flat"></a-plane>
-          <a-text value="Winter Dormancy:
-Licorice ferns stay bright green on the damp mossy bark all winter."
-                  font="mozillavr" color="#222b24" align="center" width="2.3" wrap-count="28" position="0 0 0.05" z-offset="0.05"></a-text>
-        </a-entity>
+        <a-plane width="1.75" height="0.48" material="shader: flat"
+                 class="clickable active-ray"
+                 sign-label="text: [+] Garden Note; bgColor: #3b4d3e; borderColor: #8fb399; textColor: #ffffff; fontSize: 40"
+                 info-note="noteId: #bench-note-card">
+        </a-plane>
+        <a-plane id="bench-note-card" position="0 -0.9 0" visible="false" width="2.7" height="1.2" material="shader: flat"
+                 sign-label="text: Winter Dormancy:
+Licorice ferns stay bright green
+on damp mossy bark all winter.; bgColor: #f7f5ee; borderColor: #3b4d3e; textColor: #222b24; fontSize: 36; width: 1024; height: 455">
+        </a-plane>
       </a-entity>
     </a-entity>
 
     <!-- VIEWPOINT 2: UNDER THE GARRY OAK -->
     <a-entity id="oak-spots" class="spot-group" visible="false">
-      <a-entity position="0 1.5 -4" rotation="0 0 0">
-        <a-plane class="clickable" width="2.4" height="0.65" color="#1f3326" opacity="0.92" material="shader: flat"
-                 spot-link="targetSky: #bench-img; targetGroup: #bench-spots; targetAudio: rain-audio; skyRotation: 0 -90 0"></a-plane>
-        <a-plane width="2.46" height="0.71" position="0 0 -0.02" color="#8fb399" material="shader: flat"></a-plane>
-        <a-text value="<- Return to Bench" font="mozillavr" align="center" color="#f4f7f2" width="4.2" position="0 0 0.05" z-offset="0.05"></a-text>
-      </a-entity>
+      <a-plane position="0 1.5 -4" rotation="0 0 0" width="2.4" height="0.65" material="shader: flat"
+               class="clickable"
+               sign-label="text: <- Return to Bench; bgColor: #1f3326; borderColor: #8fb399; textColor: #f4f7f2"
+               spot-link="targetSky: #bench-img; targetGroup: #bench-spots; targetAudio: rain-audio; skyRotation: 0 -90 0">
+      </a-plane>
     </a-entity>
 
   </a-scene>
