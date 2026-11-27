@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>360° Nature Stroll</title>
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script>
     const ENABLE_COORD_HELPER = true;
     let isMuted = false;
     let activeAudioId = 'rain-audio';
+    let lookMode = 'touch'; // 'touch' (drag to pan) or 'vr' (tilt/gyroscope/VR headset)
 
     // 1. Draw crisp text onto an HTML5 Canvas texture
     AFRAME.registerComponent('sign-label', {
@@ -96,12 +98,12 @@
       requestAnimationFrame(step);
     }
 
-    // 3. Corner Mute Toggle
+    // 3. Dedicated Audio Off / On Toggle Button
     function toggleMute() {
       isMuted = !isMuted;
       const btn = document.getElementById('mute-btn');
-      btn.textContent = isMuted ? 'Sound: Off' : 'Sound: On';
-      btn.style.opacity = isMuted ? '0.65' : '1';
+      btn.textContent = isMuted ? 'Turn Audio On' : 'Turn Audio Off';
+      btn.classList.toggle('is-muted', isMuted);
 
       if (isMuted) {
         document.querySelectorAll('.ambient-audio').forEach(a => fadeHtmlAudio(a.id, 0, 500));
@@ -110,15 +112,81 @@
       }
     }
 
-    // 4. Begin Stroll
-    function startStroll() {
-      document.getElementById('welcome-overlay').style.display = 'none';
-      document.getElementById('mute-btn').style.display = 'block';
-      document.getElementById('location-banner').style.display = 'block';
-      fadeHtmlAudio(activeAudioId, 0.45, 1500);
+    // 4. iPad / Tablet Look Mode Switcher: Touch Drag vs. VR / Tilt Motion
+    async function setLookMode(mode) {
+      const cam = document.getElementById('main-cam');
+      const modeBtn = document.getElementById('mode-btn');
+      const scene = document.querySelector('a-scene');
+
+      if (mode === 'vr') {
+        // Request iOS / iPadOS Safari motion & orientation sensor permission on user tap
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+          try {
+            const response = await DeviceOrientationEvent.requestPermission();
+            if (response !== 'granted') {
+              alert('Motion permission was declined. Staying in Touch Drag mode.');
+              mode = 'touch';
+            }
+          } catch (e) {
+            console.warn('Motion permission error:', e);
+          }
+        }
+      }
+
+      lookMode = mode;
+      if (mode === 'vr') {
+        cam.setAttribute('look-controls', 'magicWindowTrackingEnabled: true; touchEnabled: true; reverseMouseDrag: false');
+        modeBtn.textContent = 'Mode: VR / Motion';
+        // Also allow entering split-screen VR headset view if supported
+        if (scene && scene.enterVR && navigator.xr) {
+          scene.enterVR().catch(() => {});
+        }
+      } else {
+        // Disable gyroscope tilt so iPad users can comfortably pan purely with finger touch
+        cam.setAttribute('look-controls', 'magicWindowTrackingEnabled: false; touchEnabled: true; reverseMouseDrag: true');
+        modeBtn.textContent = 'Mode: Touch Pan';
+        if (scene && scene.is('vr-mode') && scene.exitVR) {
+          scene.exitVR();
+        }
+      }
     }
 
-    // 5. Switch 360° viewpoints + update top-left location banner
+    function toggleLookMode() {
+      setLookMode(lookMode === 'touch' ? 'vr' : 'touch');
+    }
+
+    // 5. Begin Stroll (Supports starting in Touch Pan or VR / Motion mode, with Audio On or Off)
+    async function startStroll(selectedMode = 'touch', startWithAudio = true) {
+      await setLookMode(selectedMode);
+
+      document.getElementById('welcome-overlay').style.display = 'none';
+      document.getElementById('top-controls').style.display = 'flex';
+      document.getElementById('location-banner').style.display = 'block';
+
+      if (startWithAudio) {
+        isMuted = false;
+        fadeHtmlAudio(activeAudioId, 0.45, 1500);
+      } else {
+        isMuted = true;
+        const btn = document.getElementById('mute-btn');
+        btn.textContent = 'Turn Audio On';
+        btn.classList.add('is-muted');
+      }
+    }
+
+    // 6. Subtle Fade Update for Top-Left Location Banner
+    function updateLocationBanner(newTitle) {
+      if (!newTitle) return;
+      const banner = document.getElementById('location-banner');
+      const titleEl = document.getElementById('location-title');
+      banner.classList.add('banner-fading');
+      setTimeout(() => {
+        titleEl.textContent = newTitle;
+        banner.classList.remove('banner-fading');
+      }, 450);
+    }
+
+    // 7. Switch 360° viewpoints + update banner + cross-fade audio
     AFRAME.registerComponent('spot-link', {
       schema: {
         targetSky: { type: 'string' },
@@ -150,14 +218,15 @@
             fadeHtmlAudio(activeAudioId, 0.45, 1500);
           }
 
+          // Start subtle banner fade slightly ahead of the scene swap
+          if (data.spotTitle) {
+            updateLocationBanner(data.spotTitle);
+          }
+
           fader.emit('fadeOut');
           setTimeout(() => {
             sky.setAttribute('src', data.targetSky);
             sky.setAttribute('rotation', data.skyRotation);
-
-            if (data.spotTitle) {
-              document.getElementById('location-title').textContent = data.spotTitle;
-            }
 
             const marker = document.querySelector('#preview-marker');
             if (marker) marker.setAttribute('visible', false);
@@ -179,7 +248,7 @@
       }
     });
 
-    // 6. Toggle Garden Note Card
+    // 8. Toggle Garden Note Card
     AFRAME.registerComponent('info-note', {
       schema: { noteId: { type: 'string' } },
       init: function () {
@@ -194,7 +263,7 @@
       }
     });
 
-    // 7. Open a standard (non-360°) close-up photo in a clean lightbox
+    // 9. Open a standard (non-360°) close-up photo in a clean lightbox
     AFRAME.registerComponent('photo-popup', {
       schema: {
         imgSrc: { type: 'string' },
@@ -217,7 +286,7 @@
       document.getElementById('photo-lightbox').style.display = 'none';
     }
 
-    // 8. Shift + Click Coordinate Helper
+    // 10. Shift + Click Coordinate Helper
     AFRAME.registerComponent('coord-picker', {
       init: function () {
         if (!ENABLE_COORD_HELPER) return;
@@ -254,25 +323,37 @@
   <style>
     /* Welcome Overlay */
     #welcome-overlay {
-      position: fixed; inset: 0; background: rgba(20, 28, 23, 0.88);
+      position: fixed; inset: 0; background: rgba(20, 28, 23, 0.9);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       color: #f4f7f2; font-family: Georgia, serif; z-index: 999; text-align: center; padding: 20px;
     }
     #welcome-overlay h2 { margin-bottom: 8px; font-weight: normal; }
-    #welcome-overlay p { max-width: 420px; color: #c9d8cd; line-height: 1.5; }
-    #welcome-overlay button {
-      margin-top: 18px; padding: 12px 28px; font-size: 16px; cursor: pointer;
+    #welcome-overlay p { max-width: 440px; color: #c9d8cd; line-height: 1.5; margin-bottom: 20px; }
+    .start-buttons {
+      display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; max-width: 480px;
+    }
+    .start-buttons button {
+      padding: 12px 22px; font-size: 15px; cursor: pointer;
       background: #2f4f3a; color: #f4f7f2; border: 1px solid #8fb399; border-radius: 6px;
-      font-family: Georgia, serif;
+      font-family: Georgia, serif; transition: background 0.2s ease;
+    }
+    .start-buttons button:hover { background: #3b6349; }
+    .start-buttons button.secondary-btn {
+      background: rgba(31, 51, 38, 0.65);
     }
 
-    /* Subtle Top-Left Location Banner */
+    /* Subtle Top-Left Location Banner with Smooth Fade Transition */
     #location-banner {
       position: fixed; top: 16px; left: 16px; z-index: 998; display: none;
       background: rgba(20, 28, 23, 0.65); color: #f4f7f2;
       border-left: 3px solid #8fb399; border-radius: 4px;
       padding: 8px 14px; font-family: Georgia, serif;
       backdrop-filter: blur(4px); pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.45s ease-in-out;
+    }
+    #location-banner.banner-fading {
+      opacity: 0;
     }
     #location-banner small {
       display: block; font-size: 10px; text-transform: uppercase;
@@ -280,14 +361,20 @@
     }
     #location-title { font-size: 15px; }
 
-    /* Subtle Top-Right Mute Button */
-    #mute-btn {
-      position: fixed; top: 16px; right: 16px; z-index: 998; display: none;
-      background: rgba(20, 28, 23, 0.65); color: #f4f7f2;
-      border: 1px solid rgba(143, 179, 153, 0.5); border-radius: 20px;
-      padding: 8px 14px; font-family: Georgia, serif; font-size: 13px; cursor: pointer;
-      backdrop-filter: blur(4px);
+    /* Top-Right Controls: Touch/VR Mode Toggle + Turn Audio Off Button */
+    #top-controls {
+      position: fixed; top: 16px; right: 16px; z-index: 998;
+      display: none; gap: 8px; flex-wrap: wrap; justify-content: flex-end;
     }
+    .hud-pill-btn {
+      background: rgba(20, 28, 23, 0.7); color: #f4f7f2;
+      border: 1px solid rgba(143, 179, 153, 0.55); border-radius: 20px;
+      padding: 8px 14px; font-family: Georgia, serif; font-size: 13px;
+      cursor: pointer; backdrop-filter: blur(4px);
+      transition: background 0.2s ease, opacity 0.2s ease;
+    }
+    .hud-pill-btn:hover { background: rgba(31, 51, 38, 0.92); }
+    .hud-pill-btn.is-muted { opacity: 0.7; border-color: rgba(180, 180, 180, 0.4); }
 
     /* Non-360° Photo Lightbox Modal */
     #photo-lightbox {
@@ -320,21 +407,32 @@
 </head>
 <body>
 
-  <!-- Welcome Overlay -->
+  <!-- Welcome Overlay with iPad Touch vs. VR Choice -->
   <div id="welcome-overlay">
     <h2>Winter Garden &amp; Woodland Stroll</h2>
-    <p>Take a slow look around. Click signposts to move between spots, or open close-up photos and field notes.</p>
-    <button onclick="startStroll()">Begin Stroll (Sound On)</button>
+    <p>Choose how you would like to look around on your device. You can switch modes or turn audio off anytime in the top-right corner.</p>
+    <div class="start-buttons">
+      <button onclick="startStroll('touch', true)">Start with Touch Pan</button>
+      <button class="secondary-btn" onclick="startStroll('vr', true)">Start with VR / Motion</button>
+      <button class="secondary-btn" onclick="startStroll('touch', false)">Start Quietly (Audio Off)</button>
+    </div>
   </div>
 
-  <!-- Subtle Top-Left Location Banner -->
+  <!-- Subtle Top-Left Location Banner (Fades smoothly on spot change) -->
   <div id="location-banner">
     <small>Current Spot</small>
-    <div id="location-title">Slump</div>
+    <div id="location-title">Garden Bench</div>
   </div>
 
-  <!-- Subtle Top-Right Mute Toggle -->
-  <button id="mute-btn" onclick="toggleMute()" aria-label="Toggle ambient audio">Sound: On</button>
+  <!-- Top-Right Control Pills: iPad Mode Switcher + Dedicated Turn Audio Off Button -->
+  <div id="top-controls">
+    <button id="mode-btn" class="hud-pill-btn" onclick="toggleLookMode()" aria-label="Switch between Touch Pan and VR Motion">
+      Mode: Touch Pan
+    </button>
+    <button id="mute-btn" class="hud-pill-btn" onclick="toggleMute()" aria-label="Turn ambient audio off or on">
+      Turn Audio Off
+    </button>
+  </div>
 
   <!-- Lightbox Modal for Non-360° Close-Up Photos -->
   <div id="photo-lightbox" onclick="closePhotoLightbox()">
@@ -349,7 +447,8 @@
     <div id="coord-readout"></div>
   </div>
 
-  <a-scene cursor="rayOrigin: mouse" raycaster="objects: .active-ray, .picker-dome">
+  <!-- vr-mode-ui="enabled: false" hides A-Frame's redundant bottom-right goggles icon so your custom Mode button handles VR/Touch cleanly -->
+  <a-scene cursor="rayOrigin: mouse" raycaster="objects: .active-ray, .picker-dome" vr-mode-ui="enabled: false">
 
     <a-assets>
       <img id="bench-img" src="IMG_20261103_134408_00_561.jpg" crossorigin="anonymous">
@@ -366,7 +465,7 @@
              sign-label="text: New Spot Marker; bgColor: #4a3728; borderColor: #d9c3b0; textColor: #f4f7f2"></a-plane>
 
     <a-entity id="rig" position="0 1.6 0">
-      <a-camera look-controls="reverseMouseDrag: true">
+      <a-camera id="main-cam" look-controls="magicWindowTrackingEnabled: false; touchEnabled: true; reverseMouseDrag: true">
         <a-sphere id="fade-sphere" radius="0.5" material="color: #141c17; shader: flat; side: back; transparent: true; opacity: 0"
                   animation__out="property: material.opacity; from: 0; to: 1; dur: 600; startEvents: fadeOut"
                   animation__in="property: material.opacity; from: 1; to: 0; dur: 600; startEvents: fadeIn">
@@ -374,30 +473,27 @@
       </a-camera>
     </a-entity>
 
-    <!-- VIEWPOINT 1: THE SLUMP -->
+    <!-- VIEWPOINT 1: GARDEN BENCH -->
     <a-entity id="bench-spots" class="spot-group" visible="true">
-      <!-- Link to another 360° viewpoint + updates location banner -->
       <a-plane position="0 1.5 -4" rotation="0 0 0" width="2.4" height="0.65" material="shader: flat"
                class="clickable active-ray"
                sign-label="text: Walk to the Garry Oak ->; bgColor: #1f3326; borderColor: #8fb399; textColor: #f4f7f2"
-               spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetAudio: birds-audio; spotTitle: The Slump overlooking the Gorge; skyRotation: 0 45 0">
+               spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetAudio: birds-audio; spotTitle: Under the Garry Oak; skyRotation: 0 45 0">
       </a-plane>
 
-      <!-- Link to a standard non-360° close-up photo (opens cleanly in a centered frame) -->
       <a-plane position="-2.8 1.5 -2.8" rotation="0 45 0" width="2.1" height="0.52" material="shader: flat"
                class="clickable active-ray"
                sign-label="text: [View Close-Up Photo]; bgColor: #2e3d47; borderColor: #9eb8c7; textColor: #f4f7f2; fontSize: 38"
-               photo-popup="imgSrc: DSCN8397-slump-hightide-erosion.jpg; caption: Slump being desolved by King High Tide 2026-11-24.">
+               photo-popup="imgSrc: fern-closeup.jpg; caption: Licorice fern (Polypodium glycyrrhiza) thriving on damp mossy bark.">
       </a-plane>
 
-      <!-- Field Note Card -->
       <a-entity position="3.1 1.7 -2.5" rotation="0 -50 0">
         <a-plane width="1.75" height="0.48" material="shader: flat"
                  class="clickable active-ray"
-                 sign-label="text: [+] Field Note; bgColor: #3b4d3e; borderColor: #8fb399; textColor: #ffffff; fontSize: 40"
-                 info-note="noteId: #slump-note-card">
+                 sign-label="text: [+] Garden Note; bgColor: #3b4d3e; borderColor: #8fb399; textColor: #ffffff; fontSize: 40"
+                 info-note="noteId: #bench-note-card">
         </a-plane>
-        <a-plane id="slump-note-card" position="0 -0.9 0" visible="false" width="2.7" height="1.2" material="shader: flat"
+        <a-plane id="bench-note-card" position="0 -0.9 0" visible="false" width="2.7" height="1.2" material="shader: flat"
                  sign-label="text: Winter Dormancy:
 Licorice ferns stay bright green
 on damp mossy bark all winter.; bgColor: #f7f5ee; borderColor: #3b4d3e; textColor: #222b24; fontSize: 36; width: 1024; height: 455">
@@ -412,21 +508,6 @@ on damp mossy bark all winter.; bgColor: #f7f5ee; borderColor: #3b4d3e; textColo
                sign-label="text: <- Return to Bench; bgColor: #1f3326; borderColor: #8fb399; textColor: #f4f7f2"
                spot-link="targetSky: #bench-img; targetGroup: #bench-spots; targetAudio: rain-audio; spotTitle: Garden Bench; skyRotation: 0 -90 0">
       </a-plane>
-      <!-- Field Note Card -->
-      <a-entity position="3.1 1.7 -2.5" rotation="0 -50 0">
-        <a-plane width="1.75" height="0.48" material="shader: flat"
-                 class="clickable active-ray"
-                 sign-label="text: [+] Field Note; bgColor: #3b4d3e; borderColor: #8fb399; textColor: #ffffff; fontSize: 40"
-                 info-note="noteId: #bench-note-card">
-        </a-plane>
-        <a-plane id="bench-note-card" position="0 -0.9 0" visible="false" width="2.7" height="1.2" material="shader: flat"
-                 sign-label="text: Winter Dormancy:
-Licorice ferns stay bright green
-on damp mossy bark all winter.; bgColor: #f7f5ee; borderColor: #3b4d3e; textColor: #222b24; fontSize: 36; width: 1024; height: 455">
-        </a-plane>
-      </a-entity>
-    </a-entity>
-
     </a-entity>
 
   </a-scene>
