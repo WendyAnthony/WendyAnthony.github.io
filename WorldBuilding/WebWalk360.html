@@ -9,7 +9,7 @@
     let isMuted = false;
     let activeAudioId = 'rain-audio';
 
-    // 1. Reliable HTML5 Audio Cross-Fade (Works even on local files without WebAudio issues)
+    // 1. Reliable HTML5 Audio Cross-Fade
     function fadeHtmlAudio(audioId, targetVol, duration = 1200) {
       const audioEl = document.getElementById(audioId);
       if (!audioEl) return;
@@ -48,7 +48,7 @@
       }
     }
 
-    // 3. Begin Stroll (Unlocks browser audio & reveals corner toggle)
+    // 3. Begin Stroll
     function startStroll() {
       document.getElementById('welcome-overlay').style.display = 'none';
       document.getElementById('mute-btn').style.display = 'block';
@@ -205,6 +205,7 @@
 
   <a-scene cursor="rayOrigin: mouse" raycaster="objects: .active-ray, .picker-dome">
 
+
     <a-assets>
       <img id="bench-img" src="IMG_20261103_134408_00_561.jpg" crossorigin="anonymous">
       <img id="oak-img" src="IMG_20261127_103330_796.JPG" crossorigin="anonymous">
@@ -214,12 +215,12 @@
 
     <a-sky id="main-sky" src="#bench-img" rotation="0 -90 0"></a-sky>
 
-    <!-- Transparent (not visible:false) so Shift+Click raycaster always hits it -->
     <a-sphere class="picker-dome" position="0 1.6 0" radius="4.5" material="side: back; transparent: true; opacity: 0" coord-picker></a-sphere>
 
+    <!-- Preview Marker: Uses sibling <a-text> with zOffset and font="mozillavr" so text always renders cleanly -->
     <a-entity id="preview-marker" visible="false">
-      <a-plane width="2.2" height="0.55" color="#4a3728" opacity="0.9" material="shader: flat"></a-plane>
-      <a-text value="New Spot Marker" align="center" color="#f4f7f2" width="3.8" position="0 0 0.02"></a-text>
+      <a-plane width="2.2" height="0.55" color="#4a3728" opacity="0.92" material="shader: flat"></a-plane>
+      <a-text value="New Spot Marker" font="mozillavr" align="center" color="#f4f7f2" width="3.8" position="0 0 0.05" z-offset="0.05"></a-text>
     </a-entity>
 
     <a-entity id="rig" position="0 1.6 0">
@@ -233,37 +234,33 @@
 
     <!-- VIEWPOINT 1: GARDEN BENCH -->
     <a-entity id="bench-spots" class="spot-group" visible="true">
-      <!-- NOTE: class="clickable active-ray" is directly on the visible <a-plane> mesh so raycasting always detects it -->
       <a-entity position="0 1.5 -4" rotation="0 0 0">
-        <a-plane class="clickable active-ray" width="2.4" height="0.65" color="#1f3326" opacity="0.88" material="shader: flat"
-                 spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetAudio: birds-audio; skyRotation: 0 45 0">
-          <a-text value="Walk to the Garry Oak ->" align="center" color="#f4f7f2" width="4.2" position="0 0 0.02"></a-text>
-        </a-plane>
-        <a-plane width="2.46" height="0.71" position="0 0 -0.01" color="#8fb399" material="shader: flat"></a-plane>
+        <a-plane class="clickable active-ray" width="2.4" height="0.65" color="#1f3326" opacity="0.92" material="shader: flat"
+                 spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetAudio: birds-audio; skyRotation: 0 45 0"></a-plane>
+        <a-plane width="2.46" height="0.71" position="0 0 -0.02" color="#8fb399" material="shader: flat"></a-plane>
+        <a-text value="Walk to the Garry Oak ->" font="mozillavr" align="center" color="#f4f7f2" width="4.2" position="0 0 0.05" z-offset="0.05"></a-text>
       </a-entity>
 
       <a-entity position="3.1 1.7 -2.5" rotation="0 -50 0">
-        <a-plane class="clickable active-ray" width="1.65" height="0.45" color="#3b4d3e" material="shader: flat"
-                 info-note="noteId: #bench-note-card">
-          <a-text value="[+] Garden Note" align="center" color="#ffffff" width="3.2" position="0 0 0.02"></a-text>
-        </a-plane>
+        <a-plane class="clickable active-ray" width="1.75" height="0.48" color="#3b4d3e" opacity="0.92" material="shader: flat"
+                 info-note="noteId: #bench-note-card"></a-plane>
+        <a-text value="[+] Garden Note" font="mozillavr" align="center" color="#ffffff" width="3.4" position="0 0 0.05" z-offset="0.05"></a-text>
         <a-entity id="bench-note-card" position="0 -0.85 0" visible="false">
-          <a-plane width="2.6" height="1.1" color="#f7f5ee" opacity="0.95" material="shader: flat"></a-plane>
+          <a-plane width="2.6" height="1.15" color="#f7f5ee" opacity="0.96" material="shader: flat"></a-plane>
           <a-text value="Winter Dormancy:
 Licorice ferns stay bright green on the damp mossy bark all winter."
-                  color="#222b24" align="center" width="2.3" wrap-count="28" position="0 0 0.02"></a-text>
+                  font="mozillavr" color="#222b24" align="center" width="2.3" wrap-count="28" position="0 0 0.05" z-offset="0.05"></a-text>
         </a-entity>
       </a-entity>
     </a-entity>
 
     <!-- VIEWPOINT 2: UNDER THE GARRY OAK -->
     <a-entity id="oak-spots" class="spot-group" visible="false">
-      <a-entity position="-3 1.4 2.5" rotation="0 135 0">
-        <a-plane class="clickable" width="2.4" height="0.65" color="#1f3326" opacity="0.88" material="shader: flat"
-                 spot-link="targetSky: #bench-img; targetGroup: #bench-spots; targetAudio: rain-audio; skyRotation: 0 -90 0">
-          <a-text value="<- Return to Bench" align="center" color="#f4f7f2" width="4.2" position="0 0 0.02"></a-text>
-        </a-plane>
-        <a-plane width="2.46" height="0.71" position="0 0 -0.01" color="#8fb399" material="shader: flat"></a-plane>
+      <a-entity position="0 1.5 -4" rotation="0 0 0">
+        <a-plane class="clickable" width="2.4" height="0.65" color="#1f3326" opacity="0.92" material="shader: flat"
+                 spot-link="targetSky: #bench-img; targetGroup: #bench-spots; targetAudio: rain-audio; skyRotation: 0 -90 0"></a-plane>
+        <a-plane width="2.46" height="0.71" position="0 0 -0.02" color="#8fb399" material="shader: flat"></a-plane>
+        <a-text value="<- Return to Bench" font="mozillavr" align="center" color="#f4f7f2" width="4.2" position="0 0 0.05" z-offset="0.05"></a-text>
       </a-entity>
     </a-entity>
 
