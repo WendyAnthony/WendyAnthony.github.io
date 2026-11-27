@@ -374,13 +374,13 @@
       </a-camera>
     </a-entity>
 
-    <!-- VIEWPOINT 1: GARDEN BENCH -->
+    <!-- VIEWPOINT 1: THE SLUMP -->
     <a-entity id="bench-spots" class="spot-group" visible="true">
       <!-- Link to another 360° viewpoint + updates location banner -->
       <a-plane position="0 1.5 -4" rotation="0 0 0" width="2.4" height="0.65" material="shader: flat"
                class="clickable active-ray"
                sign-label="text: Walk to the Garry Oak ->; bgColor: #1f3326; borderColor: #8fb399; textColor: #f4f7f2"
-               spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetAudio: birds-audio; spotTitle: Under the Garry Oak; skyRotation: 0 45 0">
+               spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetAudio: birds-audio; spotTitle: The Slump overlooking the Gorge; skyRotation: 0 45 0">
       </a-plane>
 
       <!-- Link to a standard non-360° close-up photo (opens cleanly in a centered frame) -->
@@ -390,6 +390,28 @@
                photo-popup="imgSrc: DSCN8397-slump-hightide-erosion.jpg; caption: Slump being desolved by King High Tide 2026-11-24.">
       </a-plane>
 
+      <!-- Field Note Card -->
+      <a-entity position="3.1 1.7 -2.5" rotation="0 -50 0">
+        <a-plane width="1.75" height="0.48" material="shader: flat"
+                 class="clickable active-ray"
+                 sign-label="text: [+] Field Note; bgColor: #3b4d3e; borderColor: #8fb399; textColor: #ffffff; fontSize: 40"
+                 info-note="noteId: #slump-note-card">
+        </a-plane>
+        <a-plane id="slump-note-card" position="0 -0.9 0" visible="false" width="2.7" height="1.2" material="shader: flat"
+                 sign-label="text: Winter Dormancy:
+Licorice ferns stay bright green
+on damp mossy bark all winter.; bgColor: #f7f5ee; borderColor: #3b4d3e; textColor: #222b24; fontSize: 36; width: 1024; height: 455">
+        </a-plane>
+      </a-entity>
+    </a-entity>
+
+    <!-- VIEWPOINT 2: UNDER THE GARRY OAK -->
+    <a-entity id="oak-spots" class="spot-group" visible="false">
+      <a-plane position="0 1.5 -4" rotation="0 0 0" width="2.4" height="0.65" material="shader: flat"
+               class="clickable"
+               sign-label="text: <- Return to Bench; bgColor: #1f3326; borderColor: #8fb399; textColor: #f4f7f2"
+               spot-link="targetSky: #bench-img; targetGroup: #bench-spots; targetAudio: rain-audio; spotTitle: Garden Bench; skyRotation: 0 -90 0">
+      </a-plane>
       <!-- Field Note Card -->
       <a-entity position="3.1 1.7 -2.5" rotation="0 -50 0">
         <a-plane width="1.75" height="0.48" material="shader: flat"
@@ -405,13 +427,6 @@ on damp mossy bark all winter.; bgColor: #f7f5ee; borderColor: #3b4d3e; textColo
       </a-entity>
     </a-entity>
 
-    <!-- VIEWPOINT 2: UNDER THE GARRY OAK -->
-    <a-entity id="oak-spots" class="spot-group" visible="false">
-      <a-plane position="0 1.5 -4" rotation="0 0 0" width="2.4" height="0.65" material="shader: flat"
-               class="clickable"
-               sign-label="text: <- Return to Bench; bgColor: #1f3326; borderColor: #8fb399; textColor: #f4f7f2"
-               spot-link="targetSky: #bench-img; targetGroup: #bench-spots; targetAudio: rain-audio; spotTitle: Garden Bench; skyRotation: 0 -90 0">
-      </a-plane>
     </a-entity>
 
   </a-scene>
