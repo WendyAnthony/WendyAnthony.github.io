@@ -9,7 +9,7 @@
     let isMuted = false;
     let activeAudioId = 'rain-audio';
 
-    // 1. Draw crisp text onto an HTML5 Canvas and apply it as a texture (Zero external font dependencies)
+    // 1. Draw crisp text onto an HTML5 Canvas texture
     AFRAME.registerComponent('sign-label', {
       schema: {
         text: { type: 'string', default: '' },
@@ -20,12 +20,8 @@
         width: { type: 'number', default: 1024 },
         height: { type: 'number', default: 256 }
       },
-      init: function () {
-        this.renderCanvas();
-      },
-      update: function () {
-        this.renderCanvas();
-      },
+      init: function () { this.renderCanvas(); },
+      update: function () { this.renderCanvas(); },
       renderCanvas: function () {
         const d = this.data;
         const canvas = document.createElement('canvas');
@@ -33,24 +29,20 @@
         canvas.height = d.height;
         const ctx = canvas.getContext('2d');
 
-        // Background
         ctx.fillStyle = d.bgColor;
         ctx.fillRect(0, 0, d.width, d.height);
 
-        // Border
         if (d.borderColor) {
           ctx.strokeStyle = d.borderColor;
           ctx.lineWidth = 10;
           ctx.strokeRect(5, 5, d.width - 10, d.height - 10);
         }
 
-        // Typography using system sans-serif / Georgia
         ctx.fillStyle = d.textColor;
         ctx.font = `bold ${d.fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        // Support multi-line text separated by "\n"
         const lines = d.text.split('\n');
         const lineHeight = d.fontSize * 1.3;
         const startY = (d.height / 2) - ((lines.length - 1) * lineHeight) / 2;
@@ -79,7 +71,7 @@
       }
     });
 
-    // 2. Reliable HTML5 Audio Cross-Fade
+    // 2. HTML5 Audio Cross-Fade
     function fadeHtmlAudio(audioId, targetVol, duration = 1200) {
       const audioEl = document.getElementById(audioId);
       if (!audioEl) return;
@@ -104,7 +96,7 @@
       requestAnimationFrame(step);
     }
 
-    // 3. Corner Mute / Unmute Toggle
+    // 3. Corner Mute Toggle
     function toggleMute() {
       isMuted = !isMuted;
       const btn = document.getElementById('mute-btn');
@@ -122,15 +114,17 @@
     function startStroll() {
       document.getElementById('welcome-overlay').style.display = 'none';
       document.getElementById('mute-btn').style.display = 'block';
+      document.getElementById('location-banner').style.display = 'block';
       fadeHtmlAudio(activeAudioId, 0.45, 1500);
     }
 
-    // 5. Switch viewpoints + cross-fade audio
+    // 5. Switch 360° viewpoints + update top-left location banner
     AFRAME.registerComponent('spot-link', {
       schema: {
         targetSky: { type: 'string' },
         targetGroup: { type: 'string' },
         targetAudio: { type: 'string' },
+        spotTitle: { type: 'string', default: '' },
         skyRotation: { type: 'string', default: '0 0 0' }
       },
       init: function () {
@@ -160,6 +154,10 @@
           setTimeout(() => {
             sky.setAttribute('src', data.targetSky);
             sky.setAttribute('rotation', data.skyRotation);
+
+            if (data.spotTitle) {
+              document.getElementById('location-title').textContent = data.spotTitle;
+            }
 
             const marker = document.querySelector('#preview-marker');
             if (marker) marker.setAttribute('visible', false);
@@ -196,7 +194,30 @@
       }
     });
 
-    // 7. Shift + Click Coordinate Helper
+    // 7. Open a standard (non-360°) close-up photo in a clean lightbox
+    AFRAME.registerComponent('photo-popup', {
+      schema: {
+        imgSrc: { type: 'string' },
+        caption: { type: 'string', default: '' }
+      },
+      init: function () {
+        this.el.addEventListener('mouseenter', () => this.el.setAttribute('scale', '1.05 1.05 1.05'));
+        this.el.addEventListener('mouseleave', () => this.el.setAttribute('scale', '1 1 1'));
+
+        this.el.addEventListener('click', (evt) => {
+          if (evt.detail.mouseEvent && evt.detail.mouseEvent.shiftKey) return;
+          document.getElementById('lightbox-img').src = this.data.imgSrc;
+          document.getElementById('lightbox-caption').textContent = this.data.caption;
+          document.getElementById('photo-lightbox').style.display = 'flex';
+        });
+      }
+    });
+
+    function closePhotoLightbox() {
+      document.getElementById('photo-lightbox').style.display = 'none';
+    }
+
+    // 8. Shift + Click Coordinate Helper
     AFRAME.registerComponent('coord-picker', {
       init: function () {
         if (!ENABLE_COORD_HELPER) return;
@@ -231,6 +252,7 @@
     });
   </script>
   <style>
+    /* Welcome Overlay */
     #welcome-overlay {
       position: fixed; inset: 0; background: rgba(20, 28, 23, 0.88);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -243,12 +265,50 @@
       background: #2f4f3a; color: #f4f7f2; border: 1px solid #8fb399; border-radius: 6px;
       font-family: Georgia, serif;
     }
+
+    /* Subtle Top-Left Location Banner */
+    #location-banner {
+      position: fixed; top: 16px; left: 16px; z-index: 998; display: none;
+      background: rgba(20, 28, 23, 0.65); color: #f4f7f2;
+      border-left: 3px solid #8fb399; border-radius: 4px;
+      padding: 8px 14px; font-family: Georgia, serif;
+      backdrop-filter: blur(4px); pointer-events: none;
+    }
+    #location-banner small {
+      display: block; font-size: 10px; text-transform: uppercase;
+      letter-spacing: 1px; color: #b7cbbd; margin-bottom: 2px;
+    }
+    #location-title { font-size: 15px; }
+
+    /* Subtle Top-Right Mute Button */
     #mute-btn {
       position: fixed; top: 16px; right: 16px; z-index: 998; display: none;
       background: rgba(20, 28, 23, 0.65); color: #f4f7f2;
       border: 1px solid rgba(143, 179, 153, 0.5); border-radius: 20px;
       padding: 8px 14px; font-family: Georgia, serif; font-size: 13px; cursor: pointer;
+      backdrop-filter: blur(4px);
     }
+
+    /* Non-360° Photo Lightbox Modal */
+    #photo-lightbox {
+      position: fixed; inset: 0; background: rgba(15, 22, 18, 0.88);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 1000; padding: 24px; text-align: center;
+    }
+    #photo-lightbox img {
+      max-width: 88vw; max-height: 72vh; border-radius: 6px;
+      border: 2px solid #8fb399; box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    #lightbox-caption {
+      color: #f4f7f2; font-family: Georgia, serif; font-size: 16px;
+      margin-top: 14px; max-width: 600px; line-height: 1.4;
+    }
+    #photo-lightbox button {
+      margin-top: 14px; padding: 8px 20px; background: #2f4f3a; color: #f4f7f2;
+      border: 1px solid #8fb399; border-radius: 20px; font-family: Georgia, serif; cursor: pointer;
+    }
+
+    /* Coordinate Helper HUD */
     #coord-hud {
       position: fixed; bottom: 16px; left: 16px; z-index: 997; display: none;
       background: rgba(20, 28, 23, 0.9); color: #f4f7f2;
@@ -260,14 +320,30 @@
 </head>
 <body>
 
+  <!-- Welcome Overlay -->
   <div id="welcome-overlay">
     <h2>Winter Garden &amp; Woodland Stroll</h2>
-    <p>Take a slow look around. Click signposts to move between spots, or open field notes along the path.</p>
+    <p>Take a slow look around. Click signposts to move between spots, or open close-up photos and field notes.</p>
     <button onclick="startStroll()">Begin Stroll (Sound On)</button>
   </div>
 
+  <!-- Subtle Top-Left Location Banner -->
+  <div id="location-banner">
+    <small>Current Spot</small>
+    <div id="location-title">Slump</div>
+  </div>
+
+  <!-- Subtle Top-Right Mute Toggle -->
   <button id="mute-btn" onclick="toggleMute()" aria-label="Toggle ambient audio">Sound: On</button>
 
+  <!-- Lightbox Modal for Non-360° Close-Up Photos -->
+  <div id="photo-lightbox" onclick="closePhotoLightbox()">
+    <img id="lightbox-img" src="" alt="Close-up nature view" onclick="event.stopPropagation()">
+    <div id="lightbox-caption" onclick="event.stopPropagation()"></div>
+    <button onclick="closePhotoLightbox()">Return to 360° View</button>
+  </div>
+
+  <!-- Coordinate Helper HUD -->
   <div id="coord-hud">
     <small>Coordinates copied to clipboard (Shift + Click any spot to update):</small>
     <div id="coord-readout"></div>
@@ -276,17 +352,16 @@
   <a-scene cursor="rayOrigin: mouse" raycaster="objects: .active-ray, .picker-dome">
 
     <a-assets>
-      <img id="bench-img" src="IMG_20261103_134408_00_561.jpg" crossorigin="anonymous">
-      <img id="oak-img" src="IMG_20261127_103330_796.JPG" crossorigin="anonymous">
-      <audio id="rain-audio" src="garden-rain.mp3" preload="auto" crossorigin="anonymous"></audio>
-      <audio id="birds-audio" src="oak-birds.mp3" preload="auto" crossorigin="anonymous"></audio>
+      <img id="bench-img" src="bench.jpg" crossorigin="anonymous">
+      <img id="oak-img" src="oak.jpg" crossorigin="anonymous">
+      <audio id="rain-audio" class="ambient-audio" src="garden-rain.mp3" loop preload="auto" crossorigin="anonymous"></audio>
+      <audio id="birds-audio" class="ambient-audio" src="oak-birds.mp3" loop preload="auto" crossorigin="anonymous"></audio>
     </a-assets>
 
     <a-sky id="main-sky" src="#bench-img" rotation="0 -90 0"></a-sky>
 
     <a-sphere class="picker-dome" position="0 1.6 0" radius="4.5" material="side: back; transparent: true; opacity: 0" coord-picker></a-sphere>
 
-    <!-- Preview Marker -->
     <a-plane id="preview-marker" visible="false" width="2.2" height="0.55" material="shader: flat"
              sign-label="text: New Spot Marker; bgColor: #4a3728; borderColor: #d9c3b0; textColor: #f4f7f2"></a-plane>
 
@@ -301,16 +376,25 @@
 
     <!-- VIEWPOINT 1: GARDEN BENCH -->
     <a-entity id="bench-spots" class="spot-group" visible="true">
+      <!-- Link to another 360° viewpoint + updates location banner -->
       <a-plane position="0 1.5 -4" rotation="0 0 0" width="2.4" height="0.65" material="shader: flat"
                class="clickable active-ray"
                sign-label="text: Walk to the Garry Oak ->; bgColor: #1f3326; borderColor: #8fb399; textColor: #f4f7f2"
-               spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetAudio: birds-audio; skyRotation: 0 45 0">
+               spot-link="targetSky: #oak-img; targetGroup: #oak-spots; targetAudio: birds-audio; spotTitle: Under the Garry Oak; skyRotation: 0 45 0">
       </a-plane>
 
+      <!-- Link to a standard non-360° close-up photo (opens cleanly in a centered frame) -->
+      <a-plane position="-2.8 1.5 -2.8" rotation="0 45 0" width="2.1" height="0.52" material="shader: flat"
+               class="clickable active-ray"
+               sign-label="text: [View Close-Up Photo]; bgColor: #2e3d47; borderColor: #9eb8c7; textColor: #f4f7f2; fontSize: 38"
+               photo-popup="imgSrc: DSCN8397-slump-hightide-erosion.jpg; caption: Slump being desolved by King High Tide 2026-11-24.">
+      </a-plane>
+
+      <!-- Field Note Card -->
       <a-entity position="3.1 1.7 -2.5" rotation="0 -50 0">
         <a-plane width="1.75" height="0.48" material="shader: flat"
                  class="clickable active-ray"
-                 sign-label="text: [+] Garden Note; bgColor: #3b4d3e; borderColor: #8fb399; textColor: #ffffff; fontSize: 40"
+                 sign-label="text: [+] Field Note; bgColor: #3b4d3e; borderColor: #8fb399; textColor: #ffffff; fontSize: 40"
                  info-note="noteId: #bench-note-card">
         </a-plane>
         <a-plane id="bench-note-card" position="0 -0.9 0" visible="false" width="2.7" height="1.2" material="shader: flat"
@@ -326,7 +410,7 @@ on damp mossy bark all winter.; bgColor: #f7f5ee; borderColor: #3b4d3e; textColo
       <a-plane position="0 1.5 -4" rotation="0 0 0" width="2.4" height="0.65" material="shader: flat"
                class="clickable"
                sign-label="text: <- Return to Bench; bgColor: #1f3326; borderColor: #8fb399; textColor: #f4f7f2"
-               spot-link="targetSky: #bench-img; targetGroup: #bench-spots; targetAudio: rain-audio; skyRotation: 0 -90 0">
+               spot-link="targetSky: #bench-img; targetGroup: #bench-spots; targetAudio: rain-audio; spotTitle: Garden Bench; skyRotation: 0 -90 0">
       </a-plane>
     </a-entity>
 
