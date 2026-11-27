@@ -9,7 +9,8 @@
     const ENABLE_COORD_HELPER = true;
     let isMuted = false;
     let activeAudioId = 'rain-audio';
-    let lookMode = 'touch'; // 'touch' (drag to pan) or 'vr' (tilt/gyroscope/VR headset)
+    let lookMode = 'touch';
+    const activeFadeFrames = {}; // Tracks and cancels overlapping fade animations
 
     // 1. Draw crisp text onto an HTML5 Canvas texture
     AFRAME.registerComponent('sign-label', {
@@ -73,32 +74,50 @@
       }
     });
 
-    // 2. HTML5 Audio Cross-Fade
-    function fadeHtmlAudio(audioId, targetVol, duration = 1200) {
+    // 2. Reliable Audio Fade (Cancels prior animations + works on iPad where .volume is read-only)
+    function fadeHtmlAudio(audioId, targetVol, duration = 1000) {
       const audioEl = document.getElementById(audioId);
       if (!audioEl) return;
+
+      // Cancel any in-progress fade on this track so fades never fight each other
+      if (activeFadeFrames[audioId]) {
+        cancelAnimationFrame(activeFadeFrames[audioId]);
+        delete activeFadeFrames[audioId];
+      }
+
+      if (targetVol > 0) {
+        audioEl.muted = false;
+        if (audioEl.paused) {
+          audioEl.play().catch(err => console.warn('Audio play blocked or file missing:', err));
+        }
+      }
 
       const startVol = audioEl.volume;
       const startTime = performance.now();
 
-      if (targetVol > 0 && audioEl.paused) {
-        audioEl.play().catch(err => console.warn('Audio play blocked or file missing:', err));
-      }
-
       function step(now) {
         const progress = Math.min((now - startTime) / duration, 1);
-        audioEl.volume = Math.max(0, Math.min(1, startVol + (targetVol - startVol) * progress));
+        const nextVol = Math.max(0, Math.min(1, startVol + (targetVol - startVol) * progress));
+        try {
+          audioEl.volume = nextVol;
+        } catch (e) {
+          // iPadOS Safari keeps HTMLMediaElement.volume read-only; fallback to .muted
+        }
 
         if (progress < 1) {
-          requestAnimationFrame(step);
-        } else if (targetVol === 0) {
-          audioEl.pause();
+          activeFadeFrames[audioId] = requestAnimationFrame(step);
+        } else {
+          delete activeFadeFrames[audioId];
+          if (targetVol === 0) {
+            audioEl.muted = true;
+            audioEl.pause();
+          }
         }
       }
-      requestAnimationFrame(step);
+      activeFadeFrames[audioId] = requestAnimationFrame(step);
     }
 
-    // 3. Dedicated Audio Off / On Toggle Button
+    // 3. Immediate Dedicated Audio Off / On Button (Guaranteed to silence audio right away on Desktop & iPad)
     function toggleMute() {
       isMuted = !isMuted;
       const btn = document.getElementById('mute-btn');
@@ -106,9 +125,22 @@
       btn.classList.toggle('is-muted', isMuted);
 
       if (isMuted) {
-        document.querySelectorAll('.ambient-audio').forEach(a => fadeHtmlAudio(a.id, 0, 500));
+        // Cancel any running fade-in and immediately mute + pause every audio track
+        document.querySelectorAll('.ambient-audio').forEach(a => {
+          if (activeFadeFrames[a.id]) {
+            cancelAnimationFrame(activeFadeFrames[a.id]);
+            delete activeFadeFrames[a.id];
+          }
+          a.muted = true;
+          a.pause();
+        });
       } else if (activeAudioId) {
-        fadeHtmlAudio(activeAudioId, 0.45, 800);
+        const currentTrack = document.getElementById(activeAudioId);
+        if (currentTrack) {
+          currentTrack.muted = false;
+          currentTrack.volume = 0.05;
+          fadeHtmlAudio(activeAudioId, 0.45, 700);
+        }
       }
     }
 
@@ -119,12 +151,11 @@
       const scene = document.querySelector('a-scene');
 
       if (mode === 'vr') {
-        // Request iOS / iPadOS Safari motion & orientation sensor permission on user tap
         if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
           try {
             const response = await DeviceOrientationEvent.requestPermission();
             if (response !== 'granted') {
-              alert('Motion permission was declined. Staying in Touch Drag mode.');
+              alert('Motion permission was declined. Staying in Touch Pan mode.');
               mode = 'touch';
             }
           } catch (e) {
@@ -137,12 +168,10 @@
       if (mode === 'vr') {
         cam.setAttribute('look-controls', 'magicWindowTrackingEnabled: true; touchEnabled: true; reverseMouseDrag: false');
         modeBtn.textContent = 'Mode: VR / Motion';
-        // Also allow entering split-screen VR headset view if supported
         if (scene && scene.enterVR && navigator.xr) {
           scene.enterVR().catch(() => {});
         }
       } else {
-        // Disable gyroscope tilt so iPad users can comfortably pan purely with finger touch
         cam.setAttribute('look-controls', 'magicWindowTrackingEnabled: false; touchEnabled: true; reverseMouseDrag: true');
         modeBtn.textContent = 'Mode: Touch Pan';
         if (scene && scene.is('vr-mode') && scene.exitVR) {
@@ -155,7 +184,7 @@
       setLookMode(lookMode === 'touch' ? 'vr' : 'touch');
     }
 
-    // 5. Begin Stroll (Supports starting in Touch Pan or VR / Motion mode, with Audio On or Off)
+    // 5. Begin Stroll
     async function startStroll(selectedMode = 'touch', startWithAudio = true) {
       await setLookMode(selectedMode);
 
@@ -165,9 +194,18 @@
 
       if (startWithAudio) {
         isMuted = false;
-        fadeHtmlAudio(activeAudioId, 0.45, 1500);
+        const firstTrack = document.getElementById(activeAudioId);
+        if (firstTrack) {
+          firstTrack.muted = false;
+          firstTrack.volume = 0.05;
+        }
+        fadeHtmlAudio(activeAudioId, 0.45, 1200);
       } else {
         isMuted = true;
+        document.querySelectorAll('.ambient-audio').forEach(a => {
+          a.muted = true;
+          a.pause();
+        });
         const btn = document.getElementById('mute-btn');
         btn.textContent = 'Turn Audio On';
         btn.classList.add('is-muted');
@@ -211,14 +249,13 @@
           if (data.targetAudio) activeAudioId = data.targetAudio;
 
           document.querySelectorAll('.ambient-audio').forEach(a => {
-            if (a.id !== activeAudioId) fadeHtmlAudio(a.id, 0, 1000);
+            if (a.id !== activeAudioId) fadeHtmlAudio(a.id, 0, 900);
           });
 
           if (!isMuted && activeAudioId) {
-            fadeHtmlAudio(activeAudioId, 0.45, 1500);
+            fadeHtmlAudio(activeAudioId, 0.45, 1200);
           }
 
-          // Start subtle banner fade slightly ahead of the scene swap
           if (data.spotTitle) {
             updateLocationBanner(data.spotTitle);
           }
@@ -372,9 +409,10 @@
       padding: 8px 14px; font-family: Georgia, serif; font-size: 13px;
       cursor: pointer; backdrop-filter: blur(4px);
       transition: background 0.2s ease, opacity 0.2s ease;
+      touch-action: manipulation;
     }
     .hud-pill-btn:hover { background: rgba(31, 51, 38, 0.92); }
-    .hud-pill-btn.is-muted { opacity: 0.7; border-color: rgba(180, 180, 180, 0.4); }
+    .hud-pill-btn.is-muted { opacity: 0.75; border-color: rgba(180, 180, 180, 0.4); }
 
     /* Non-360° Photo Lightbox Modal */
     #photo-lightbox {
@@ -447,9 +485,9 @@
     <div id="coord-readout"></div>
   </div>
 
-  <!-- vr-mode-ui="enabled: false" hides A-Frame's redundant bottom-right goggles icon so your custom Mode button handles VR/Touch cleanly -->
   <a-scene cursor="rayOrigin: mouse" raycaster="objects: .active-ray, .picker-dome" vr-mode-ui="enabled: false">
 
+  <!-- assets -->
     <a-assets>
       <img id="bench-img" src="IMG_20261103_134408_00_561.jpg" crossorigin="anonymous">
       <img id="oak-img" src="IMG_20261127_103330_796.JPG" crossorigin="anonymous">
@@ -484,7 +522,7 @@
       <a-plane position="-2.8 1.5 -2.8" rotation="0 45 0" width="2.1" height="0.52" material="shader: flat"
                class="clickable active-ray"
                sign-label="text: [View Close-Up Photo]; bgColor: #2e3d47; borderColor: #9eb8c7; textColor: #f4f7f2; fontSize: 38"
-               photo-popup="imgSrc: fern-closeup.jpg; caption: Licorice fern (Polypodium glycyrrhiza) thriving on damp mossy bark.">
+               photo-popup="imgSrc: DSCN8397-slump-hightide-erosion.jpg; caption: Slump being disolved by High King Timde on Gorge.">
       </a-plane>
 
       <a-entity position="3.1 1.7 -2.5" rotation="0 -50 0">
